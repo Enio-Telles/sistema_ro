@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+.env
+.DS_Store
+node_modules/
+dist/
+build/
+coverage/
+*.parquet
+*.zip
+*.xlsx
+*.xls
+*.docx
+*.pdf
