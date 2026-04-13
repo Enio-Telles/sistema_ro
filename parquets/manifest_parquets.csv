@@ -1,0 +1,27 @@
+arquivo,camada,objetivo,uso
+sitafe_cest.parquet,referencia,tabela de mapeamento CEST -> co_sefin,base estática de classificação
+sitafe_cest_ncm.parquet,referencia,tabela de mapeamento CEST+NCM -> co_sefin,base estática prioritária
+sitafe_ncm.parquet,referencia,tabela de mapeamento NCM -> co_sefin,fallback de classificação
+sitafe_produto_sefin.parquet,referencia,catálogo de produtos/co_sefin,descrição e código interno
+sitafe_produto_sefin_aux.parquet,referencia,vigência tributária histórica do co_sefin,"alíquota, ST, MVA e parâmetros"
+efd_reg_0200_<cnpj>.parquet,bronze,cadastro de item EFD,fonte para mercadoria e rastreabilidade
+efd_reg_0220_<cnpj>.parquet,bronze,fator oficial de conversão EFD,apoio à conversão estrutural
+efd_c170_<cnpj>.parquet,bronze,itens EFD C170,entrada principal para estoque
+nfe_itens_<cnpj>.parquet,bronze,itens de NFe,saídas documentadas
+nfce_itens_<cnpj>.parquet,bronze,itens de NFCe,saídas varejo
+bloco_h_<cnpj>.parquet,bronze,inventário bloco H,estoque final declarado
+mercadorias_canonicas_<cnpj>.parquet,gold,núcleo mestre da mercadoria,identidade canônica
+apresentacoes_mercadoria_<cnpj>.parquet,gold,apresentações comerciais,embalagem e unidade
+produtos_agrupados_<cnpj>.parquet,gold,grupos candidatos e consolidados,ponte e revisão
+produtos_final_<cnpj>.parquet,gold,mercadorias consolidadas para consumo,camada analítica de produto
+id_agrupados_<cnpj>.parquet,gold,tabela de agrupamentos e histórico,governança de agrupação
+fatores_conversao_<cnpj>.parquet,gold,fatores e unidade de referência,conversão auditável
+mov_estoque_<cnpj>.parquet,gold,camada cronológica de estoque,base das subabas
+aba_mensal_<cnpj>.parquet,gold,resumo mensal por produto,visão mensal
+aba_anual_<cnpj>.parquet,gold,resumo anual por produto,visão anual
+aba_periodos_<cnpj>.parquet,gold,resumo por período de inventário,visão por período
+estoque_resumo_<cnpj>.parquet,gold,indicadores consolidados de estoque,resumo fiscal
+estoque_alertas_<cnpj>.parquet,gold,anomalias e divergências de estoque,fila de trabalho
+fisconforme_cadastral_<cnpj>.parquet,gold,cache cadastral por CNPJ,domínio Fisconforme
+fisconforme_malhas_<cnpj>.parquet,gold,cache de malhas por CNPJ,domínio Fisconforme
+fisconforme_lote_<referencia>.parquet,gold,resultado consolidado de lote,histórico e UI
