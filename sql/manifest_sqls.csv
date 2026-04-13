@@ -1,0 +1,25 @@
+arquivo,grupo,objetivo,dominio,parametros,observacao
+lookup_contribuinte.sql,core,lookup cadastral mínimo por CNPJ/IE/CPF,fonte consolidada de contribuinte,"cnpj, ie, cpf",retorna contexto cadastral mínimo e chaves para domínios seguintes
+dados_cadastrais.sql,core,dados cadastrais completos para contribuinte,cadastro contribuinte,cnpj,base para dossiê e Fisconforme
+efd_reg_0000.sql,core,abertura do arquivo EFD e período,EFD reg 0000,"cnpj, periodo_inicio, periodo_fim",controla recorte do contribuinte
+efd_reg_0150.sql,core,participantes EFD,EFD reg 0150,"cnpj, periodo_inicio, periodo_fim",apoio a participantes do documento
+efd_reg_0190.sql,core,unidades de medida,EFD reg 0190,"cnpj, periodo_inicio, periodo_fim",suporte a conversão e validação
+efd_reg_0200.sql,core,cadastro de itens,EFD reg 0200,"cnpj, periodo_inicio, periodo_fim",base de produto antes do agrupamento
+efd_reg_0205.sql,core,histórico de descrição do item,EFD reg 0205,"cnpj, periodo_inicio, periodo_fim",apoio à rastreabilidade de descrição
+efd_reg_0220.sql,core,fatores oficiais de conversão do item,EFD reg 0220,"cnpj, periodo_inicio, periodo_fim",apoio à conversão estrutural
+efd_c100.sql,core,documentos fiscais do bloco C,EFD C100,"cnpj, periodo_inicio, periodo_fim",cabeçalho de documentos
+efd_c170.sql,core,itens do documento fiscal do bloco C,EFD C170,"cnpj, periodo_inicio, periodo_fim",principal trilha de entrada para estoque
+efd_c176.sql,core,ressarcimento/ST por item,EFD C176,"cnpj, periodo_inicio, periodo_fim",apoio a ST e análises de ressarcimento
+efd_c190.sql,core,resumo fiscal por CFOP/CST,EFD C190,"cnpj, periodo_inicio, periodo_fim",apoio analítico e validações
+efd_c197.sql,core,ajustes por documento/item,EFD C197,"cnpj, periodo_inicio, periodo_fim",apoio a reconciliações
+efd_bloco_h.sql,core,inventário bloco H detalhado,Bloco H,"cnpj, periodo_inicio, periodo_fim",base do estoque final declarado
+efd_h005.sql,core,resumo H005 do inventário,Bloco H005,"cnpj, periodo_inicio, periodo_fim",apoio a resumo do bloco H
+nfe_itens.sql,core,itens de NFe,DF-e NFe,"cnpj, periodo_inicio, periodo_fim",principal trilha de saídas documentadas
+nfce_itens.sql,core,itens de NFCe,DF-e NFCe,"cnpj, periodo_inicio, periodo_fim",saídas de varejo
+nfe_eventos.sql,core,eventos de NFe relevantes,DF-e NFe eventos,"cnpj, periodo_inicio, periodo_fim","cancelamento, manifestação e ajuste"
+notas_referenciadas.sql,auxiliares,notas e chaves referenciadas,DF-e referências,"cnpj, periodo_inicio, periodo_fim",apoio a devoluções e rastreio
+fisconforme_cadastral.sql,core,dados cadastrais do Fisconforme,Fisconforme,cnpj,cache cadastral por contribuinte
+fisconforme_malhas.sql,core,malhas e pendências do Fisconforme,Fisconforme,"cnpj, periodo_inicio, periodo_fim",consulta individual e lote
+fisconforme_det_notificacao.sql,auxiliares,detalhe de notificação,Fisconforme,"cnpj, periodo_inicio, periodo_fim",apoio à geração de notificação
+dim_cfop.sql,auxiliares,dimensão de CFOP,referência fiscal,-,catálogo estático
+dim_cest_ncm.sql,auxiliares,dimensão de CEST/NCM,referência fiscal,-,apoio à classificação SEFIN
