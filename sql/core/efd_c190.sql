@@ -1,9 +1,9 @@
--- efd_reg_0200.sql
+-- efd_c190.sql
 -- grupo: core
--- dominio: EFD reg 0200
--- objetivo: cadastro de itens
+-- dominio: EFD C190
+-- objetivo: resumo fiscal por CFOP/CST
 -- parametros esperados: cnpj, periodo_inicio, periodo_fim
--- observacao: base de produto antes do agrupamento
+-- observacao: apoio analítico e validações
 -- status: template curado para implementação no novo projeto
 -- regra: selecionar apenas colunas necessárias e preservar chaves físicas
 

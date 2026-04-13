@@ -1,9 +1,9 @@
--- efd_reg_0200.sql
+-- efd_reg_0220.sql
 -- grupo: core
--- dominio: EFD reg 0200
--- objetivo: cadastro de itens
+-- dominio: EFD reg 0220
+-- objetivo: fatores oficiais de conversão do item
 -- parametros esperados: cnpj, periodo_inicio, periodo_fim
--- observacao: base de produto antes do agrupamento
+-- observacao: apoio à conversão estrutural
 -- status: template curado para implementação no novo projeto
 -- regra: selecionar apenas colunas necessárias e preservar chaves físicas
 
