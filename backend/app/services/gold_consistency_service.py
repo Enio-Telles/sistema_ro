@@ -1,0 +1,110 @@
+from __future__ import annotations
+
+import polars as pl
+
+from backend.app.services.datasets import dataset_ref
+from pipeline.io.parquet_store import load_parquet
+
+
+REQUIRED_COLS = {
+    "mov_estoque": ["id_agrupado", "tipo_operacao", "qtd", "q_conv"],
+    "aba_mensal": ["id_agregado", "ano", "mes", "ST", "ICMS_entr_desacob"],
+    "aba_anual": ["id_agregado", "ano", "ST", "ICMS_saidas_desac", "ICMS_estoque_desac"],
+    "aba_periodos": ["id_agregado", "ST", "ICMS_saidas_desac", "ICMS_estoque_desac"],
+}
+
+
+def _load_gold(cnpj: str, name: str) -> pl.DataFrame:
+    ref = dataset_ref(cnpj=cnpj, layer="gold", name=name)
+    df = load_parquet(ref)
+    return df if df is not None else pl.DataFrame()
+
+
+def _validate_required(df: pl.DataFrame, name: str) -> dict:
+    missing = [col for col in REQUIRED_COLS[name] if col not in df.columns]
+    return {
+        "dataset": name,
+        "rows": df.height,
+        "missing_columns": missing,
+        "ok": not missing,
+    }
+
+
+def _id_set(df: pl.DataFrame, col: str) -> set[str]:
+    if df.is_empty() or col not in df.columns:
+        return set()
+    values = df.select(pl.col(col).cast(pl.Utf8, strict=False).fill_null(""))
+    return {row[0] for row in values.iter_rows() if row[0]}
+
+
+def get_gold_consistency(cnpj: str) -> dict:
+    mov_df = _load_gold(cnpj, "mov_estoque")
+    mensal_df = _load_gold(cnpj, "aba_mensal")
+    anual_df = _load_gold(cnpj, "aba_anual")
+    periodos_df = _load_gold(cnpj, "aba_periodos")
+
+    validations = {
+        "mov_estoque": _validate_required(mov_df, "mov_estoque"),
+        "aba_mensal": _validate_required(mensal_df, "aba_mensal"),
+        "aba_anual": _validate_required(anual_df, "aba_anual"),
+        "aba_periodos": _validate_required(periodos_df, "aba_periodos"),
+    }
+
+    mov_ids = _id_set(mov_df, "id_agrupado")
+    mensal_ids = _id_set(mensal_df, "id_agregado")
+    anual_ids = _id_set(anual_df, "id_agregado")
+    periodos_ids = _id_set(periodos_df, "id_agregado")
+
+    coherence = {
+        "ids_mov_estoque": len(mov_ids),
+        "ids_aba_mensal": len(mensal_ids),
+        "ids_aba_anual": len(anual_ids),
+        "ids_aba_periodos": len(periodos_ids),
+        "ids_mensal_fora_mov": len(mensal_ids - mov_ids),
+        "ids_anual_fora_mov": len(anual_ids - mov_ids),
+        "ids_periodos_fora_mov": len(periodos_ids - mov_ids),
+        "movimentos_sem_periodo": 0,
+        "movimentos_com_saldo_negativo": 0,
+    }
+
+    if not mov_df.is_empty():
+        if "periodo_inventario" in mov_df.columns:
+            coherence["movimentos_sem_periodo"] = mov_df.filter(pl.col("periodo_inventario").is_null()).height
+        if "saldo_estoque_anual" in mov_df.columns:
+            coherence["movimentos_com_saldo_negativo"] = mov_df.filter(pl.col("saldo_estoque_anual") < 0).height
+
+    fiscal = {
+        "linhas_st_mensal": 0,
+        "linhas_st_anual": 0,
+        "linhas_st_periodos": 0,
+        "icms_entr_desacob_total": 0.0,
+        "icms_saidas_desac_total": 0.0,
+        "icms_estoque_desac_total": 0.0,
+    }
+
+    if not mensal_df.is_empty() and "ST" in mensal_df.columns:
+        fiscal["linhas_st_mensal"] = mensal_df.filter(pl.col("ST") == "ST").height
+        if "ICMS_entr_desacob" in mensal_df.columns:
+            fiscal["icms_entr_desacob_total"] = float(mensal_df["ICMS_entr_desacob"].sum())
+    if not anual_df.is_empty() and "ST" in anual_df.columns:
+        fiscal["linhas_st_anual"] = anual_df.filter(pl.col("ST") == "ST").height
+        if "ICMS_saidas_desac" in anual_df.columns:
+            fiscal["icms_saidas_desac_total"] += float(anual_df["ICMS_saidas_desac"].sum())
+        if "ICMS_estoque_desac" in anual_df.columns:
+            fiscal["icms_estoque_desac_total"] += float(anual_df["ICMS_estoque_desac"].sum())
+    if not periodos_df.is_empty() and "ST" in periodos_df.columns:
+        fiscal["linhas_st_periodos"] = periodos_df.filter(pl.col("ST") == "ST").height
+        if "ICMS_saidas_desac" in periodos_df.columns:
+            fiscal["icms_saidas_desac_total"] += float(periodos_df["ICMS_saidas_desac"].sum())
+        if "ICMS_estoque_desac" in periodos_df.columns:
+            fiscal["icms_estoque_desac_total"] += float(periodos_df["ICMS_estoque_desac"].sum())
+
+    ok = all(v["ok"] for v in validations.values()) and coherence["ids_mensal_fora_mov"] == 0 and coherence["ids_anual_fora_mov"] == 0 and coherence["ids_periodos_fora_mov"] == 0 and coherence["movimentos_com_saldo_negativo"] == 0
+
+    return {
+        "cnpj": cnpj,
+        "ok": ok,
+        "validations": validations,
+        "coherence": coherence,
+        "fiscal": fiscal,
+    }
