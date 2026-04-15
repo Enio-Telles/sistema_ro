@@ -1,0 +1,49 @@
+from __future__ import annotations
+
+
+def get_runtime_surface_catalog() -> dict:
+    return {
+        "official": {
+            "gold_runtime": "runtime_gold_v20",
+            "gold_current_alias": "runtime_gold_current_v2",
+            "gold_api_prefix": "/api/gold20",
+            "gold_current_prefix": "/api/current-v2",
+            "fisconforme_runtime": "runtime_gold_v25",
+            "fisconforme_current_alias": "runtime_gold_current_v3",
+            "fisconforme_api_prefix": "/api/gold25/fisconforme-v2",
+            "fisconforme_current_prefix": "/api/current-v3/fisconforme-v2",
+        },
+        "transition": {
+            "gold": [
+                "runtime_gold_v18",
+                "runtime_gold_v19",
+            ],
+            "fisconforme": [
+                "runtime_gold_v21",
+                "runtime_gold_v22",
+                "runtime_gold_v23",
+                "runtime_gold_v24",
+            ],
+        },
+        "legacy": {
+            "gold": [
+                "runtime_gold_v14",
+                "runtime_gold_v15",
+                "runtime_gold_v16",
+                "runtime_gold_v17",
+            ],
+            "current_aliases": [
+                "runtime_gold_current",
+            ],
+            "fisconforme_routes": [
+                "/api/current-v3/fisconforme",
+                "/api/gold25/fisconforme",
+            ],
+        },
+        "decommissioning_guidelines": [
+            "nao abrir novas features nas runtimes marcadas como legacy",
+            "usar as runtimes transition apenas para comparacao controlada e migracao",
+            "concentrar novas evolucoes de gold em gold_v20/current-v2",
+            "concentrar novas evolucoes de fisconforme em gold_v25/current-v3 fisconforme-v2",
+        ],
+    }
