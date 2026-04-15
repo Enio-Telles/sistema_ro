@@ -1,0 +1,17 @@
+NOTIFICAÇÃO FISCONFORME NÃO ATENDIDO
+
+Razão Social: {{RAZAO_SOCIAL}}
+CNPJ: {{CNPJ}}
+IE: {{IE}}
+DSF: {{DSF}}
+Auditor: {{AUDITOR}}
+Cargo/Título: {{CARGO_TITULO}}
+Matrícula: {{MATRICULA}}
+Contato: {{CONTATO}}
+Órgão de origem: {{ORGAO_ORIGEM}}
+
+Pendências:
+{{TABELA}}
+
+Imagens da DSF:
+{{DSF_IMAGENS}}
