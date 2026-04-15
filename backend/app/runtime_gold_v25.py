@@ -17,6 +17,7 @@ from backend.app.mdc_contract_router import router as mdc_contract_router
 from backend.app.mdc_materialize_router import router as mdc_materialize_router
 from backend.app.operational_surface_index_router import router as operational_surface_index_router
 from backend.app.references_diagnostic_router import router as references_router
+from backend.app.runtime_overview_router import router as runtime_overview_router
 from backend.app.runtime_recommendation_v2_router import router as runtime_recommendation_v2_router
 from backend.app.runtime_surface_catalog_router import router as runtime_surface_catalog_router
 from backend.app.status_router import router as status_router
@@ -36,6 +37,7 @@ app = FastAPI(title="sistema_ro_gold_v25", version="3.4.0")
 app.include_router(health.router, prefix="/api/gold25/health", tags=["health"])
 app.include_router(status_router, prefix="/api/gold25/status", tags=["status"])
 app.include_router(runtime_recommendation_v2_router, prefix="/api/gold25/runtime", tags=["runtime_recommendation"])
+app.include_router(runtime_overview_router, prefix="/api/gold25/runtime-overview", tags=["runtime_overview"])
 app.include_router(operational_surface_index_router, prefix="/api/gold25/surfaces", tags=["operational_surface_index"])
 app.include_router(runtime_surface_catalog_router, prefix="/api/gold25/surfaces/catalog", tags=["runtime_surface_catalog"])
 app.include_router(layer_status_router, prefix="/api/gold25/layers", tags=["layers"])
