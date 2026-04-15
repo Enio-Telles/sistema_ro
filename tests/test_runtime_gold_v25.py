@@ -9,7 +9,12 @@ client = TestClient(app)
 def test_runtime_gold_v25_root() -> None:
     response = client.get('/')
     assert response.status_code == 200
-    assert response.json()['name'] == 'sistema_ro_gold_v25'
+    payload = response.json()
+    assert payload['name'] == 'sistema_ro_gold_v25'
+    assert payload['surface_role'] == 'official_runtime'
+    assert payload['runtime_family'] == 'fisconforme'
+    assert payload['api_prefix'] == '/api/gold25/fisconforme-v2'
+    assert payload['canonical_alias'] == 'runtime_gold_current_v5'
 
 
 def test_runtime_gold_v25_health() -> None:

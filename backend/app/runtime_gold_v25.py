@@ -65,5 +65,10 @@ app.include_router(references_router, prefix="/api/gold25/references", tags=["re
 def root() -> dict[str, str]:
     return {
         "name": "sistema_ro_gold_v25",
-        "status": "runtime_with_fisconforme_zip_download_and_docx_output",
+        "surface_role": "official_runtime",
+        "runtime_family": "fisconforme",
+        "api_prefix": "/api/gold25/fisconforme-v2",
+        "canonical_runtime": "runtime_gold_v25",
+        "canonical_alias": "runtime_gold_current_v5",
+        "status": "official_fisconforme_runtime",
     }

@@ -11,7 +11,9 @@ def test_runtime_gold_current_v3_root_transition_status() -> None:
     assert response.status_code == 200
     payload = response.json()
     assert payload['name'] == 'sistema_ro_gold_current_v3'
-    assert payload['status'] == 'transition_runtime_replaced_by_current_v5_for_official_use'
+    assert payload['surface_role'] == 'transition_alias'
+    assert payload['runtime_family'] == 'fisconforme'
+    assert payload['canonical_runtime'] == 'runtime_gold_v25'
     assert payload['replacement_runtime'] == 'runtime_gold_current_v5'
 
 

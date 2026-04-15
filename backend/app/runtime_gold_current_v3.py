@@ -86,7 +86,12 @@ app.include_router(references_router, prefix="/api/current-v3/references", tags=
 def root() -> dict[str, str]:
     return {
         "name": "sistema_ro_gold_current_v3",
-        "status": "transition_runtime_replaced_by_current_v5_for_official_use",
+        "surface_role": "transition_alias",
+        "runtime_family": "fisconforme",
+        "api_prefix": "/api/current-v3/fisconforme-v2",
+        "canonical_runtime": "runtime_gold_v25",
+        "canonical_alias": "runtime_gold_current_v5",
+        "status": "transition_fisconforme_alias",
         "replacement_runtime": "runtime_gold_current_v5",
         "replacement_prefix": "/api/current-v5/fisconforme-v2",
     }

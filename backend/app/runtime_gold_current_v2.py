@@ -51,5 +51,10 @@ app.include_router(references_router, prefix="/api/current-v2/references", tags=
 def root() -> dict[str, str]:
     return {
         "name": "sistema_ro_gold_current_v2",
-        "status": "official_runtime_aliasing_gold_v20",
+        "surface_role": "official_alias",
+        "runtime_family": "gold",
+        "api_prefix": "/api/current-v2",
+        "canonical_runtime": "runtime_gold_v20",
+        "canonical_alias": "runtime_gold_current_v2",
+        "status": "official_gold_alias",
     }

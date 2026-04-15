@@ -51,5 +51,10 @@ app.include_router(references_router, prefix="/api/gold20/references", tags=["re
 def root() -> dict[str, str]:
     return {
         "name": "sistema_ro_gold_v20",
-        "status": "runtime_with_conversion_diagnosis_integrated",
+        "surface_role": "official_runtime",
+        "runtime_family": "gold",
+        "api_prefix": "/api/gold20",
+        "canonical_runtime": "runtime_gold_v20",
+        "canonical_alias": "runtime_gold_current_v2",
+        "status": "official_gold_runtime",
     }
