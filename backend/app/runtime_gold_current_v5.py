@@ -21,6 +21,7 @@ from backend.app.layer_status_router import router as layer_status_router
 from backend.app.manual_map_router import router as manual_map_router
 from backend.app.mdc_contract_router import router as mdc_contract_router
 from backend.app.mdc_materialize_router import router as mdc_materialize_router
+from backend.app.operational_surface_index_router import router as operational_surface_index_router
 from backend.app.references_diagnostic_router import router as references_router
 from backend.app.runtime_recommendation_v2_router import router as runtime_recommendation_v2_router
 from backend.app.services.deprecation_surface_service import match_legacy_route
@@ -57,6 +58,7 @@ app.include_router(status_router, prefix="/api/current-v5/status", tags=["status
 app.include_router(runtime_recommendation_v2_router, prefix="/api/current-v5/runtime", tags=["runtime_recommendation"])
 app.include_router(deprecation_surface_router, prefix="/api/current-v5/deprecations", tags=["deprecations"])
 app.include_router(decommission_plan_router, prefix="/api/current-v5/decommission", tags=["decommission"])
+app.include_router(operational_surface_index_router, prefix="/api/current-v5/surfaces", tags=["operational_surface_index"])
 app.include_router(fisconforme_recommendation_v2_router, prefix="/api/current-v5/fisconforme-v2/recommendation", tags=["fisconforme_recommendation_v2"])
 app.include_router(layer_status_router, prefix="/api/current-v5/layers", tags=["layers"])
 app.include_router(mdc_contract_router, prefix="/api/current-v5/mdc/contracts", tags=["mdc_contracts"])

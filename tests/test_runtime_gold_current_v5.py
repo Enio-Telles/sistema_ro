@@ -16,3 +16,11 @@ def test_runtime_gold_current_v5_health() -> None:
     response = client.get('/api/current-v5/health')
     assert response.status_code == 200
     assert response.json()['status'] == 'ok'
+
+
+def test_runtime_gold_current_v5_operational_surface_index() -> None:
+    response = client.get('/api/current-v5/surfaces')
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload['in_use_now']['fisconforme']['official_runtime'] == 'runtime_gold_v25'
+    assert '/api/current-v5/fisconforme-v2' in payload['in_use_now']['fisconforme']['preferred_prefixes']
