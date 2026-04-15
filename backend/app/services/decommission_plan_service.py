@@ -69,4 +69,9 @@ def get_decommission_plan() -> dict:
             "nao abrir novas features em superfícies marcadas como deprecate_now",
             "preferir esconder aliases antigos em documentacao antes da remocao fisica",
         ],
+        "phases": [
+            "1. Higienização de runtimes v6-v17",
+            "2. Estabilização do Fisconforme v2",
+            "3. Desativação das rotas de transição v21-v24",
+        ],
     }

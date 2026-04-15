@@ -1,0 +1,14 @@
+SELECT
+    bi.dm_localidade.co_municipio,
+    bi.dm_localidade.co_mun_ibge,
+    bi.dm_localidade.no_pais,
+    bi.dm_localidade.co_uf,
+    bi.dm_localidade.no_estado,
+    bi.dm_localidade.no_mesorregiao,
+    bi.dm_localidade.no_microrregiao,
+    bi.dm_localidade.co_delegacia,
+    bi.dm_localidade.no_municipio,
+    bi.dm_localidade.no_municipio_geo,
+    bi.dm_localidade.regiao_lei_414_07
+FROM
+    bi.dm_localidade

@@ -67,6 +67,8 @@ def build_mov_estoque(
         mov = mov.with_columns(
             pl.when(pl.col("saldo_estoque_anual") < 0).then(0.0).otherwise(pl.col("saldo_estoque_anual")).alias("saldo_estoque_anual"),
             pl.col("preco_unit").forward_fill().over("id_agrupado").fill_null(0.0).alias("custo_medio_anual"),
+        )
+        mov = mov.with_columns(
             pl.col("saldo_estoque_anual").alias("saldo_estoque_periodo"),
             pl.col("entr_desac_anual").alias("entr_desac_periodo"),
             pl.col("custo_medio_anual").alias("custo_medio_periodo"),

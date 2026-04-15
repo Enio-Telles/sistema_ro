@@ -9,7 +9,7 @@ def _normalize_st_expr(expr: pl.Expr) -> pl.Expr:
         .then(False)
         .when(expr.cast(pl.Utf8, strict=False).str.to_uppercase().is_in(["S", "SIM", "TRUE", "1"]))
         .then(True)
-        .otherwise(expr.cast(pl.Boolean, strict=False).fill_null(False))
+        .otherwise(pl.lit(False))
     )
 
 
@@ -19,27 +19,29 @@ def _normalize_yes_no_expr(expr: pl.Expr) -> pl.Expr:
         .then(False)
         .when(expr.cast(pl.Utf8, strict=False).str.to_uppercase().is_in(["S", "SIM", "TRUE", "1"]))
         .then(True)
-        .otherwise(expr.cast(pl.Boolean, strict=False).fill_null(False))
+        .otherwise(pl.lit(False))
     )
 
 
-def _aliq_interna_agg_expr(has_legacy_aliq: bool) -> pl.Expr:
-    if has_legacy_aliq:
+def _aliq_interna_agg_expr(has_aliq_interna: bool, has_pc_interna: bool) -> pl.Expr:
+    if has_pc_interna and has_aliq_interna:
         return pl.coalesce([pl.col("it_pc_interna"), pl.col("aliq_interna")]).drop_nulls().last().alias("aliq_interna")
-    return pl.col("it_pc_interna").drop_nulls().last().alias("aliq_interna")
+    if has_pc_interna:
+        return pl.col("it_pc_interna").drop_nulls().last().alias("aliq_interna")
+    if has_aliq_interna:
+        return pl.col("aliq_interna").drop_nulls().last().alias("aliq_interna")
+    return pl.lit(17.0).alias("aliq_interna")
 
 
 def _mva_ajustado_expr(has_aliq_inter: bool) -> pl.Expr:
     mva_orig = pl.col("MVA").fill_null(0.0) / 100.0
-    if has_aliq_inter:
-        aliq_inter = pl.col("aliq_inter").fill_null(0.0) / 100.0
-        aliq_interna = pl.col("aliq_interna").fill_null(0.0) / 100.0
-        return (
-            pl.when((1 - aliq_interna) > 0)
-            .then((((1 + mva_orig) * (1 - aliq_inter)) / (1 - aliq_interna)) - 1)
-            .otherwise(mva_orig)
-        )
-    return mva_orig
+    aliq_inter = pl.col("aliq_inter").fill_null(0.0) / 100.0 if has_aliq_inter else pl.lit(0.12)
+    aliq_interna = pl.col("aliq_interna").fill_null(0.0) / 100.0
+    return (
+        pl.when((1 - aliq_interna) > 0)
+        .then((((1 + mva_orig) * (1 - aliq_inter)) / (1 - aliq_interna)) - 1)
+        .otherwise(mva_orig)
+    )
 
 
 def _round_quantities(df: pl.DataFrame, cols: list[str]) -> pl.DataFrame:
@@ -64,10 +66,11 @@ def build_aba_mensal_v3(mov_df: pl.DataFrame) -> pl.DataFrame:
         pl.col("data_ref").dt.year().alias("ano"),
         pl.col("data_ref").dt.month().alias("mes"),
         _normalize_st_expr(pl.col("it_in_st")).alias("__it_in_st_bool__"),
-        _normalize_yes_no_expr(pl.col("it_in_mva_ajustado")).alias("__it_in_mva_ajustado_bool__"),
+        _normalize_yes_no_expr(pl.col("it_in_mva_ajustado")).alias("__it_in_mva_ajustado_bool__") if "it_in_mva_ajustado" in df.columns else pl.lit(False).alias("__it_in_mva_ajustado_bool__"),
     )
     has_aliq_inter = "aliq_inter" in df.columns
-    has_legacy_aliq = "aliq_interna" in df.columns
+    has_aliq_interna = "aliq_interna" in df.columns
+    has_pc_interna = "it_pc_interna" in df.columns
 
     result = df.group_by(["id_agrupado", "ano", "mes"]).agg(
         pl.col("descr_padrao").drop_nulls().first().alias("descr_padrao"),
@@ -84,9 +87,9 @@ def build_aba_mensal_v3(mov_df: pl.DataFrame) -> pl.DataFrame:
         pl.col("custo_medio_periodo").drop_nulls().last().alias("custo_medio_mes_periodo"),
         pl.col("entr_desac_periodo").sum().alias("entradas_desacob_periodo"),
         pl.col("co_sefin_agr").drop_nulls().first().alias("co_sefin_agr"),
-        _aliq_interna_agg_expr(has_legacy_aliq),
+        _aliq_interna_agg_expr(has_aliq_interna, has_pc_interna),
         pl.col("__it_in_st_bool__").any().alias("__tem_st_mes__"),
-        pl.col("it_pc_mva").drop_nulls().last().alias("MVA"),
+        pl.col("it_pc_mva").drop_nulls().last().alias("MVA") if "it_pc_mva" in df.columns else pl.lit(0.0).alias("MVA"),
         pl.col("__it_in_mva_ajustado_bool__").any().alias("__usa_mva_ajustada__"),
         pl.col("aliq_inter").drop_nulls().last().alias("aliq_inter") if has_aliq_inter else pl.lit(None).alias("aliq_inter"),
         pl.col("divergencia_estoque_declarado").sum().alias("divergencia_estoque_declarado") if "divergencia_estoque_declarado" in df.columns else pl.lit(0.0).alias("divergencia_estoque_declarado"),
@@ -102,6 +105,7 @@ def build_aba_mensal_v3(mov_df: pl.DataFrame) -> pl.DataFrame:
         .then(_mva_ajustado_expr(has_aliq_inter))
         .otherwise(None)
         .alias("MVA_ajustado"),
+    ).with_columns(
         pl.when(pl.col("__tem_st_mes__") & (pl.col("entradas_desacob") > 0))
         .then(
             pl.when(pl.col("pms_mes") > 0)
@@ -118,18 +122,10 @@ def build_aba_mensal_v3(mov_df: pl.DataFrame) -> pl.DataFrame:
         )
         .otherwise(0.0)
         .alias("ICMS_entr_desacob_periodo"),
-        pl.when(pl.col("__tem_st_mes__")).then(pl.lit("S")).otherwise(pl.lit("N")).alias("it_in_st"),
     ).drop(["__tem_st_mes__", "__usa_mva_ajustada__"]).rename({"id_agrupado": "id_agregado"})
 
-    result = _round_quantities(result, ["qtd_entradas", "qtd_saidas", "saldo_mes", "entradas_desacob", "entradas_desacob_periodo", "saldo_mes_periodo", "divergencia_estoque_declarado", "divergencia_estoque_calculado"])
+    result = _round_quantities(result, ["qtd_entradas", "qtd_saidas", "saldo_mes", "entradas_desacob", "entradas_desacob_periodo", "saldo_mes_periodo"])
     result = _round_money(result, ["valor_entradas", "valor_saidas", "valor_estoque", "valor_estoque_periodo", "ICMS_entr_desacob", "ICMS_entr_desacob_periodo", "aliq_interna"])
-    if "MVA_ajustado" in result.columns:
-        result = result.with_columns(pl.col("MVA_ajustado").round(6).alias("MVA_ajustado"))
-    if "MVA" in result.columns:
-        result = result.with_columns(pl.col("MVA").round(4).alias("MVA"))
-    for col in ["pme_mes", "pms_mes", "custo_medio_mes", "custo_medio_mes_periodo"]:
-        if col in result.columns:
-            result = result.with_columns(pl.col(col).round(4).alias(col))
     return result
 
 
@@ -140,13 +136,15 @@ def build_aba_anual_v3(mov_df: pl.DataFrame) -> pl.DataFrame:
     df = mov_df.with_columns(pl.coalesce([pl.col("dt_e_s"), pl.col("dt_doc")]).alias("data_ref"))
     if df.schema.get("data_ref") == pl.Utf8:
         df = df.with_columns(pl.col("data_ref").str.strptime(pl.Date, strict=False))
+    
     df = df.with_columns(
-        pl.col("data_ref").dt.year().alias("ano"),
+        pl.col("data_ref").dt.year().alias("ano"), 
         _normalize_st_expr(pl.col("it_in_st")).alias("__it_in_st_bool__"),
-        _normalize_yes_no_expr(pl.col("it_in_mva_ajustado")).alias("__it_in_mva_ajustado_bool__"),
+        _normalize_yes_no_expr(pl.col("it_in_mva_ajustado")).alias("__it_in_mva_ajustado_bool__") if "it_in_mva_ajustado" in df.columns else pl.lit(False).alias("__it_in_mva_ajustado_bool__"),
     )
-    has_legacy_aliq = "aliq_interna" in df.columns
     has_aliq_inter = "aliq_inter" in df.columns
+    has_aliq_interna = "aliq_interna" in df.columns
+    has_pc_interna = "it_pc_interna" in df.columns
 
     result = df.group_by(["id_agrupado", "ano"]).agg(
         pl.col("descr_padrao").drop_nulls().first().alias("descr_padrao"),
@@ -160,9 +158,9 @@ def build_aba_anual_v3(mov_df: pl.DataFrame) -> pl.DataFrame:
         pl.when(pl.col("tipo_operacao") == "1 - ENTRADA").then(pl.col("preco_unit")).otherwise(None).mean().alias("pme"),
         pl.when(pl.col("tipo_operacao") == "2 - SAIDAS").then(pl.col("preco_unit")).otherwise(None).mean().alias("pms"),
         pl.col("co_sefin_agr").drop_nulls().first().alias("co_sefin_agr"),
-        _aliq_interna_agg_expr(has_legacy_aliq),
+        _aliq_interna_agg_expr(has_aliq_interna, has_pc_interna),
         pl.col("__it_in_st_bool__").any().alias("__tem_st_ano__"),
-        pl.col("it_pc_mva").drop_nulls().last().alias("MVA"),
+        pl.col("it_pc_mva").drop_nulls().last().alias("MVA") if "it_pc_mva" in df.columns else pl.lit(0.0).alias("MVA"),
         pl.col("__it_in_mva_ajustado_bool__").any().alias("__usa_mva_ajustada__"),
         pl.col("aliq_inter").drop_nulls().last().alias("aliq_inter") if has_aliq_inter else pl.lit(None).alias("aliq_inter"),
         pl.col("divergencia_estoque_declarado").sum().alias("divergencia_estoque_declarado") if "divergencia_estoque_declarado" in df.columns else pl.lit(0.0).alias("divergencia_estoque_declarado"),
@@ -177,19 +175,15 @@ def build_aba_anual_v3(mov_df: pl.DataFrame) -> pl.DataFrame:
         .then(_mva_ajustado_expr(has_aliq_inter))
         .otherwise(None)
         .alias("MVA_ajustado"),
-        pl.when(pl.col("pms") > 0).then(pl.col("saidas_desacob") * pl.col("pms")).otherwise(pl.col("saidas_desacob") * pl.col("pme") * 1.30).alias("__base_saida__"),
-        pl.when(pl.col("pms") > 0).then(pl.col("estoque_final_desacob") * pl.col("pms")).otherwise(pl.col("estoque_final_desacob") * pl.col("pme") * 1.30).alias("__base_estoque__"),
+        pl.when(pl.col("pms") > 0).then(pl.col("saidas_desacob") * pl.col("pms")).otherwise(pl.col("saidas_desacob") * pl.col("pme")).alias("__base_saida__"),
+        pl.when(pl.col("pms") > 0).then(pl.col("estoque_final_desacob") * pl.col("pms")).otherwise(pl.col("estoque_final_desacob") * pl.col("pme")).alias("__base_estoque__"),
     ).with_columns(
-        pl.when(pl.col("__tem_st_ano__")).then(0.0).otherwise(pl.col("__base_saida__") * (pl.col("aliq_interna").fill_null(0.0) / 100.0)).alias("ICMS_saidas_desac"),
+        (pl.col("__base_saida__") * (pl.col("aliq_interna").fill_null(0.0) / 100.0)).alias("ICMS_saidas_desac"),
         (pl.col("__base_estoque__") * (pl.col("aliq_interna").fill_null(0.0) / 100.0)).alias("ICMS_estoque_desac"),
     ).drop(["__tem_st_ano__", "__usa_mva_ajustada__", "__base_saida__", "__base_estoque__"]).rename({"id_agrupado": "id_agregado"})
 
     result = _round_quantities(result, ["estoque_inicial", "entradas", "saidas", "estoque_final", "saidas_calculadas", "saldo_final", "entradas_desacob", "saidas_desacob", "estoque_final_desacob", "divergencia_estoque_declarado", "divergencia_estoque_calculado"])
     result = _round_money(result, ["pme", "pms", "aliq_interna", "ICMS_saidas_desac", "ICMS_estoque_desac"])
-    if "MVA_ajustado" in result.columns:
-        result = result.with_columns(pl.col("MVA_ajustado").round(6).alias("MVA_ajustado"))
-    if "MVA" in result.columns:
-        result = result.with_columns(pl.col("MVA").round(4).alias("MVA"))
     return result
 
 
@@ -199,10 +193,11 @@ def build_aba_periodos_v3(mov_df: pl.DataFrame) -> pl.DataFrame:
 
     df = mov_df.with_columns(
         _normalize_st_expr(pl.col("it_in_st")).alias("__it_in_st_bool__"),
-        _normalize_yes_no_expr(pl.col("it_in_mva_ajustado")).alias("__it_in_mva_ajustado_bool__"),
+        _normalize_yes_no_expr(pl.col("it_in_mva_ajustado")).alias("__it_in_mva_ajustado_bool__") if "it_in_mva_ajustado" in mov_df.columns else pl.lit(False).alias("__it_in_mva_ajustado_bool__"),
     )
-    has_legacy_aliq = "aliq_interna" in df.columns
     has_aliq_inter = "aliq_inter" in df.columns
+    has_aliq_interna = "aliq_interna" in df.columns
+    has_pc_interna = "it_pc_interna" in df.columns
 
     result = df.group_by(["id_agrupado", "periodo_inventario"]).agg(
         pl.col("descr_padrao").drop_nulls().first().alias("descr_padrao"),
@@ -216,9 +211,9 @@ def build_aba_periodos_v3(mov_df: pl.DataFrame) -> pl.DataFrame:
         pl.when(pl.col("tipo_operacao") == "1 - ENTRADA").then(pl.col("preco_unit")).otherwise(None).mean().alias("pme"),
         pl.when(pl.col("tipo_operacao") == "2 - SAIDAS").then(pl.col("preco_unit")).otherwise(None).mean().alias("pms"),
         pl.col("co_sefin_agr").drop_nulls().first().alias("co_sefin_agr"),
-        _aliq_interna_agg_expr(has_legacy_aliq),
+        _aliq_interna_agg_expr(has_aliq_interna, has_pc_interna),
         pl.col("__it_in_st_bool__").any().alias("__tem_st_per__"),
-        pl.col("it_pc_mva").drop_nulls().last().alias("MVA"),
+        pl.col("it_pc_mva").drop_nulls().last().alias("MVA") if "it_pc_mva" in df.columns else pl.lit(0.0).alias("MVA"),
         pl.col("__it_in_mva_ajustado_bool__").any().alias("__usa_mva_ajustada__"),
         pl.col("aliq_inter").drop_nulls().last().alias("aliq_inter") if has_aliq_inter else pl.lit(None).alias("aliq_inter"),
         pl.col("divergencia_estoque_declarado").sum().alias("divergencia_estoque_declarado") if "divergencia_estoque_declarado" in df.columns else pl.lit(0.0).alias("divergencia_estoque_declarado"),
@@ -233,18 +228,14 @@ def build_aba_periodos_v3(mov_df: pl.DataFrame) -> pl.DataFrame:
         .then(_mva_ajustado_expr(has_aliq_inter))
         .otherwise(None)
         .alias("MVA_ajustado"),
-        pl.when(pl.col("pms") > 0).then(pl.col("saidas_desacob") * pl.col("pms")).otherwise(pl.col("saidas_desacob") * pl.col("pme") * 1.30).alias("__base_saida__"),
-        pl.when(pl.col("pms") > 0).then(pl.col("estoque_final_desacob") * pl.col("pms")).otherwise(pl.col("estoque_final_desacob") * pl.col("pme") * 1.30).alias("__base_estoque__"),
+        pl.when(pl.col("pms") > 0).then(pl.col("saidas_desacob") * pl.col("pms")).otherwise(pl.col("saidas_desacob") * pl.col("pme")).alias("__base_saida__"),
+        pl.when(pl.col("pms") > 0).then(pl.col("estoque_final_desacob") * pl.col("pms")).otherwise(pl.col("estoque_final_desacob") * pl.col("pme")).alias("__base_estoque__"),
     ).with_columns(
-        pl.when(pl.col("__tem_st_per__")).then(0.0).otherwise(pl.col("__base_saida__") * (pl.col("aliq_interna").fill_null(0.0) / 100.0)).alias("ICMS_saidas_desac"),
+        (pl.col("__base_saida__") * (pl.col("aliq_interna").fill_null(0.0) / 100.0)).alias("ICMS_saidas_desac"),
         (pl.col("__base_estoque__") * (pl.col("aliq_interna").fill_null(0.0) / 100.0)).alias("ICMS_estoque_desac"),
         pl.col("periodo_inventario").alias("cod_per"),
     ).drop(["__tem_st_per__", "__usa_mva_ajustada__", "__base_saida__", "__base_estoque__"]).rename({"id_agrupado": "id_agregado"})
 
     result = _round_quantities(result, ["estoque_inicial", "entradas", "saidas", "estoque_final", "saidas_calculadas", "saldo_final", "entradas_desacob", "saidas_desacob", "estoque_final_desacob", "divergencia_estoque_declarado", "divergencia_estoque_calculado"])
     result = _round_money(result, ["pme", "pms", "aliq_interna", "ICMS_saidas_desac", "ICMS_estoque_desac"])
-    if "MVA_ajustado" in result.columns:
-        result = result.with_columns(pl.col("MVA_ajustado").round(6).alias("MVA_ajustado"))
-    if "MVA" in result.columns:
-        result = result.with_columns(pl.col("MVA").round(4).alias("MVA"))
     return result

@@ -1,0 +1,1 @@
+SELECT * FROM bi.dm_cest_ncm

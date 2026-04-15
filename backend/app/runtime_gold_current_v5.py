@@ -40,7 +40,7 @@ class LegacyDeprecationMiddleware(BaseHTTPMiddleware):
             response.headers["Deprecation"] = "true"
             response.headers["X-Legacy-Route"] = match["legacy_prefix"]
             response.headers["X-Replacement-Route"] = match["replacement_prefix"]
-            response.headers["Warning"] = '299 - "Superfície legada. Use a rota modular recomendada."'
+            response.headers["Warning"] = '299 - "Superficie legada. Use a rota modular recomendada."'
         return response
 
 

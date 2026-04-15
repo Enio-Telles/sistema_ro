@@ -1,0 +1,17 @@
+SELECT
+    bi.dm_cnae.co_cnae,
+    bi.dm_cnae.no_cnae,
+    bi.dm_cnae.co_classe,
+    bi.dm_cnae.no_classe,
+    bi.dm_cnae.co_grupo,
+    bi.dm_cnae.co_divisao,
+    bi.dm_cnae.no_grupo,
+    bi.dm_cnae.no_divisao,
+    bi.dm_cnae.co_categoria,
+    bi.dm_cnae.no_categoria,
+    bi.dm_cnae.co_subsetor,
+    bi.dm_cnae.no_subsetor,
+    bi.dm_cnae.co_setor,
+    bi.dm_cnae.no_setor
+FROM
+    bi.dm_cnae
