@@ -13,6 +13,22 @@ def _normalize_st_expr(expr: pl.Expr) -> pl.Expr:
     )
 
 
+def _normalize_yes_no_expr(expr: pl.Expr) -> pl.Expr:
+    return (
+        pl.when(expr.is_null())
+        .then(False)
+        .when(expr.cast(pl.Utf8, strict=False).str.to_uppercase().is_in(["S", "SIM", "TRUE", "1"]))
+        .then(True)
+        .otherwise(expr.cast(pl.Boolean, strict=False).fill_null(False))
+    )
+
+
+def _aliq_interna_agg_expr(has_legacy_aliq: bool) -> pl.Expr:
+    if has_legacy_aliq:
+        return pl.coalesce([pl.col("it_pc_interna"), pl.col("aliq_interna")]).drop_nulls().last().alias("aliq_interna")
+    return pl.col("it_pc_interna").drop_nulls().last().alias("aliq_interna")
+
+
 def _mva_ajustado_expr(has_aliq_inter: bool) -> pl.Expr:
     mva_orig = pl.col("MVA").fill_null(0.0) / 100.0
     if has_aliq_inter:
@@ -48,8 +64,10 @@ def build_aba_mensal_v3(mov_df: pl.DataFrame) -> pl.DataFrame:
         pl.col("data_ref").dt.year().alias("ano"),
         pl.col("data_ref").dt.month().alias("mes"),
         _normalize_st_expr(pl.col("it_in_st")).alias("__it_in_st_bool__"),
+        _normalize_yes_no_expr(pl.col("it_in_mva_ajustado")).alias("__it_in_mva_ajustado_bool__"),
     )
     has_aliq_inter = "aliq_inter" in df.columns
+    has_legacy_aliq = "aliq_interna" in df.columns
 
     result = df.group_by(["id_agrupado", "ano", "mes"]).agg(
         pl.col("descr_padrao").drop_nulls().first().alias("descr_padrao"),
@@ -66,10 +84,10 @@ def build_aba_mensal_v3(mov_df: pl.DataFrame) -> pl.DataFrame:
         pl.col("custo_medio_periodo").drop_nulls().last().alias("custo_medio_mes_periodo"),
         pl.col("entr_desac_periodo").sum().alias("entradas_desacob_periodo"),
         pl.col("co_sefin_agr").drop_nulls().first().alias("co_sefin_agr"),
-        pl.col("it_pc_interna").drop_nulls().last().alias("aliq_interna"),
+        _aliq_interna_agg_expr(has_legacy_aliq),
         pl.col("__it_in_st_bool__").any().alias("__tem_st_mes__"),
         pl.col("it_pc_mva").drop_nulls().last().alias("MVA"),
-        pl.col("it_in_mva_ajustado").drop_nulls().last().alias("it_in_mva_ajustado"),
+        pl.col("__it_in_mva_ajustado_bool__").any().alias("__usa_mva_ajustada__"),
         pl.col("aliq_inter").drop_nulls().last().alias("aliq_inter") if has_aliq_inter else pl.lit(None).alias("aliq_inter"),
     ).with_columns(
         pl.when(pl.col("qtd_entradas") > 0).then(pl.col("valor_entradas") / pl.col("qtd_entradas")).otherwise(0.0).alias("pme_mes"),
@@ -78,7 +96,7 @@ def build_aba_mensal_v3(mov_df: pl.DataFrame) -> pl.DataFrame:
         (pl.col("saldo_mes_periodo") * pl.col("custo_medio_mes_periodo")).alias("valor_estoque_periodo"),
         pl.when(pl.col("__tem_st_mes__")).then(pl.lit("ST")).otherwise(pl.lit("SEM ST")).alias("ST"),
     ).with_columns(
-        pl.when(pl.col("__tem_st_mes__") & (pl.col("it_in_mva_ajustado").cast(pl.Utf8, strict=False).str.to_uppercase() == "S"))
+        pl.when(pl.col("__tem_st_mes__") & pl.col("__usa_mva_ajustada__"))
         .then(_mva_ajustado_expr(has_aliq_inter))
         .otherwise(None)
         .alias("MVA_ajustado"),
@@ -99,7 +117,7 @@ def build_aba_mensal_v3(mov_df: pl.DataFrame) -> pl.DataFrame:
         .otherwise(0.0)
         .alias("ICMS_entr_desacob_periodo"),
         pl.when(pl.col("__tem_st_mes__")).then(pl.lit("S")).otherwise(pl.lit("N")).alias("it_in_st"),
-    ).drop("__tem_st_mes__").rename({"id_agrupado": "id_agregado"})
+    ).drop(["__tem_st_mes__", "__usa_mva_ajustada__"]).rename({"id_agrupado": "id_agregado"})
 
     result = _round_quantities(result, ["qtd_entradas", "qtd_saidas", "saldo_mes", "entradas_desacob", "entradas_desacob_periodo", "saldo_mes_periodo"])
     result = _round_money(result, ["valor_entradas", "valor_saidas", "valor_estoque", "valor_estoque_periodo", "ICMS_entr_desacob", "ICMS_entr_desacob_periodo", "aliq_interna"])
@@ -123,7 +141,10 @@ def build_aba_anual_v3(mov_df: pl.DataFrame) -> pl.DataFrame:
     df = df.with_columns(
         pl.col("data_ref").dt.year().alias("ano"),
         _normalize_st_expr(pl.col("it_in_st")).alias("__it_in_st_bool__"),
+        _normalize_yes_no_expr(pl.col("it_in_mva_ajustado")).alias("__it_in_mva_ajustado_bool__"),
     )
+    has_legacy_aliq = "aliq_interna" in df.columns
+    has_aliq_inter = "aliq_inter" in df.columns
 
     result = df.group_by(["id_agrupado", "ano"]).agg(
         pl.col("descr_padrao").drop_nulls().first().alias("descr_padrao"),
@@ -137,23 +158,34 @@ def build_aba_anual_v3(mov_df: pl.DataFrame) -> pl.DataFrame:
         pl.when(pl.col("tipo_operacao") == "1 - ENTRADA").then(pl.col("preco_unit")).otherwise(None).mean().alias("pme"),
         pl.when(pl.col("tipo_operacao") == "2 - SAIDAS").then(pl.col("preco_unit")).otherwise(None).mean().alias("pms"),
         pl.col("co_sefin_agr").drop_nulls().first().alias("co_sefin_agr"),
-        pl.col("it_pc_interna").drop_nulls().last().alias("aliq_interna"),
+        _aliq_interna_agg_expr(has_legacy_aliq),
         pl.col("__it_in_st_bool__").any().alias("__tem_st_ano__"),
+        pl.col("it_pc_mva").drop_nulls().last().alias("MVA"),
+        pl.col("__it_in_mva_ajustado_bool__").any().alias("__usa_mva_ajustada__"),
+        pl.col("aliq_inter").drop_nulls().last().alias("aliq_inter") if has_aliq_inter else pl.lit(None).alias("aliq_inter"),
     ).with_columns(
         (pl.col("estoque_inicial") + pl.col("entradas") + pl.col("entradas_desacob") - pl.col("estoque_final")).alias("saidas_calculadas"),
         (pl.col("estoque_final") - pl.col("saldo_final")).clip(lower_bound=0).alias("saidas_desacob"),
         (pl.col("saldo_final") - pl.col("estoque_final")).clip(lower_bound=0).alias("estoque_final_desacob"),
         pl.when(pl.col("__tem_st_ano__")).then(pl.lit("ST")).otherwise(pl.lit("SEM ST")).alias("ST"),
     ).with_columns(
+        pl.when(pl.col("__tem_st_ano__") & pl.col("__usa_mva_ajustada__"))
+        .then(_mva_ajustado_expr(has_aliq_inter))
+        .otherwise(None)
+        .alias("MVA_ajustado"),
         pl.when(pl.col("pms") > 0).then(pl.col("saidas_desacob") * pl.col("pms")).otherwise(pl.col("saidas_desacob") * pl.col("pme") * 1.30).alias("__base_saida__"),
         pl.when(pl.col("pms") > 0).then(pl.col("estoque_final_desacob") * pl.col("pms")).otherwise(pl.col("estoque_final_desacob") * pl.col("pme") * 1.30).alias("__base_estoque__"),
     ).with_columns(
         pl.when(pl.col("__tem_st_ano__")).then(0.0).otherwise(pl.col("__base_saida__") * (pl.col("aliq_interna").fill_null(0.0) / 100.0)).alias("ICMS_saidas_desac"),
         (pl.col("__base_estoque__") * (pl.col("aliq_interna").fill_null(0.0) / 100.0)).alias("ICMS_estoque_desac"),
-    ).drop(["__tem_st_ano__", "__base_saida__", "__base_estoque__"]).rename({"id_agrupado": "id_agregado"})
+    ).drop(["__tem_st_ano__", "__usa_mva_ajustada__", "__base_saida__", "__base_estoque__"]).rename({"id_agrupado": "id_agregado"})
 
     result = _round_quantities(result, ["estoque_inicial", "entradas", "saidas", "estoque_final", "saidas_calculadas", "saldo_final", "entradas_desacob", "saidas_desacob", "estoque_final_desacob"])
     result = _round_money(result, ["pme", "pms", "aliq_interna", "ICMS_saidas_desac", "ICMS_estoque_desac"])
+    if "MVA_ajustado" in result.columns:
+        result = result.with_columns(pl.col("MVA_ajustado").round(6).alias("MVA_ajustado"))
+    if "MVA" in result.columns:
+        result = result.with_columns(pl.col("MVA").round(4).alias("MVA"))
     return result
 
 
@@ -161,7 +193,12 @@ def build_aba_periodos_v3(mov_df: pl.DataFrame) -> pl.DataFrame:
     if mov_df.is_empty() or "periodo_inventario" not in mov_df.columns:
         return pl.DataFrame()
 
-    df = mov_df.with_columns(_normalize_st_expr(pl.col("it_in_st")).alias("__it_in_st_bool__"))
+    df = mov_df.with_columns(
+        _normalize_st_expr(pl.col("it_in_st")).alias("__it_in_st_bool__"),
+        _normalize_yes_no_expr(pl.col("it_in_mva_ajustado")).alias("__it_in_mva_ajustado_bool__"),
+    )
+    has_legacy_aliq = "aliq_interna" in df.columns
+    has_aliq_inter = "aliq_inter" in df.columns
 
     result = df.group_by(["id_agrupado", "periodo_inventario"]).agg(
         pl.col("descr_padrao").drop_nulls().first().alias("descr_padrao"),
@@ -175,22 +212,33 @@ def build_aba_periodos_v3(mov_df: pl.DataFrame) -> pl.DataFrame:
         pl.when(pl.col("tipo_operacao") == "1 - ENTRADA").then(pl.col("preco_unit")).otherwise(None).mean().alias("pme"),
         pl.when(pl.col("tipo_operacao") == "2 - SAIDAS").then(pl.col("preco_unit")).otherwise(None).mean().alias("pms"),
         pl.col("co_sefin_agr").drop_nulls().first().alias("co_sefin_agr"),
-        pl.col("it_pc_interna").drop_nulls().last().alias("aliq_interna"),
+        _aliq_interna_agg_expr(has_legacy_aliq),
         pl.col("__it_in_st_bool__").any().alias("__tem_st_per__"),
+        pl.col("it_pc_mva").drop_nulls().last().alias("MVA"),
+        pl.col("__it_in_mva_ajustado_bool__").any().alias("__usa_mva_ajustada__"),
+        pl.col("aliq_inter").drop_nulls().last().alias("aliq_inter") if has_aliq_inter else pl.lit(None).alias("aliq_inter"),
     ).with_columns(
         (pl.col("estoque_inicial") + pl.col("entradas") + pl.col("entradas_desacob") - pl.col("estoque_final")).alias("saidas_calculadas"),
         (pl.col("estoque_final") - pl.col("saldo_final")).clip(lower_bound=0).alias("saidas_desacob"),
         (pl.col("saldo_final") - pl.col("estoque_final")).clip(lower_bound=0).alias("estoque_final_desacob"),
         pl.when(pl.col("__tem_st_per__")).then(pl.lit("ST")).otherwise(pl.lit("SEM ST")).alias("ST"),
     ).with_columns(
+        pl.when(pl.col("__tem_st_per__") & pl.col("__usa_mva_ajustada__"))
+        .then(_mva_ajustado_expr(has_aliq_inter))
+        .otherwise(None)
+        .alias("MVA_ajustado"),
         pl.when(pl.col("pms") > 0).then(pl.col("saidas_desacob") * pl.col("pms")).otherwise(pl.col("saidas_desacob") * pl.col("pme") * 1.30).alias("__base_saida__"),
         pl.when(pl.col("pms") > 0).then(pl.col("estoque_final_desacob") * pl.col("pms")).otherwise(pl.col("estoque_final_desacob") * pl.col("pme") * 1.30).alias("__base_estoque__"),
     ).with_columns(
         pl.when(pl.col("__tem_st_per__")).then(0.0).otherwise(pl.col("__base_saida__") * (pl.col("aliq_interna").fill_null(0.0) / 100.0)).alias("ICMS_saidas_desac"),
         (pl.col("__base_estoque__") * (pl.col("aliq_interna").fill_null(0.0) / 100.0)).alias("ICMS_estoque_desac"),
         pl.col("periodo_inventario").alias("cod_per"),
-    ).drop(["__tem_st_per__", "__base_saida__", "__base_estoque__"]).rename({"id_agrupado": "id_agregado"})
+    ).drop(["__tem_st_per__", "__usa_mva_ajustada__", "__base_saida__", "__base_estoque__"]).rename({"id_agrupado": "id_agregado"})
 
     result = _round_quantities(result, ["estoque_inicial", "entradas", "saidas", "estoque_final", "saidas_calculadas", "saldo_final", "entradas_desacob", "saidas_desacob", "estoque_final_desacob"])
     result = _round_money(result, ["pme", "pms", "aliq_interna", "ICMS_saidas_desac", "ICMS_estoque_desac"])
+    if "MVA_ajustado" in result.columns:
+        result = result.with_columns(pl.col("MVA_ajustado").round(6).alias("MVA_ajustado"))
+    if "MVA" in result.columns:
+        result = result.with_columns(pl.col("MVA").round(4).alias("MVA"))
     return result
