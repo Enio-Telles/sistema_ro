@@ -28,10 +28,23 @@ def assign_periodo_inventario(mov_df: pl.DataFrame) -> pl.DataFrame:
 def build_estoque_inicial_rows(bloco_h_df: pl.DataFrame) -> pl.DataFrame:
     if bloco_h_df.is_empty():
         return pl.DataFrame()
+
     cols = bloco_h_df.columns
-    df = bloco_h_df.with_columns(
+    df = bloco_h_df
+
+    if "dt_doc" in cols:
+        dt_col = pl.col("dt_doc")
+        dt_dtype = bloco_h_df.schema.get("dt_doc")
+        if dt_dtype == pl.Utf8:
+            dt_col = dt_col.str.strptime(pl.Date, strict=False)
+        elif dt_dtype == pl.Datetime:
+            dt_col = dt_col.cast(pl.Date)
+        dt_e_s_expr = dt_col.dt.offset_by("1d").alias("dt_e_s")
+    else:
+        dt_e_s_expr = pl.lit(None, dtype=pl.Date).alias("dt_e_s")
+
+    return df.with_columns(
         pl.lit("gerado").alias("fonte"),
         pl.lit("0 - ESTOQUE INICIAL").alias("tipo_operacao"),
-        pl.col("dt_doc").alias("dt_e_s") if "dt_doc" in cols else pl.lit(None, dtype=pl.Utf8).alias("dt_e_s"),
+        dt_e_s_expr,
     )
-    return df
