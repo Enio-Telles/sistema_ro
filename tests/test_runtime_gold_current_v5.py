@@ -24,3 +24,11 @@ def test_runtime_gold_current_v5_operational_surface_index() -> None:
     payload = response.json()
     assert payload['in_use_now']['fisconforme']['official_runtime'] == 'runtime_gold_v25'
     assert '/api/current-v5/fisconforme-v2' in payload['in_use_now']['fisconforme']['preferred_prefixes']
+
+
+def test_runtime_gold_current_v5_runtime_surface_catalog() -> None:
+    response = client.get('/api/current-v5/surfaces/catalog')
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload['official']['fisconforme_current_alias'] == 'runtime_gold_current_v5'
+    assert payload['official']['fisconforme_current_prefix'] == '/api/current-v5/fisconforme-v2'
