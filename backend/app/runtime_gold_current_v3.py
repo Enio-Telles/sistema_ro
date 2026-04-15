@@ -1,9 +1,14 @@
-from fastapi import FastAPI, APIRouter
+from __future__ import annotations
+
+from fastapi import FastAPI, APIRouter, Request
+from starlette.middleware.base import BaseHTTPMiddleware
 
 from backend.app.agregacao_materialize_router import router as agregacao_materialize_router
 from backend.app.agregacao_review_router import router as agregacao_review_router
 from backend.app.aggregated_sources_v2_router import router as aggregated_sources_v2_router
 from backend.app.conversao_quality_router import router as conversao_quality_router
+from backend.app.decommission_plan_router import router as decommission_plan_router
+from backend.app.deprecation_surface_router import router as deprecation_surface_router
 from backend.app.estoque_quality_router import router as estoque_quality_router
 from backend.app.fisconforme_dsf_v2_router import router as fisconforme_dsf_v2_router
 from backend.app.fisconforme_notification_v3_router import router as fisconforme_notification_v3_router
@@ -16,11 +21,24 @@ from backend.app.layer_status_router import router as layer_status_router
 from backend.app.manual_map_router import router as manual_map_router
 from backend.app.mdc_contract_router import router as mdc_contract_router
 from backend.app.mdc_materialize_router import router as mdc_materialize_router
+from backend.app.operational_surface_index_router import router as operational_surface_index_router
 from backend.app.references_diagnostic_router import router as references_router
 from backend.app.runtime_recommendation_v2_router import router as runtime_recommendation_v2_router
+from backend.app.runtime_surface_catalog_router import router as runtime_surface_catalog_router
 from backend.app.status_router import router as status_router
 from backend.app.routers_v2 import agregacao, conversao, estoque, fisconforme, health
 from backend.app.services.pipeline_exec_gold_v20 import execute_gold_v20
+
+
+class CurrentV3DeprecationMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        response = await call_next(request)
+        response.headers["Deprecation"] = "true"
+        response.headers["X-Replacement-Runtime"] = "runtime_gold_current_v5"
+        response.headers["X-Replacement-Prefix"] = "/api/current-v5/fisconforme-v2"
+        response.headers["Warning"] = '299 - "Current-v3 em transicao. Prefira current-v5 para operacao oficial."'
+        return response
+
 
 pipeline_router = APIRouter()
 
@@ -31,10 +49,15 @@ def run_pipeline(cnpj: str) -> dict:
 
 
 app = FastAPI(title="sistema_ro_gold_current_v3", version="3.5.0")
+app.add_middleware(CurrentV3DeprecationMiddleware)
 
 app.include_router(health.router, prefix="/api/current-v3/health", tags=["health"])
 app.include_router(status_router, prefix="/api/current-v3/status", tags=["status"])
 app.include_router(runtime_recommendation_v2_router, prefix="/api/current-v3/runtime", tags=["runtime_recommendation"])
+app.include_router(deprecation_surface_router, prefix="/api/current-v3/deprecations", tags=["deprecations"])
+app.include_router(decommission_plan_router, prefix="/api/current-v3/decommission", tags=["decommission"])
+app.include_router(operational_surface_index_router, prefix="/api/current-v3/surfaces", tags=["operational_surface_index"])
+app.include_router(runtime_surface_catalog_router, prefix="/api/current-v3/surfaces/catalog", tags=["runtime_surface_catalog"])
 app.include_router(fisconforme_recommendation_v2_router, prefix="/api/current-v3/fisconforme-v2/recommendation", tags=["fisconforme_recommendation_v2"])
 app.include_router(layer_status_router, prefix="/api/current-v3/layers", tags=["layers"])
 app.include_router(mdc_contract_router, prefix="/api/current-v3/mdc/contracts", tags=["mdc_contracts"])
@@ -63,5 +86,7 @@ app.include_router(references_router, prefix="/api/current-v3/references", tags=
 def root() -> dict[str, str]:
     return {
         "name": "sistema_ro_gold_current_v3",
-        "status": "official_runtime_aliasing_gold_v25_with_fisconforme_v2_recommended",
+        "status": "transition_runtime_replaced_by_current_v5_for_official_use",
+        "replacement_runtime": "runtime_gold_current_v5",
+        "replacement_prefix": "/api/current-v5/fisconforme-v2",
     }
