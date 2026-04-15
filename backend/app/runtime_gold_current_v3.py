@@ -23,6 +23,7 @@ from backend.app.mdc_contract_router import router as mdc_contract_router
 from backend.app.mdc_materialize_router import router as mdc_materialize_router
 from backend.app.operational_surface_index_router import router as operational_surface_index_router
 from backend.app.references_diagnostic_router import router as references_router
+from backend.app.runtime_overview_router import router as runtime_overview_router
 from backend.app.runtime_recommendation_v2_router import router as runtime_recommendation_v2_router
 from backend.app.runtime_surface_catalog_router import router as runtime_surface_catalog_router
 from backend.app.status_router import router as status_router
@@ -54,6 +55,7 @@ app.add_middleware(CurrentV3DeprecationMiddleware)
 app.include_router(health.router, prefix="/api/current-v3/health", tags=["health"])
 app.include_router(status_router, prefix="/api/current-v3/status", tags=["status"])
 app.include_router(runtime_recommendation_v2_router, prefix="/api/current-v3/runtime", tags=["runtime_recommendation"])
+app.include_router(runtime_overview_router, prefix="/api/current-v3/runtime-overview", tags=["runtime_overview"])
 app.include_router(deprecation_surface_router, prefix="/api/current-v3/deprecations", tags=["deprecations"])
 app.include_router(decommission_plan_router, prefix="/api/current-v3/decommission", tags=["decommission"])
 app.include_router(operational_surface_index_router, prefix="/api/current-v3/surfaces", tags=["operational_surface_index"])
