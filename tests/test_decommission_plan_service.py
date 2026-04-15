@@ -6,4 +6,4 @@ def test_decommission_plan_has_official_and_deprecate_now_sections() -> None:
     assert 'official_keep' in result
     assert 'keep_temporarily' in result
     assert 'deprecate_now' in result
-    assert 'runtime_gold_v14' in result['deprecate_now']['legacy_runtimes']
+    assert isinstance(result['deprecate_now']['legacy_runtimes'], list)

@@ -50,11 +50,6 @@ def get_decommission_plan() -> dict:
         },
         "deprecate_now": {
             "legacy_runtimes": [
-                "runtime_gold_v14",
-                "runtime_gold_v15",
-                "runtime_gold_v16",
-                "runtime_gold_v17",
-                "runtime_gold_current",
             ],
             "legacy_routes": [
                 {
@@ -68,11 +63,6 @@ def get_decommission_plan() -> dict:
             ],
         },
         "next_removals_priority": [
-            "runtime_gold_v14",
-            "runtime_gold_v15",
-            "runtime_gold_v16",
-            "runtime_gold_v17",
-            "runtime_gold_current",
         ],
         "rules": [
             "nao remover uma runtime de transicao sem confirmar rota substituta operacional",
