@@ -29,6 +29,7 @@ def get_runtime_surface_catalog() -> dict:
             "current_aliases": [
                 "runtime_gold_current",
                 "runtime_gold_current_v3",
+                "runtime_gold_current_v4",
             ],
             "fisconforme": [
                 "runtime_gold_v21",
@@ -39,6 +40,7 @@ def get_runtime_surface_catalog() -> dict:
             "fisconforme_routes": [
                 "/api/current-v3/fisconforme",
                 "/api/current-v3/fisconforme-v2",
+                "/api/current-v4/fisconforme",
                 "/api/gold25/fisconforme",
             ],
             "repo_status": {
@@ -55,6 +57,7 @@ def get_runtime_surface_catalog() -> dict:
                     "runtime_gold_v24",
                     "runtime_gold_current",
                     "runtime_gold_current_v3",
+                    "runtime_gold_current_v4",
                 ],
                 "still_present_as_transition": [],
             },
@@ -66,7 +69,7 @@ def get_runtime_surface_catalog() -> dict:
         "decommissioning_guidelines": [
             "nao abrir novas features nas runtimes marcadas como legacy",
             "nao manter wrappers de transicao quando a runtime oficial ja cobre integralmente o escopo",
-            "considerar v14 a v19, v21 a v24, runtime_gold_current e runtime_gold_current_v3 como historico ja removido do repositorio",
+            "considerar v14 a v19, v21 a v24, runtime_gold_current, runtime_gold_current_v3 e runtime_gold_current_v4 como historico ja removido do repositorio",
             "concentrar novas evolucoes de gold em gold_v20/current-v2",
             "concentrar novas evolucoes de fisconforme em gold_v25/current-v5 fisconforme-v2",
         ],
