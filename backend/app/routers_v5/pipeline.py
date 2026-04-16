@@ -14,7 +14,7 @@ def run_pipeline(cnpj: str = Path(..., regex="^[0-9]{14}$")) -> dict:
 
 
 @router.get("/{cnpj}/status")
-def pipeline_status(cnpj: str) -> dict:
+def pipeline_status(cnpj: str = Path(..., regex="^[0-9]{14}$")) -> dict:
     inputs = load_gold_inputs_prefer_sefin(cnpj)
     selected_items_source = str(inputs.pop("selected_items_source"))
     using_sefin_items = bool(inputs.pop("using_sefin_items"))
