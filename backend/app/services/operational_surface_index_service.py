@@ -16,11 +16,8 @@ def get_operational_surface_index() -> dict:
             },
         },
         "transition_only": {
-            "runtimes": [
-                "runtime_gold_v23",
-                "runtime_gold_v24",
-            ],
-            "usage_rule": "usar apenas para comparacao controlada, migracao e validacao tecnica",
+            "runtimes": [],
+            "usage_rule": "sem runtimes de transicao remanescentes; usar apenas aliases de migracao explicitamente documentados quando necessario",
         },
         "historical_only": {
             "runtimes": [
@@ -32,6 +29,8 @@ def get_operational_surface_index() -> dict:
                 "runtime_gold_v19",
                 "runtime_gold_v21",
                 "runtime_gold_v22",
+                "runtime_gold_v23",
+                "runtime_gold_v24",
                 "runtime_gold_current",
             ],
             "repo_status": "ja_removidas_do_repositorio",

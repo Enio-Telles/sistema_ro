@@ -34,6 +34,8 @@ Essa runtime expõe ao mesmo tempo:
 
 - `runtime_gold_v21`
 - `runtime_gold_v22`
+- `runtime_gold_v23`
+- `runtime_gold_v24`
 
 ### Substituição recomendada
 
@@ -56,17 +58,14 @@ Essa runtime expõe ao mesmo tempo:
 
 ## 3. Superfícies de transição
 
-Manter temporariamente apenas para comparações controladas:
-
-- `runtime_gold_v23`
-- `runtime_gold_v24`
+Não restam runtimes de transição em arquivo. Manter apenas aliases/documentação de migração quando estritamente necessário.
 
 ## 4. Ordem recomendada de desligamento
 
-1. manter `v14` a `v19`, `v21` a `v22` e `runtime_gold_current` apenas como histórico técnico;
-2. usar cabeçalhos de depreciação para rotas legadas e de transição ainda presentes;
-3. revisar se ainda há consumidores reais das runtimes de transição;
-4. revisar as runtimes `v23` a `v24` quando o Fisconforme v2 estiver estabilizado e sem consumidores legados.
+1. manter `v14` a `v19`, `v21` a `v24` e `runtime_gold_current` apenas como histórico técnico;
+2. usar apenas as superfícies oficiais/aliases operacionais atuais;
+3. revisar periodicamente se `runtime_gold_current_v3` ainda precisa existir como alias de migração;
+4. não reabrir wrappers de transição quando a runtime oficial já cobre integralmente o escopo.
 
 ## 5. Critério mínimo antes de remoção física
 

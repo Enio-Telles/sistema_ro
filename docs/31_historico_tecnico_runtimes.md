@@ -1,35 +1,31 @@
-# Histórico Técnico de Runtimes
+# Historico Tecnico de Runtimes
 
 ## Objetivo
 
-Manter rastreabilidade técnica das runtimes anteriores sem poluir a documentação operacional.
+Manter rastreabilidade tecnica das runtimes anteriores sem poluir a documentacao operacional.
 
-## Histórico — Gold
+## Historico — Gold
 
-- `runtime_gold_v14`: mdc_base inicial *(removido fisicamente do repositório)*
-- `runtime_gold_v15`: agregação a partir do mdc *(removido fisicamente do repositório)*
-- `runtime_gold_v16`: fontes_agr inicial *(removido fisicamente do repositório)*
-- `runtime_gold_v17`: gold preferindo fontes_agr *(removido fisicamente do repositório)*
-- `runtime_gold_v18`: fontes_agr validadas por schema *(removido fisicamente do repositório)*
-- `runtime_gold_v19`: checagem pós-gold consolidada *(removido fisicamente do repositório)*
-- `runtime_gold_v20`: diagnóstico de conversão integrado
+- `runtime_gold_v14`: mdc_base inicial *(removido fisicamente do repositorio)*
+- `runtime_gold_v15`: agregacao a partir do mdc *(removido fisicamente do repositorio)*
+- `runtime_gold_v16`: fontes_agr inicial *(removido fisicamente do repositorio)*
+- `runtime_gold_v17`: gold preferindo fontes_agr *(removido fisicamente do repositorio)*
+- `runtime_gold_v18`: fontes_agr validadas por schema *(removido fisicamente do repositorio)*
+- `runtime_gold_v19`: checagem pos-gold consolidada *(removido fisicamente do repositorio)*
+- `runtime_gold_v20`: diagnostico de conversao integrado
 
-## Histórico — Fisconforme modular
+## Historico — Fisconforme modular
 
-- `runtime_gold_v21`: cache e lote modulares *(removido fisicamente do repositório)*
-- `runtime_gold_v22`: refresh Oracle/SQL runner *(removido fisicamente do repositório)*
-- `runtime_gold_v23`: acervo DSF e notificação modular inicial
-- `runtime_gold_v24`: template externo, imagens e ZIP em lote
+- `runtime_gold_v21`: cache e lote modulares *(removido fisicamente do repositorio)*
+- `runtime_gold_v22`: refresh Oracle/SQL runner *(removido fisicamente do repositorio)*
+- `runtime_gold_v23`: acervo DSF e notificacao modular inicial *(removido fisicamente do repositorio)*
+- `runtime_gold_v24`: template externo, imagens e ZIP em lote *(removido fisicamente do repositorio)*
 - `runtime_gold_v25`: ZIP download e DOCX modular
 
 ## Aliases
 
-- `runtime_gold_current`: alias antigo da trilha consolidada em `gold_v19` *(removido fisicamente do repositório)*
+- `runtime_gold_current`: alias antigo da trilha consolidada em `gold_v19` *(removido fisicamente do repositorio)*
 - `runtime_gold_current_v2`: alias operacional de `gold_v20`
-- `runtime_gold_current_v3`: alias operacional de `gold_v25` com recomendação Fisconforme v2
-- `runtime_gold_current_v4`: alias com cabeçalhos de depreciação
-- `runtime_gold_current_v5`: alias com depreciações e plano de descomissionamento
-
-## Uso deste documento
-
-Este documento existe apenas para histórico técnico e comparação. Não deve ser usado como guia operacional primário.
+- `runtime_gold_current_v3`: alias operacional de `gold_v25` com recomendacao Fisconforme v2
+- `runtime_gold_current_v4`: alias com cabecalhos de depreciacao
+- `runtime_gold_current_v5`: alias com depreciacoes e plano de descomissionamento
