@@ -13,7 +13,7 @@ Usar preferencialmente:
 
 Essa runtime expõe ao mesmo tempo:
 
-- recomendacão oficial;
+- recomendação oficial;
 - catálogo de superfícies;
 - mapa de deprecações;
 - plano de descomissionamento.
