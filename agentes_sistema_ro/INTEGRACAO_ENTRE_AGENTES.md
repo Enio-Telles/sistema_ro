@@ -33,3 +33,13 @@ Quando dois agentes divergirem:
 3. depois estabilidade de contrato;
 4. depois custo Oracle;
 5. depois ergonomia de uso.
+
+## Regra-mãe de integração
+Todos os agentes se subordinam primeiro a `AGENT_EXECUCAO_PROJETO.md`.
+
+Isso significa que a integração entre agentes deve sempre respeitar:
+- inventário prévio antes de nova SQL;
+- reaproveitamento de Parquet e módulos existentes;
+- separação entre extração, transformação, API e frontend;
+- schema estável e lineage completo;
+- materialização em camadas e consumo de contratos canônicos.

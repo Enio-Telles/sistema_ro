@@ -23,3 +23,15 @@ Este pacote organiza agentes especializados por dimensão do plano do projeto `s
 1. Comece pelo orquestrador.
 2. Ele delega para o agente especialista por dimensão.
 3. Todos os agentes obedecem às regras compartilhadas do `AGENT_BASE_SHARED.md`.
+
+## Base normativa principal
+O arquivo `AGENT_EXECUCAO_PROJETO.md` é a base canônica deste pacote.
+
+Todos os agentes especialistas e o orquestrador devem obedecer integralmente:
+- as regras Oracle x Polars;
+- as políticas `cache-first` e `bronze-first`;
+- o checklist obrigatório antes de criar nova SQL;
+- os metadados e requisitos de lineage;
+- o formato de resposta A–E.
+
+Em caso de conflito entre um agente especialista e a base normativa, prevalece `AGENT_EXECUCAO_PROJETO.md`.
