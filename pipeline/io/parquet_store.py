@@ -28,3 +28,14 @@ def load_parquet(dataset: DatasetRef) -> pl.DataFrame | None:
 
 def parquet_exists(dataset: DatasetRef) -> bool:
     return dataset.path.exists()
+
+
+def load_parquet_metadata(dataset: DatasetRef) -> dict | None:
+    """Load metadata saved alongside a parquet file ('.meta.json').
+
+    Returns the parsed dict if metadata file exists, otherwise None.
+    """
+    meta_path = dataset.path.with_suffix(".meta.json")
+    if not meta_path.exists():
+        return None
+    return json.loads(meta_path.read_text(encoding="utf-8"))
