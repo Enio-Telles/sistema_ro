@@ -21,13 +21,13 @@ def list_agents() -> dict:
                 continue
             title = None
             try:
-                text = p.read_text(encoding="utf-8")
-                for line in text.splitlines():
-                    line = line.strip()
-                    if line.startswith("#"):
-                        title = line.lstrip("#").strip()
-                        break
-            except Exception:
+                with p.open(encoding="utf-8") as f:
+                    for line in f:
+                        line = line.strip()
+                        if line.startswith("#"):
+                            title = line.lstrip("#").strip()
+                            break
+            except (OSError, UnicodeDecodeError):
                 title = None
             files.append({"name": p.name, "path": p.name, "title": title})
 
