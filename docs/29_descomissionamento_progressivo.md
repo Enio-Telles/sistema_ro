@@ -13,9 +13,9 @@ Usar preferencialmente:
 
 Essa runtime expõe ao mesmo tempo:
 
-- recomendação oficial;
+- recomendacão oficial;
 - catálogo de superfícies;
-- mapa de depreciações;
+- mapa de deprecações;
 - plano de descomissionamento.
 
 ## 1. Já retiradas do repositório e do uso cotidiano
@@ -30,16 +30,27 @@ Essa runtime expõe ao mesmo tempo:
 - `runtime_gold_v19`
 - `runtime_gold_current`
 
+### Fisconforme de transição ja removido fisicamente
+
+- `runtime_gold_v21`
+- `runtime_gold_v22`
+- `runtime_gold_v23`
+- `runtime_gold_v24`
+- `runtime_gold_current_v3`
+
 ### Substituição recomendada
 
 - `runtime_gold_v20`
 - `runtime_gold_current_v2`
 - `runtime_gold_current_v5`
+- `runtime_gold_v25`
 
 ## 2. Rotas legadas de Fisconforme
 
 ### Evitar uso novo
 
+- `/api/current-v3/fisconforme`
+- `/api/current-v3/fisconforme-v2`
 - `/api/current-v5/fisconforme`
 - `/api/gold25/fisconforme`
 
@@ -50,23 +61,17 @@ Essa runtime expõe ao mesmo tempo:
 
 ## 3. Superfícies de transição
 
-Manter temporariamente apenas para comparações controladas:
-
-- `runtime_gold_v21`
-- `runtime_gold_v22`
-- `runtime_gold_v23`
-- `runtime_gold_v24`
+Nao restam runtimes ou aliases de transição em arquivo. Manter apenas documentacao de migracao quando estritamente necessário.
 
 ## 4. Ordem recomendada de desligamento
 
-1. manter `v14` a `v19` e `runtime_gold_current` apenas como histórico técnico;
-2. usar cabeçalhos de depreciação para rotas legadas e de transição ainda presentes;
-3. revisar se ainda há consumidores reais das runtimes de transição;
-4. revisar as runtimes `v21` a `v24` quando o Fisconforme v2 estiver estabilizado e sem consumidores legados.
+.  manter `v14` a `v19`, `v21` a `v24`, `runtime_gold_current` e `runtime_gold_current_v3` apenas como histórico técnico;
+2. usar apenas as superfícies oficiais/aliases operacionais atuais;
+3. nao reabrir wrappers ou aliases de transição quando a runtime oficial já cobre integralmente o escopo.
 
 ## 5. Critério mínimo antes de remoção física
 
 - existir rota substituta operacional;
-- existir documentação de substituição;
+- existir documentacao de substituição;
 - existir runtime oficial/alias recomendado cobrindo o caso de uso;
 - não abrir novas features na superfície candidata à retirada.
