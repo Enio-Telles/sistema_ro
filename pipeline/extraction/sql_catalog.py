@@ -9,9 +9,9 @@ CORE_SQL_FILES = {
     "dados_cadastrais": "dados_cadastrais.sql",
     "efd_reg_0200": "efd_reg_0200.sql",
     "efd_c170": "efd_c170.sql",
-    "efd_bloco_h": "efd_bloco_h_template.sql",
-    "nfe_itens": "nfe_itens_template.sql",
-    "fisconforme_cadastral": "fisconforme_cadastral_template.sql",
+    "efd_bloco_h": "efd_bloco_h.sql",
+    "nfe_itens": "nfe_itens.sql",
+    "fisconforme_cadastral": "fisconforme_cadastral.sql",
     "fisconforme_malhas": "fisconforme_malhas.sql",
 }
 
