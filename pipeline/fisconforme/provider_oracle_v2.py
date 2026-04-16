@@ -44,8 +44,8 @@ class FisconformeOracleProviderV2:
             template_name="fisconforme_malhas",
             values={
                 "cnpj": cnpj,
-                "data_inicio": _periodo_para_oracle(self.data_inicio, "190001"),
-                "data_fim": _periodo_para_oracle(self.data_fim, "209912"),
+                "periodo_inicio": _periodo_para_oracle(self.data_inicio, "190001"),
+                "periodo_fim": _periodo_para_oracle(self.data_fim, "209912"),
             },
         )
         return pl.DataFrame(cadastral_rows) if cadastral_rows else pl.DataFrame(), pl.DataFrame(malhas_rows) if malhas_rows else pl.DataFrame()
