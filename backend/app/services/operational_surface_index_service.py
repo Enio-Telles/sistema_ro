@@ -33,6 +33,7 @@ def get_operational_surface_index() -> dict:
                 "runtime_gold_v24",
                 "runtime_gold_current",
                 "runtime_gold_current_v3",
+                "runtime_gold_current_v4",
             ],
             "repo_status": "ja_removidas_do_repositorio",
             "usage_rule": "manter apenas como referencia historica em documentacao tecnica e nao usar como referencia principal",
