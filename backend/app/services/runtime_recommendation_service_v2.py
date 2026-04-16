@@ -26,8 +26,8 @@ def get_runtime_recommendation_v2() -> dict:
             "runtime_gold_v20": "runtime_oficial_v2",
         },
         "next_focus": [
-            "reduzir paralelismo entre trilhas antigas e nova",
+            "executar validacao ponta a ponta do gold_v20 com sql core canonico",
             "ampliar testes de regressao da conversao integrada",
-            "revisar descomissionamento das runtimes fisconforme de transicao restantes",
+            "manter a governanca focada apenas nas superficies oficiais atuais",
         ],
     }
