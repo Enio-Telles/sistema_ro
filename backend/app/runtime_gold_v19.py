@@ -11,6 +11,7 @@ from backend.app.manual_map_router import router as manual_map_router
 from backend.app.mdc_contract_router import router as mdc_contract_router
 from backend.app.mdc_materialize_router import router as mdc_materialize_router
 from backend.app.references_diagnostic_router import router as references_router
+from backend.app.services.transition_runtime_service import TransitionRuntimeMiddleware
 from backend.app.status_router import router as status_router
 from backend.app.routers_v2 import agregacao, conversao, estoque, fisconforme, health
 from backend.app.services.pipeline_exec_gold_v19 import execute_gold_v19
@@ -24,6 +25,11 @@ def run_pipeline(cnpj: str) -> dict:
 
 
 app = FastAPI(title="sistema_ro_gold_v19", version="2.6.0")
+app.add_middleware(
+    TransitionRuntimeMiddleware,
+    replacement_runtime="runtime_gold_v20",
+    replacement_prefix="/api/gold20",
+)
 
 app.include_router(health.router, prefix="/api/gold19/health", tags=["health"])
 app.include_router(status_router, prefix="/api/gold19/status", tags=["status"])
@@ -49,5 +55,7 @@ app.include_router(references_router, prefix="/api/gold19/references", tags=["re
 def root() -> dict[str, str]:
     return {
         "name": "sistema_ro_gold_v19",
-        "status": "recommended_runtime_with_post_run_gold_consistency",
+        "status": "transition_runtime_replaced_by_gold_v20_for_official_use",
+        "replacement_runtime": "runtime_gold_v20",
+        "replacement_prefix": "/api/gold20",
     }
