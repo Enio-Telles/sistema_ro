@@ -16,8 +16,8 @@ Manter rastreabilidade técnica das runtimes anteriores sem poluir a documentaç
 
 ## Histórico — Fisconforme modular
 
-- `runtime_gold_v21`: cache e lote modulares
-- `runtime_gold_v22`: refresh Oracle/SQL runner
+- `runtime_gold_v21`: cache e lote modulares *(removido fisicamente do repositório)*
+- `runtime_gold_v22`: refresh Oracle/SQL runner *(removido fisicamente do repositório)*
 - `runtime_gold_v23`: acervo DSF e notificação modular inicial
 - `runtime_gold_v24`: template externo, imagens e ZIP em lote
 - `runtime_gold_v25`: ZIP download e DOCX modular

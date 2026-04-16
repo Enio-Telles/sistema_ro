@@ -30,11 +30,17 @@ Essa runtime expõe ao mesmo tempo:
 - `runtime_gold_v19`
 - `runtime_gold_current`
 
+### Fisconforme de transição já removido fisicamente
+
+- `runtime_gold_v21`
+- `runtime_gold_v22`
+
 ### Substituição recomendada
 
 - `runtime_gold_v20`
 - `runtime_gold_current_v2`
 - `runtime_gold_current_v5`
+- `runtime_gold_v25`
 
 ## 2. Rotas legadas de Fisconforme
 
@@ -52,17 +58,15 @@ Essa runtime expõe ao mesmo tempo:
 
 Manter temporariamente apenas para comparações controladas:
 
-- `runtime_gold_v21`
-- `runtime_gold_v22`
 - `runtime_gold_v23`
 - `runtime_gold_v24`
 
 ## 4. Ordem recomendada de desligamento
 
-1. manter `v14` a `v19` e `runtime_gold_current` apenas como histórico técnico;
+1. manter `v14` a `v19`, `v21` a `v22` e `runtime_gold_current` apenas como histórico técnico;
 2. usar cabeçalhos de depreciação para rotas legadas e de transição ainda presentes;
 3. revisar se ainda há consumidores reais das runtimes de transição;
-4. revisar as runtimes `v21` a `v24` quando o Fisconforme v2 estiver estabilizado e sem consumidores legados.
+4. revisar as runtimes `v23` a `v24` quando o Fisconforme v2 estiver estabilizado e sem consumidores legados.
 
 ## 5. Critério mínimo antes de remoção física
 
