@@ -36,6 +36,7 @@ Essa runtime expõe ao mesmo tempo:
 - `runtime_gold_v22`
 - `runtime_gold_v23`
 - `runtime_gold_v24`
+- `runtime_gold_current_v3`
 
 ### Substituição recomendada
 
@@ -48,6 +49,8 @@ Essa runtime expõe ao mesmo tempo:
 
 ### Evitar uso novo
 
+- `/api/current-v3/fisconforme`
+- `/api/current-v3/fisconforme-v2`
 - `/api/current-v5/fisconforme`
 - `/api/gold25/fisconforme`
 
@@ -58,14 +61,13 @@ Essa runtime expõe ao mesmo tempo:
 
 ## 3. Superfícies de transição
 
-Não restam runtimes de transição em arquivo. Manter apenas aliases/documentação de migração quando estritamente necessário.
+Não restam runtimes ou aliases de transição em arquivo. Manter apenas documentação de migração quando estritamente necessário.
 
 ## 4. Ordem recomendada de desligamento
 
-1. manter `v14` a `v19`, `v21` a `v24` e `runtime_gold_current` apenas como histórico técnico;
+1. manter `v14` a `v19`, `v21` a `v24`, `runtime_gold_current` e `runtime_gold_current_v3` apenas como histórico técnico;
 2. usar apenas as superfícies oficiais/aliases operacionais atuais;
-3. revisar periodicamente se `runtime_gold_current_v3` ainda precisa existir como alias de migração;
-4. não reabrir wrappers de transição quando a runtime oficial já cobre integralmente o escopo.
+3. não reabrir wrappers ou aliases de transição quando a runtime oficial já cobre integralmente o escopo.
 
 ## 5. Critério mínimo antes de remoção física
 

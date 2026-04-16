@@ -26,6 +26,6 @@ Manter rastreabilidade tecnica das runtimes anteriores sem poluir a documentacao
 
 - `runtime_gold_current`: alias antigo da trilha consolidada em `gold_v19` *(removido fisicamente do repositorio)*
 - `runtime_gold_current_v2`: alias operacional de `gold_v20`
-- `runtime_gold_current_v3`: alias operacional de `gold_v25` com recomendacao Fisconforme v2
+- `runtime_gold_current_v3`: alias de transicao do Fisconforme v2 *(removido fisicamente do repositorio)*
 - `runtime_gold_current_v4`: alias com cabecalhos de depreciacao
-- `runtime_gold_current_v5`: alias com depreciacoes e plano de descomissionamento
+- `runtime_gold_current_v5`: alias operacional de `gold_v25` com governanca consolidada
