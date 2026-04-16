@@ -6,12 +6,12 @@ Manter rastreabilidade técnica das runtimes anteriores sem poluir a documentaç
 
 ## Histórico — Gold
 
-- `runtime_gold_v14`: mdc_base inicial
-- `runtime_gold_v15`: agregação a partir do mdc
-- `runtime_gold_v16`: fontes_agr inicial
-- `runtime_gold_v17`: gold preferindo fontes_agr
-- `runtime_gold_v18`: fontes_agr validadas por schema
-- `runtime_gold_v19`: checagem pós-gold consolidada
+- `runtime_gold_v14`: mdc_base inicial *(removido fisicamente do repositório)*
+- `runtime_gold_v15`: agregação a partir do mdc *(removido fisicamente do repositório)*
+- `runtime_gold_v16`: fontes_agr inicial *(removido fisicamente do repositório)*
+- `runtime_gold_v17`: gold preferindo fontes_agr *(removido fisicamente do repositório)*
+- `runtime_gold_v18`: fontes_agr validadas por schema *(removido fisicamente do repositório)*
+- `runtime_gold_v19`: checagem pós-gold consolidada *(removido fisicamente do repositório)*
 - `runtime_gold_v20`: diagnóstico de conversão integrado
 
 ## Histórico — Fisconforme modular
@@ -24,7 +24,7 @@ Manter rastreabilidade técnica das runtimes anteriores sem poluir a documentaç
 
 ## Aliases
 
-- `runtime_gold_current`: alias antigo da trilha consolidada em `gold_v19`
+- `runtime_gold_current`: alias antigo da trilha consolidada em `gold_v19` *(removido fisicamente do repositório)*
 - `runtime_gold_current_v2`: alias operacional de `gold_v20`
 - `runtime_gold_current_v3`: alias operacional de `gold_v25` com recomendação Fisconforme v2
 - `runtime_gold_current_v4`: alias com cabeçalhos de depreciação

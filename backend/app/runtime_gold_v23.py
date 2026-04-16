@@ -15,6 +15,7 @@ from backend.app.mdc_contract_router import router as mdc_contract_router
 from backend.app.mdc_materialize_router import router as mdc_materialize_router
 from backend.app.references_diagnostic_router import router as references_router
 from backend.app.runtime_recommendation_v2_router import router as runtime_recommendation_v2_router
+from backend.app.services.transition_runtime_service import TransitionRuntimeMiddleware
 from backend.app.status_router import router as status_router
 from backend.app.routers_v2 import agregacao, conversao, estoque, fisconforme, health
 from backend.app.services.pipeline_exec_gold_v20 import execute_gold_v20
@@ -28,6 +29,11 @@ def run_pipeline(cnpj: str) -> dict:
 
 
 app = FastAPI(title="sistema_ro_gold_v23", version="3.2.0")
+app.add_middleware(
+    TransitionRuntimeMiddleware,
+    replacement_runtime="runtime_gold_v25",
+    replacement_prefix="/api/gold25/fisconforme-v2",
+)
 
 app.include_router(health.router, prefix="/api/gold23/health", tags=["health"])
 app.include_router(status_router, prefix="/api/gold23/status", tags=["status"])
@@ -57,5 +63,7 @@ app.include_router(references_router, prefix="/api/gold23/references", tags=["re
 def root() -> dict[str, str]:
     return {
         "name": "sistema_ro_gold_v23",
-        "status": "runtime_with_modular_fisconforme_dsf_and_notification_services",
+        "status": "transition_runtime_replaced_by_gold_v25_for_fisconforme_use",
+        "replacement_runtime": "runtime_gold_v25",
+        "replacement_prefix": "/api/gold25/fisconforme-v2",
     }
