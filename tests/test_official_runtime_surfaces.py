@@ -38,7 +38,7 @@ def test_official_fisconforme_runtime_and_alias_surfaces() -> None:
     assert current_root.status_code == 200
     assert current_root.json()['name'] == 'sistema_ro_gold_current_v5'
 
-    surface_catalog = current_client.get('/api/current-v5/surfaces/catalog').son()
+    surface_catalog = current_client.get('/api/current-v5/surfaces/catalog').json()
     assert surface_catalog['official']['gold_current_alias'] == 'runtime_gold_current_v2'
     assert surface_catalog['official']['fisconforme_current_alias'] == 'runtime_gold_current_v5'
 
