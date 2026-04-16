@@ -1,10 +1,8 @@
 from __future__ import annotations
 
 LEGACY_ROUTE_REPLACEMENTS = {
-    "/api/current-v4/fisconforme": "/api/current-v4/fisconforme-v2",
     "/api/current-v5/fisconforme": "/api/current-v5/fisconforme-v2",
     "/api/gold25/fisconforme": "/api/gold25/fisconforme-v2",
-    "/api/current-v4/runtime-gold-current": "/api/current-v4/runtime",
 }
 
 
