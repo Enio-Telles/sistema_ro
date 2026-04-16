@@ -1,0 +1,9 @@
+catalog_name,catalog_filename,core_filename,classificacao,oracle_ready,has_placeholder,next_action,notes
+lookup_contribuinte,lookup_contribuinte.sql,lookup_contribuinte.sql,placeholder_core,false,true,fill_from_reference_or_audit_pyside,placeholder sem query promovida
+dados_cadastrais,dados_cadastrais.sql,dados_cadastrais.sql,placeholder_core,false,true,fill_from_reference_or_audit_pyside,placeholder sem query promovida
+efd_reg_0200,efd_reg_0200.sql,efd_reg_0200.sql,canonical_real,true,false,keep_and_validate,query implementada no core
+efd_c170,efd_c170.sql,efd_c170.sql,canonical_real,true,false,keep_and_validate,query implementada no core
+efd_bloco_h,efd_bloco_h_template.sql,efd_bloco_h.sql,canonical_real_catalog_misaligned,true,false,promote_catalog_to_sql,core real mas catalogo ainda aponta template
+nfe_itens,nfe_itens_template.sql,nfe_itens.sql,core_placeholder_with_curated_template,false,true,promote_template_to_sql_and_catalog,template curado existe mas core ainda placeholder
+fisconforme_cadastral,fisconforme_cadastral_template.sql,fisconforme_cadastral.sql,core_placeholder_with_curated_template,false,true,promote_template_to_sql_and_catalog,template curado existe mas core ainda placeholder
+fisconforme_malhas,fisconforme_malhas.sql,fisconforme_malhas.sql,placeholder_core,false,true,fill_from_reference_or_audit_pyside,placeholder sem query promovida
