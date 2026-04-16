@@ -32,7 +32,7 @@ def get_fisconforme_recommendation_v2() -> dict:
             "/api/gold25/fisconforme-v2/notificacoes-lote-v3/download",
             "/api/gold25/fisconforme-v2/notificacao-docx-v2",
             "/api/gold25/fisconforme-v2/notificacao-docx-v2/download",
-            "/api/current-v5/fisconforme-v2/{cnzpj}",
+            "/api/current-v5/fisconforme-v2/{cnpj}",
             "/api/current-v5/fisconforme-v2/lote",
         ],
         "why": [
