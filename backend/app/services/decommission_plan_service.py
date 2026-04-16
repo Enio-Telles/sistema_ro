@@ -10,8 +10,7 @@ def get_decommission_plan() -> dict:
             ],
             "fisconforme": [
                 "runtime_gold_v25",
-                "runtime_gold_current_v3",
-                "runtime_gold_current_v4",
+                "runtime_gold_current_v5",
             ],
         },
         "keep_temporarily": {
@@ -44,7 +43,17 @@ def get_decommission_plan() -> dict:
                 {
                     "name": "runtime_gold_v24",
                     "reason": "marco inicial de template externo e ZIP em lote",
-                    "target_action": "retirar apos uso corrente migrar para gold_v25/current-v3",
+                    "target_action": "retirar apos uso corrente migrar para gold_v25/current-v5",
+                },
+                {
+                    "name": "runtime_gold_current_v3",
+                    "reason": "alias de transicao anterior ao current-v5",
+                    "target_action": "retirar apos migracao completa dos consumidores para current-v5",
+                },
+                {
+                    "name": "runtime_gold_current_v4",
+                    "reason": "alias intermediario com headers de deprecacao",
+                    "target_action": "retirar apos migracao completa dos consumidores para current-v5",
                 },
             ],
         },

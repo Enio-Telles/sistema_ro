@@ -31,6 +31,7 @@ Superfícies oficiais atuais:
 
 - gold: `backend.app.runtime_gold_current_v2:app` com prefixo `/api/current-v2`
 - fisconforme modular: `backend.app.runtime_gold_current_v5:app` com prefixo `/api/current-v5/fisconforme-v2`
+- entrypoint principal de descoberta/orientação: `backend.app.runtime_main:app` com prefixo `/api/main`
 
 Status resumido por CNPJ:
 
@@ -55,6 +56,15 @@ Esse endpoint informa:
 - origem selecionada dos itens;
 - contexto SEFIN e referências ausentes;
 - resumo operacional da qualidade de conversão antes da execução.
+
+Superfície principal de orientação:
+
+- `GET /api/main/runtime-overview`
+- `GET /api/main/surfaces`
+- `GET /api/main/surfaces/catalog`
+- `GET /api/main/decommission`
+
+Essa superfície consolida o apontamento para `current-v2` e `current-v5` sem substituir os aliases operacionais.
 
 As próximas evoluções seguem concentradas em:
 

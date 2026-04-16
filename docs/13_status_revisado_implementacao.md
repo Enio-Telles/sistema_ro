@@ -43,7 +43,7 @@ Depois da revisão do plano e do código atual, a conclusão é:
 ### Bloco C — consolidar runtimes da API
 **Status revisado:** pendente
 - [ ] reduzir redundância entre v2, v3, v4, v5, v6 e v7
-- [ ] definir app principal recomendado
+- [x] definir app principal recomendado
 - [ ] documentar fluxo oficial `silver -> gold -> preview -> quality`
 - [ ] padronizar contratos de resposta
 - [x] adicionar endpoint resumido de status do CNPJ
@@ -63,6 +63,8 @@ Também foi adicionada a superfície oficial de status da execução `gold_v20/c
 - contexto SEFIN;
 - origem de itens usada pela execução;
 - resumo operacional de qualidade da conversão.
+
+`runtime_main` também passou a funcionar como entrypoint principal de descoberta operacional, expondo overview, catálogo de superfícies, depreciações e plano de descomissionamento.
 
 ### Bloco D — Fisconforme não atendido
 **Status revisado:** pendente parcial

@@ -48,7 +48,8 @@ Quando houver dúvida operacional:
 
 1. usar `current-v2` para gold;
 2. usar `current-v5/fisconforme-v2` para Fisconforme;
-3. usar versões de transição apenas para comparação ou migração.
+3. usar `main` como entrypoint de descoberta, overview e catálogo;
+4. usar versões de transição apenas para comparação ou migração.
 
 ## Status resumido por CNPJ
 
