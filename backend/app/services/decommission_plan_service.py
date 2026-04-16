@@ -20,7 +20,6 @@ def get_decommission_plan() -> dict:
             "legacy_runtimes": [
                 "pipeline_exec_v5_service",
                 "pipeline_exec_gold_v6_to_v17",
-                "runtime_gold_current_v4",
             ],
             "legacy_routes": [
                 {
