@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Path
 
 from backend.app.services.pipeline_exec_v5_service import execute_pipeline_from_storage_v5
 from backend.app.services.references_diagnostic_service import get_references_and_parquets_status
