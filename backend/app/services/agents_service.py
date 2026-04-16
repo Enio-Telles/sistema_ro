@@ -29,6 +29,6 @@ def list_agents() -> dict:
                         break
             except Exception:
                 title = None
-            files.append({"name": p.name, "path": str(p), "title": title})
+            files.append({"name": p.name, "path": p.name, "title": title})
 
     return {"path": str(agents_root), "files": files}
