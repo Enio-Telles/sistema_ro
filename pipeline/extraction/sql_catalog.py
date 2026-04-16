@@ -15,6 +15,12 @@ CORE_SQL_FILES = {
     "fisconforme_malhas": "fisconforme_malhas.sql",
 }
 
+PLACEHOLDER_SQL_MARKERS = (
+    "1 AS placeholder",
+    "Substituir abaixo p^• SQL definitiva",
+    "TODO: projetar colunas mÃ­nimas necessÃ¡rias",
+)
+
 
 @dataclass(frozen=True)
 class SqlTemplate:
@@ -37,6 +43,10 @@ class SqlTemplate:
         return placeholders
 
 
+def is_placeholder_sql_content(content: str) -> bool:
+    return any(marker in content for marker in PLACEHOLDER_SQL_MARKERS)
+
+
 def resolve_sql_path(sql_root: Path, name: str) -> Path:
     filename = CORE_SQL_FILES.get(name, f"{name}.sql")
     path = sql_root / "core" / filename
@@ -47,7 +57,10 @@ def resolve_sql_path(sql_root: Path, name: str) -> Path:
 
 def load_sql_template(sql_root: Path, name: str) -> SqlTemplate:
     path = resolve_sql_path(sql_root, name)
-    return SqlTemplate(name=name, path=path, content=path.read_text(encoding="utf-8"))
+    content = path.read_text(encoding="utf-8")
+    if is_placeholder_sql_content(content):
+        raise ValueError(f"SQL core ainda em placeholder: {path}")
+    return SqlTemplate(name=name, path=path, content=content)
 
 
 def list_available_sql_names() -> Iterable[str]:
