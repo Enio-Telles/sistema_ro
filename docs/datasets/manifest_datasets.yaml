@@ -1,0 +1,43 @@
+# manifesto dos datasets produzidos pelo pipeline analítico
+# Define contratos de schema e lineage explícitos.
+version: "1.0"
+datasets:
+  efd_170:
+    id: "efd_c170_base"
+    layer: "raw"
+    schema_version: "v1.0"
+    source_sql: "sql/core/efd_c170.sql"
+    primary_keys: ["id_linha_origem"]
+    description: "Extração bruta de itens do registro C170 do EFD."
+
+  itens_unificados:
+    id: "itens_unificados_silver"
+    layer: "base"
+    schema_version: "v2.0"
+    upstream_datasets: ["efd_c170_base", "nfe_base", "nfce_base"]
+    primary_keys: ["id_linha_origem"]
+    description: "Dataset normalizado unificando as fontes de itens (EFD e XML)."
+
+  base_info_mercadorias:
+    id: "base_info_mercadorias_silver"
+    layer: "base"
+    schema_version: "v1.0"
+    upstream_datasets: ["itens_unificados_silver"]
+    primary_keys: ["identificador_produto"]
+    description: "Deduplicação de base para NCM/CEST e afins."
+
+  item_unidades:
+    id: "item_unidades_mdc"
+    layer: "curated"
+    schema_version: "v1.0"
+    upstream_datasets: ["itens_unificados_silver"]
+    primary_keys: ["identificador_produto", "unid_inv"]
+    description: "MDC: Agregação da unidade de medida do produto."
+
+  mov_estoque:
+    id: "mov_estoque_gold"
+    layer: "marts"
+    schema_version: "v2.0"
+    upstream_datasets: ["item_unidades_mdc", "base_info_mercadorias_silver"]
+    primary_keys: ["cod_item", "dt_ini"]
+    description: "Cálculo analítico final da movimentação de mercadorias no período."

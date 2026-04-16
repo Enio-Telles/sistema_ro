@@ -5,14 +5,13 @@ from backend.app.estoque_quality_router import router as estoque_quality_router
 from backend.app.references_diagnostic_router import router as references_router
 from backend.app.status_router import router as status_router
 from backend.app.routers_v2 import agregacao, conversao, estoque, fisconforme, health
-from backend.app.services.pipeline_exec_v5_service import execute_pipeline_from_storage_v5
+from backend.app.services.pipeline_exec_gold_v20 import execute_gold_v20
 
 pipeline_router = APIRouter()
 
-
 @pipeline_router.post("/{cnpj}/run")
 def run_pipeline(cnpj: str) -> dict:
-    return execute_pipeline_from_storage_v5(cnpj)
+    return execute_gold_v20(cnpj)
 
 
 app = FastAPI(title="sistema_ro_main", version="1.0.0")

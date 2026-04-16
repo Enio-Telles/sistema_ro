@@ -50,8 +50,14 @@ def get_decommission_plan() -> dict:
         },
         "deprecate_now": {
             "legacy_runtimes": [
+                "pipeline_exec_v5_service",
+                "pipeline_exec_gold_v6_to_v17"
             ],
             "legacy_routes": [
+                {
+                    "route": "/api/main/pipeline/{cnpj}/run",
+                    "replacement": "Direcionado para backend.app.services.pipeline_exec_gold_v20.execute_gold_v20 (substituindo v5)",
+                },
                 {
                     "route": "/api/current-v4/fisconforme",
                     "replacement": "/api/current-v4/fisconforme-v2",

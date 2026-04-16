@@ -11,7 +11,17 @@ def persist_mdc_base_dataset(cnpj: str, dataset_name: str, df: pl.DataFrame) -> 
     if dataset_name not in MDC_BASE_CONTRACTS:
         raise ValueError(f"Dataset MDC não suportado: {dataset_name}")
     ref = operational_dataset_ref(cnpj, "mdc_base", dataset_name)
-    save_parquet(df, ref)
+    
+    meta = {
+        "dataset_id": f"{dataset_name}_mdc",
+        "layer": "mdc_base",
+        "schema_version": "v1.0",
+        "row_count": df.height,
+        "cnpj": cnpj,
+        "upstream_datasets": ["raw_extraction"]
+    }
+    
+    save_parquet(df, ref, metadata=meta)
     return str(ref.path)
 
 
