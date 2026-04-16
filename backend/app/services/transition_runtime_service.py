@@ -15,5 +15,5 @@ class TransitionRuntimeMiddleware(BaseHTTPMiddleware):
         response.headers["Deprecation"] = "true"
         response.headers["X-Replacement-Runtime"] = self.replacement_runtime
         response.headers["X-Replacement-Prefix"] = self.replacement_prefix
-        response.headers["Warning"] = '299 - "Runtime em transicao. Prefira a superfície oficial recomendada."'
+        response.headers["Warning"] = '299 - "Runtime em transicao. Prefira a superficie oficial recomendada."'
         return response
