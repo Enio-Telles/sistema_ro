@@ -1,0 +1,6 @@
+{
+  "title": "chore: add runtime v2 integration tests and checklist for phases 05-08",
+  "body": "PR: Implementação inicial Fases 05–08\n\nO que foi feito:\n- Adicionados testes de integração para `runtime v2`:\n  - `tests/test_runtime_v2_agregacao.py`\n  - `tests/test_runtime_v2_other_endpoints.py`\n- Adicionado checklist operacional: `docs/checklist_phases_05_08.md`\n- Adicionado planejamento de implementação: `docs/implementation_todo.md`\n\nMotivação:\n- Garantir que os endpoints read-only do `runtime v2` (`agregacao`, `conversao`, `estoque`, `fisconforme`) retornem previews a partir de parquets locais.\n- Fornecer checklist e roadmap para as próximas entregas (frontend e execução do pipeline).\n\nTestes:\n- Todos os testes novos passam localmente (`pytest tests/test_runtime_v2_agregacao.py` e `pytest tests/test_runtime_v2_other_endpoints.py`).\n\nNotas:\n- Branch: `feature/phase-05-08`\n- Base sugerida: `main`\n\nSolicito revisão e merge após validação CI.",
+  "head": "feature/phase-05-08",
+  "base": "main"
+}
