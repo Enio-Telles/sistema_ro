@@ -49,3 +49,37 @@ Quando houver dúvida operacional:
 1. usar `current-v2` para gold;
 2. usar `current-v5/fisconforme-v2` para Fisconforme;
 3. usar versões de transição apenas para comparação ou migração.
+
+## Status resumido por CNPJ
+
+Para orientação operacional rápida por contribuinte, usar:
+
+- `GET /api/current-v2/status/{cnpj}`
+- `GET /api/current-v5/status/{cnpj}`
+- `GET /api/current-v2/pipeline/{cnpj}/status`
+- `GET /api/gold20/pipeline/{cnpj}/status`
+
+Esse resumo consolida:
+
+- prontidão de referências obrigatórias;
+- prontidão mínima para preparar silver;
+- prontidão mínima para executar gold;
+- prontidão de SEFIN;
+- listas de pendências por etapa;
+- próxima ação recomendada;
+- aliases e prefixos oficiais de gold e Fisconforme.
+
+Nos endpoints `pipeline/.../status`, o foco é a execução gold oficial:
+
+- validação dos inputs do gold;
+- origem operacional dos itens;
+- contexto SEFIN usado pela execução;
+- resumo da qualidade operacional da conversão antes do `run`.
+
+## Interpretação rápida de `next_action`
+
+- `validar_referencias`: faltam referências obrigatórias antes de avançar.
+- `carregar_silver_base`: referências estão prontas, mas ainda faltam bases mínimas.
+- `preparar_silver`: já existe carga mínima e o próximo passo é consolidar silver.
+- `executar_gold`: silver mínima para gold já existe.
+- `revisar_quality`: os principais artefatos gold já foram materializados.

@@ -25,5 +25,39 @@ Projeto base para auditoria fiscal orientada a mercadorias, com ênfase em:
 
 ## Status
 
-Repositório inicializado com scaffolding, plano e contratos de dados.
-A próxima evolução é implementar os serviços reais por fase, seguindo os documentos em `docs/`.
+O repositório já possui execução técnica relevante nas trilhas de silver, gold e superfícies operacionais.
+
+Superfícies oficiais atuais:
+
+- gold: `backend.app.runtime_gold_current_v2:app` com prefixo `/api/current-v2`
+- fisconforme modular: `backend.app.runtime_gold_current_v5:app` com prefixo `/api/current-v5/fisconforme-v2`
+
+Status resumido por CNPJ:
+
+- `GET /api/current-v2/status/{cnpj}`
+- `GET /api/current-v5/status/{cnpj}`
+
+Esse endpoint informa:
+
+- prontidão de referências, silver, gold e SEFIN;
+- listas de datasets ou referências faltantes por etapa;
+- próxima ação operacional recomendada;
+- superfícies oficiais recomendadas para gold e Fisconforme.
+
+Status de prontidão da execução gold oficial:
+
+- `GET /api/current-v2/pipeline/{cnpj}/status`
+- `GET /api/gold20/pipeline/{cnpj}/status`
+
+Esse endpoint informa:
+
+- validação dos inputs do gold;
+- origem selecionada dos itens;
+- contexto SEFIN e referências ausentes;
+- resumo operacional da qualidade de conversão antes da execução.
+
+As próximas evoluções seguem concentradas em:
+
+- aderência funcional do estoque;
+- integração mais consistente da vigência SEFIN;
+- consolidação gradual das runtimes redundantes.

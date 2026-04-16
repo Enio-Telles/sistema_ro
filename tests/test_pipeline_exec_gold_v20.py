@@ -1,0 +1,86 @@
+import polars as pl
+
+import backend.app.services.pipeline_exec_gold_v20 as service
+
+
+def _fake_raw_inputs(selected_items_source: str = "itens_unificados_sefin", using_aggregated_sources: bool = False) -> dict:
+    return {
+        "itens_df": pl.DataFrame({"item": ["a"]}),
+        "c170_df": pl.DataFrame({"item": ["a"]}),
+        "nfe_df": pl.DataFrame(),
+        "nfce_df": pl.DataFrame(),
+        "bloco_h_df": pl.DataFrame(),
+        "overrides_df": pl.DataFrame({"produto": ["a"], "fator": [2.0]}),
+        "base_info_df": pl.DataFrame({"item": ["a"]}),
+        "mapa_manual_df": pl.DataFrame({"de": ["a"], "para": ["b"]}),
+        "map_produto_agrupado_df": pl.DataFrame(),
+        "produtos_agrupados_df": pl.DataFrame(),
+        "id_agrupados_df": pl.DataFrame(),
+        "produtos_final_df": pl.DataFrame(),
+        "diagnostico_conversao_df": pl.DataFrame({"item": ["a"], "alerta": ["ok"]}),
+        "selected_items_source": selected_items_source,
+        "using_aggregated_sources": using_aggregated_sources,
+        "fontes_agr_validation": {"ok": using_aggregated_sources, "missing": []},
+    }
+
+
+def test_get_gold_v20_status_exposes_conversion_and_sefin_context(monkeypatch) -> None:
+    monkeypatch.setattr(service, "load_gold_inputs_with_conversion_diagnosis", lambda cnpj: _fake_raw_inputs())
+    monkeypatch.setattr(
+        service,
+        "validate_gold_inputs",
+        lambda inputs: {"ok": True, "missing": [], "empty": [], "stats": {"itens_df": 1}},
+    )
+    monkeypatch.setattr(
+        service,
+        "get_references_and_parquets_status",
+        lambda cnpj: {"references": {"ncm": True, "cest": False}},
+    )
+
+    payload = service.get_gold_v20_status("123")
+
+    assert payload["validation"]["ok"] is True
+    assert payload["selected_items_source"] == "itens_unificados_sefin"
+    assert payload["sefin_context"]["references_complete"] is False
+    assert payload["sefin_context"]["using_sefin_enriched_items"] is True
+    assert payload["conversion_quality_summary"]["manual_overrides_rows"] == 1
+    assert payload["conversion_quality_summary"]["diagnostico_conversao_rows"] == 1
+    assert payload["missing_references"] == ["cest"]
+
+
+def test_execute_gold_v20_returns_quality_summary_with_result_rows(monkeypatch) -> None:
+    monkeypatch.setattr(
+        service,
+        "load_gold_inputs_with_conversion_diagnosis",
+        lambda cnpj: _fake_raw_inputs(selected_items_source="fontes_agr_validated", using_aggregated_sources=True),
+    )
+    monkeypatch.setattr(
+        service,
+        "validate_gold_inputs",
+        lambda inputs: {"ok": True, "missing": [], "empty": [], "stats": {"itens_df": 1}},
+    )
+    monkeypatch.setattr(
+        service,
+        "get_references_and_parquets_status",
+        lambda cnpj: {"references": {"ncm": True, "cest": True}},
+    )
+    monkeypatch.setattr(
+        service,
+        "run_and_persist_gold_v20",
+        lambda cnpj, **inputs: {
+            "cnpj": cnpj,
+            "saved": {"fatores_conversao": "ok", "log_conversao_anomalias": "ok"},
+            "datasets": ["fatores_conversao", "log_conversao_anomalias"],
+            "rows": {"fatores_conversao": 5, "log_conversao_anomalias": 2},
+        },
+    )
+    monkeypatch.setattr(service, "get_gold_consistency", lambda cnpj: {"ok": True})
+
+    payload = service.execute_gold_v20("123")
+
+    assert payload["status"] == "ok"
+    assert payload["pipeline_version"] == "gold_v20"
+    assert payload["conversion_quality_summary"]["fatores_conversao_rows"] == 5
+    assert payload["conversion_quality_summary"]["log_conversao_anomalias_rows"] == 2
+    assert payload["sefin_context"]["references_complete"] is True
+    assert payload["sefin_context"]["using_aggregated_sources"] is True
