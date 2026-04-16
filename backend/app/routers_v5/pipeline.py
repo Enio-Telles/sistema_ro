@@ -9,7 +9,7 @@ router = APIRouter()
 
 
 @router.post("/{cnpj}/run")
-def run_pipeline(cnpj: str) -> dict:
+def run_pipeline(cnpj: str = Path(..., regex="^[0-9]{14}$")) -> dict:
     return execute_pipeline_from_storage_v5(cnpj)
 
 
