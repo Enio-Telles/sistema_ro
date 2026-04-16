@@ -1,0 +1,49 @@
+arquivo,dominio,descricao
+consultas_sql/00_base/00_parametros_normalizados.sql,00_base,Objetivo: normalizar parâmetros de entrada do dossiê
+consultas_sql/00_base/01_lookup_contribuinte.sql,00_base,Objetivo: localizar candidatos a contribuinte a partir de CNPJ/IE/NOME
+consultas_sql/00_base/02_base_contribuinte.sql,00_base,Objetivo: resolver a base mestra do contribuinte selecionado
+consultas_sql/10_cadastro/10_cadastro_principal.sql,10_cadastro,Objetivo: retornar o cadastro principal do contribuinte sem formatação de apresentação
+consultas_sql/10_cadastro/11_endereco_cadastral.sql,10_cadastro,Objetivo: endereço cadastral atual do contribuinte
+consultas_sql/10_cadastro/12_endereco_documental_nfe.sql,10_cadastro,Objetivo: endereços observados em documentos fiscais de entrada
+consultas_sql/10_cadastro/13_cnae_principal.sql,10_cadastro,Objetivo: CNAE principal
+consultas_sql/10_cadastro/14_cnae_secundario.sql,10_cadastro,Objetivo: CNAEs secundários
+consultas_sql/10_cadastro/15_regime_pagamento_historico.sql,10_cadastro,Objetivo: histórico de regime de pagamento por referência
+consultas_sql/10_cadastro/16_historico_situacao.sql,10_cadastro,Objetivo: histórico de situações cadastrais válidas
+consultas_sql/10_cadastro/17_contador_historico.sql,10_cadastro,Objetivo: identificar mudanças de contador por janela temporal
+consultas_sql/10_cadastro/18_historico_fac.sql,10_cadastro,Objetivo: histórico de FAC por inscrição estadual
+consultas_sql/10_cadastro/19_processos_administrativos.sql,10_cadastro,Objetivo: processos administrativos do contribuinte
+consultas_sql/10_cadastro/1A_veiculos_sitafe.sql,10_cadastro,Objetivo: veículos atuais associados ao contribuinte no SITAFE
+consultas_sql/10_cadastro/1B_veiculos_detran.sql,10_cadastro,Objetivo: veículos históricos do DETRAN não presentes na base atual do SITAFE
+consultas_sql/20_societario/20_socios_historico.sql,20_societario,Objetivo: histórico societário completo do contribuinte
+consultas_sql/20_societario/21_socios_atuais.sql,20_societario,Objetivo: sócios atuais do contribuinte
+consultas_sql/20_societario/22_empresas_dos_socios_base.sql,20_societario,Objetivo: empresas vinculadas aos sócios do contribuinte alvo
+consultas_sql/20_societario/23_inadimplencia_por_cnpj.sql,20_societario,Objetivo: inadimplência consolidada por CNPJ/CPF
+consultas_sql/20_societario/24_empresas_dos_socios_resultado.sql,20_societario,Objetivo: resultado consolidado das empresas dos sócios com inadimplência
+consultas_sql/30_documentos_fiscais/30_nfe_movimento_item.sql,30_documentos_fiscais,Objetivo: base singular de itens de NF/NFC-e com classificação de entrada e saída
+consultas_sql/30_documentos_fiscais/31_nfe_entrada_itens.sql,30_documentos_fiscais,Objetivo: itens documentais classificados como entrada
+consultas_sql/30_documentos_fiscais/32_nfe_saida_itens.sql,30_documentos_fiscais,Objetivo: itens documentais classificados como saída
+consultas_sql/30_documentos_fiscais/33_vaf_anual.sql,30_documentos_fiscais,Objetivo: apuração anual de entradas e saídas elegíveis ao VAF
+consultas_sql/30_documentos_fiscais/34_nfe_entrada_quantidade_uf.sql,30_documentos_fiscais,Objetivo: quantidade de NF de entrada por UF de origem e vínculo com fronteira
+consultas_sql/30_documentos_fiscais/35_mdfe_relacionado.sql,30_documentos_fiscais,Objetivo: MDF-e relacionado às NFe do contribuinte
+consultas_sql/30_documentos_fiscais/36_ip_transmissor_nfe.sql,30_documentos_fiscais,Objetivo: IPs transmissores de NFe do contribuinte e quantidade de outros CNPJs no mesmo IP
+consultas_sql/40_arrecadacao_regularidade/40_conta_corrente_base.sql,40_arrecadacao_regularidade,Objetivo: fatos de conta corrente sem formatação visual
+consultas_sql/40_arrecadacao_regularidade/41_conta_corrente_agregado.sql,40_arrecadacao_regularidade,Objetivo: agregar conta corrente por receita e situação funcional
+consultas_sql/40_arrecadacao_regularidade/42_regime_especial.sql,40_arrecadacao_regularidade,Objetivo: regimes especiais associados ao contribuinte
+consultas_sql/40_arrecadacao_regularidade/43_parcelamentos.sql,40_arrecadacao_regularidade,Objetivo: parcelamentos do contribuinte
+consultas_sql/40_arrecadacao_regularidade/44_dimp_cartao_periodo.sql,40_arrecadacao_regularidade,Objetivo: movimentação de cartão por ano e período
+consultas_sql/40_arrecadacao_regularidade/45_dimp_saida_documento_periodo.sql,40_arrecadacao_regularidade,Objetivo: saídas documentais por ano e período para confronto com DIMP
+consultas_sql/40_arrecadacao_regularidade/46_dimp_confronto_periodo.sql,40_arrecadacao_regularidade,Objetivo: confronto entre cartão (DIMP) e saídas documentais por período
+consultas_sql/50_fiscalizacao_conformidade/50_vistoria_app.sql,50_fiscalizacao_conformidade,Objetivo: vistorias oriundas do aplicativo de vistoria
+consultas_sql/50_fiscalizacao_conformidade/51_vistoria_sitafe.sql,50_fiscalizacao_conformidade,Objetivo: diligências/vistorias registradas no SITAFE
+consultas_sql/50_fiscalizacao_conformidade/52_vistorias_agregado.sql,50_fiscalizacao_conformidade,Objetivo: consolidar vistorias das duas origens em formato uniforme
+consultas_sql/50_fiscalizacao_conformidade/53_acao_fiscal_bi.sql,50_fiscalizacao_conformidade,Objetivo: ações fiscais oriundas da base BI
+consultas_sql/50_fiscalizacao_conformidade/54_dsf_por_identificacao.sql,50_fiscalizacao_conformidade,Objetivo: diligências fiscais vinculadas diretamente ao identificador do contribuinte
+consultas_sql/50_fiscalizacao_conformidade/55_dsf_por_auto.sql,50_fiscalizacao_conformidade,Objetivo: diligências fiscais inferidas a partir de autos/lançamentos relacionados ao contribuinte
+consultas_sql/50_fiscalizacao_conformidade/56_acoes_fiscais_agregado.sql,50_fiscalizacao_conformidade,Objetivo: consolidar ações fiscais BI e DSF em um conjunto uniforme
+consultas_sql/50_fiscalizacao_conformidade/57_acoes_fiscais_relacionadas.sql,50_fiscalizacao_conformidade,Objetivo: conjunto de chaves de ações fiscais relacionadas ao contribuinte
+consultas_sql/50_fiscalizacao_conformidade/58_autos_infracao.sql,50_fiscalizacao_conformidade,Objetivo: autos de infração relacionados ao contribuinte
+consultas_sql/50_fiscalizacao_conformidade/59_fisconforme_base.sql,50_fiscalizacao_conformidade,Objetivo: pendências do FisConforme em granularidade detalhada
+consultas_sql/50_fiscalizacao_conformidade/5A_det_notificacoes.sql,50_fiscalizacao_conformidade,Objetivo: notificações DET não vinculadas ao FisConforme
+consultas_sql/90_orquestracao/90_dossie_resumo_minimo.sql,90_orquestracao,Objetivo: exemplo de resumo mínimo para consumo rápido
+consultas_sql/90_orquestracao/91_timeline_eventos.sql,90_orquestracao,Objetivo: exemplo de timeline unificada para posterior enriquecimento em Polars
+consultas_sql/90_orquestracao/92_check_reconciliacao.sql,90_orquestracao,Objetivo: consulta de checagem para comparar totais entre bases singulares e agregados

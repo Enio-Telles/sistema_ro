@@ -1,0 +1,28 @@
+Arquivos do pacote:
+- ressarcimento.md
+- sql/00_parametros_e_arquivos_validos.sql
+- sql/01_saidas_ressarcimento_c176.sql
+- sql/02_produtos_cadastro_0200.sql
+- sql/03_xml_entrada_fronteira.sql
+- sql/04_xml_saida.sql
+- sql/05_itens_entrada_sped_base.sql
+- sql/06_score_candidatos_vinculo.sql
+- sql/07_vinculo_entrada_escolhido.sql
+- sql/08_base_vinculos_e_inferencia_sefin.sql
+- sql/09_rateio_quantidades.sql
+- sql/10_calculos_ressarcimento.sql
+- sql/11_resultado_final_auditoria.sql
+- sql/12_orquestracao_referencia.sql
+- sql/13_reconciliacao_bloco_e.sql
+- sql/14_elegibilidade_icms_proprio.sql
+- sql/99_query_original_referencia.sql
+- sql/README_CONTRATOS_SQL.txt
+
+=== RELATÓRIOS XML EXTRAÍDOS ===
+- relatorios_xml/README.md
+- relatorios_xml/efd_master_utilidade_fiscal.md
+- relatorios_xml/fronteira_relatorio_utilidade_fiscal.md
+- sql_relatorios_xml/efd_master/INDEX.md
+- sql_relatorios_xml/fronteira/INDEX.md
+- xml_relatorios_origem/EFD_master.xml
+- xml_relatorios_origem/relatorio_fronteira.xml

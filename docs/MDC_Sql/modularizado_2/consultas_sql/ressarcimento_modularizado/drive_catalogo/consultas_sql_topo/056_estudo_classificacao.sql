@@ -1,0 +1,8 @@
+-- REFERÊNCIA CATALOGADA DO GOOGLE DRIVE
+-- Pasta lógica: consultas_sql_topo
+-- Arquivo: estudo_classificacao.sql
+-- URL de origem: https://drive.google.com/file/d/1GZZ22oQuR_-kT-FF91rWKhVLu1DDwzjd/view?usp=drivesdk
+-- Situação nesta atualização: catalogado a partir do Google Drive.
+-- Observação: o conector abriu a estrutura da pasta e permitiu o inventário dos arquivos,
+-- mas a extração integral em lote de todos os SQLs não foi concluída nesta mesma passada.
+-- Este arquivo funciona como marcador auditável para extração incremental posterior.

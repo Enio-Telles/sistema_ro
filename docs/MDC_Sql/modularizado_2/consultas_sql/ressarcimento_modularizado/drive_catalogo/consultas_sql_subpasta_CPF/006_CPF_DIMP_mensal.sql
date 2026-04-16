@@ -1,0 +1,8 @@
+-- REFERÊNCIA CATALOGADA DO GOOGLE DRIVE
+-- Pasta lógica: consultas_sql_subpasta_CPF
+-- Arquivo: CPF_DIMP_mensal.sql
+-- URL de origem: https://drive.google.com/file/d/1sbblD2AkB1QZ8m7MpUj--mTykALZh1sJ/view?usp=drivesdk
+-- Situação nesta atualização: catalogado a partir do Google Drive.
+-- Observação: o conector abriu a estrutura da pasta e permitiu o inventário dos arquivos,
+-- mas a extração integral em lote de todos os SQLs não foi concluída nesta mesma passada.
+-- Este arquivo funciona como marcador auditável para extração incremental posterior.

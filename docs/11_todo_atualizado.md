@@ -28,7 +28,7 @@ Ainda existe uma lacuna importante:
 - catálogo SQL criado
 - runner SQL criado
 - job de extração bronze criado
-- templates SQL core iniciais criados
+- templates SQL core iniciais criados e preenchidos com as queries canônicas do MDC (c170, 0200, 0220, c100, c176, bloco_h, reg_0000)
 - falta cliente Oracle concreto e rotina completa de extração por domínio
 
 ### Fase 03 — Normalização silver
