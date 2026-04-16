@@ -1,0 +1,8 @@
+-- REFERÊNCIA CATALOGADA DO GOOGLE DRIVE
+-- Pasta lógica: raiz
+-- Arquivo: automacao_prints_visao360.py
+-- URL de origem: https://drive.google.com/file/d/1avFc1S6B_33nxCGvNAahLa0V2AebZPF4/view?usp=drivesdk
+-- Situação nesta atualização: catalogado a partir do Google Drive.
+-- Observação: o conector abriu a estrutura da pasta e permitiu o inventário dos arquivos,
+-- mas a extração integral em lote de todos os SQLs não foi concluída nesta mesma passada.
+-- Este arquivo funciona como marcador auditável para extração incremental posterior.

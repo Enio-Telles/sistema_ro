@@ -1,0 +1,4339 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<displays>
+<display id="c6275171-0177-1000-8001-c0a801c410ab" type="" style="Table" enable="true">
+	<name><![CDATA[EFD Master 2.0]]></name>
+	<description><![CDATA[]]></description>
+	<tooltip><![CDATA[]]></tooltip>
+	<drillclass><![CDATA[]]></drillclass>
+	<CustomValues>
+		<TYPE><![CDATA[horizontal]]></TYPE>
+	</CustomValues>
+	<query>
+		<sql><![CDATA[select * from (
+select '<html><b>'||pes.co_cnpj_cpf cnpj_cpf, '<html><b>'||pes.no_razao_social info, null data_inicial, null data_final, null vl_recolher, null vl_sld_cred from bi.dm_pessoa pes
+where pes.co_cnpj_cpf = :cnpj
+union all
+select * from (
+SELECT
+    :cnpj CNPJ_CPF,
+        CASE
+        WHEN t.data IS NOT NULL
+             AND e.da_referencia IS NOT NULL
+             AND t.ano IS NOT NULL THEN
+            '+ '
+            || TRIM(lower(t.mes))
+            || '/'
+            || t.ano
+        WHEN t.data IS NULL
+             AND e.da_referencia IS NULL
+             AND t.ano IS NOT NULL THEN
+            '<html><p style="color:blue">═ Total no ano de ' || t.ano
+        WHEN t.data IS NULL
+             AND t.ano IS NULL THEN
+            '<html><b style="color:blue">Σ Período total pesquisado'
+        WHEN e.da_referencia IS NULL THEN
+            '<html><p style="color:red">Ø Arquivo não entregue'
+    END                                  info,
+    MIN(t.data)                          data_inicial,
+    MAX(last_day(t.data))                            data_final,
+    lpad(TRIM(to_char(SUM(e.vl_recolher), '999G999G999G990D00')), length(MAX(SUM(e.vl_recolher))
+                                                                         OVER()) + 6)                         vl_recolher,
+    lpad(TRIM(to_char(SUM(e.vl_sld_credor_transportar), '999G999G999G990D00')), length(MAX(SUM(e.vl_sld_credor_transportar))
+                                                                                       OVER()) + 6)                         vl_sld_cred
+
+FROM
+    bi.dm_calendario    t
+    LEFT JOIN bi.dm_pessoa        p ON :cnpj = p.co_cnpj_cpf
+    LEFT JOIN (
+        SELECT
+            r.da_referencia,
+            r.co_cnpj_cpf_declarante,
+            r.vl_recolher,
+            r.vl_sld_credor_transportar
+        FROM
+            bi.fato_efd_sumarizada r
+        WHERE
+                r.registro = 'E110'
+            AND r.da_referencia BETWEEN :data_inicial AND :data_final
+            AND r.co_cnpj_cpf_declarante = :cnpj
+    )                   e ON t.data = e.da_referencia
+WHERE
+        t.dia_no_mes = 1
+    AND t.data BETWEEN :data_inicial AND :data_final
+GROUP BY
+    GROUPING SETS ( ( :cnpj,
+                      '<html><b>'
+                      || rtrim(substr(p.no_razao_social, 1, instr(p.no_razao_social, ' ')))
+                      || '...',
+                      CASE
+                          WHEN t.data IS NOT NULL
+                               AND e.da_referencia IS NOT NULL
+                               AND t.ano IS NOT NULL THEN
+                              'Período mensal:'
+                          WHEN t.data IS NULL
+                               AND e.da_referencia IS NULL
+                               AND t.ano IS NOT NULL THEN
+                              'Período do ano:'
+                          WHEN t.data IS NULL
+                               AND t.ano IS NULL THEN
+                              '<html><b style="color:blue">Período total pesquisado:'
+                          WHEN e.da_referencia IS NULL THEN
+                              '<html><p style="color:red">Arquivo não entregue!'
+                      END,
+                      e.da_referencia,
+                      t.data,
+                      t.ano,
+                      t.mes,
+                      last_day(t.data),
+                      t.ano ), ( '<html><b>'
+                                 || rtrim(substr(p.no_razao_social, 1, instr(p.no_razao_social, ' ')))
+                                 || '...',
+                                 t.ano )
+                                 , ())
+ORDER BY
+    t.ano DESC,
+    t.data DESC,
+    last_day(t.data)))]]></sql>
+		<binds>
+			<bind id="cnpj">
+				<prompt><![CDATA[cnpj]]></prompt>
+				<tooltip><![CDATA[cnpj]]></tooltip>
+				<value><![CDATA[84654326000394]]></value>
+				<bracket><![CDATA[null]]></bracket>
+			</bind>
+			<bind id="data_inicial">
+				<prompt><![CDATA[data_inicial]]></prompt>
+				<tooltip><![CDATA[data_inicial]]></tooltip>
+				<value><![CDATA[01/01/2022]]></value>
+				<bracket><![CDATA[null]]></bracket>
+			</bind>
+			<bind id="data_final">
+				<prompt><![CDATA[data_final]]></prompt>
+				<tooltip><![CDATA[data_final]]></tooltip>
+				<value><![CDATA[31/12/2025]]></value>
+				<bracket><![CDATA[null]]></bracket>
+			</bind>
+		</binds>
+	</query>
+		<pdf version="VERSION_1_7" compression="CONTENT">
+			<docproperty title="null" author="null" subject="null" keywords="null" />
+			<cell toppadding="2" bottompadding="2" leftpadding="2" rightpadding="2" horizontalalign="LEFT" verticalalign="TOP" wrap="true" />
+			<column>
+				<heading font="null" size="10" style="NORMAL" color="-16777216" rowshading="-1" labeling="FIRST_PAGE" />
+				<footing font="null" size="10" style="NORMAL" color="-16777216" rowshading="-1" labeling="NONE" />
+				<blob blob="NONE" zip="false" />
+			</column>
+			<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
+			<header enable="false" generatedate="false">
+				<data>
+				
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+				
+					
+				
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				null																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																										</data>
+			</header>
+			<footer enable="false" generatedate="false">
+				<data value="null" />
+			</footer>
+			<pagesetup papersize="LETTER" orientation="1" measurement="in" margintop="1.0" marginbottom="1.0" marginleft="1.0" marginright="1.0" />
+		</pdf>
+	<display id="" type="" style="Table" enable="true">
+		<name><![CDATA[Reg 0000 (arquivos)]]></name>
+		<description><![CDATA[]]></description>
+		<tooltip><![CDATA[]]></tooltip>
+		<drillclass><![CDATA[]]></drillclass>
+		<CustomValues>
+			<TYPE><![CDATA[horizontal]]></TYPE>
+		</CustomValues>
+		<query>
+			<sql><![CDATA[SELECT
+
+    t.dt_ini,
+    t.dt_fin,
+    t.cnpj,
+    t.ie,
+    t.im,
+    t.suframa,
+    t.nome,
+    l.no_municipio,
+    t.uf,
+    t.ind_perfil,
+    t.ind_ativ,
+
+    t.cod_fin,
+    t.cod_ver,
+    arq.giam,
+        substr(t.data_entrega, 1, 17)           da_entrega,
+    arq.data_importacao                   da_imp,
+        t.id
+FROM
+    sped.reg_0000                t
+    LEFT JOIN sped.fis_efd_arquivo_sped    arq ON t.arquivo_nome = arq.arquivo_nome
+    LEFT JOIN bi.dm_localidade             l ON t.cod_mun = l.co_mun_ibge
+WHERE
+    t.cnpj = :CNPJ_CPF
+   and t.dt_ini between :DATA_INICIAL AND :DATA_FINAL
+     
+    
+ORDER BY
+    t.dt_ini DESC,
+    t.data_entrega DESC]]></sql>
+			<binds>
+				<bind id="CNPJ_CPF">
+					<prompt><![CDATA[CNPJ_CPF]]></prompt>
+					<tooltip><![CDATA[CNPJ_CPF]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+				<bind id="DATA_INICIAL">
+					<prompt><![CDATA[DATA_INICIAL]]></prompt>
+					<tooltip><![CDATA[DATA_INICIAL]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+				<bind id="DATA_FINAL">
+					<prompt><![CDATA[DATA_FINAL]]></prompt>
+					<tooltip><![CDATA[DATA_FINAL]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+			</binds>
+		</query>
+			<pdf version="VERSION_1_7" compression="CONTENT">
+				<docproperty title="null" author="null" subject="null" keywords="null" />
+				<cell toppadding="2" bottompadding="2" leftpadding="2" rightpadding="2" horizontalalign="LEFT" verticalalign="TOP" wrap="true" />
+				<column>
+					<heading font="null" size="10" style="NORMAL" color="-16777216" rowshading="-1" labeling="FIRST_PAGE" />
+					<footing font="null" size="10" style="NORMAL" color="-16777216" rowshading="-1" labeling="NONE" />
+					<blob blob="NONE" zip="false" />
+				</column>
+				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
+				<header enable="false" generatedate="false">
+					<data>
+					
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+					
+						
+					
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					null																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																					</data>
+				</header>
+				<footer enable="false" generatedate="false">
+					<data value="null" />
+				</footer>
+				<pagesetup papersize="LETTER" orientation="1" measurement="in" margintop="1.0" marginbottom="1.0" marginleft="1.0" marginright="1.0" />
+			</pdf>
+	</display>
+	<display id="" type="" style="Table" enable="true">
+		<name><![CDATA[Lançamento]]></name>
+		<description><![CDATA[]]></description>
+		<tooltip><![CDATA[]]></tooltip>
+		<drillclass><![CDATA[]]></drillclass>
+		<CustomValues>
+			<TYPE><![CDATA[horizontal]]></TYPE>
+		</CustomValues>
+		<query>
+			<sql><![CDATA[--<html><b style="color:blue">Σ Período total pesquisado
+SELECT
+    CASE
+        WHEN t.da_referencia IS NULL THEN
+            NULL
+        ELSE
+            :DATA_INICIAL
+    END               data_inicial,
+    CASE
+        WHEN t.da_referencia IS NULL THEN
+            NULL
+        ELSE
+            :DATA_FINAL
+    END               data_final,
+    t.da_referencia,
+    t.nu_guia,
+    CASE
+        WHEN t.da_referencia IS NULL THEN
+            NULL
+        ELSE
+            t.id_receita
+    END               id_rec,
+    CASE
+        WHEN t.da_referencia IS NULL THEN
+            NULL
+        ELSE
+            t.id_situacao
+    END               sit,
+    CASE
+        WHEN id_receita IS NULL
+             AND id_situacao IS NULL THEN
+            '<html><b>Σ Total geral'
+        WHEN id_receita IS NOT NULL
+             AND id_situacao IS NULL THEN
+            '<html><p style="color:blue">= 1 - Total da receita <b>'
+            || t.id_receita
+            || ' - '
+            || rec.it_no_receita
+        WHEN t.da_referencia IS NULL
+             AND t.id_receita IS NULL
+             AND t.id_situacao IS NOT NULL THEN
+            '<html><p style="color:blue">= 2 - Total com a situação <b>'
+            || t.id_situacao
+            || ' - '
+            || sit.it_no_situacao
+        WHEN t.da_referencia IS NULL
+             AND t.id_receita IS NOT NULL
+             AND t.id_situacao IS NOT NULL THEN
+            '<html><p style="color:blue">= 3 - Total da receita '
+            || t.id_receita
+            || ' - '
+            || rec.it_no_receita
+            || ', na situação '
+            || t.id_situacao
+            || ' - '
+            || sit.it_no_situacao
+        ELSE
+            t.id_receita
+            || ' - '
+            || rec.it_no_receita
+    END               info,
+    lpad(TRIM(to_char(round(RATIO_TO_REPORT(SUM(t.va_principal))
+                            OVER(PARTITION BY
+        CASE
+            WHEN da_referencia IS NULL
+                 AND id_receita IS NULL
+                 AND id_situacao IS NULL THEN
+                0
+            WHEN da_referencia IS NULL
+                 AND id_receita IS NOT NULL
+                 AND id_situacao IS NULL THEN
+                1
+            WHEN da_referencia IS NULL
+                 AND id_receita IS NOT NULL
+                 AND id_situacao IS NOT NULL THEN
+                2
+            WHEN t.da_referencia IS NULL
+                 AND t.id_receita IS NULL
+                 AND t.id_situacao IS NOT NULL THEN
+                3
+            ELSE
+                4
+        END
+                            ),
+                            4) * 100,
+                      '990.00L',
+                      'NLS_CURRENCY=%')),
+         8)           rr,
+    lpad(TRIM(to_char(SUM(t.va_principal), '999G999G999G990D00')), length(MAX(SUM(t.va_principal))
+                                                                          OVER()) + 6)      va_principal,
+    lpad(TRIM(to_char(SUM(t.va_multa), '999G999G999G990D00')), length(MAX(SUM(t.va_multa))
+                                                                      OVER()) + 6)      va_multa,
+    lpad(TRIM(to_char(SUM(t.va_juros), '999G999G999G990D00')), length(MAX(SUM(t.va_juros))
+                                                                      OVER()) + 6)      va_juros,
+    lpad(TRIM(to_char(SUM(t.va_acrescimo), '999G999G999G990D00')), length(MAX(SUM(t.va_acrescimo))
+                                                                          OVER()) + 6)      va_acrescimo,
+    lpad(TRIM(to_char(SUM(t.va_pago), '999G999G999G990D00')), length(MAX(SUM(t.va_pago))
+                                                                     OVER()) + 6)      va_pago
+FROM
+    bi.fato_lanc_arrec           t
+    LEFT JOIN bi.dm_receita                rec ON t.id_receita = rec.it_co_receita
+    LEFT JOIN bi.dm_situacao_lancamento    sit ON t.id_situacao = sit.it_co_situacao
+WHERE
+        t.id_cpf_cnpj = :CNPJ_CPF
+    AND t.da_referencia BETWEEN :DATA_INICIAL AND :DATA_FINAL
+    AND substr(t.nu_complemento, 5) LIKE '1500000000'
+GROUP BY
+    GROUPING SETS ( ( ), ( t.id_receita,
+                           rec.it_no_receita ), ( t.id_situacao,
+                                                  sit.it_no_situacao ), ( t.id_receita,
+                                                                          rec.it_no_receita,
+                                                                          t.id_situacao,
+                                                                          sit.it_no_situacao ), ( t.id_receita,
+                                                                                                  rec.it_no_receita,
+                                                                                                  t.id_situacao,
+                                                                                                  sit.it_no_situacao,
+                                                                                                  t.da_referencia,
+                                                                                                  t.nu_guia ) )
+ORDER BY
+    CASE
+        WHEN da_referencia IS NULL
+             AND id_receita IS NULL
+             AND id_situacao IS NULL THEN
+            0
+        WHEN da_referencia IS NULL
+             AND id_receita IS NOT NULL
+             AND id_situacao IS NULL THEN
+            1
+        WHEN da_referencia IS NULL
+             AND id_receita IS NOT NULL
+             AND id_situacao IS NOT NULL THEN
+            3
+        WHEN t.da_referencia IS NULL
+             AND t.id_receita IS NULL
+             AND t.id_situacao IS NOT NULL THEN
+            2
+        ELSE
+            4
+    END,
+    SUM(t.va_principal) DESC]]></sql>
+			<binds>
+				<bind id="DATA_INICIAL">
+					<prompt><![CDATA[DATA_INICIAL]]></prompt>
+					<tooltip><![CDATA[DATA_INICIAL]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+				<bind id="DATA_FINAL">
+					<prompt><![CDATA[DATA_FINAL]]></prompt>
+					<tooltip><![CDATA[DATA_FINAL]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+				<bind id="CNPJ_CPF">
+					<prompt><![CDATA[CNPJ_CPF]]></prompt>
+					<tooltip><![CDATA[CNPJ_CPF]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+			</binds>
+		</query>
+			<pdf version="VERSION_1_7" compression="CONTENT">
+				<docproperty title="null" author="null" subject="null" keywords="null" />
+				<cell toppadding="2" bottompadding="2" leftpadding="2" rightpadding="2" horizontalalign="LEFT" verticalalign="TOP" wrap="true" />
+				<column>
+					<heading font="null" size="10" style="NORMAL" color="-16777216" rowshading="-1" labeling="FIRST_PAGE" />
+					<footing font="null" size="10" style="NORMAL" color="-16777216" rowshading="-1" labeling="NONE" />
+					<blob blob="NONE" zip="false" />
+				</column>
+				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
+				<header enable="false" generatedate="false">
+					<data>
+					
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+					
+						
+					
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					null																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																					</data>
+				</header>
+				<footer enable="false" generatedate="false">
+					<data value="null" />
+				</footer>
+				<pagesetup papersize="LETTER" orientation="1" measurement="in" margintop="1.0" marginbottom="1.0" marginleft="1.0" marginright="1.0" />
+			</pdf>
+	</display>
+	<display id="" type="" style="Table" enable="true">
+		<name><![CDATA[Grupo CFOP]]></name>
+		<description><![CDATA[]]></description>
+		<tooltip><![CDATA[]]></tooltip>
+		<drillclass><![CDATA[]]></drillclass>
+		<CustomValues>
+			<TYPE><![CDATA[horizontal]]></TYPE>
+		</CustomValues>
+		<query>
+			<sql><![CDATA[select 
+                                    case when grupo is null then ' ' ELSE :CNPJ_CPF end CNPJ_CPF,
+                                    case when grupo is null then null ELSE :DATA_INICIAL end DATA_INICIAL,
+                                    case when grupo is null then null ELSE :DATA_FINAL end DATA_FINAL,
+                                    case when grupo is null then null ELSE to_char(grupo) end grupo,
+                                    case when descricao is null and operacao = 999 then '<html><b style="color:red">TOTAL DAS ENTRADAS ---------------------------------------------------'
+                                    when descricao is null and operacao = 4999 then '<html><b style="color:blue">TOTAL DAS SAÍDAS ------------------------------------------------------' ELSE descricao end DESCRICAO,
+                                    case when rr is null then ' ' else rr end Perc,
+                                                                                        
+                                    lpad(TRIM(to_char(sum(vl_operacao), '999G999G999G990D00')), length(MAX(sum(vl_operacao))
+                                                                                                                                             OVER()) + 6) VL_OPERACAO,
+                                    lpad(TRIM(to_char(sum(vl_bc_icms), '999G999G999G990D00')), length(MAX(sum(vl_bc_icms))
+                                                                                                                                             OVER()) + 6) vl_bc_icms,
+                                    lpad(TRIM(to_char(sum(vl_icms), '999G999G999G990D00')), length(MAX(sum(vl_icms))
+                                                                                                                                             OVER()) + 6) vl_icms,
+                                    lpad(TRIM(to_char(sum(vl_bc_icms_st), '999G999G999G990D00')), length(MAX(sum(vl_bc_icms_st))
+                                                                                                                                             OVER()) + 6) vl_bc_icms_st,
+                                    lpad(TRIM(to_char(sum(vl_icms_st), '999G999G999G990D00')), length(MAX(sum(vl_icms_st))
+                                                                                                                                             OVER()) + 6) vl_icms_st,       
+                                    lpad(TRIM(to_char(sum(vl_red_bc), '999G999G999G990D00')), length(MAX(sum(vl_red_bc))
+                                                                                                                                             OVER()) + 6) vl_red_bc                                                                                                         
+                                    
+                                    from 
+                                    (SELECT
+                                        CASE
+                                            WHEN c.co_grupo > 4000 THEN
+                                                4999
+                                            ELSE
+                                                999
+                                        END                        operacao,
+                                        c.co_grupo                 grupo,
+                                        c.descricao_grupo          descricao,
+                                            lpad(TRIM(to_char(round(RATIO_TO_REPORT(SUM(t.vl_operacao))
+                                                                OVER(PARTITION BY
+                                            CASE
+                                                WHEN c.co_grupo > 4000 THEN
+                                                    4999
+                                                ELSE
+                                                    999
+                                            END
+                                                                ),
+                                                                4) * 100,
+                                                          '990.00L',
+                                                          'NLS_CURRENCY=%')),
+                                             8)                    rr,
+                                        SUM(t.vl_operacao)         vl_operacao,
+                                        SUM(t.vl_bc_icms)          vl_bc_icms,
+                                        SUM(t.vl_icms)             vl_icms,
+                                        SUM(t.vl_bc_icms_st)       vl_bc_icms_st,
+                                        SUM(t.vl_icms_st)          vl_icms_st,
+                                        SUM(t.vl_red_bc)           vl_red_bc
+                                    FROM
+                                        bi.fato_efd_sumarizada    t
+                                        LEFT JOIN bi.dm_cfop                c ON t.co_cfop = c.co_cfop
+                                    WHERE
+                                            t.co_cfop != 0
+                                        AND t.co_cnpj_cpf_declarante = :CNPJ_CPF
+                                        AND t.da_referencia between :DATA_INICIAL and :DATA_FINAL
+                                    GROUP BY
+                                        c.co_grupo,
+                                        c.descricao_grupo
+                                    
+                                    ORDER BY
+                                       operacao asc,  c.co_grupo asc)
+                                    group by grouping sets ((operacao),(
+                                    operacao, grupo,
+                                    descricao, rr))
+                                    order by operacao asc]]></sql>
+			<binds>
+				<bind id="CNPJ_CPF">
+					<prompt><![CDATA[CNPJ_CPF]]></prompt>
+					<tooltip><![CDATA[CNPJ_CPF]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+				<bind id="DATA_INICIAL">
+					<prompt><![CDATA[DATA_INICIAL]]></prompt>
+					<tooltip><![CDATA[DATA_INICIAL]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+				<bind id="DATA_FINAL">
+					<prompt><![CDATA[DATA_FINAL]]></prompt>
+					<tooltip><![CDATA[DATA_FINAL]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+			</binds>
+		</query>
+			<pdf version="VERSION_1_7" compression="CONTENT">
+				<docproperty title="null" author="null" subject="null" keywords="null" />
+				<cell toppadding="2" bottompadding="2" leftpadding="2" rightpadding="2" horizontalalign="LEFT" verticalalign="TOP" wrap="true" />
+				<column>
+					<heading font="null" size="10" style="NORMAL" color="-16777216" rowshading="-1" labeling="FIRST_PAGE" />
+					<footing font="null" size="10" style="NORMAL" color="-16777216" rowshading="-1" labeling="NONE" />
+					<blob blob="NONE" zip="false" />
+				</column>
+				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
+				<header enable="false" generatedate="false">
+					<data>
+					
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						null																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																							</data>
+				</header>
+				<footer enable="false" generatedate="false">
+					<data value="null" />
+				</footer>
+				<pagesetup papersize="LETTER" orientation="1" measurement="in" margintop="1.0" marginbottom="1.0" marginleft="1.0" marginright="1.0" />
+			</pdf>
+	</display>
+	<display id="" type="" style="Table" enable="true">
+		<name><![CDATA[Ajustes C197 (Docs Fiscais)]]></name>
+		<description><![CDATA[]]></description>
+		<tooltip><![CDATA[]]></tooltip>
+		<drillclass><![CDATA[]]></drillclass>
+		<CustomValues>
+			<TYPE><![CDATA[horizontal]]></TYPE>
+		</CustomValues>
+		<query>
+			<sql><![CDATA[select cnpj_cpf CNPJ_CPF,
+data_inicial DATA_INICIAL,
+data_final DATA_FINAL,
+case when cod_aj is null  and substr(ref_apur,1,1) = 'C' then  '<html><b>Total - Reflexo na Apuração - <b style=color:blue>'||ref_apur 
+when cod_aj is null  and substr(ref_apur,1,1) = 'D' then  '<html><b>Total - Reflexo na Apuração - <b style=color:red>'||ref_apur
+when cod_aj is null  then '<html><b>Total - Reflexo na Apuração - '||ref_apur 
+when substr(ref_apur,1,1) = 'C' then  '<html><p style=color:blue>' ||ref_apur
+when substr(ref_apur,1,1) = 'D' then  '<html><p style=color:red>' ||ref_apur
+else ref_apur
+end Tipo,
+rr RR,
+vl_bc_icms VL_BC_ICMS,
+vl_icms VL_ICMS,
+vl_outros VL_OUTROS,
+cod_aj COD_AJ,
+no_cod_aj NO_COD_AJ from 
+
+
+(SELECT
+    :CNPJ_CPF         cnpj_cpf,
+    :DATA_INICIAL     data_inicial,
+    :DATA_FINAL       data_final,
+    CASE
+        WHEN substr(t.cod_aj, 3, 1) = '0'           THEN
+            'C - Crédito por Entrada'
+        WHEN substr(t.cod_aj, 3, 1) = '1'           THEN
+            'C - Outros Créditos'
+        WHEN substr(t.cod_aj, 3, 1) = '2'           THEN
+            'C - Estorno de Débito '
+        WHEN substr(t.cod_aj, 3, 1) = '3'           THEN
+            'D - Débito por Saída '
+        WHEN substr(t.cod_aj, 3, 1) = '4'           THEN
+            'D - Outros Débitos '
+        WHEN substr(t.cod_aj, 3, 1) = '5'           THEN
+            'D - Estorno de Crédito'
+        WHEN substr(t.cod_aj, 3, 1) = '6'           THEN
+            'Dedução'
+        WHEN substr(t.cod_aj, 3, 1) = '7'           THEN
+            'Débitos especiais'
+        WHEN substr(t.cod_aj, 3, 1) = '9'           THEN
+            'Informativo'
+    END               ref_apur,
+
+    lpad(TRIM(to_char(round(RATIO_TO_REPORT(SUM(t.vl_bc_icms))
+                            OVER(PARTITION BY
+        CASE
+            WHEN t.cod_aj IS NULL THEN
+                '99'
+            ELSE
+                substr(t.cod_aj, 3, 1)
+        END
+                            ),
+                            4) * 100,
+                      '990.00L',
+                      'NLS_CURRENCY=%')),
+         8)           rr,
+    lpad(TRIM(to_char(SUM(t.vl_bc_icms), '999G999G999G990D00')), length(MAX(SUM(t.vl_bc_icms))
+                                                                        OVER()) + 6)      vl_bc_icms,
+    lpad(TRIM(to_char(SUM(t.vl_icms), '999G999G999G990D00')), length(MAX(SUM(t.vl_icms))
+                                                                     OVER()) + 6)      vl_icms,
+    lpad(TRIM(to_char(SUM(t.vl_outros), '999G999G999G990D00')), length(MAX(SUM(t.vl_outros))
+                                                                       OVER()) + 6)      vl_outros,
+        t.cod_aj,
+    aj.no_cod_aj
+FROM
+    bi.dm_efd_c197       t
+    LEFT JOIN bi.dm_efd_ajustes    aj ON t.cod_aj = co_cod_aj
+WHERE
+        t.co_declarante = :CNPJ_CPF
+    AND t.da_referencia BETWEEN :DATA_INICIAL AND :DATA_FINAL
+GROUP BY
+    GROUPING SETS ( (
+        CASE
+            WHEN substr(t.cod_aj, 3, 1) = '0'           THEN
+                'C - Crédito por Entrada'
+            WHEN substr(t.cod_aj, 3, 1) = '1'           THEN
+                'C - Outros Créditos'
+            WHEN substr(t.cod_aj, 3, 1) = '2'           THEN
+                'C - Estorno de Débito '
+            WHEN substr(t.cod_aj, 3, 1) = '3'           THEN
+                'D - Débito por Saída '
+            WHEN substr(t.cod_aj, 3, 1) = '4'           THEN
+                'D - Outros Débitos '
+            WHEN substr(t.cod_aj, 3, 1) = '5'           THEN
+                'D - Estorno de Crédito'
+            WHEN substr(t.cod_aj, 3, 1) = '6'           THEN
+                'Dedução'
+            WHEN substr(t.cod_aj, 3, 1) = '7'           THEN
+                'Débitos especiais'
+            WHEN substr(t.cod_aj, 3, 1) = '9'           THEN
+                'Informativo'
+        END
+    ), (
+        CASE
+            WHEN substr(t.cod_aj, 3, 1) = '0'           THEN
+                'C - Crédito por Entrada'
+            WHEN substr(t.cod_aj, 3, 1) = '1'           THEN
+                'C - Outros Créditos'
+            WHEN substr(t.cod_aj, 3, 1) = '2'           THEN
+                'C - Estorno de Débito '
+            WHEN substr(t.cod_aj, 3, 1) = '3'           THEN
+                'D - Débito por Saída '
+            WHEN substr(t.cod_aj, 3, 1) = '4'           THEN
+                'D - Outros Débitos '
+            WHEN substr(t.cod_aj, 3, 1) = '5'           THEN
+                'D - Estorno de Crédito'
+            WHEN substr(t.cod_aj, 3, 1) = '6'           THEN
+                'Dedução'
+            WHEN substr(t.cod_aj, 3, 1) = '7'           THEN
+                'Débitos especiais'
+            WHEN substr(t.cod_aj, 3, 1) = '9'           THEN
+                'Informativo'
+        END,
+        t.cod_aj,
+        aj.no_cod_aj ) )
+ORDER BY
+    CASE
+        WHEN t.cod_aj IS NULL THEN
+            '-'
+        ELSE
+            substr(t.cod_aj, 3, 1)
+    END ,
+    sum(t.vl_bc_icms) DESC)]]></sql>
+			<binds>
+				<bind id="CNPJ_CPF">
+					<prompt><![CDATA[CNPJ_CPF]]></prompt>
+					<tooltip><![CDATA[CNPJ_CPF]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+				<bind id="DATA_INICIAL">
+					<prompt><![CDATA[DATA_INICIAL]]></prompt>
+					<tooltip><![CDATA[DATA_INICIAL]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+				<bind id="DATA_FINAL">
+					<prompt><![CDATA[DATA_FINAL]]></prompt>
+					<tooltip><![CDATA[DATA_FINAL]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+			</binds>
+		</query>
+			<pdf version="VERSION_1_7" compression="CONTENT">
+				<docproperty title="null" author="null" subject="null" keywords="null" />
+				<cell toppadding="2" bottompadding="2" leftpadding="2" rightpadding="2" horizontalalign="LEFT" verticalalign="TOP" wrap="true" />
+				<column>
+					<heading font="null" size="10" style="NORMAL" color="-16777216" rowshading="-1" labeling="FIRST_PAGE" />
+					<footing font="null" size="10" style="NORMAL" color="-16777216" rowshading="-1" labeling="NONE" />
+					<blob blob="NONE" zip="false" />
+				</column>
+				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
+				<header enable="false" generatedate="false">
+					<data>
+					
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+					
+						
+					
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+					
+					
+					
+					
+					
+					
+					
+					
+					null																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																</data>
+				</header>
+				<footer enable="false" generatedate="false">
+					<data value="null" />
+				</footer>
+				<pagesetup papersize="LETTER" orientation="1" measurement="in" margintop="1.0" marginbottom="1.0" marginleft="1.0" marginright="1.0" />
+			</pdf>
+	</display>
+	<display id="" type="" style="Table" enable="true">
+		<name><![CDATA[Apuração E110]]></name>
+		<description><![CDATA[]]></description>
+		<tooltip><![CDATA[]]></tooltip>
+		<drillclass><![CDATA[]]></drillclass>
+		<CustomValues>
+			<TYPE><![CDATA[vertical]]></TYPE>
+		</CustomValues>
+		<query>
+			<sql><![CDATA[SELECT
+    '<html><b>'||:CNPJ_CPF "CNPJ",
+    '<html><b>'||p.no_razao_social "Nome",
+    '<html><b>'||:INFO "Período da pesquisa",
+   '<html><p style="color:red">'||lpad(TRIM(to_char(SUM(t.vl_tot_debitos), '999G999G999G990D00')), length(MAX(SUM(t.vl_tot_debitos))
+                                                                        OVER()) + 6)      "V. Total Débitos - Saídas",
+   '<html><p style="color:red">'||lpad(TRIM(to_char(SUM(t.vl_aj_debitos), '999G999G999G990D00')), length(MAX(SUM(t.vl_aj_debitos))
+                                                                        OVER()) + 6)      "V. Total Aj. a Déb. Doc Fisc",                                                                        
+   '<html><p style="color:red">'||lpad(TRIM(to_char(SUM(t.vl_tot_aj_debitos), '999G999G999G990D00')), length(MAX(SUM(t.vl_tot_aj_debitos))
+                                                                        OVER()) + 6)      "V. Total dos Aj. a Débito",    
+   '<html><p style="color:red">'||lpad(TRIM(to_char(SUM(t.vl_estornos_cred), '999G999G999G990D00')), length(MAX(SUM(t.vl_estornos_cred))
+                                                                        OVER()) + 6)      "V. Total dos Aj.  Est. Créd.", 
+   '<html><p style="color:blue">'||lpad(TRIM(to_char(SUM(t.vl_tot_creditos), '999G999G999G990D00')), length(MAX(SUM(t.vl_tot_creditos))
+                                                                        OVER()) + 6)      "V. Total Créditos - Entradas",
+   '<html><p style="color:blue">'||lpad(TRIM(to_char(SUM(t.vl_aj_creditos), '999G999G999G990D00')), length(MAX(SUM(t.vl_aj_creditos))
+                                                                        OVER()) + 6)      "V. Total Aj. Créd. Doc Fisc.",
+   '<html><p style="color:blue">'||lpad(TRIM(to_char(SUM(t.vl_tot_aj_creditos), '999G999G999G990D00')), length(MAX(SUM(t.vl_tot_aj_creditos))
+                                                                        OVER()) + 6)      "V. Total dos Aj. a Crédito",
+   '<html><p style="color:blue">'||lpad(TRIM(to_char(SUM(t.vl_estornos_deb), '999G999G999G990D00')), length(MAX(SUM(t.vl_estornos_deb))
+                                                                        OVER()) + 6)      "V. Total dos Aj.  Est. Déb.",
+   '<html><p style="color:blue">'||lpad(TRIM(to_char(SUM(t.vl_sld_credor_ant), '999G999G999G990D00')), length(MAX(SUM(t.vl_sld_credor_ant))
+                                                                        OVER()) + 6)      "V. Sld. Cred. Per Ant.",
+   '<html>'||lpad(TRIM(to_char(SUM(t.vl_sld_apurado), '999G999G999G990D00')), length(MAX(SUM(t.vl_sld_apurado))
+                                                                        OVER()) + 6)      "V. Saldo Devedor Apurado",
+    '<html>'||lpad(TRIM(to_char(SUM(t.vl_tot_ded), '999G999G999G990D00')), length(MAX(SUM(t.vl_tot_ded))
+                                                                        OVER()) + 6)      "V. Total de Deduções",
+   '<html><b style="color:red">'||lpad(TRIM(to_char(SUM(t.vl_recolher), '999G999G999G990D00')), length(MAX(SUM(t.vl_recolher))
+                                                                        OVER()) + 6)      "V. Total de ICMS a Recolher",                                                                      
+   '<html><b style="color:blue">'||lpad(TRIM(to_char(SUM(t.vl_sld_credor_transportar), '999G999G999G990D00')), length(MAX(SUM(t.vl_sld_credor_transportar))
+                                                                        OVER()) + 6)      "V. Sld. Cred. a Transp.",
+    '<html>'||lpad(TRIM(to_char(SUM(t.vl_deb_esp), '999G999G999G990D00')), length(MAX(SUM(t.vl_deb_esp))
+                                                                        OVER()) + 6)      "V. Rec. Extra-Apuração"
+
+FROM
+    bi.fato_efd_sumarizada t
+left join bi.dm_pessoa p on t.CO_CNPJ_CPF_DECLARANTE = p.co_cnpj_cpf 
+    
+WHERE
+        t.co_cnpj_cpf_declarante = :CNPJ_CPF
+    AND t.da_referencia between :DATA_INICIAL and :DATA_FINAL
+    AND t.registro = 'E110'
+group by p.no_razao_social]]></sql>
+			<binds>
+				<bind id="CNPJ_CPF">
+					<prompt><![CDATA[CNPJ_CPF]]></prompt>
+					<tooltip><![CDATA[CNPJ_CPF]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+				<bind id="INFO">
+					<prompt><![CDATA[INFO]]></prompt>
+					<tooltip><![CDATA[INFO]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+				<bind id="DATA_INICIAL">
+					<prompt><![CDATA[DATA_INICIAL]]></prompt>
+					<tooltip><![CDATA[DATA_INICIAL]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+				<bind id="DATA_FINAL">
+					<prompt><![CDATA[DATA_FINAL]]></prompt>
+					<tooltip><![CDATA[DATA_FINAL]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+			</binds>
+		</query>
+			<pdf version="VERSION_1_7" compression="CONTENT">
+				<docproperty title="null" author="null" subject="null" keywords="null" />
+				<cell toppadding="2" bottompadding="2" leftpadding="2" rightpadding="2" horizontalalign="LEFT" verticalalign="TOP" wrap="true" />
+				<column>
+					<heading font="null" size="10" style="NORMAL" color="-16777216" rowshading="-1" labeling="FIRST_PAGE" />
+					<footing font="null" size="10" style="NORMAL" color="-16777216" rowshading="-1" labeling="NONE" />
+					<blob blob="NONE" zip="false" />
+				</column>
+				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
+				<header enable="false" generatedate="false">
+					<data>
+					
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						null																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																							</data>
+				</header>
+				<footer enable="false" generatedate="false">
+					<data value="null" />
+				</footer>
+				<pagesetup papersize="LETTER" orientation="1" measurement="in" margintop="1.0" marginbottom="1.0" marginleft="1.0" marginright="1.0" />
+			</pdf>
+	</display>
+	<display id="" type="" style="Table" enable="true">
+		<name><![CDATA[Ajustes E111 (Apuração)]]></name>
+		<description><![CDATA[]]></description>
+		<tooltip><![CDATA[]]></tooltip>
+		<drillclass><![CDATA[]]></drillclass>
+		<CustomValues>
+			<TYPE><![CDATA[horizontal]]></TYPE>
+		</CustomValues>
+		<query>
+			<sql><![CDATA[SELECT
+    apuracao,
+    CASE
+        WHEN tipo IS NULL THEN
+            substr(cod_aj,4,1) || ' - ' ||no_cod_aj
+        ELSE
+            tipo
+    END tipo,
+    rr,
+    valor,
+    cod_aj
+FROM
+    (
+        SELECT
+            CASE
+                WHEN substr(cod_aj, 3, 1) = '0'       THEN
+                    'ICMS'
+                WHEN substr(cod_aj, 3, 1) = '1'       THEN
+                    'ICMS Substituição Tributária'
+                WHEN substr(cod_aj, 3, 1) = '2'       THEN
+                    'ICMS Difal'
+                WHEN substr(cod_aj, 3, 1) = '3'       THEN
+                    'ICMS FCP'
+            END               apuracao,
+            CASE
+                WHEN substr(cod_aj, 4, 1) = '0'       THEN
+                    '<html><b style="color:red">0 - Total em ajuste de Outros débitos'
+                WHEN substr(cod_aj, 4, 1) = '1'       THEN
+                    '<html><b style="color:red">1 - Total em ajuste de Estorno de créditos'
+                WHEN substr(cod_aj, 4, 1) = '2'       THEN
+                    '<html><b style="color:blue">2 - Total em ajuste de Outros créditos'
+                WHEN substr(cod_aj, 4, 1) = '3'       THEN
+                    '<html><b style="color:blue">3 - Total em ajuste de Estorno de débitos'
+                WHEN substr(cod_aj, 4, 1) = '4'       THEN
+                    '<html><b style="color:blue">4 - Total em ajuste de Deduções do imposto apurado'
+                WHEN substr(cod_aj, 4, 1) = '5'       THEN
+                    '<html><b style="color:blue">5 - Total em ajuste de Débito especial'
+                WHEN substr(cod_aj, 4, 1) = '6'       THEN
+                    '<html><b style="color:blue">6 - Total em ajuste de Controle do ICMS extra-apuração'
+            END               tipo,
+            lpad(TRIM(to_char(round(RATIO_TO_REPORT(SUM(t.vl_aj_apur))
+                                    OVER(PARTITION BY
+                CASE
+                    WHEN cod_aj IS NULL THEN
+                        '1'
+                    ELSE
+                        '2'||substr(cod_aj,4,1)
+                END
+                                    ),
+                                    4) * 100,
+                              '990.00L',
+                              'NLS_CURRENCY=%')),
+                 8)           rr,
+            cod_aj,
+            no_cod_aj,
+            lpad(TRIM(to_char(SUM(t.vl_aj_apur), '999G999G999G990D00')), length(MAX(SUM(t.vl_aj_apur))
+                                                                                OVER()) + 6)      valor
+        FROM
+            bi.fato_efd_sumarizada    t
+            LEFT JOIN bi.dm_efd_ajustes         aj ON t.cod_aj = aj.co_cod_aj
+        WHERE
+                registro = 'E111'
+            AND co_cnpj_cpf_declarante = :CNPJ_CPF
+            AND da_referencia BETWEEN :DATA_INICIAL AND :DATA_FINAL
+        GROUP BY
+            GROUPING SETS ( (
+                CASE
+                    WHEN substr(cod_aj, 3, 1) = '0'       THEN
+                        'ICMS'
+                    WHEN substr(cod_aj, 3, 1) = '1'       THEN
+                        'ICMS Substituição Tributária'
+                    WHEN substr(cod_aj, 3, 1) = '2'       THEN
+                        'ICMS Difal'
+                    WHEN substr(cod_aj, 3, 1) = '3'       THEN
+                        'ICMS FCP'
+                END,
+                CASE
+                    WHEN substr(cod_aj, 4, 1) = '0'       THEN
+                        '<html><b style="color:red">0 - Total em ajuste de Outros débitos'
+                    WHEN substr(cod_aj, 4, 1) = '1'       THEN
+                        '<html><b style="color:red">1 - Total em ajuste de Estorno de créditos'
+                    WHEN substr(cod_aj, 4, 1) = '2'       THEN
+                        '<html><b style="color:blue">2 - Total em ajuste de Outros créditos'
+                    WHEN substr(cod_aj, 4, 1) = '3'       THEN
+                        '<html><b style="color:blue">3 - Total em ajuste de Estorno de débitos'
+                    WHEN substr(cod_aj, 4, 1) = '4'       THEN
+                        '<html><b style="color:blue">4 - Total em ajuste de Deduções do imposto apurado'
+                    WHEN substr(cod_aj, 4, 1) = '5'       THEN
+                        '<html><b style="color:blue">5 - Total em ajuste de Débito especial'
+                    WHEN substr(cod_aj, 4, 1) = '6'       THEN
+                        '<html><b style="color:blue">6 - Total em ajuste de Controle do ICMS extra-apuração'
+                END
+            ), (
+                CASE
+                    WHEN substr(cod_aj, 3, 1) = '0'       THEN
+                        'ICMS'
+                    WHEN substr(cod_aj, 3, 1) = '1'       THEN
+                        'ICMS Substituição Tributária'
+                    WHEN substr(cod_aj, 3, 1) = '2'       THEN
+                        'ICMS Difal'
+                    WHEN substr(cod_aj, 3, 1) = '3'       THEN
+                        'ICMS FCP'
+                END,
+                cod_aj,
+                no_cod_aj ) )
+    )
+ORDER BY
+    CASE
+        WHEN cod_aj IS NULL THEN
+            1
+        ELSE
+            2
+    END,
+    valor DESC]]></sql>
+			<binds>
+				<bind id="CNPJ_CPF">
+					<prompt><![CDATA[CNPJ_CPF]]></prompt>
+					<tooltip><![CDATA[CNPJ_CPF]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+				<bind id="DATA_INICIAL">
+					<prompt><![CDATA[DATA_INICIAL]]></prompt>
+					<tooltip><![CDATA[DATA_INICIAL]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+				<bind id="DATA_FINAL">
+					<prompt><![CDATA[DATA_FINAL]]></prompt>
+					<tooltip><![CDATA[DATA_FINAL]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+			</binds>
+		</query>
+			<pdf version="VERSION_1_7" compression="CONTENT">
+				<docproperty title="null" author="null" subject="null" keywords="null" />
+				<cell toppadding="2" bottompadding="2" leftpadding="2" rightpadding="2" horizontalalign="LEFT" verticalalign="TOP" wrap="true" />
+				<column>
+					<heading font="null" size="10" style="NORMAL" color="-16777216" rowshading="-1" labeling="FIRST_PAGE" />
+					<footing font="null" size="10" style="NORMAL" color="-16777216" rowshading="-1" labeling="NONE" />
+					<blob blob="NONE" zip="false" />
+				</column>
+				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
+				<header enable="false" generatedate="false">
+					<data>
+					
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						null																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																							</data>
+				</header>
+				<footer enable="false" generatedate="false">
+					<data value="null" />
+				</footer>
+				<pagesetup papersize="LETTER" orientation="1" measurement="in" margintop="1.0" marginbottom="1.0" marginleft="1.0" marginright="1.0" />
+			</pdf>
+	</display>
+	<display id="" type="" style="Table" enable="true">
+		<name><![CDATA[Apuração ST - E210]]></name>
+		<description><![CDATA[]]></description>
+		<tooltip><![CDATA[]]></tooltip>
+		<drillclass><![CDATA[]]></drillclass>
+		<CustomValues>
+			<TYPE><![CDATA[vertical]]></TYPE>
+		</CustomValues>
+		<query>
+			<sql><![CDATA[SELECT
+    '<html><b>'||:CNPJ_CPF "CNPJ",
+    '<html><b>'||p.no_razao_social "Nome",
+    '<html><b>'||:INFO "Período da pesquisa",
+   '<html><p style="color:red">'||lpad(TRIM(to_char(SUM(t.vl_tot_debitos), '999G999G999G990D00')), length(MAX(SUM(t.vl_tot_debitos))
+                                                                        OVER()) + 6)      "V. Total Débitos - Saídas",
+   '<html><p style="color:red">'||lpad(TRIM(to_char(SUM(t.vl_aj_debitos), '999G999G999G990D00')), length(MAX(SUM(t.vl_aj_debitos))
+                                                                        OVER()) + 6)      "V. Total Aj. a Déb. Doc Fisc",                                                                        
+   '<html><p style="color:red">'||lpad(TRIM(to_char(SUM(t.vl_tot_aj_debitos), '999G999G999G990D00')), length(MAX(SUM(t.vl_tot_aj_debitos))
+                                                                        OVER()) + 6)      "V. Total dos Aj. a Débito",    
+   '<html><p style="color:red">'||lpad(TRIM(to_char(SUM(t.vl_estornos_cred), '999G999G999G990D00')), length(MAX(SUM(t.vl_estornos_cred))
+                                                                        OVER()) + 6)      "V. Total dos Aj.  Est. Créd.", 
+   '<html><p style="color:blue">'||lpad(TRIM(to_char(SUM(t.vl_tot_creditos), '999G999G999G990D00')), length(MAX(SUM(t.vl_tot_creditos))
+                                                                        OVER()) + 6)      "V. Total Créditos - Entradas",
+   '<html><p style="color:blue">'||lpad(TRIM(to_char(SUM(t.vl_aj_creditos), '999G999G999G990D00')), length(MAX(SUM(t.vl_aj_creditos))
+                                                                        OVER()) + 6)      "V. Total Aj. Créd. Doc Fisc.",
+   '<html><p style="color:blue">'||lpad(TRIM(to_char(SUM(t.vl_tot_aj_creditos), '999G999G999G990D00')), length(MAX(SUM(t.vl_tot_aj_creditos))
+                                                                        OVER()) + 6)      "V. Total dos Aj. a Crédito",
+   '<html><p style="color:blue">'||lpad(TRIM(to_char(SUM(t.vl_estornos_deb), '999G999G999G990D00')), length(MAX(SUM(t.vl_estornos_deb))
+                                                                        OVER()) + 6)      "V. Total dos Aj.  Est. Déb.",
+   '<html><p style="color:blue">'||lpad(TRIM(to_char(SUM(t.vl_sld_credor_ant), '999G999G999G990D00')), length(MAX(SUM(t.vl_sld_credor_ant))
+                                                                        OVER()) + 6)      "V. Sld. Cred. Per Ant.",
+   '<html>'||lpad(TRIM(to_char(SUM(t.vl_sld_apurado), '999G999G999G990D00')), length(MAX(SUM(t.vl_sld_apurado))
+                                                                        OVER()) + 6)      "V. Saldo Devedor Apurado",
+    '<html>'||lpad(TRIM(to_char(SUM(t.vl_tot_ded), '999G999G999G990D00')), length(MAX(SUM(t.vl_tot_ded))
+                                                                        OVER()) + 6)      "V. Total de Deduções",
+   '<html><b style="color:red">'||lpad(TRIM(to_char(SUM(t.vl_recolher), '999G999G999G990D00')), length(MAX(SUM(t.vl_recolher))
+                                                                        OVER()) + 6)      "V. Total de ICMS a Recolher",                                                                      
+   '<html><b style="color:blue">'||lpad(TRIM(to_char(SUM(t.vl_sld_credor_transportar), '999G999G999G990D00')), length(MAX(SUM(t.vl_sld_credor_transportar))
+                                                                        OVER()) + 6)      "V. Sld. Cred. a Transp.",
+    '<html>'||lpad(TRIM(to_char(SUM(t.vl_deb_esp), '999G999G999G990D00')), length(MAX(SUM(t.vl_deb_esp))
+                                                                        OVER()) + 6)      "V. Rec. Extra-Apuração"
+
+FROM
+    bi.fato_efd_sumarizada t
+left join bi.dm_pessoa p on t.CO_CNPJ_CPF_DECLARANTE = p.co_cnpj_cpf 
+    
+WHERE
+        t.co_cnpj_cpf_declarante = :CNPJ_CPF
+    AND t.da_referencia between :DATA_INICIAL and :DATA_FINAL
+    AND t.registro = 'E210'
+    AND t.uf_st = 'RO'
+group by p.no_razao_social]]></sql>
+			<binds>
+				<bind id="CNPJ_CPF">
+					<prompt><![CDATA[CNPJ_CPF]]></prompt>
+					<tooltip><![CDATA[CNPJ_CPF]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+				<bind id="INFO">
+					<prompt><![CDATA[INFO]]></prompt>
+					<tooltip><![CDATA[INFO]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+				<bind id="DATA_INICIAL">
+					<prompt><![CDATA[DATA_INICIAL]]></prompt>
+					<tooltip><![CDATA[DATA_INICIAL]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+				<bind id="DATA_FINAL">
+					<prompt><![CDATA[DATA_FINAL]]></prompt>
+					<tooltip><![CDATA[DATA_FINAL]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+			</binds>
+		</query>
+			<pdf version="VERSION_1_7" compression="CONTENT">
+				<docproperty title="null" author="null" subject="null" keywords="null" />
+				<cell toppadding="2" bottompadding="2" leftpadding="2" rightpadding="2" horizontalalign="LEFT" verticalalign="TOP" wrap="true" />
+				<column>
+					<heading font="null" size="10" style="NORMAL" color="-16777216" rowshading="-1" labeling="FIRST_PAGE" />
+					<footing font="null" size="10" style="NORMAL" color="-16777216" rowshading="-1" labeling="NONE" />
+					<blob blob="NONE" zip="false" />
+				</column>
+				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
+				<header enable="false" generatedate="false">
+					<data>
+					
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						null																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																							</data>
+				</header>
+				<footer enable="false" generatedate="false">
+					<data value="null" />
+				</footer>
+				<pagesetup papersize="LETTER" orientation="1" measurement="in" margintop="1.0" marginbottom="1.0" marginleft="1.0" marginright="1.0" />
+			</pdf>
+	</display>
+	<display id="" type="" style="Table" enable="true">
+		<name><![CDATA[Ajustes E220 (Apuração ST)]]></name>
+		<description><![CDATA[]]></description>
+		<tooltip><![CDATA[]]></tooltip>
+		<drillclass><![CDATA[]]></drillclass>
+		<CustomValues>
+			<TYPE><![CDATA[horizontal]]></TYPE>
+		</CustomValues>
+		<query>
+			<sql><![CDATA[SELECT
+    apuracao,
+    CASE
+        WHEN tipo IS NULL THEN
+            substr(cod_aj,4,1) || ' - ' ||no_cod_aj
+        ELSE
+            tipo
+    END tipo,
+    rr,
+    valor,
+    cod_aj
+FROM
+    (
+        SELECT
+            CASE
+                WHEN substr(cod_aj, 3, 1) = '0'       THEN
+                    'ICMS'
+                WHEN substr(cod_aj, 3, 1) = '1'       THEN
+                    'ICMS Substituição Tributária'
+                WHEN substr(cod_aj, 3, 1) = '2'       THEN
+                    'ICMS Difal'
+                WHEN substr(cod_aj, 3, 1) = '3'       THEN
+                    'ICMS FCP'
+            END               apuracao,
+            CASE
+                WHEN substr(cod_aj, 4, 1) = '0'       THEN
+                    '<html><b style="color:red">0 - Total em ajuste de Outros débitos'
+                WHEN substr(cod_aj, 4, 1) = '1'       THEN
+                    '<html><b style="color:red">1 - Total em ajuste de Estorno de créditos'
+                WHEN substr(cod_aj, 4, 1) = '2'       THEN
+                    '<html><b style="color:blue">2 - Total em ajuste de Outros créditos'
+                WHEN substr(cod_aj, 4, 1) = '3'       THEN
+                    '<html><b style="color:blue">3 - Total em ajuste de Estorno de débitos'
+                WHEN substr(cod_aj, 4, 1) = '4'       THEN
+                    '<html><b style="color:blue">4 - Total em ajuste de Deduções do imposto apurado'
+                WHEN substr(cod_aj, 4, 1) = '5'       THEN
+                    '<html><b style="color:blue">5 - Total em ajuste de Débito especial'
+                WHEN substr(cod_aj, 4, 1) = '6'       THEN
+                    '<html><b style="color:blue">6 - Total em ajuste de Controle do ICMS extra-apuração'
+            END               tipo,
+            lpad(TRIM(to_char(round(RATIO_TO_REPORT(SUM(t.vl_aj_apur))
+                                    OVER(PARTITION BY
+                CASE
+                    WHEN cod_aj IS NULL THEN
+                        '1'
+                    ELSE
+                        '2'||substr(cod_aj,4,1)
+                END
+                                    ),
+                                    4) * 100,
+                              '990.00L',
+                              'NLS_CURRENCY=%')),
+                 8)           rr,
+            cod_aj,
+            no_cod_aj,
+            lpad(TRIM(to_char(SUM(t.vl_aj_apur), '999G999G999G990D00')), length(MAX(SUM(t.vl_aj_apur))
+                                                                                OVER()) + 6)      valor
+        FROM
+            bi.fato_efd_sumarizada    t
+            LEFT JOIN bi.dm_efd_ajustes         aj ON t.cod_aj = aj.co_cod_aj
+        WHERE
+                registro = 'E220'
+            AND co_cnpj_cpf_declarante = :CNPJ_CPF
+            AND da_referencia BETWEEN :DATA_INICIAL AND :DATA_FINAL
+            AND UF_ST = 'RO'
+        GROUP BY
+            GROUPING SETS ( (
+                CASE
+                    WHEN substr(cod_aj, 3, 1) = '0'       THEN
+                        'ICMS'
+                    WHEN substr(cod_aj, 3, 1) = '1'       THEN
+                        'ICMS Substituição Tributária'
+                    WHEN substr(cod_aj, 3, 1) = '2'       THEN
+                        'ICMS Difal'
+                    WHEN substr(cod_aj, 3, 1) = '3'       THEN
+                        'ICMS FCP'
+                END,
+                CASE
+                    WHEN substr(cod_aj, 4, 1) = '0'       THEN
+                        '<html><b style="color:red">0 - Total em ajuste de Outros débitos'
+                    WHEN substr(cod_aj, 4, 1) = '1'       THEN
+                        '<html><b style="color:red">1 - Total em ajuste de Estorno de créditos'
+                    WHEN substr(cod_aj, 4, 1) = '2'       THEN
+                        '<html><b style="color:blue">2 - Total em ajuste de Outros créditos'
+                    WHEN substr(cod_aj, 4, 1) = '3'       THEN
+                        '<html><b style="color:blue">3 - Total em ajuste de Estorno de débitos'
+                    WHEN substr(cod_aj, 4, 1) = '4'       THEN
+                        '<html><b style="color:blue">4 - Total em ajuste de Deduções do imposto apurado'
+                    WHEN substr(cod_aj, 4, 1) = '5'       THEN
+                        '<html><b style="color:blue">5 - Total em ajuste de Débito especial'
+                    WHEN substr(cod_aj, 4, 1) = '6'       THEN
+                        '<html><b style="color:blue">6 - Total em ajuste de Controle do ICMS extra-apuração'
+                END
+            ), (
+                CASE
+                    WHEN substr(cod_aj, 3, 1) = '0'       THEN
+                        'ICMS'
+                    WHEN substr(cod_aj, 3, 1) = '1'       THEN
+                        'ICMS Substituição Tributária'
+                    WHEN substr(cod_aj, 3, 1) = '2'       THEN
+                        'ICMS Difal'
+                    WHEN substr(cod_aj, 3, 1) = '3'       THEN
+                        'ICMS FCP'
+                END,
+                cod_aj,
+                no_cod_aj ) )
+    )
+ORDER BY
+    CASE
+        WHEN cod_aj IS NULL THEN
+            1
+        ELSE
+            2
+    END,
+    valor DESC]]></sql>
+			<binds>
+				<bind id="CNPJ_CPF">
+					<prompt><![CDATA[CNPJ_CPF]]></prompt>
+					<tooltip><![CDATA[CNPJ_CPF]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+				<bind id="DATA_INICIAL">
+					<prompt><![CDATA[DATA_INICIAL]]></prompt>
+					<tooltip><![CDATA[DATA_INICIAL]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+				<bind id="DATA_FINAL">
+					<prompt><![CDATA[DATA_FINAL]]></prompt>
+					<tooltip><![CDATA[DATA_FINAL]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+			</binds>
+		</query>
+			<pdf version="VERSION_1_7" compression="CONTENT">
+				<docproperty title="null" author="null" subject="null" keywords="null" />
+				<cell toppadding="2" bottompadding="2" leftpadding="2" rightpadding="2" horizontalalign="LEFT" verticalalign="TOP" wrap="true" />
+				<column>
+					<heading font="null" size="10" style="NORMAL" color="-16777216" rowshading="-1" labeling="FIRST_PAGE" />
+					<footing font="null" size="10" style="NORMAL" color="-16777216" rowshading="-1" labeling="NONE" />
+					<blob blob="NONE" zip="false" />
+				</column>
+				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
+				<header enable="false" generatedate="false">
+					<data>
+					
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						null																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																							</data>
+				</header>
+				<footer enable="false" generatedate="false">
+					<data value="null" />
+				</footer>
+				<pagesetup papersize="LETTER" orientation="1" measurement="in" margintop="1.0" marginbottom="1.0" marginleft="1.0" marginright="1.0" />
+			</pdf>
+	</display>
+	<display id="" type="" style="Table" enable="true">
+		<name><![CDATA[<html><b style="color:red">Entradas]]></name>
+		<description><![CDATA[]]></description>
+		<tooltip><![CDATA[]]></tooltip>
+		<drillclass><![CDATA[]]></drillclass>
+		<CustomValues>
+			<TYPE><![CDATA[horizontal]]></TYPE>
+		</CustomValues>
+		<query>
+			<sql><![CDATA[SELECT
+    :CNPJ_CPF cnpj_cpf,
+    :DATA_INICIAL DATA_INICIAL,
+    :DATA_FINAL DATA_FINAL,
+    cnpj_cpf CNPJ_CPF_EMIT,
+    
+        CASE
+        WHEN cod_mod IS NULL AND cnpj_cpf IS NULL and nome is null and co_uf is null THEN
+            '<html><font size=4><b>---Σ Total geral'
+        WHEN cod_mod IS NULL AND cnpj_cpf IS NULL and nome is null and co_uf is not null THEN
+            '<html>--------Σ Total de operações de entrada,  por Estado'
+        ELSE
+            nome
+    END                                   nome,
+    co_uf,
+    lpad(TRIM(to_char(round(RATIO_TO_REPORT(SUM(vl_doc))
+                            OVER(PARTITION BY
+        CASE
+            WHEN cnpj_cpf IS NULL
+                 AND co_uf IS NULL
+                 AND cod_mod IS NULL THEN
+                0
+            WHEN cnpj_cpf IS NULL
+                 AND cod_mod IS NULL
+                 AND co_uf IS NOT NULL THEN
+                1
+            ELSE
+                2
+        END
+                            ),
+                            4) * 100,
+                      '990.00L',
+                      'NLS_CURRENCY=%')),
+         8)                               rr_geral,
+    lpad(TRIM(to_char(SUM(vl_doc), '999G999G999G990D00')), length(MAX(SUM(vl_doc))
+                                                                  OVER()) + 6)                          vl_doc,
+    lpad(TRIM(to_char(SUM(vl_bc_icms), '999G999G999G990D00')), length(MAX(SUM(vl_bc_icms))
+                                                                      OVER()) + 6)                          vl_bc_icms,
+    lpad(TRIM(to_char(SUM(vl_icms), '999G999G999G990D00')), length(MAX(SUM(vl_icms))
+                                                                   OVER()) + 6)                          vl_icms,
+    lpad(TRIM(to_char(SUM(vl_bc_icms_st), '999G999G999G990D00')), length(MAX(SUM(vl_bc_icms_st))
+                                                                         OVER()) + 6)                          vl_bc_icms_st,
+    lpad(TRIM(to_char(SUM(vl_icms_st), '999G999G999G990D00')), length(MAX(SUM(vl_icms_st))
+                                                                      OVER()) + 6)                          vl_icms_st,
+    '<html><i>'
+    || nvl(round(nullif(SUM(vl_bc_icms), 0) / nullif(SUM(vl_doc), 0) * 100, 2), 0)
+    || '%'                                ind_bcvt,
+    '<html><i>'
+    || nvl(round(nullif(SUM(vl_icms), 0) / nullif(SUM(vl_bc_icms), 0) * 100, 2), 0)
+    || '%'                                ind_ibc,
+    '<html><p style="color:red">'|| lpad(TRIM(to_char(ar.inadimplencia, '999G999G999G990D00')), length(MAX(ar.inadimplencia)
+                                                                      OVER()) + 6) inadimp_forn
+    
+FROM
+    (
+        SELECT
+            rc100.cod_mod,
+            CASE
+                WHEN r0150.cnpj IS NULL THEN
+                    r0150.cpf
+                ELSE
+                    r0150.cnpj
+            END  cnpj_cpf,
+            CASE
+                WHEN r0150.nome IS NULL THEN
+                    'Venda a consumidor final'
+                ELSE
+                    r0150.nome
+            END  nome,
+            CASE
+                WHEN l.co_uf IS NULL THEN
+                    'RO'
+                ELSE
+                    l.co_uf
+            END  co_uf,
+            rc100.vl_doc,
+            rc100.vl_bc_icms,
+            rc100.vl_icms,
+            rc100.vl_bc_icms_st,
+            rc100.vl_icms_st
+        FROM
+            bi.dm_efd_arquivo_valido    t
+            LEFT JOIN sped.reg_c100               rc100 ON t.reg_0000_id = rc100.reg_0000_id
+            LEFT JOIN sped.reg_0150               r0150 ON t.reg_0000_id = r0150.reg_0000_id
+                                             AND rc100.cod_part = r0150.cod_part
+            LEFT JOIN bi.dm_localidade            l ON r0150.cod_mun = l.co_mun_ibge
+
+        WHERE
+                t.co_cnpj_cpf_declarante = :CNPJ_CPF 
+            AND t.da_inicio_arquivo BETWEEN :DATA_INICIAL AND :DATA_FINAL
+            AND rc100.cod_sit NOT IN ( '02', '04', '05' )
+            AND rc100.ind_oper = '0'
+    ) b
+ LEFT JOIN (
+                                                        SELECT t.co_cnpj_cpf,
+                                                               SUM(t.va_principal + t.va_multa + t.va_juros + t.va_acrescimo) inadimplencia
+                                                        FROM bi.fato_lanc_arrec_sum t
+                                                        WHERE t.da_arrecadacao IS NULL
+                                                              AND t.id_situacao = '01'
+                                                              AND t.vencido = '3'
+                                                        GROUP BY t.co_cnpj_cpf
+                                                    ) ar on b.cnpj_cpf = ar.co_cnpj_cpf
+GROUP BY
+    GROUPING SETS ( ( ),
+    ( co_uf ), ( co_uf,
+                 cnpj_cpf,
+                 nome,
+                 cod_mod, ar.inadimplencia ) )
+                 
+ORDER BY
+        CASE
+            WHEN CNPJ_CPF_EMIT IS NULL
+                 AND co_uf IS NULL
+                 AND cod_mod IS NULL THEN
+                0
+            WHEN CNPJ_CPF_EMIT IS NULL
+                 AND cod_mod IS NULL
+                 AND co_uf IS NOT NULL THEN
+                1
+            ELSE
+                2
+        END, vl_doc desc]]></sql>
+			<binds>
+				<bind id="CNPJ_CPF">
+					<prompt><![CDATA[CNPJ_CPF]]></prompt>
+					<tooltip><![CDATA[CNPJ_CPF]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+				<bind id="DATA_INICIAL">
+					<prompt><![CDATA[DATA_INICIAL]]></prompt>
+					<tooltip><![CDATA[DATA_INICIAL]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+				<bind id="DATA_FINAL">
+					<prompt><![CDATA[DATA_FINAL]]></prompt>
+					<tooltip><![CDATA[DATA_FINAL]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+			</binds>
+		</query>
+			<pdf version="VERSION_1_7" compression="CONTENT">
+				<docproperty title="" author="" subject="" keywords="" />
+				<cell toppadding="2" bottompadding="2" leftpadding="2" rightpadding="2" horizontalalign="LEFT" verticalalign="TOP" wrap="true" />
+				<column>
+					<heading font="null" size="10" style="NORMAL" color="-16777216" rowshading="-1" labeling="FIRST_PAGE" />
+					<footing font="null" size="10" style="NORMAL" color="-16777216" rowshading="-1" labeling="NONE" />
+					<blob blob="NONE" zip="false" />
+				</column>
+				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
+				<header enable="false" generatedate="false">
+					<data>
+					
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+					
+						
+					
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+					
+					
+					
+					
+					
+					null																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																	</data>
+				</header>
+				<footer enable="false" generatedate="false">
+					<data value="null" />
+				</footer>
+				<pagesetup papersize="LETTER" orientation="1" measurement="in" margintop="1.0" marginbottom="1.0" marginleft="1.0" marginright="1.0" />
+			</pdf>
+	</display>
+	<display id="" type="" style="Table" enable="true">
+		<name><![CDATA[<html><b style="color:blue">Saídas]]></name>
+		<description><![CDATA[]]></description>
+		<tooltip><![CDATA[]]></tooltip>
+		<drillclass><![CDATA[]]></drillclass>
+		<CustomValues>
+			<TYPE><![CDATA[horizontal]]></TYPE>
+		</CustomValues>
+		<query>
+			<sql><![CDATA[SELECT
+    :CNPJ_CPF cnpj_cpf,
+    :DATA_INICIAL DATA_INICIAL,
+    :DATA_FINAL DATA_FINAL,
+    cnpj_cpf CNPJ_CPF_DEST,
+    
+        CASE
+        WHEN cod_mod IS NULL AND cnpj_cpf IS NULL and nome is null and co_uf is null THEN
+            '<html><font size=4><b>---Σ Total geral'
+        WHEN cod_mod IS NULL AND cnpj_cpf IS NULL and nome is null and co_uf is not null THEN
+            '<html>--------Σ Total de operações de saída,  por Estado'
+        ELSE
+            nome
+    END                                   nome,
+    co_uf,
+    lpad(TRIM(to_char(round(RATIO_TO_REPORT(SUM(vl_doc))
+                            OVER(PARTITION BY
+        CASE
+            WHEN cnpj_cpf IS NULL
+                 AND co_uf IS NULL
+                 AND cod_mod IS NULL THEN
+                0
+            WHEN cnpj_cpf IS NULL
+                 AND cod_mod IS NULL
+                 AND co_uf IS NOT NULL THEN
+                1
+            ELSE
+                2
+        END
+                            ),
+                            4) * 100,
+                      '990.00L',
+                      'NLS_CURRENCY=%')),
+         8)                               rr_geral,
+    lpad(TRIM(to_char(SUM(vl_doc), '999G999G999G990D00')), length(MAX(SUM(vl_doc))
+                                                                  OVER()) + 6)                          vl_doc,
+    lpad(TRIM(to_char(SUM(vl_bc_icms), '999G999G999G990D00')), length(MAX(SUM(vl_bc_icms))
+                                                                      OVER()) + 6)                          vl_bc_icms,
+    lpad(TRIM(to_char(SUM(vl_icms), '999G999G999G990D00')), length(MAX(SUM(vl_icms))
+                                                                   OVER()) + 6)                          vl_icms,
+    lpad(TRIM(to_char(SUM(vl_bc_icms_st), '999G999G999G990D00')), length(MAX(SUM(vl_bc_icms_st))
+                                                                         OVER()) + 6)                          vl_bc_icms_st,
+    lpad(TRIM(to_char(SUM(vl_icms_st), '999G999G999G990D00')), length(MAX(SUM(vl_icms_st))
+                                                                      OVER()) + 6)                          vl_icms_st,
+    '<html><i>'
+    || nvl(round(nullif(SUM(vl_bc_icms), 0) / nullif(SUM(vl_doc), 0) * 100, 2), 0)
+    || '%'                                ind_bcvt,
+    '<html><i>'
+    || nvl(round(nullif(SUM(vl_icms), 0) / nullif(SUM(vl_bc_icms), 0) * 100, 2), 0)
+    || '%'                                ind_ibc
+FROM
+    (
+        SELECT
+            rc100.cod_mod,
+            CASE
+                WHEN r0150.cnpj IS NULL THEN
+                    r0150.cpf
+                ELSE
+                    r0150.cnpj
+            END  cnpj_cpf,
+            CASE
+                WHEN r0150.nome IS NULL THEN
+                    'Venda a consumidor final'
+                ELSE
+                    r0150.nome
+            END  nome,
+            CASE
+                WHEN l.co_uf IS NULL THEN
+                    'RO'
+                ELSE
+                    l.co_uf
+            END  co_uf,
+            rc100.vl_doc,
+            rc100.vl_bc_icms,
+            rc100.vl_icms,
+            rc100.vl_bc_icms_st,
+            rc100.vl_icms_st
+        FROM
+            bi.dm_efd_arquivo_valido    t
+            LEFT JOIN sped.reg_c100               rc100 ON t.reg_0000_id = rc100.reg_0000_id
+            LEFT JOIN sped.reg_0150               r0150 ON t.reg_0000_id = r0150.reg_0000_id
+                                             AND rc100.cod_part = r0150.cod_part
+            LEFT JOIN bi.dm_localidade            l ON r0150.cod_mun = l.co_mun_ibge
+        WHERE
+                t.co_cnpj_cpf_declarante = :CNPJ_CPF 
+            AND t.da_inicio_arquivo BETWEEN :DATA_INICIAL AND :DATA_FINAL
+            AND rc100.cod_sit NOT IN ( '02', '04', '05' )
+            AND rc100.ind_oper = '1'
+    )
+GROUP BY
+    GROUPING SETS ( ( ),
+    ( co_uf ), ( co_uf,
+                 cnpj_cpf,
+                 nome,
+                 '<html><p style=color:blue>1 - Saída',
+                 cod_mod ) )
+                 
+ORDER BY
+        CASE
+            WHEN CNPJ_CPF_DEST IS NULL
+                 AND co_uf IS NULL
+                 AND cod_mod IS NULL THEN
+                0
+            WHEN CNPJ_CPF_DEST IS NULL
+                 AND cod_mod IS NULL
+                 AND co_uf IS NOT NULL THEN
+                1
+            ELSE
+                2
+        END, vl_doc desc]]></sql>
+		</query>
+			<pdf version="VERSION_1_7" compression="CONTENT">
+				<docproperty title="" author="" subject="" keywords="" />
+				<cell toppadding="2" bottompadding="2" leftpadding="2" rightpadding="2" horizontalalign="LEFT" verticalalign="TOP" wrap="true" />
+				<column>
+					<heading font="null" size="10" style="NORMAL" color="-16777216" rowshading="-1" labeling="FIRST_PAGE" />
+					<footing font="null" size="10" style="NORMAL" color="-16777216" rowshading="-1" labeling="NONE" />
+					<blob blob="NONE" zip="false" />
+				</column>
+				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
+				<header enable="false" generatedate="false">
+					<data>
+					
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+					
+						
+					
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+					
+					
+					
+					
+					
+					null																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																	</data>
+				</header>
+				<footer enable="false" generatedate="false">
+					<data value="null" />
+				</footer>
+				<pagesetup papersize="LETTER" orientation="1" measurement="in" margintop="1.0" marginbottom="1.0" marginleft="1.0" marginright="1.0" />
+			</pdf>
+	</display>
+	<display id="" type="" style="Table" enable="true">
+		<name><![CDATA[Fisconforme (malhas s/ EFD)]]></name>
+		<description><![CDATA[]]></description>
+		<tooltip><![CDATA[]]></tooltip>
+		<drillclass><![CDATA[]]></drillclass>
+		<CustomValues>
+			<TYPE><![CDATA[horizontal]]></TYPE>
+		</CustomValues>
+		<query>
+			<sql><![CDATA[SELECT
+    t.id notificacao,
+    t.malhas_id,
+    m.titulo,
+    t.periodo,
+    CASE WHEN t.status = 0 THEN
+            '<html><strong><font color="red">0 - Pendente'
+        WHEN t.status = 1    THEN
+            '<html><strong><font color="orange">1 - Contestado'
+        WHEN t.status = 2    THEN
+            '<html><strong><font color="blue">2 - Resolvido'
+        WHEN t.status = 4    THEN
+            '<html><strong><font color="red">4 - Indeferido'
+        WHEN t.status = 5    THEN
+            '<html><strong><font color="blue">5 - Deferido'
+        WHEN t.status = 7    THEN
+            '<html><strong><font color="blue">7 - Deferido Automaticamente'
+        ELSE
+            to_char(t.status)
+    END status
+FROM
+    app_pendencia.pendencias    t
+    LEFT JOIN app_pendencia.malhas        m ON t.malhas_id = m.id
+WHERE
+    t.cpf_cnpj = :CNPJ_CPF
+    AND to_date(t.periodo, 'YYYYMM') BETWEEN :DATA_INICIAL AND :DATA_FINAL 
+    AND t.malhas_id IN ( '10380', '10420', '10440', '10400', '10500',
+                     '10140', '10061', '10020', '10180', '10200',
+                     '10120', '10040', '10060', '10100',
+                     '10240',
+                     '10260',
+                     '10320',
+                     '10360' )
+ORDER BY decode(t.status, 0, 1, 4, 2,
+                                               1, 3, 2, 4, 5,
+                                               4, 7, 4, NULL, 4),
+t.periodo DESC]]></sql>
+			<binds>
+				<bind id="CNPJ_CPF">
+					<prompt><![CDATA[CNPJ_CPF]]></prompt>
+					<tooltip><![CDATA[CNPJ_CPF]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+				<bind id="DATA_INICIAL">
+					<prompt><![CDATA[DATA_INICIAL]]></prompt>
+					<tooltip><![CDATA[DATA_INICIAL]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+				<bind id="DATA_FINAL">
+					<prompt><![CDATA[DATA_FINAL]]></prompt>
+					<tooltip><![CDATA[DATA_FINAL]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+			</binds>
+		</query>
+			<pdf version="VERSION_1_7" compression="CONTENT">
+				<docproperty title="" author="" subject="" keywords="" />
+				<cell toppadding="2" bottompadding="2" leftpadding="2" rightpadding="2" horizontalalign="LEFT" verticalalign="TOP" wrap="true" />
+				<column>
+					<heading font="null" size="10" style="NORMAL" color="-16777216" rowshading="-1" labeling="FIRST_PAGE" />
+					<footing font="null" size="10" style="NORMAL" color="-16777216" rowshading="-1" labeling="NONE" />
+					<blob blob="NONE" zip="false" />
+				</column>
+				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
+				<header enable="false" generatedate="false">
+					<data>
+					
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+					
+						
+					
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+					
+					
+					
+					null																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																							</data>
+				</header>
+				<footer enable="false" generatedate="false">
+					<data value="null" />
+				</footer>
+				<pagesetup papersize="LETTER" orientation="1" measurement="in" margintop="1.0" marginbottom="1.0" marginleft="1.0" marginright="1.0" />
+			</pdf>
+	</display>
+	<display id="" type="" style="Table" enable="true">
+		<name><![CDATA[C100]]></name>
+		<description><![CDATA[]]></description>
+		<tooltip><![CDATA[]]></tooltip>
+		<drillclass><![CDATA[]]></drillclass>
+		<CustomValues>
+			<TYPE><![CDATA[horizontal]]></TYPE>
+		</CustomValues>
+		<query>
+			<sql><![CDATA[SELECT 
+	--c100.ID,
+    --c100.REG_0000_ID,
+    --c100.REG,
+    c100.IND_OPER,
+    c100.IND_EMIT,
+    CASE 
+        WHEN c100.IND_EMIT = 0 THEN '0 - Emissão Própria'
+        WHEN c100.IND_EMIT = 1 THEN '1 - Terceiros'
+    END AS IND_EMIT_DESC,
+    c100.COD_PART,
+    c100.COD_MOD,
+    c100.COD_SIT,
+    c100.SER,
+    c100.NUM_DOC,
+    c100.CHV_NFE,
+    TO_DATE(c100.DT_DOC, 'DDMMYYYY') dt_doc,
+    TO_DATE(c100.DT_E_S, 'DDMMYYYY') dt_e_s,
+    --c100.DT_DOC,
+    --c100.DT_E_S,
+    c100.VL_DOC,
+    c100.IND_PGTO,
+    c100.VL_DESC,
+    c100.VL_ABAT_NT,
+    c100.VL_MERC,
+    c100.IND_FRT,
+    c100.VL_FRT,
+    c100.VL_SEG,
+    c100.VL_OUT_DA,
+    c100.VL_BC_ICMS,
+    c100.VL_ICMS,
+    c100.VL_BC_ICMS_ST,
+    c100.VL_ICMS_ST,
+    c100.VL_IPI,
+    c100.VL_PIS,
+    c100.VL_COFINS,
+    c100.VL_PIS_ST,
+    c100.VL_COFINS_ST,
+    c100.CREATED_AT,
+    c100.UPDATED_AT
+FROM sped.reg_c100 c100
+    INNER JOIN (
+        SELECT reg_0000_a.id 
+        FROM sped.reg_0000 reg_0000_a
+        INNER JOIN (
+            SELECT
+                reg_0000_b.dt_ini AS Periodo,
+                MAX(CAST(reg_0000_b.data_entrega AS DATE)) AS Entrega
+            FROM sped.reg_0000 reg_0000_b
+            WHERE reg_0000_b.cnpj = :CNPJ
+                AND reg_0000_b.dt_ini BETWEEN :data_inicial AND :data_final
+            GROUP BY reg_0000_b.dt_ini
+            ORDER BY reg_0000_b.dt_ini
+        ) datas 
+        ON reg_0000_a.dt_ini = datas.Periodo 
+            AND CAST(reg_0000_a.data_entrega AS DATE) = datas.Entrega
+        WHERE reg_0000_a.cnpj = :CNPJ
+    ) datas_cnpj 
+    ON c100.reg_0000_id = datas_cnpj.id]]></sql>
+			<binds>
+				<bind id="CNPJ">
+					<prompt><![CDATA[CNPJ]]></prompt>
+					<tooltip><![CDATA[CNPJ]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+				<bind id="data_inicial">
+					<prompt><![CDATA[data_inicial]]></prompt>
+					<tooltip><![CDATA[data_inicial]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+				<bind id="data_final">
+					<prompt><![CDATA[data_final]]></prompt>
+					<tooltip><![CDATA[data_final]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+			</binds>
+		</query>
+			<pdf version="VERSION_1_7" compression="CONTENT">
+				<docproperty title="null" author="null" subject="null" keywords="null" />
+				<cell toppadding="2" bottompadding="2" leftpadding="2" rightpadding="2" horizontalalign="LEFT" verticalalign="TOP" wrap="true" />
+				<column>
+					<heading font="null" size="10" style="NORMAL" color="-16777216" rowshading="-1" labeling="FIRST_PAGE" />
+					<footing font="null" size="10" style="NORMAL" color="-16777216" rowshading="-1" labeling="NONE" />
+					<blob blob="NONE" zip="false" />
+				</column>
+				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
+				<header enable="false" generatedate="false">
+					<data>
+					
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						null																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																							</data>
+				</header>
+				<footer enable="false" generatedate="false">
+					<data value="null" />
+				</footer>
+				<pagesetup papersize="LETTER" orientation="1" measurement="in" margintop="1.0" marginbottom="1.0" marginleft="1.0" marginright="1.0" />
+			</pdf>
+	</display>
+</display>
+</displays>

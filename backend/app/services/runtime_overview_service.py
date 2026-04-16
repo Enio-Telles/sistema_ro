@@ -15,12 +15,20 @@ def get_runtime_overview() -> dict:
     return {
         "recommendation": {
             "official_runtime": {
-                "gold": gold_rec,
+                "gold": {
+                    "runtime": gold_rec.get("official_runtime"),
+                    "current_alias": catalog["official"]["gold_current_alias"],
+                    "api_prefix": gold_rec.get("official_api_prefix"),
+                },
                 "fisconforme": {
                     "runtime": fis_rec.get("official_runtime"),
                     "current_alias": catalog["official"]["fisconforme_current_alias"],
                     "api_prefix": fis_rec.get("official_api_prefix"),
                 }
+            },
+            "details": {
+                "gold": gold_rec,
+                "fisconforme": fis_rec,
             }
         },
         "operational_index": get_operational_surface_index(),

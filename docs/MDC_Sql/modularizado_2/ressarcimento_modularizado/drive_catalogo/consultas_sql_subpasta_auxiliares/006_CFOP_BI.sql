@@ -1,0 +1,8 @@
+-- REFERÊNCIA CATALOGADA DO GOOGLE DRIVE
+-- Pasta lógica: consultas_sql_subpasta_auxiliares
+-- Arquivo: CFOP_BI.sql
+-- URL de origem: https://drive.google.com/file/d/10z14L_KZf1nv8RE-AMXLllMr-F2sNRZM/view?usp=drivesdk
+-- Situação nesta atualização: catalogado a partir do Google Drive.
+-- Observação: o conector abriu a estrutura da pasta e permitiu o inventário dos arquivos,
+-- mas a extração integral em lote de todos os SQLs não foi concluída nesta mesma passada.
+-- Este arquivo funciona como marcador auditável para extração incremental posterior.

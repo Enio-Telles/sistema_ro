@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<displays>
+<display id="b14472a2-017a-1000-8001-c0a844704db1" type="" style="Table" enable="true">
+	<name><![CDATA[Dossiê Fronteira 2.0]]></name>
+	<description><![CDATA[]]></description>
+	<tooltip><![CDATA[]]></tooltip>
+	<drillclass><![CDATA[]]></drillclass>
+	<CustomValues>
+		<TYPE><![CDATA[horizontal]]></TYPE>
+	</CustomValues>
+	<query>
+		<sql><![CDATA[SELECT
+      t.it_nu_comando comando,
+      t.it_da_transacao data_trans,
+      t.it_cpf_motorista cpf_motorista,
+      t.it_nu_placa_tracao placa,
+      t.it_nu_placa_reboque1 placa_reb_1,
+      t.it_nu_placa_reboque2 placa_reb_2,
+      t.it_qtd_nota quant_nfs,
+      t.it_qtd_conhecimento quant_conhec,
+      t.it_da_liberacao da_liberacao,
+      t.it_cpf_auditor_liberacao auditor,
+      t.it_cgc_transportadora cnpj_transp,
+      t.it_proprietario_veiculo cnpj_cpf_prop_veic
+  FROM
+      sitafe.sitafe_comando t
+ WHERE
+       t.it_nu_comando  IN(SELECT IT_NU_COMANDO FROM(
+                                                SELECT
+                                                      t.it_nu_comando
+                                                  FROM
+                                                      sitafe.sitafe_comando t
+                                                 WHERE
+                                                     t.it_nu_comando = case when :NU_COMANDO is null then '99999999999999999999' else :NU_COMANDO end
+                                                
+                                                UNION
+                                                
+                                                SELECT
+                                                      t.it_nu_comando
+                                                  FROM
+                                                      sitafe.sitafe_comando t
+                                                 WHERE
+                                                     t.it_cpf_motorista = case when :CPF_MOTORISTA is null then '99999999999999999999' else :CPF_MOTORISTA end
+                                                
+                                                UNION
+                                                
+                                                SELECT
+                                                      t.it_nu_comando
+                                                  FROM
+                                                      sitafe.sitafe_comando t
+                                                 WHERE
+                                                     t.it_nu_placa_tracao = case when :PLACA_TRATOR is null then '99999999999999999999' else :PLACA_TRATOR end
+                                                
+                                                UNION
+                                                
+                                                SELECT 
+                                                      it_nu_comando
+                                                  FROM
+                                                      sitafe.sitafe_nota_fiscal f
+                                                 WHERE
+                                                       f.it_nucnpj_cpf_destino_nf = case when :CNPJ_DESTINATARIO is null then '99999999999999999999' else :CNPJ_DESTINATARIO end
+                                                
+                                                UNION
+                                                
+                                                SELECT 
+                                                      it_nu_comando
+                                                  FROM
+                                                      sitafe.sitafe_nota_fiscal f
+                                                 WHERE
+                                                       f.IT_NU_CNPJ_EMITENTE_NF = case when :CNPJ_EMITENTE is null then '99999999999999999999' else :CNPJ_EMITENTE end
+                                                
+                                                UNION
+                                                
+                                                SELECT 
+                                                      it_nu_comando
+                                                  FROM
+                                                      sitafe.sitafe_nota_fiscal f
+                                                 WHERE
+                                                       f.IT_NU_IDENTIFICAO_NF_E = case when :CHAVE_ACESSO is null then '99999999999999999999' else :CHAVE_ACESSO end))
+
+
+ORDER BY t.it_da_liberacao desc]]></sql>
+		<binds>
+			<bind id="NU_COMANDO">
+				<prompt><![CDATA[NU_COMANDO]]></prompt>
+				<tooltip><![CDATA[NU_COMANDO]]></tooltip>
+				<value><![CDATA[null]]></value>
+				<bracket><![CDATA[null]]></bracket>
+			</bind>
+			<bind id="CPF_MOTORISTA">
+				<prompt><![CDATA[CPF_MOTORISTA]]></prompt>
+				<tooltip><![CDATA[CPF_MOTORISTA]]></tooltip>
+				<value><![CDATA[NULL_VALUE]]></value>
+				<bracket><![CDATA[null]]></bracket>
+			</bind>
+			<bind id="PLACA_TRATOR">
+				<prompt><![CDATA[PLACA_TRATOR]]></prompt>
+				<tooltip><![CDATA[PLACA_TRATOR]]></tooltip>
+				<value><![CDATA[NULL_VALUE]]></value>
+				<bracket><![CDATA[null]]></bracket>
+			</bind>
+			<bind id="CNPJ_DESTINATARIO">
+				<prompt><![CDATA[CNPJ_DESTINATARIO]]></prompt>
+				<tooltip><![CDATA[CNPJ_DESTINATARIO]]></tooltip>
+				<value><![CDATA[04565289001623]]></value>
+				<bracket><![CDATA[null]]></bracket>
+			</bind>
+			<bind id="CNPJ_EMITENTE">
+				<prompt><![CDATA[CNPJ_EMITENTE]]></prompt>
+				<tooltip><![CDATA[CNPJ_EMITENTE]]></tooltip>
+				<value><![CDATA[]]></value>
+				<bracket><![CDATA[null]]></bracket>
+			</bind>
+			<bind id="CHAVE_ACESSO">
+				<prompt><![CDATA[CHAVE_ACESSO]]></prompt>
+				<tooltip><![CDATA[CHAVE_ACESSO]]></tooltip>
+				<value><![CDATA[04420916001204]]></value>
+				<bracket><![CDATA[null]]></bracket>
+			</bind>
+		</binds>
+	</query>
+	<display id="" type="" style="Table" enable="true">
+		<name><![CDATA[Destinatário(s)]]></name>
+		<description><![CDATA[]]></description>
+		<tooltip><![CDATA[]]></tooltip>
+		<drillclass><![CDATA[]]></drillclass>
+		<CustomValues>
+			<TYPE><![CDATA[horizontal]]></TYPE>
+		</CustomValues>
+		<query>
+			<sql><![CDATA[SELECT
+:COMANDO COMANDO,
+t.it_nucnpj_cpf_destino_nf co_cnpj_cpf,
+'<html><b>'||p.no_razao_social nome,
+l.no_municipio,
+l.co_uf,
+lpad(TRIM(to_char(sum(it_va_produto), '999G999G999G990D00')), length(MAX(sum(it_va_produto))
+                                                                                                         OVER()) + 6)
+ total
+
+FROM
+    sitafe.sitafe_nota_fiscal t
+left join sitafe.sitafe_nfe_item it on t.it_nu_identificao_nf_e = it.it_nu_chave_acesso
+left join bi.dm_pessoa p on t.it_nucnpj_cpf_destino_nf = p.co_cnpj_cpf
+left join bi.dm_localidade l on p.co_municipio = l.co_municipio
+where it_nu_comando = :COMANDO
+group by t.it_nucnpj_cpf_destino_nf, p.no_razao_social, l.no_municipio, l.co_uf
+ORDER BY total desc]]></sql>
+			<binds>
+				<bind id="COMANDO">
+					<prompt><![CDATA[COMANDO]]></prompt>
+					<tooltip><![CDATA[COMANDO]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+			</binds>
+		</query>
+		<display id="" type="" style="Table" enable="true">
+			<name><![CDATA[Nota(s) Fiscal(is)]]></name>
+			<description><![CDATA[]]></description>
+			<tooltip><![CDATA[]]></tooltip>
+			<drillclass><![CDATA[]]></drillclass>
+			<CustomValues>
+				<TYPE><![CDATA[horizontal]]></TYPE>
+			</CustomValues>
+			<query>
+				<sql><![CDATA[SELECT
+						:COMANDO COMANDO,
+						t.it_nu_identificacao_nf ident_nf,
+						t.it_nu_identificao_nf_e             chave_acesso,
+						to_date(t.it_da_entrada, 'yyyymmdd') da_entrada,
+						t.it_nu_cnpj_emitente_nf             co_emitente,
+						t.it_co_uf_origem                    uf_emit,
+						t.it_nucnpj_cpf_destino_nf           co_destinatario,
+						t.it_co_uf_destino                   uf_dest,
+						t.it_va_bc_icms                      bc_icms,
+						t.it_va_icms                         va_icms,
+						t.it_va_bc_icms_st                   bc_icms_st,
+						t.it_va_icms_st                      va_icms_st,
+						t.it_va_nf                           va_nf
+					FROM
+						sitafe.sitafe_nota_fiscal t
+					where t.it_nu_comando = :COMANDO
+						and t.it_nucnpj_cpf_destino_nf = :CO_CNPJ_CPF]]></sql>
+				<binds>
+					<bind id="COMANDO">
+						<prompt><![CDATA[COMANDO]]></prompt>
+						<tooltip><![CDATA[COMANDO]]></tooltip>
+						<value><![CDATA[NULL_VALUE]]></value>
+						<bracket><![CDATA[null]]></bracket>
+					</bind>
+					<bind id="CO_CNPJ_CPF">
+						<prompt><![CDATA[CO_CNPJ_CPF]]></prompt>
+						<tooltip><![CDATA[CO_CNPJ_CPF]]></tooltip>
+						<value><![CDATA[NULL_VALUE]]></value>
+						<bracket><![CDATA[null]]></bracket>
+					</bind>
+				</binds>
+			</query>
+			<display id="" type="" style="Table" enable="true">
+				<name><![CDATA[Lançamento]]></name>
+				<description><![CDATA[]]></description>
+				<tooltip><![CDATA[]]></tooltip>
+				<drillclass><![CDATA[]]></drillclass>
+				<CustomValues>
+					<TYPE><![CDATA[horizontal]]></TYPE>
+				</CustomValues>
+				<query>
+					<sql><![CDATA[SELECT
+							it_nu_cpf_auditor         auditor,
+							it_co_programa            co_progr,
+							it_nu_terminal            terminal,
+							it_in_tipo_lancamento     tipo_lanc,
+							it_da_vencimento_original da_venc,
+							it_co_produto             co_prod,
+							it_nu_guia_lancamento     nu_guia,
+							it_in_situacao            sit_lanc,
+							it_va_bc_mercadoria,
+							it_va_icms_total          va_icms_total,
+							it_va_total_debito        va_total_debito,
+							it_va_total_credito       va_total_credito,
+							it_va_total_icms          va_total_icms,
+							it_va_frete_credito       va_frete_credito,
+							it_nu_processo_suspensao  proc_suspensao,
+							it_nu_identificacao_ndf   ndf,
+							it_in_pendencia           pendencia
+						FROM
+							sitafe.sitafe_nf_lancamento
+						WHERE
+							it_nu_identificacao_nf = :IDENT_NF]]></sql>
+					<binds>
+						<bind id="IDENT_NF">
+							<prompt><![CDATA[IDENT_NF]]></prompt>
+							<tooltip><![CDATA[IDENT_NF]]></tooltip>
+							<value><![CDATA[NULL_VALUE]]></value>
+							<bracket><![CDATA[null]]></bracket>
+						</bind>
+					</binds>
+				</query>
+			</display>
+		</display>
+	</display>
+	<display id="" type="" style="Table" enable="true">
+		<name><![CDATA[Mercadoria]]></name>
+		<description><![CDATA[]]></description>
+		<tooltip><![CDATA[]]></tooltip>
+		<drillclass><![CDATA[]]></drillclass>
+		<CustomValues>
+			<TYPE><![CDATA[horizontal]]></TYPE>
+		</CustomValues>
+		<query>
+			<sql><![CDATA[SELECT
+t.it_no_produto, t.it_co_ncm, t.it_un_comercial, sum(t.it_qt_comercial) quant, sum(t.it_va_produto) total
+  FROM
+      sitafe.sitafe_nfe_item t
+where t.it_nu_chave_acesso in(select IT_NU_IDENTIFICAO_NF_E from sitafe.sitafe_nota_fiscal n
+                                                            where n.it_nu_comando = :COMANDO)
+group by t.it_no_produto, t.it_co_ncm, t.it_un_comercial
+
+order by sum(t.it_va_produto) desc]]></sql>
+			<binds>
+				<bind id="COMANDO">
+					<prompt><![CDATA[COMANDO]]></prompt>
+					<tooltip><![CDATA[COMANDO]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+			</binds>
+		</query>
+	</display>
+	<display id="" type="" style="Table" enable="true">
+		<name><![CDATA[Destino(s)]]></name>
+		<description><![CDATA[]]></description>
+		<tooltip><![CDATA[]]></tooltip>
+		<drillclass><![CDATA[]]></drillclass>
+		<CustomValues>
+			<TYPE><![CDATA[horizontal]]></TYPE>
+		</CustomValues>
+		<query>
+			<sql><![CDATA[SELECT
+l.no_municipio,
+l.co_uf,
+lpad(TRIM(to_char(sum(it_va_produto), '999G999G999G990D00')), length(MAX(sum(it_va_produto))
+                                                                                                         OVER()) + 6)
+ total
+
+FROM
+    sitafe.sitafe_nota_fiscal t
+left join sitafe.sitafe_nfe_item it on t.it_nu_identificao_nf_e = it.it_nu_chave_acesso
+left join bi.dm_pessoa p on t.it_nucnpj_cpf_destino_nf = p.co_cnpj_cpf
+left join bi.dm_localidade l on p.co_municipio = l.co_municipio
+where it_nu_comando = :COMANDO
+group by l.no_municipio, l.co_uf
+ORDER BY total desc]]></sql>
+			<binds>
+				<bind id="COMANDO">
+					<prompt><![CDATA[COMANDO]]></prompt>
+					<tooltip><![CDATA[COMANDO]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+			</binds>
+		</query>
+	</display>
+</display>
+</displays>

@@ -1,0 +1,56 @@
+Arquivos do pacote:
+- ressarcimento.md
+- sql/00_parametros_e_arquivos_validos.sql
+- sql/01_saidas_ressarcimento_c176.sql
+- sql/02_produtos_cadastro_0200.sql
+- sql/03_xml_entrada_fronteira.sql
+- sql/04_xml_saida.sql
+- sql/05_itens_entrada_sped_base.sql
+- sql/06_score_candidatos_vinculo.sql
+- sql/07_vinculo_entrada_escolhido.sql
+- sql/08_base_vinculos_e_inferencia_sefin.sql
+- sql/09_rateio_quantidades.sql
+- sql/10_calculos_ressarcimento.sql
+- sql/11_resultado_final_auditoria.sql
+- sql/12_orquestracao_referencia.sql
+- sql/13_reconciliacao_bloco_e.sql
+- sql/14_elegibilidade_icms_proprio.sql
+- sql/99_query_original_referencia.sql
+- sql/README_CONTRATOS_SQL.txt
+
+=== RELATÓRIOS XML EXTRAÍDOS ===
+- relatorios_xml/README.md
+- relatorios_xml/efd_master_utilidade_fiscal.md
+- relatorios_xml/fronteira_relatorio_utilidade_fiscal.md
+- sql_relatorios_xml/efd_master/INDEX.md
+- sql_relatorios_xml/fronteira/INDEX.md
+- xml_relatorios_origem/EFD_master.xml
+- xml_relatorios_origem/relatorio_fronteira.xml
+
+=== MÍNIMO DENOMINADOR COMUM (MDC) ===
+- minimo_denominador_comum.md
+- sql_mdc/README.md
+- sql_mdc/00_parametros_canonicos.sql
+- sql_mdc/01_contribuinte_localidade_base.sql
+- sql_mdc/02_efd_reg0000_ultima_entrega_base.sql
+- sql_mdc/03_efd_participantes_0150_base.sql
+- sql_mdc/04_efd_produtos_0200_0220_base.sql
+- sql_mdc/05_efd_c100_documentos_base.sql
+- sql_mdc/06_efd_c170_itens_base.sql
+- sql_mdc/07_efd_c176_ressarcimento_base.sql
+- sql_mdc/08_efd_h005_h010_h020_inventario_base.sql
+- sql_mdc/09_efd_c197_ajustes_documentais_base.sql
+- sql_mdc/10_efd_apuracao_e110_e210_base.sql
+- sql_mdc/11_efd_ajustes_e111_e220_base.sql
+- sql_mdc/12_bi_documentos_55_65_57_base.sql
+- sql_mdc/13_bi_xml_nfe_campos_extras_base.sql
+- sql_mdc/14_sitafe_nota_item_calculo_base.sql
+- sql_mdc/15_sitafe_lancamento_pagamento_base.sql
+- sql_mdc/16_dimensoes_fiscais_cfop_ajustes_base.sql
+- sql_mdc/17_dimensoes_fiscais_ncm_cest_sefin_base.sql
+- sql_mdc/18_arrecadacao_pendencias_base.sql
+- sql_mdc/19_cte_rateio_frete_base.sql
+- sql_mdc/20_dossie_cadastro_conta_corrente_base.sql
+- sql_mdc/21_dossie_historico_societario_regime_base.sql
+- sql_mdc/22_dossie_acao_fiscal_base.sql
+- sql_mdc/23_orquestracao_mdc_referencia.sql

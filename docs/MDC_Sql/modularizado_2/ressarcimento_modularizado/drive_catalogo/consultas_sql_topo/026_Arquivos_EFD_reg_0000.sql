@@ -1,0 +1,8 @@
+-- REFERÊNCIA CATALOGADA DO GOOGLE DRIVE
+-- Pasta lógica: consultas_sql_topo
+-- Arquivo: Arquivos_EFD_reg_0000.sql
+-- URL de origem: https://drive.google.com/file/d/16l9ohc0WlOweqtKPIDkvYCsm4-WSlzF3/view?usp=drivesdk
+-- Situação nesta atualização: catalogado a partir do Google Drive.
+-- Observação: o conector abriu a estrutura da pasta e permitiu o inventário dos arquivos,
+-- mas a extração integral em lote de todos os SQLs não foi concluída nesta mesma passada.
+-- Este arquivo funciona como marcador auditável para extração incremental posterior.
