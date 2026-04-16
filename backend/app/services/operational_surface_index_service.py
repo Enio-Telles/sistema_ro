@@ -17,8 +17,6 @@ def get_operational_surface_index() -> dict:
         },
         "transition_only": {
             "runtimes": [
-                "runtime_gold_v18",
-                "runtime_gold_v19",
                 "runtime_gold_v21",
                 "runtime_gold_v22",
                 "runtime_gold_v23",
@@ -32,6 +30,8 @@ def get_operational_surface_index() -> dict:
                 "runtime_gold_v15",
                 "runtime_gold_v16",
                 "runtime_gold_v17",
+                "runtime_gold_v18",
+                "runtime_gold_v19",
                 "runtime_gold_current",
             ],
             "repo_status": "ja_removidas_do_repositorio",

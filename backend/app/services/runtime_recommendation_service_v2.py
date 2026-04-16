@@ -21,13 +21,13 @@ def get_runtime_recommendation_v2() -> dict:
             "runtime_gold_v15": "historico_removido_do_repositorio_agregacao_a_partir_do_mdc",
             "runtime_gold_v16": "historico_removido_do_repositorio_fontes_agr_inicial",
             "runtime_gold_v17": "historico_removido_do_repositorio_gold_preferindo_fontes_agr",
-            "runtime_gold_v18": "transicao_fontes_agr_validadas_por_schema",
-            "runtime_gold_v19": "transicao_pos_gold_consistency",
+            "runtime_gold_v18": "historico_removido_do_repositorio_fontes_agr_validadas_por_schema",
+            "runtime_gold_v19": "historico_removido_do_repositorio_pos_gold_consistency",
             "runtime_gold_v20": "runtime_oficial_v2",
         },
         "next_focus": [
             "reduzir paralelismo entre trilhas antigas e nova",
             "ampliar testes de regressao da conversao integrada",
-            "migrar fisconforme nao atendido em servicos desacoplados",
+            "revisar descomissionamento das runtimes fisconforme de transicao restantes",
         ],
     }
