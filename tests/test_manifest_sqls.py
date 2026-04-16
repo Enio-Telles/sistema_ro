@@ -14,6 +14,7 @@ def test_manifest_sqls_covers_catalog_and_matches_placeholder_state() -> None:
     assert manifest_names == set(CORE_SQL_FILES.keys())
 
     for row in rows:
+        assert CORE_SQL_FILES[row['catalog_name']] == row['catalog_filename']
         core_filename = row['core_filename']
         sql_path = Path('sql') / 'core' / core_filename
         content = sql_path.read_text(encoding='utf-8')
