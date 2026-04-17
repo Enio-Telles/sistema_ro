@@ -1,154 +1,113 @@
 # Frontend operacional do sistema_ro
 
-## Diretrizes
+## Estado atual confirmado
 
-O frontend deve ser construído como interface operacional, não como dashboard decorativo.
-O foco principal é navegação por tabela, rastreabilidade de mercadorias e revisão assistida.
+O frontend real passou a existir em `frontend/` como shell React + TypeScript, com estrutura `src-tauri/` preservando a abordagem Tauri.
 
-## Módulos principais
+Nesta etapa, o escopo funcional entregue foi:
 
-### 1. Mercadorias
-Subabas:
-- Agregação
-- Conversão de Unidades
-- Produtos Consolidados
-- Cadastros Agrupados
+- separação explícita entre `Área do Usuário` e `Área Técnica`;
+- navegação principal canônica em:
+  - `EFD`
+  - `Documentos Fiscais`
+  - `Análise Fiscal`
+- módulo funcional inicial em `Análise Fiscal > Estoque`;
+- consumo exclusivo das superfícies oficiais `main` e `current-v2`.
 
-### 2. Estoque
-Subabas:
-- Movimentação de Estoque
-- Apuração Mensal
-- Apuração Anual
-- Apuração por Períodos
-- Resumo Fiscal
-- Alertas
-- Bloco H
+`EFD` e `Documentos Fiscais` já aparecem na navegação, mas seguem como placeholders honestos até que o escopo atual esteja integralmente estabilizado.
 
-### 3. Fisconforme não atendido
-Etapas:
-- Consulta
-- Resultados
-- Para Notificações
+## Organização obrigatória da navegação
+
+### Área do Usuário
+
+#### 1. EFD
+- conter somente visualizações e navegação estritamente ligadas à escrituração;
+- não misturar documentos fiscais externos;
+- não misturar cruzamentos analíticos.
+
+#### 2. Documentos Fiscais
+- concentrar notas fiscais, CT-e, Fisconforme, Fronteira e consultas equivalentes;
+- focar consulta, comparação, filtro e inspeção documental;
+- não confundir documento fiscal com escrituração.
+
+#### 3. Análise Fiscal
+- concentrar cruzamentos, verificações, inconsistências, conciliações e análises complexas;
+- cruzamentos entre EFD e documentos fiscais pertencem aqui;
+- o primeiro módulo funcional desta etapa é `Estoque`.
+
+### Área Técnica
+
+- concentrar operação, qualidade, consistência, status de pipeline e apoio à manutenção;
+- não poluir a navegação principal do usuário com metadados operacionais.
+
+## Módulo funcional atual: Análise Fiscal > Estoque
+
+### Subabas entregues
+
+- `Movimentação`
+- `Mensal`
+- `Anual`
+- `Períodos`
+- `Resumo`
+- `Alertas`
+
+### Contrato funcional
+
+Cada subaba consome:
+
+- overview oficial: `GET /api/current-v2/estoque/{cnpj}/overview`
+- tabela operacional: `GET /api/current-v2/estoque/{cnpj}/tabelas/{dataset}`
+- exportação CSV: `GET /api/current-v2/estoque/{cnpj}/tabelas/{dataset}/export`
+
+Datasets aceitos nesta etapa:
+
+- `mov_estoque`
+- `aba_mensal`
+- `aba_anual`
+- `aba_periodos`
+- `estoque_resumo`
+- `estoque_alertas`
+
+## Área Técnica atual
+
+O frontend lê as seguintes superfícies de apoio operacional:
+
+- `GET /api/current-v2/status/{cnpj}`
+- `GET /api/current-v2/pipeline/{cnpj}/status`
+- `GET /api/current-v2/gold/{cnpj}`
+- `GET /api/current-v2/estoque/{cnpj}/quality`
+
+Essas leituras servem para operação, qualidade e consistência e não substituem a experiência analítica principal do usuário.
 
 ## Contrato de UX transversal
 
-Toda tabela relevante deve suportar:
-- filtro textual
-- filtro por período
-- paginação
-- seleção e ordem de colunas
-- persistência de contexto por aba
-- exportação
-- abertura em nova aba
-- destaque visual de anomalias
+Toda tabela relevante deve suportar, quando aplicável:
 
-## Agregação
+- filtro textual;
+- filtros por coluna;
+- paginação;
+- seleção de colunas;
+- ordenação;
+- persistência local do contexto;
+- exportação CSV;
+- destaque em nova aba interna;
+- reabertura com contexto preservado pela rota e pelo armazenamento local.
 
-A aba deve exibir separadamente:
-- `lista_descricoes`
-- `lista_desc_compl`
-- `lista_itens_agrupados`
-- `ids_origem_agrupamento`
+## Regra para destaque em nova aba
 
-Ações mínimas:
-- filtrar por descrição principal
-- filtrar por complemento
-- revisar score/confiança do grupo
-- executar merge manual
-- executar reversão por snapshot
+`Destacar em nova aba` significa:
 
-## Conversão de unidades
+- abrir uma nova aba interna da aplicação;
+- manter filtros, ordenação, colunas e paginação;
+- serializar o estado ativo na rota;
+- persistir o mesmo estado localmente para reabertura sem perda funcional.
 
-A aba deve exibir:
-- `id_agrupado`
-- `mercadoria_id`
-- `apresentacao_id`
-- `unid`
-- `unid_ref`
-- `fator`
-- `tipo_fator`
-- `confianca_fator`
-- `fator_manual`
-- `unid_ref_manual`
+Nesta etapa, isso não significa abrir nova janela nativa do sistema operacional.
 
-Ações mínimas:
-- editar fator manual
-- editar unidade de referência
-- aplicar unidade de referência em lote por grupo
-- filtrar grupos com unidade única
-- destacar fatores ambíguos
+## Regras de implementação contínua
 
-## Estoque
-
-### Movimentação
-Mostrar a trilha cronológica com:
-- `fonte`
-- `Tipo_operacao`
-- `Dt_doc` / `Dt_e_s`
-- `q_conv`
-- `saldo_estoque_anual`
-- `entr_desac_anual`
-- `custo_medio_anual`
-- `tipo_fator_aplicado`
-- `match_confidence`
-
-### Mensal / Anual / Períodos
-Mostrar datasets próprios, não apenas filtros sobre a mesma tabela.
-Cada subaba precisa de resumo no topo e detalhamento abaixo.
-
-### Resumo Fiscal
-KPIs mínimos:
-- produtos com saldo negativo potencial
-- produtos com entradas desacobertadas
-- produtos com fator manual
-- produtos com fator de baixa confiança
-- divergência entre estoque calculado e inventário declarado
-
-### Bloco H
-Sub-subabas:
-- H005 resumo
-- H010/H020 detalhamento
-
-## Fisconforme não atendido
-
-### Consulta
-- DSF
-- referência
-- período
-- modo individual ou lote
-- upload/reuso de PDF
-- dados do auditor
-- pasta de saída
-
-### Resultados
-- resumo executivo
-- filtro por com pendência / sem pendência / com erro
-- card por CNPJ
-- detalhes cadastrais
-- tabela de malhas
-- atalho para Dossiê
-
-### Para Notificações
-- checklist de prontidão
-- placeholders resolvidos
-- geração individual TXT/Word
-- geração lote ZIP
-- indicação de salvamento local quando houver
-
-## Regras visuais
-- tabelas compactas e legíveis
-- cores de exceção reservadas a alertas reais
-- cabeçalhos fixos
-- ordenação previsível
-- performance aceitável com datasets grandes
-
-## Estado persistido
-
-Persistir por módulo:
-- filtros ativos
-- colunas visíveis
-- ordem das colunas
-- larguras das colunas
-- CNPJ selecionado
-- subaba atual
-- período ativo
+- não implementar lógica fiscal no cliente;
+- não criar SQL nova por demanda de UX;
+- não consumir rotas legadas simples quando houver superfície oficial;
+- não expandir `EFD` ou `Documentos Fiscais` antes de estabilizar o módulo atual de estoque;
+- manter Tauri como casca desktop oficial, mesmo quando a validação corrente ocorrer pelo frontend web.
