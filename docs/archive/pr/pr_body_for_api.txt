@@ -1,0 +1,18 @@
+chore: add runtime v2 integration tests and checklist for phases 05-08
+
+PR: Implementação inicial Fases 05–08
+
+O que foi feito:
+- Adicionados testes de integração para runtime v2:
+  - tests/test_runtime_v2_agregacao.py
+  - tests/test_runtime_v2_other_endpoints.py
+- Adicionado checklist operacional: docs/checklist_phases_05_08.md
+- Adicionado planejamento de implementação: docs/implementation_todo.md
+
+Testes:
+- Todos os testes novos passam localmente.
+
+Branch: feature/phase-05-08
+Base: main
+
+Por favor, revise e faça merge.
