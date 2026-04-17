@@ -6,7 +6,6 @@
 -- observacao: principal trilha de saídas documentadas
 -- status: query canônica promovida a partir do template curado
 -- regra: selecionar apenas colunas necessárias e preservar chaves físicas
-
 SELECT
     i.chave_acesso,
     i.n_item AS num_item,

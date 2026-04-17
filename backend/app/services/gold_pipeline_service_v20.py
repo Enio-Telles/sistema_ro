@@ -4,6 +4,7 @@ import polars as pl
 
 from backend.app.services.paths import reference_dir
 from pipeline.references.loaders import resolve_reference_dataset
+from backend.app.services.conversao_quality_summary import summarize_conversion_quality
 from pipeline.persist_gold_v2 import persist_gold_outputs_v2
 from pipeline.run_gold_v20 import run_gold_v20
 
@@ -51,9 +52,15 @@ def run_and_persist_gold_v20(
         sefin_vigencia_df=vigencia_df,
     )
     saved = persist_gold_outputs_v2(cnpj, outputs)
+    conversion_quality = summarize_conversion_quality(
+        item_unidades_df=outputs.get("item_unidades"),
+        fatores_df=outputs.get("fatores_conversao"),
+        anomalias_df=outputs.get("log_conversao_anomalias"),
+    )
     return {
         "cnpj": cnpj,
         "saved": saved,
         "datasets": list(saved.keys()),
         "rows": {name: df.height for name, df in outputs.items() if name in saved},
+        "conversion_quality": conversion_quality,
     }

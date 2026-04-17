@@ -12,6 +12,7 @@ pipeline_router = build_pipeline_router(
 
 
 app = FastAPI(title="sistema_ro_main", version="1.0.0")
+
 include_gold_runtime_routes(
     app,
     prefix="/api/main",
