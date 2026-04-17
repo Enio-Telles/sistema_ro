@@ -48,6 +48,18 @@ def _estoque_final_expr(df: pl.DataFrame) -> pl.Expr:
     return pl.col("qtd").abs().fill_null(0.0)
 
 
+def _divergencia_declarado_agg_expr(df: pl.DataFrame) -> pl.Expr | None:
+    if "divergencia_estoque_declarado" not in df.columns:
+        return None
+    return pl.col("divergencia_estoque_declarado").fill_null(0.0).sum().alias("divergencia_estoque_declarado")
+
+
+def _divergencia_calculado_agg_expr(df: pl.DataFrame) -> pl.Expr | None:
+    if "divergencia_estoque_calculado" not in df.columns:
+        return None
+    return pl.col("divergencia_estoque_calculado").fill_null(0.0).sum().alias("divergencia_estoque_calculado")
+
+
 def _coalesce_optional_expr(df: pl.DataFrame, target: str, vig_target: str) -> pl.Expr:
     available: list[pl.Expr] = []
     if vig_target in df.columns:
@@ -239,7 +251,7 @@ def build_aba_anual_v4(mov_df: pl.DataFrame, vigencia_df: pl.DataFrame | None = 
     
     df = df.with_columns(pl.col("data_ref").dt.year().alias("ano"), _normalize_st_expr(pl.col("it_in_st")).alias("__it_in_st_bool__"))
 
-    result = df.group_by(["id_agrupado", "ano"]).agg(
+    agg_exprs: list[pl.Expr] = [
         pl.col("descr_padrao").drop_nulls().first().alias("descr_padrao"),
         pl.col("unid_ref").drop_nulls().first().alias("unid_ref"),
         pl.when(pl.col("tipo_operacao") == "0 - ESTOQUE INICIAL").then(pl.col("q_conv")).otherwise(0.0).sum().alias("estoque_inicial"),
@@ -254,12 +266,28 @@ def build_aba_anual_v4(mov_df: pl.DataFrame, vigencia_df: pl.DataFrame | None = 
         pl.col("it_pc_interna").drop_nulls().last().alias("aliq_interna") if "it_pc_interna" in df.columns else (pl.col("aliq_interna").drop_nulls().last().alias("aliq_interna") if "aliq_interna" in df.columns else pl.lit(17.0).alias("aliq_interna")),
         pl.col("__it_in_st_bool__").any().alias("__tem_st_ano__"),
         pl.col("it_in_st").drop_nulls().last().alias("it_in_st") if "it_in_st" in df.columns else pl.lit(None).alias("it_in_st"),
-    ).with_columns(
+    ]
+    divergencia_declarado_expr = _divergencia_declarado_agg_expr(df)
+    divergencia_calculado_expr = _divergencia_calculado_agg_expr(df)
+    if divergencia_declarado_expr is not None:
+        agg_exprs.append(divergencia_declarado_expr)
+    if divergencia_calculado_expr is not None:
+        agg_exprs.append(divergencia_calculado_expr)
+
+    result = df.group_by(["id_agrupado", "ano"]).agg(agg_exprs).with_columns(
         pl.date(pl.col("ano"), pl.lit(1), pl.lit(1)).alias("__data_inicio__"),
         pl.date(pl.col("ano"), pl.lit(12), pl.lit(31)).alias("__data_fim__"),
         (pl.col("estoque_inicial") + pl.col("entradas") + pl.col("entradas_desacob") - pl.col("estoque_final")).alias("saidas_calculadas"),
-        (pl.col("estoque_final") - pl.col("saldo_final")).clip(lower_bound=0).alias("saidas_desacob"),
-        (pl.col("saldo_final") - pl.col("estoque_final")).clip(lower_bound=0).alias("estoque_final_desacob"),
+        (
+            pl.col("divergencia_estoque_declarado").fill_null(0.0)
+            if "divergencia_estoque_declarado" in df.columns
+            else (pl.col("estoque_final") - pl.col("saldo_final")).clip(lower_bound=0)
+        ).alias("saidas_desacob"),
+        (
+            pl.col("divergencia_estoque_calculado").fill_null(0.0)
+            if "divergencia_estoque_calculado" in df.columns
+            else (pl.col("saldo_final") - pl.col("estoque_final")).clip(lower_bound=0)
+        ).alias("estoque_final_desacob"),
         pl.when(pl.col("__tem_st_ano__")).then(pl.lit("ST")).otherwise(pl.lit("SEM ST")).alias("ST"),
     )
     result = _apply_window_vigencia(result, vigencia_df, start_col="__data_inicio__", end_col="__data_fim__")
@@ -271,7 +299,7 @@ def build_aba_anual_v4(mov_df: pl.DataFrame, vigencia_df: pl.DataFrame | None = 
         (pl.col("__base_estoque__") * (pl.col("aliq_interna").fill_null(0.0) / 100.0)).alias("ICMS_estoque_desac"),
     ).drop(["__tem_st_ano__", "__data_inicio__", "__data_fim__", "__base_saida__", "__base_estoque__"]).rename({"id_agrupado": "id_agregado"})
 
-    result = _round_quantities(result, ["estoque_inicial", "entradas", "saidas", "estoque_final", "saidas_calculadas", "saldo_final", "entradas_desacob", "saidas_desacob", "estoque_final_desacob"])
+    result = _round_quantities(result, ["estoque_inicial", "entradas", "saidas", "estoque_final", "saidas_calculadas", "saldo_final", "entradas_desacob", "saidas_desacob", "estoque_final_desacob", "divergencia_estoque_declarado", "divergencia_estoque_calculado"])
     result = _round_money(result, ["pme", "pms", "aliq_interna", "ICMS_saidas_desac", "ICMS_estoque_desac"])
     return result
 
@@ -287,7 +315,7 @@ def build_aba_periodos_v4(mov_df: pl.DataFrame, vigencia_df: pl.DataFrame | None
     if df.schema.get("data_ref") == pl.Utf8:
         df = df.with_columns(pl.col("data_ref").str.strptime(pl.Date, strict=False))
 
-    result = df.group_by(["id_agrupado", "periodo_inventario"]).agg(
+    agg_exprs: list[pl.Expr] = [
         pl.col("descr_padrao").drop_nulls().first().alias("descr_padrao"),
         pl.col("unid_ref").drop_nulls().first().alias("unid_ref"),
         pl.col("data_ref").drop_nulls().min().alias("data_inicio"),
@@ -306,10 +334,26 @@ def build_aba_periodos_v4(mov_df: pl.DataFrame, vigencia_df: pl.DataFrame | None
         pl.col("it_in_st").drop_nulls().last().alias("it_in_st") if "it_in_st" in df.columns else pl.lit(None).alias("it_in_st"),
         pl.col("it_pc_mva").drop_nulls().last().alias("it_pc_mva") if "it_pc_mva" in df.columns else pl.lit(None).alias("it_pc_mva"),
         pl.col("it_in_mva_ajustado").drop_nulls().last().alias("it_in_mva_ajustado") if "it_in_mva_ajustado" in df.columns else pl.lit(None).alias("it_in_mva_ajustado"),
-    ).with_columns(
+    ]
+    divergencia_declarado_expr = _divergencia_declarado_agg_expr(df)
+    divergencia_calculado_expr = _divergencia_calculado_agg_expr(df)
+    if divergencia_declarado_expr is not None:
+        agg_exprs.append(divergencia_declarado_expr)
+    if divergencia_calculado_expr is not None:
+        agg_exprs.append(divergencia_calculado_expr)
+
+    result = df.group_by(["id_agrupado", "periodo_inventario"]).agg(agg_exprs).with_columns(
         (pl.col("estoque_inicial") + pl.col("entradas") + pl.col("entradas_desacob") - pl.col("estoque_final")).alias("saidas_calculadas"),
-        (pl.col("estoque_final") - pl.col("saldo_final")).clip(lower_bound=0).alias("saidas_desacob"),
-        (pl.col("saldo_final") - pl.col("estoque_final")).clip(lower_bound=0).alias("estoque_final_desacob"),
+        (
+            pl.col("divergencia_estoque_declarado").fill_null(0.0)
+            if "divergencia_estoque_declarado" in df.columns
+            else (pl.col("estoque_final") - pl.col("saldo_final")).clip(lower_bound=0)
+        ).alias("saidas_desacob"),
+        (
+            pl.col("divergencia_estoque_calculado").fill_null(0.0)
+            if "divergencia_estoque_calculado" in df.columns
+            else (pl.col("saldo_final") - pl.col("estoque_final")).clip(lower_bound=0)
+        ).alias("estoque_final_desacob"),
         pl.when(pl.col("data_inicio").is_not_null() & pl.col("data_fim").is_not_null())
         .then(pl.format("{} até {}", pl.col("data_inicio").dt.strftime("%d/%m/%Y"), pl.col("data_fim").dt.strftime("%d/%m/%Y")))
         .otherwise(None)
@@ -326,6 +370,6 @@ def build_aba_periodos_v4(mov_df: pl.DataFrame, vigencia_df: pl.DataFrame | None
         pl.col("periodo_inventario").alias("cod_per"),
     ).drop(["__tem_st_per__", "__base_saida__", "__base_estoque__"]).rename({"id_agrupado": "id_agregado"})
 
-    result = _round_quantities(result, ["estoque_inicial", "entradas", "saidas", "estoque_final", "saidas_calculadas", "saldo_final", "entradas_desacob", "saidas_desacob", "estoque_final_desacob"])
+    result = _round_quantities(result, ["estoque_inicial", "entradas", "saidas", "estoque_final", "saidas_calculadas", "saldo_final", "entradas_desacob", "saidas_desacob", "estoque_final_desacob", "divergencia_estoque_declarado", "divergencia_estoque_calculado"])
     result = _round_money(result, ["pme", "pms", "aliq_interna", "ICMS_saidas_desac", "ICMS_estoque_desac"])
     return result

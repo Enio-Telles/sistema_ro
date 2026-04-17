@@ -45,7 +45,7 @@ Usar:
 
 ## Contrato incremental de status da execucao
 
-As superfícies oficiais `gold_v20/current-v2` passam a expor um resumo de prontidão do gold antes do `run`.
+As superficies oficiais `gold_v20/current-v2` expõem um resumo de prontidao do gold antes do `run`.
 
 Campos principais:
 
@@ -56,16 +56,32 @@ Campos principais:
 - `references_status`
 - `missing_references`
 - `sefin_context`
+- `temporal_resolution_summary`
 - `conversion_quality_summary`
+- `quality_attention_required`
+- `attention_flags`
 - `warnings`
 
-Leitura prática:
+Leitura pratica:
 
-- `references_status` expõe o diagnóstico bruto das referências SEFIN disponíveis em runtime.
+- `references_status` expoe o diagnostico bruto das referencias SEFIN disponiveis em runtime.
 - `sefin_context.status` distingue `sefin_enriched_items`, `aggregated_sources`, `fallback_missing_references` e `fallback_without_sefin`.
-- `sefin_context.references_complete` indica se o conjunto de referências SEFIN está completo.
+- `sefin_context.references_complete` indica se o conjunto de referencias SEFIN esta completo.
 - `sefin_context.using_sefin_enriched_items` indica uso direto de `itens_unificados_sefin`.
-- `conversion_quality_summary` resume diagnóstico de conversão, overrides e mapa manual já carregados.
+- `sefin_context.temporal_resolution_summary` replica o diagnostico de cobertura temporal usado na revisao de qualidade.
+- `temporal_resolution_summary` informa cobertura efetiva de `aba_mensal`, `aba_anual` e `aba_periodos` quando esses datasets gold ja existem.
+- `quality_attention_required` e `attention_flags` destacam `temporal_resolution_partial` quando ainda ha abas com interseccao temporal incompleta.
+- `conversion_quality_summary` resume diagnostico de conversao, overrides e mapa manual ja carregados.
+
+## Contrato incremental de run
+
+O `POST .../pipeline/{cnpj}/run` tambem devolve `temporal_resolution_summary`, `quality_attention_required` e `attention_flags`.
+
+Isso evita depender apenas do status resumido por CNPJ para identificar:
+
+- disponibilidade da referencia de vigencia em runtime;
+- cobertura temporal parcial apos a persistencia do gold;
+- quais abas fiscais ainda exigem revisao por falta de interseccao temporal ou ausencia de `co_sefin_agr`.
 
 ## Observacao
 

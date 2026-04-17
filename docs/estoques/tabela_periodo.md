@@ -49,6 +49,7 @@ Agregações físicas:
 Importante:
 
 - `3 - ESTOQUE FINAL` não cria `entradas_desacob`;
+- cada linha de saída desacobertada contribui apenas com o acréscimo de déficit gerado naquele movimento;
 - ele só informa o inventário declarado para auditoria do período.
 
 ## Fórmulas principais
@@ -198,3 +199,16 @@ Regra de ST vigente no código:
 ```text
 dados/CNPJ/<cnpj>/analises/produtos/aba_periodos_<cnpj>.parquet
 ```
+
+## Nota de Compatibilidade v4
+
+Resumo operacional:
+
+- quando `mov_estoque` traz divergencias explicitas de inventario, `saidas_desacob` e `estoque_final_desacob` seguem esses rollups;
+- o calculo por diferenca entre `estoque_final` e `saldo_final` fica reservado ao fallback de datasets legados.
+- em cenarios mistos, `entradas_desacob` continua separada da divergencia final de inventario; com ST vigente, o zeramento permanece restrito a `ICMS_saidas_desac`.
+
+Na trilha v4 atual:
+- quando `mov_estoque` materializa `divergencia_estoque_declarado` e `divergencia_estoque_calculado`, a agregacao por periodo usa esses rollups como fonte de verdade para `saidas_desacob` e `estoque_final_desacob`;
+- o calculo por diferenca entre `estoque_final` e `saldo_final` permanece apenas como fallback para datasets legados sem essas colunas.
+- no fallback por saldo, `saidas_desacob` e `estoque_final_desacob` permanecem mutuamente exclusivos; com rollup explicito agregado, eles podem coexistir se vierem de inventarios finais diferentes dentro da mesma agregacao.

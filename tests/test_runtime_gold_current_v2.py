@@ -1,5 +1,6 @@
 from fastapi.testclient import TestClient
 
+import backend.app.gold_consistency_router as gold_consistency_router_module
 import backend.app.runtime_gold_current_v2 as runtime_gold_current_v2_module
 import backend.app.status_router as status_router_module
 from backend.app.runtime_gold_current_v2 import app
@@ -60,3 +61,24 @@ def test_runtime_gold_current_v2_pipeline_status(monkeypatch) -> None:
     assert payload['cnpj'] == '12345678000199'
     assert payload['conversion_quality_summary']['manual_overrides_rows'] == 2
     assert payload['sefin_context']['using_sefin_enriched_items'] is False
+
+
+def test_runtime_gold_current_v2_gold_consistency(monkeypatch) -> None:
+    monkeypatch.setattr(
+        gold_consistency_router_module,
+        'get_gold_consistency',
+        lambda cnpj: {
+            'cnpj': cnpj,
+            'ok': False,
+            'inventory_contract': {'linhas_estoque_final_sem_qtd_decl_final_audit': 1},
+            'periodos_contract': {'linhas_com_janela_invertida': 1},
+        },
+    )
+
+    response = client.get('/api/current-v2/gold/12345678000199')
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload['cnpj'] == '12345678000199'
+    assert payload['ok'] is False
+    assert payload['inventory_contract']['linhas_estoque_final_sem_qtd_decl_final_audit'] == 1
+    assert payload['periodos_contract']['linhas_com_janela_invertida'] == 1

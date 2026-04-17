@@ -205,6 +205,13 @@ Essa linha existe para auditoria de inventário, não para recomposição físic
 
 **Importante:** A quantidade em `__qtd_decl_final_audit__` é capturada para **qualquer linha** com `Tipo_operacao` iniciando com "3 - ESTOQUE FINAL", independente da data. Isso permite que a tabela anual some corretamente todos os estoques finais do ano para auditoria.
 
+Nas bordas entre inventÃ¡rios consecutivos:
+
+- a linha `3 - ESTOQUE FINAL` permanece no mesmo `periodo_inventario` do ciclo que estÃ¡ sendo encerrado;
+- a linha sintÃ©tica `0 - ESTOQUE INICIAL` gerada a partir do Bloco H abre o ciclo seguinte no dia posterior ao inventÃ¡rio;
+- `q_conv` do `3 - ESTOQUE FINAL` permanece `0`, enquanto a quantidade declarada auditÃ¡vel segue em `__qtd_decl_final_audit__`;
+- o saldo do novo ciclo passa a ser carregado pela linha `0 - ESTOQUE INICIAL`.
+
 ## Saldo e entradas desacobertadas
 
 Regras principais:

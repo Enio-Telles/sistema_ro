@@ -10,7 +10,16 @@ REQUIRED_COLS = {
     "mov_estoque": ["id_agrupado", "tipo_operacao", "qtd", "q_conv"],
     "aba_mensal": ["id_agregado", "ano", "mes", "ST", "ICMS_entr_desacob"],
     "aba_anual": ["id_agregado", "ano", "ST", "ICMS_saidas_desac", "ICMS_estoque_desac"],
-    "aba_periodos": ["id_agregado", "ST", "ICMS_saidas_desac", "ICMS_estoque_desac"],
+    "aba_periodos": [
+        "id_agregado",
+        "cod_per",
+        "data_inicio",
+        "data_fim",
+        "periodo_label",
+        "ST",
+        "ICMS_saidas_desac",
+        "ICMS_estoque_desac",
+    ],
 }
 
 
@@ -35,6 +44,122 @@ def _id_set(df: pl.DataFrame, col: str) -> set[str]:
         return set()
     values = df.select(pl.col(col).cast(pl.Utf8, strict=False).fill_null(""))
     return {row[0] for row in values.iter_rows() if row[0]}
+
+
+def _inventory_contract(mov_df: pl.DataFrame) -> dict:
+    if mov_df.is_empty() or "tipo_operacao" not in mov_df.columns:
+        return {
+            "linhas_estoque_inicial": 0,
+            "linhas_estoque_final": 0,
+            "linhas_estoque_inicial_sem_periodo": 0,
+            "linhas_estoque_final_sem_periodo": 0,
+            "linhas_estoque_final_sem_qtd_decl_final_audit": 0,
+            "linhas_estoque_final_com_q_conv_nao_zero": 0,
+            "ok": True,
+        }
+
+    estoque_inicial = mov_df.filter(pl.col("tipo_operacao") == "0 - ESTOQUE INICIAL")
+    estoque_final = mov_df.filter(pl.col("tipo_operacao") == "3 - ESTOQUE FINAL")
+
+    inicial_sem_periodo = (
+        estoque_inicial.height
+        if "periodo_inventario" not in mov_df.columns
+        else estoque_inicial.filter(pl.col("periodo_inventario").is_null()).height
+    )
+    final_sem_periodo = (
+        estoque_final.height
+        if "periodo_inventario" not in mov_df.columns
+        else estoque_final.filter(pl.col("periodo_inventario").is_null()).height
+    )
+    final_sem_qtd_decl = (
+        estoque_final.height
+        if "__qtd_decl_final_audit__" not in mov_df.columns
+        else estoque_final.filter(pl.col("__qtd_decl_final_audit__").is_null()).height
+    )
+    final_q_conv_nao_zero = (
+        0
+        if "q_conv" not in mov_df.columns
+        else estoque_final.filter(pl.col("q_conv").fill_null(0.0) != 0).height
+    )
+
+    ok = (
+        inicial_sem_periodo == 0
+        and final_sem_periodo == 0
+        and final_sem_qtd_decl == 0
+        and final_q_conv_nao_zero == 0
+    )
+
+    return {
+        "linhas_estoque_inicial": estoque_inicial.height,
+        "linhas_estoque_final": estoque_final.height,
+        "linhas_estoque_inicial_sem_periodo": inicial_sem_periodo,
+        "linhas_estoque_final_sem_periodo": final_sem_periodo,
+        "linhas_estoque_final_sem_qtd_decl_final_audit": final_sem_qtd_decl,
+        "linhas_estoque_final_com_q_conv_nao_zero": final_q_conv_nao_zero,
+        "ok": ok,
+    }
+
+
+def _periodos_contract(periodos_df: pl.DataFrame) -> dict:
+    if periodos_df.is_empty():
+        return {
+            "linhas_sem_data_inicio": 0,
+            "linhas_sem_data_fim": 0,
+            "linhas_sem_periodo_label": 0,
+            "linhas_com_janela_invertida": 0,
+            "chaves_duplicadas": 0,
+            "ok": True,
+        }
+
+    sem_data_inicio = (
+        periodos_df.height
+        if "data_inicio" not in periodos_df.columns
+        else periodos_df.filter(pl.col("data_inicio").is_null()).height
+    )
+    sem_data_fim = (
+        periodos_df.height
+        if "data_fim" not in periodos_df.columns
+        else periodos_df.filter(pl.col("data_fim").is_null()).height
+    )
+    sem_periodo_label = (
+        periodos_df.height
+        if "periodo_label" not in periodos_df.columns
+        else periodos_df.filter(pl.col("periodo_label").is_null()).height
+    )
+
+    janela_invertida = 0
+    if {"data_inicio", "data_fim"}.issubset(periodos_df.columns):
+        janela_invertida = periodos_df.filter(
+            pl.col("data_inicio").is_not_null()
+            & pl.col("data_fim").is_not_null()
+            & (pl.col("data_inicio") > pl.col("data_fim"))
+        ).height
+
+    chaves_duplicadas = 0
+    if {"id_agregado", "cod_per"}.issubset(periodos_df.columns):
+        chaves_duplicadas = (
+            periodos_df.group_by(["id_agregado", "cod_per"])
+            .len()
+            .filter(pl.col("len") > 1)
+            .height
+        )
+
+    ok = (
+        sem_data_inicio == 0
+        and sem_data_fim == 0
+        and sem_periodo_label == 0
+        and janela_invertida == 0
+        and chaves_duplicadas == 0
+    )
+
+    return {
+        "linhas_sem_data_inicio": sem_data_inicio,
+        "linhas_sem_data_fim": sem_data_fim,
+        "linhas_sem_periodo_label": sem_periodo_label,
+        "linhas_com_janela_invertida": janela_invertida,
+        "chaves_duplicadas": chaves_duplicadas,
+        "ok": ok,
+    }
 
 
 def get_gold_consistency(cnpj: str) -> dict:
@@ -73,6 +198,9 @@ def get_gold_consistency(cnpj: str) -> dict:
         if "saldo_estoque_anual" in mov_df.columns:
             coherence["movimentos_com_saldo_negativo"] = mov_df.filter(pl.col("saldo_estoque_anual") < 0).height
 
+    inventory_contract = _inventory_contract(mov_df)
+    periodos_contract = _periodos_contract(periodos_df)
+
     fiscal = {
         "linhas_st_mensal": 0,
         "linhas_st_anual": 0,
@@ -99,12 +227,22 @@ def get_gold_consistency(cnpj: str) -> dict:
         if "ICMS_estoque_desac" in periodos_df.columns:
             fiscal["icms_estoque_desac_total"] += float(periodos_df["ICMS_estoque_desac"].sum())
 
-    ok = all(v["ok"] for v in validations.values()) and coherence["ids_mensal_fora_mov"] == 0 and coherence["ids_anual_fora_mov"] == 0 and coherence["ids_periodos_fora_mov"] == 0 and coherence["movimentos_com_saldo_negativo"] == 0
+    ok = (
+        all(v["ok"] for v in validations.values())
+        and coherence["ids_mensal_fora_mov"] == 0
+        and coherence["ids_anual_fora_mov"] == 0
+        and coherence["ids_periodos_fora_mov"] == 0
+        and coherence["movimentos_com_saldo_negativo"] == 0
+        and inventory_contract["ok"]
+        and periodos_contract["ok"]
+    )
 
     return {
         "cnpj": cnpj,
         "ok": ok,
         "validations": validations,
         "coherence": coherence,
+        "inventory_contract": inventory_contract,
+        "periodos_contract": periodos_contract,
         "fiscal": fiscal,
     }

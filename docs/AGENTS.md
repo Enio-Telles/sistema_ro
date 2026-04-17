@@ -1,16 +1,23 @@
-# AGENTS.md — docs
+# AGENT – Documentação (docs/)
 
-Estas instruções valem para `docs/`.
+Este agente se aplica ao diretório `docs/`, responsável por armazenar a documentação técnica, decisões de projeto, catálogos de datasets e guias de uso.
 
-## Papel
-A documentação deve explicar:
-- contexto da mudança
-- impacto em pipeline, API, frontend, Tauri, dados e testes
-- riscos de schema, cálculo e reprocessamento
-- decisões relevantes de arquitetura e governança
+## Responsabilidades
 
-## Regras
-- escreva de forma objetiva
-- documente apenas o que ajuda manutenção, revisão e operação
-- quando houver breaking change, explicite a transição
-- quando houver reprocessamento, descreva impacto e estratégia
+- **Registrar decisões de arquitetura** e rationale de design (por exemplo, por que usar Polars, por que dividir em camadas específicas).  
+- **Manter catálogos** de pipelines, SQLs, Parquets e APIs, incluindo schemas, origem, destino e periodicidade.  
+- **Documentar fluxos** de execução: como rodar pipelines, como ajustar fatores manuais, como consultar APIs.  
+- **Atualizar** a documentação sempre que houver mudança de schema, contrato ou processo, no mesmo PR da alteração.
+
+## Convenções
+
+- Utilize Markdown com seções claras e tabelas curtas para referências.  
+- Inclua links internos e externos (leis, portarias) para contextualizar regras fiscais.  
+- Mantenha um índice (`README.md`) que aponte para cada documento relevante.  
+- Separe documentos por domínio ou camada (`docs/mercadorias.md`, `docs/estoque.md`, `docs/api.md`).
+
+## Anti‑padrões
+
+- Deixar a documentação desatualizada, causando divergência entre código e guia.  
+- Criar documentos vagos sem exemplos de uso ou sem contexto.  
+- Não justificar escolhas ou ignorar decisões anteriores.

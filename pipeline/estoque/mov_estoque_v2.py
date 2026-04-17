@@ -38,7 +38,7 @@ def build_mov_estoque_v2(
     mov = mov.with_columns(
         pl.col("fator").fill_null(1.0).alias("fator"),
         pl.when(pl.col("tipo_operacao") == "3 - ESTOQUE FINAL")
-        .then(pl.col("qtd").abs() * pl.col("fator").abs())
+        .then(pl.lit(0.0))
         .otherwise(pl.col("qtd").abs() * pl.col("fator").abs())
         .alias("q_conv"),
         pl.when((pl.col("qtd").abs() > 0) & (pl.col("tipo_operacao") != "3 - ESTOQUE FINAL"))
@@ -83,16 +83,27 @@ def build_mov_estoque_v2(
 
     if "id_agrupado" in mov.columns:
         mov = mov.with_columns(
-            pl.col("__q_conv_sinal__").cum_sum().over(["id_agrupado", "periodo_inventario"]).alias("saldo_estoque_periodo"),
-            pl.col("__q_conv_sinal__").cum_sum().over("id_agrupado").alias("saldo_estoque_anual"),
+            pl.col("__q_conv_sinal__").cum_sum().over(["id_agrupado", "periodo_inventario"]).alias("__saldo_bruto_periodo__"),
+            pl.col("__q_conv_sinal__").cum_sum().over("id_agrupado").alias("__saldo_bruto_anual__"),
         )
         mov = mov.with_columns(
-            pl.when(pl.col("saldo_estoque_anual") < 0).then((-pl.col("saldo_estoque_anual")).clip(lower_bound=0)).otherwise(0.0).alias("entr_desac_anual"),
-            pl.when(pl.col("saldo_estoque_periodo") < 0).then((-pl.col("saldo_estoque_periodo")).clip(lower_bound=0)).otherwise(0.0).alias("entr_desac_periodo"),
+            (-pl.col("__saldo_bruto_anual__").cum_min().over("id_agrupado").clip(upper_bound=0.0)).alias("__deficit_acum_anual__"),
+            (-pl.col("__saldo_bruto_periodo__").cum_min().over(["id_agrupado", "periodo_inventario"]).clip(upper_bound=0.0)).alias("__deficit_acum_periodo__"),
         )
         mov = mov.with_columns(
-            pl.when(pl.col("saldo_estoque_anual") < 0).then(0.0).otherwise(pl.col("saldo_estoque_anual")).alias("saldo_estoque_anual"),
-            pl.when(pl.col("saldo_estoque_periodo") < 0).then(0.0).otherwise(pl.col("saldo_estoque_periodo")).alias("saldo_estoque_periodo"),
+            (pl.col("__saldo_bruto_anual__") + pl.col("__deficit_acum_anual__")).alias("saldo_estoque_anual"),
+            (pl.col("__saldo_bruto_periodo__") + pl.col("__deficit_acum_periodo__")).alias("saldo_estoque_periodo"),
+            pl.coalesce([
+                (pl.col("__deficit_acum_anual__") - pl.col("__deficit_acum_anual__").shift(1).over("id_agrupado")).clip(lower_bound=0.0),
+                pl.col("__deficit_acum_anual__"),
+            ]).alias("entr_desac_anual"),
+            pl.coalesce([
+                (
+                    pl.col("__deficit_acum_periodo__")
+                    - pl.col("__deficit_acum_periodo__").shift(1).over(["id_agrupado", "periodo_inventario"])
+                ).clip(lower_bound=0.0),
+                pl.col("__deficit_acum_periodo__"),
+            ]).alias("entr_desac_periodo"),
             pl.col("preco_unit").forward_fill().over("id_agrupado").fill_null(0.0).alias("custo_medio_anual"),
             pl.col("preco_unit").forward_fill().over(["id_agrupado", "periodo_inventario"]).fill_null(0.0).alias("custo_medio_periodo"),
         )
@@ -106,4 +117,15 @@ def build_mov_estoque_v2(
             .otherwise(0.0)
             .alias("divergencia_estoque_calculado"),
         )
-    return mov.drop([c for c in ["__q_conv_sinal__", "__ordem_operacao__"] if c in mov.columns])
+    return mov.drop([
+        c
+        for c in [
+            "__q_conv_sinal__",
+            "__ordem_operacao__",
+            "__saldo_bruto_anual__",
+            "__saldo_bruto_periodo__",
+            "__deficit_acum_anual__",
+            "__deficit_acum_periodo__",
+        ]
+        if c in mov.columns
+    ])

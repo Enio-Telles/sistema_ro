@@ -33,10 +33,15 @@ Os documentos de estoque convergem nestes contratos:
 ## O que ja foi fechado
 
 - `mov_estoque` materializa `__qtd_decl_final_audit__`;
+- `mov_estoque_v2` mantem `q_conv = 0` no `3 - ESTOQUE FINAL` e usa o `0 - ESTOQUE INICIAL` sintetico para carregar o saldo do ciclo seguinte;
+- `mov_estoque_v2` registra `entr_desac_anual` e `entr_desac_periodo` como incremento por linha, evitando dupla contagem de saidas desacobertadas no mesmo ciclo;
 - `aba_anual_v4` e `aba_periodos_v4` preferem a quantidade declarada auditavel;
+- `aba_anual_v4` e `aba_periodos_v4` passam a alinhar `saidas_desacob` e `estoque_final_desacob` ao rollup explicito de `divergencia_estoque_declarado` e `divergencia_estoque_calculado`, com fallback conservador para datasets legados sem essas colunas;
+- a cobertura v4 agora inclui cenarios mistos com movimentos reais, `entradas_desacob`, multiplos fechamentos e reflexo de ICMS/ST sem dupla contagem da divergencia final;
 - `aba_periodos_v4` expone `data_inicio`, `data_fim` e `periodo_label`;
 - `aba_mensal_v4`, `aba_anual_v4` e `aba_periodos_v4` resolvem ST/aliquota/MVA por interseccao temporal quando `sitafe_produto_sefin_aux` esta disponivel;
 - o gold oficial informa disponibilidade da vigencia temporal em runtime, cobertura efetiva por aba e motivos de nao cobertura.
+- `gold_consistency` agora valida contrato de inventario em `mov_estoque` e contrato de janela temporal em `aba_periodos`.
 
 ## O que ainda falta
 
@@ -48,14 +53,13 @@ Os documentos de estoque convergem nestes contratos:
 
 ### Prioridade 2 - corretude fiscal derivada
 
-- revisar `saidas_desacob` e `estoque_final_desacob` com casos dirigidos;
 - continuar refinando ST apenas quando houver ganho funcional claro;
-- validar melhor os casos em que a vigencia resolvida diverge do fallback do movimento.
+- validar melhor os casos em que a vigencia resolvida diverge do fallback do movimento;
+- endurecer agora a cobertura de divergencias quando coexistirem multiplos fechamentos, mais de uma saida e estoque final desacobertado no mesmo ano.
 
 ### Prioridade 3 - observabilidade
 
 - refletir os contratos de inventario e periodo no manifesto de datasets;
-- ampliar checks de consistencia para `aba_periodos`;
 - levar sinais de cobertura temporal parcial para status operacional mais resumido quando fizer sentido.
 
 ## Decisao de planejamento

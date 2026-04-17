@@ -66,7 +66,15 @@ saidas_desacob = max(estoque_final - saldo_final, 0)
 estoque_final_desacob = max(saldo_final - estoque_final, 0)
 ```
 
-`saidas_desacob` e `estoque_final_desacob` são mutuamente exclusivos por construção. Se um deles é positivo, o outro fica zerado.
+
+No fallback por saldo, `saidas_desacob` e `estoque_final_desacob` sao mutuamente exclusivos por construcao. Se um deles e positivo, o outro fica zerado.
+
+Na trilha v4 atual:
+
+- se `mov_estoque` materializa `divergencia_estoque_declarado` e `divergencia_estoque_calculado`, a agregacao anual usa esses rollups como fonte de verdade para `saidas_desacob` e `estoque_final_desacob`;
+- o calculo por diferenca entre `estoque_final` e `saldo_final` permanece apenas como fallback de compatibilidade para datasets legados sem essas colunas.
+- em cenarios mistos, `entradas_desacob` continua compondo apenas `saidas_calculadas`; ela nao substitui nem soma novamente a divergencia final de inventario usada em `saidas_desacob` e `estoque_final_desacob`.
+- quando houver multiplos fechamentos no mesmo ano, `saidas_desacob` e `estoque_final_desacob` podem coexistir na linha anual agregada porque cada uma pode vir de inventarios finais diferentes.
 
 ## PME e PMS do ano
 

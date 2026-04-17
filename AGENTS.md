@@ -1,105 +1,78 @@
-# AGENTS.md — sistema_ro
+# Agent – sistema_ro
 
-Este repositório deve ser tratado como uma plataforma operacional e analítica orientada a mercadorias, construída com **Python, FastAPI, React, Tauri, Polars e Parquet**.
+Este arquivo define as instruções persistentes para o assistente de IA no repositório **sistema_ro**. Ele sintetiza as normas de governança, arquitetura e execução que devem ser seguidas em todas as camadas do projeto.
 
 ## Missão
-Atue como agente técnico de implementação, revisão e planejamento com foco em:
-- corretude funcional e fiscal
-- rastreabilidade ponta a ponta
-- reaproveitamento
-- estabilidade de contratos
-- performance com datasets grandes
-- evolução segura do repositório
 
-## Contexto obrigatório do projeto
-Assuma como base:
-- o domínio é auditoria fiscal orientada a mercadorias
-- a mercadoria é o centro do domínio
-- o sistema deve preservar o fio de ouro entre linha de origem, código-fonte, mercadoria, apresentação, agrupamento e tabelas analíticas
-- SQL entra como bronze
-- Parquet normalizado entra como silver
-- agregação, conversão, estoque e Fisconforme analítico entram como gold
-- o backend atual é centrado em Python 3.11 + FastAPI + Pydantic + Polars
-- o frontend é operacional, centrado em tabela, filtros, rastreabilidade e revisão assistida
-- Tauri é camada desktop/local-first
-- o workspace deve respeitar organização por `bronze/`, `silver/`, `gold/`, `fisconforme/` e `state/`
-- o projeto deve minimizar carga no Oracle e concentrar composição analítica em Polars e Parquet
+- **Correção fiscal**: garantir que as regras e cálculos fiscais aplicados às mercadorias sejam corretos e auditáveis.  
+- **Rastreabilidade ponta a ponta**: cada dado transformado deve manter uma cadeia clara de origem, desde a linha bruta de documento fiscal até as visões agregadas e expostas via API ou UI.  
+- **Reaproveitamento máximo**: evite criar novos scripts ou datasets quando artefatos existentes podem atender ao objetivo; prefira adaptar e evoluir.
 
-## Prioridades
-1. corretude funcional e fiscal
-2. rastreabilidade ponta a ponta
-3. reaproveitamento
-4. clareza arquitetural
-5. estabilidade de contratos
-6. manutenibilidade
-7. performance
-8. sofisticação
+## Camadas e Estrutura
 
-## Regras centrais
-- Reutilize SQLs, Parquets, manifests, loaders, utilitários, contratos e componentes antes de criar novos artefatos.
-- Não duplique regra de negócio entre pipeline, API, frontend e Tauri.
-- O backend/pipeline Python é a fonte principal da regra analítica e fiscal.
-- FastAPI expõe contratos estáveis.
-- React e Tauri devem consumir contratos e datasets estáveis; não devem virar fonte de verdade do cálculo.
-- Preserve a trilha auditável da linha de origem até o total analítico final.
+O `sistema_ro` organiza sua lógica em camadas sucessivas e domínios claros:
 
-## Camadas obrigatórias
-Toda mudança deve respeitar:
-- bronze/raw → extração base
-- silver/base → tipagem, normalização, deduplicação técnica
-- gold/curated/marts/views → composição analítica e consumo
+1. **raw** (`pipeline/extraction/`): extração de dados brutos a partir do Oracle ou outras fontes.  
+2. **base** (`pipeline/normalization/`): tipagem, normalização de nomes e deduplicação.  
+3. **curated / mercadorias** (`pipeline/mercadorias/`): agregação de mercadorias por `id_agrupado` e `id_agregado`, cálculo de tributos, quantidades e valores.  
+4. **conversao** (`pipeline/conversao/`): aplicação de fatores de conversão de unidades e pesos, considerando `fator_manual` quando aplicável.  
+5. **fisconforme** (`pipeline/fisconforme/`): enriquecimento com dados da SEFIN e outras bases fiscais para validar conformidade.  
+6. **estoque** (`pipeline/estoque/`): construção de `mov_estoque` e visões de saldo, giro e cobertura de estoque.  
+7. **derivacoes analiticas** (dentro de `pipeline/estoque` ou `pipeline/gold` quando existir): criação de marts e visões analíticas para consumo.  
+8. **backend** (`backend/`): exposição de APIs REST (FastAPI) para consulta e orquestração de pipelines.  
+9. **frontend** (`frontend/`): interface React/Tauri para uso operacional, sempre consumindo contratos estáveis do backend.  
+10. **tests** (`tests/`): testes unitários, de integração e de reconciliação.  
+11. **sql** (`sql/`): manifestos e templates de extração SQL.  
+12. **references** (`references/`): tabelas auxiliares, dicionários e fatores de conversão.  
+13. **docs** (`docs/`): documentação técnica, catálogos e decisões de arquitetura.
 
-Não pule de extração para tela final sem justificar a quebra de camada.
+## Princípios gerais
 
-## Mudanças sensíveis
-Trate como sensível qualquer alteração que impacte:
-- schema de Parquet
-- chaves de join
-- agrupamento de produtos
-- conversão de unidades
-- estoque e apurações
-- regras fiscais
-- contratos de API
-- estado persistido em `state/`
-- comportamento operacional do frontend/Tauri
+### Cache‑first e Bronze‑first
 
-Nesses casos:
-- explicite o risco
-- proponha validação
-- indique rollback ou reprocessamento
-- preserve compatibilidade quando possível
+Sempre que possível, consulte materializações Parquet ou caches locais em vez de reexecutar extrações pesadas no Oracle. Extrações devem produzir datasets na camada raw e todas as transformações subsequentes devem partir desses arquivos.
 
-## Como trabalhar
-Ao receber uma tarefa:
-1. identifique se ela afeta pipeline/dados, API, frontend, Tauri, testes ou documentação
-2. verifique reaproveitamento antes de criar algo novo
-3. proponha mudanças pequenas e revisáveis
-4. destaque riscos de schema, cálculo, rastreabilidade e reprocessamento
-5. rode ou sugira validações compatíveis com o impacto da mudança
+### Reaproveitamento
 
-## Git e revisão
-- nunca sugira commit direto na main
-- prefira branches curtas e focadas
-- toda mudança relevante deve passar por PR
-- PRs devem ser pequenas, revisáveis e com objetivo claro
-- não misture refatoração ampla com correção funcional crítica sem justificativa
+Verifique se já existe script ou dataset que cumpra o requisito antes de criar algo novo. Use `AGENT_EXECUCAO_PROJETO.md` e catálogos em `docs/` para localizar artefatos reutilizáveis.
 
-## Done means
-Considere uma tarefa pronta apenas quando:
-- o objetivo estiver atendido
-- o impacto em dados e contratos estiver claro
-- os testes/validações adequados tiverem sido executados ou indicados
-- a mudança preservar rastreabilidade e compatibilidade razoáveis
-- riscos remanescentes tiverem sido explicitados
+### Oracle vs Polars
 
-## Formato preferido de resposta
-Sempre que possível, responda com:
-- Objetivo
-- Contexto no sistema_ro
-- Reaproveitamento possível
-- Arquitetura proposta
-- Divisão por stack
-- Implementação
-- Validação
-- Riscos
-- MVP recomendado
+Utilize Oracle apenas para extração inicial; toda harmonização, join, agregação e derivação deve ser feita em **Polars**. Evite SQL dentro de código Python; mantenha consultas em `sql/` e reutilize-as.
+
+### Chaves invariantes
+
+Preserve as colunas `id_agrupado`, `id_agregado`, `__qtd_decl_final_audit__` e outras chaves usadas para reconciliação. Não renomeie nem substitua esses campos sem um plano de migração e comunicação para todos os consumidores.
+
+### Lineage e metadata
+
+Registre, para cada dataset materializado: tabela(s) de origem, filtros aplicados, período processado (ano-mês), CNPJ(s) e chaves fiscais. Atualize manifestos e documentação.
+
+### Resposta A–E
+
+Ao planejar, revisar ou descrever uma tarefa, siga a estrutura **A–E**:
+
+1. **Diagnóstico (A)** – descreva o problema ou requisito de forma clara e concisa.  
+2. **Reaproveitamento (B)** – liste artefatos existentes (SQL, Parquet, módulos, contratos) que podem ser reutilizados.  
+3. **Decisão (C)** – proponha a solução: criar novo, modificar, reutilizar.  
+4. **Justificativa (D)** – explique a escolha considerando performance, integridade fiscal, rastreabilidade e custos.  
+5. **Plano (E)** – defina os passos concretos (ordem de PRs, scripts, testes, migrações) para implementação ou correção.
+
+### Governança de Pull Requests
+
+- **Branches curtas e temáticas**: use prefixos `feat/`, `fix/`, `refactor/` seguidos de domínio e objetivo.  
+- **PR pequena e focada**: cada PR deve ter um escopo claro e ser revisável rapidamente. Evite misturar refatoração estrutural com mudanças de regra de negócio.  
+- **Descrição completa**: informe objetivo, camadas/dominios afetados, datasets e contratos impactados, riscos (schema, fiscal, performance), plano de rollback e reprocessamento.  
+- **CI verde**: exija lint, testes unitários, testes de integração e validação de schema.  
+- **Migração e convivência**: para mudanças de schema ou contratos, explique a estratégia de transição e a compatibilidade com consumidores existentes.
+
+### Anti‑padrões
+
+- Embutir SQL diretamente em serviços ou UI.  
+- Pular camadas (por exemplo, gerar dados em `curated` sem passar por `base`).  
+- Duplicar lógica fiscal em mais de um lugar.  
+- Alterar chaves invariantes sem planejamento.  
+- Esquecer de registrar lineage e metadados.  
+- Quebrar contratos de API sem aviso e plano de migração.
+
+Siga estas diretrizes em todos os módulos para que o assistente de IA gere respostas úteis e alinhadas com a governança do projeto.

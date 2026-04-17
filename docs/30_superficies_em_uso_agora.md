@@ -1,8 +1,8 @@
-# Superfícies em Uso Agora
+# Superficies em Uso Agora
 
 ## Objetivo
 
-Este documento substitui o uso disperso de versões e aliases em documentos operacionais.
+Este documento substitui o uso disperso de versoes e aliases em documentos operacionais.
 
 ## Use agora
 
@@ -14,9 +14,9 @@ Este documento substitui o uso disperso de versões e aliases em documentos oper
 - Endpoint principal:
   - `POST /api/v5b/silver/{cnpj}/prepare-sefin`
 
-### Gold / estoque / conversão
+### Gold / estoque / conversao
 
-- Runtime por versão: `runtime_gold_v20.py`
+- Runtime por versao: `runtime_gold_v20.py`
 - Alias operacional preferido: `runtime_gold_current_v2.py`
 - Prefixos preferidos:
   - `/api/gold20`
@@ -24,15 +24,15 @@ Este documento substitui o uso disperso de versões e aliases em documentos oper
 
 ### Fisconforme modular
 
-- Runtime por versão: `runtime_gold_v25.py`
+- Runtime por versao: `runtime_gold_v25.py`
 - Alias operacional preferido: `runtime_gold_current_v5.py`
 - Prefixos preferidos:
   - `/api/gold25/fisconforme-v2`
   - `/api/current-v5/fisconforme-v2`
 
-## Use apenas para transição
+## Use apenas para transicao
 
-Estas superfícies ainda podem ser usadas para comparação técnica controlada, mas não devem ser tratadas como referência principal.
+Estas superficies ainda podem ser usadas para comparacao tecnica controlada, mas nao devem ser tratadas como referencia principal.
 
 - `runtime_gold_v18`
 - `runtime_gold_v19`
@@ -41,7 +41,7 @@ Estas superfícies ainda podem ser usadas para comparação técnica controlada,
 - `runtime_gold_v23`
 - `runtime_gold_v24`
 
-## Não divulgar como superfície principal
+## Nao divulgar como superficie principal
 
 - `runtime_gold_v14`
 - `runtime_gold_v15`
@@ -50,19 +50,19 @@ Estas superfícies ainda podem ser usadas para comparação técnica controlada,
 - `runtime_gold_current`
 - rotas legadas de `fisconforme`
 
-## Regra prática
+## Regra pratica
 
-Quando houver dúvida operacional:
+Quando houver duvida operacional:
 
 1. usar `v5b/silver` para preparo silver com SEFIN;
 2. usar `current-v2` para gold;
 3. usar `current-v5/fisconforme-v2` para Fisconforme;
-4. usar `main` como entrypoint de descoberta, overview e catálogo;
-5. usar versões de transição apenas para comparação ou migração.
+4. usar `main` como entrypoint de descoberta, overview e catalogo;
+5. usar versoes de transicao apenas para comparacao ou migracao.
 
 ## Status resumido por CNPJ
 
-Para orientação operacional rápida por contribuinte, usar:
+Para orientacao operacional rapida por contribuinte, usar:
 
 - `GET /api/current-v2/status/{cnpj}`
 - `GET /api/current-v5/status/{cnpj}`
@@ -73,31 +73,41 @@ Para orientação operacional rápida por contribuinte, usar:
 
 Esse resumo consolida:
 
-- prontidão de referências obrigatórias;
-- prontidão mínima para preparar silver;
-- prontidão mínima para executar gold;
-- prontidão de SEFIN;
-- contexto estruturado de SEFIN e referências em runtime;
-- alerta de cobertura temporal parcial quando o gold já existe, mas ainda há abas fiscais sem interseção de vigência;
-- listas de pendências por etapa;
-- próxima ação recomendada;
-- aliases e prefixos oficiais de gold e Fisconforme.
-- superfície oficial complementar de silver com SEFIN.
+- prontidao de referencias obrigatorias;
+- prontidao minima para preparar silver;
+- prontidao minima para executar gold;
+- prontidao de SEFIN;
+- contexto estruturado de SEFIN e referencias em runtime;
+- alerta de cobertura temporal parcial quando o gold ja existe, mas ainda ha abas fiscais sem interseccao de vigencia;
+- listas de pendencias por etapa;
+- proxima acao recomendada;
+- aliases e prefixos oficiais de gold e Fisconforme;
+- superficie oficial complementar de silver com SEFIN.
 
-Nos endpoints `pipeline/.../status`, o foco é a execução gold oficial:
+Nos endpoints `pipeline/.../status`, o foco e a execucao gold oficial:
 
-- validação dos inputs do gold;
+- validacao dos inputs do gold;
 - origem operacional dos itens;
-- contexto SEFIN usado pela execução;
-- resumo da qualidade operacional da conversão antes do `run`.
+- contexto SEFIN usado pela execucao;
+- resumo da qualidade operacional da conversao antes do `run`;
+- `temporal_resolution_summary` quando `aba_mensal`, `aba_anual` e `aba_periodos` ja existem;
+- `quality_attention_required` e `attention_flags` para destacar `temporal_resolution_partial`.
 
-## Interpretação rápida de `next_action`
+No `POST .../pipeline/{cnpj}/run`, o retorno tambem passa a trazer:
 
-- `validar_referencias`: faltam referências obrigatórias antes de avançar.
-- `carregar_silver_base`: referências estão prontas, mas ainda faltam bases mínimas.
-- `preparar_silver`: já existe carga mínima e o próximo passo é consolidar silver.
+- `temporal_resolution_summary`;
+- `quality_attention_required`;
+- `attention_flags`.
+
+Com isso, a propria execucao materializada devolve a leitura operacional da cobertura temporal do gold sem depender de consulta separada.
+
+## Interpretacao rapida de `next_action`
+
+- `validar_referencias`: faltam referencias obrigatorias antes de avancar.
+- `carregar_silver_base`: referencias estao prontas, mas ainda faltam bases minimas.
+- `preparar_silver`: ja existe carga minima e o proximo passo e consolidar silver.
 - `preparar_silver_sefin`: silver para gold existe, mas ainda falta materializar `itens_unificados_sefin`.
-- `executar_gold`: silver mínima para gold já existe.
-- `revisar_quality`: os principais artefatos gold já foram materializados.
+- `executar_gold`: silver minima para gold ja existe.
+- `revisar_quality`: os principais artefatos gold ja foram materializados.
 
-Quando `next_action = revisar_quality`, vale olhar também `quality_attention_required` e `attention_flags`. Se houver `temporal_resolution_partial`, o próximo passo continua sendo revisar a qualidade, mas com foco nas abas fiscais com cobertura SEFIN parcial.
+Quando `next_action = revisar_quality`, vale olhar tambem `quality_attention_required` e `attention_flags`. Se houver `temporal_resolution_partial`, o proximo passo continua sendo revisar a qualidade, mas com foco nas abas fiscais com cobertura SEFIN parcial.
