@@ -1,83 +1,84 @@
 # sistema_ro
 
-Projeto base para auditoria fiscal orientada a mercadorias, com ênfase em:
+Projeto de auditoria fiscal orientado a mercadorias, com foco em:
 
-- identificação e rastreabilidade de mercadorias;
-- agregação auditável de produtos;
-- conversão de unidades com preservação de override manual;
-- análise de estoque derivada de movimentação cronológica;
-- fluxo de Fisconforme não atendido com consulta individual, lote, cache e notificações.
+- rastreabilidade de itens e agregacao de produtos;
+- conversao de unidades com override manual;
+- estoque derivado de movimentacao cronologica;
+- enriquecimento SEFIN e derivados fiscais;
+- trilha operacional de Fisconforme.
 
-## Princípios
+## Principios
 
-1. A mercadoria é o centro do domínio.
-2. O fio de ouro deve preservar o caminho `linha original -> id_linha_origem -> codigo_fonte -> mercadoria_id/apresentacao_id -> id_agrupado -> tabelas analíticas`.
-3. SQL entra como camada bronze; harmonização, agregação, conversão, classificação fiscal, estoque e Fisconforme analítico entram como silver/gold em Python/Polars.
-4. Estoque, agregação e conversão seguem os contratos funcionais já consolidados no projeto.
+1. A mercadoria e o centro do dominio.
+2. O fio de ouro deve preservar a trilha `linha original -> id_linha_origem -> codigo_fonte -> mercadoria/apresentacao -> id_agrupado -> tabelas analiticas`.
+3. SQL fica como bronze; harmonizacao, agregacao, conversao, estoque e Fisconforme analitico ficam em Python/Polars.
+4. Contratos de estoque, agregacao e conversao devem priorizar corretude, rastreabilidade e estabilidade.
 
-## Estrutura inicial
+## Estrutura
 
-- `docs/` — plano de 16 fases, manifesto de dados e frontend detalhado.
-- `backend/` — API FastAPI para agregação, conversão, estoque e Fisconforme.
-- `pipeline/` — extração, normalização, mercadorias, conversão, estoque e fisconforme.
-- `sql/` — consultas core e auxiliares.
-- `references/` — manifests das referências estáticas e dos Parquets obrigatórios.
+- `docs/`: planejamento, status, contratos e documentacao operacional.
+- `backend/`: APIs FastAPI de silver, gold, status e Fisconforme.
+- `pipeline/`: extracao, normalizacao, agregacao, conversao, estoque e Fisconforme.
+- `sql/`: consultas base e auxiliares.
+- `references/`: manifestos e instrucoes das referencias obrigatorias.
 
-## Status
+## Superficies oficiais
 
-O repositório já possui execução técnica relevante nas trilhas de silver, gold e superfícies operacionais.
+- silver com preparo SEFIN: `backend.app.runtime_silver_v2:app` em `/api/v5b/silver`
+- gold oficial: `backend.app.runtime_gold_current_v2:app` em `/api/current-v2`
+- fisconforme modular: `backend.app.runtime_gold_current_v5:app` em `/api/current-v5/fisconforme-v2`
+- descoberta e orientacao principal: `backend.app.runtime_main:app` em `/api/main`
 
-Superfícies oficiais atuais:
-
-- silver com preparo SEFIN: `backend.app.runtime_silver_v2:app` com prefixo `/api/v5b/silver`
-- gold: `backend.app.runtime_gold_current_v2:app` com prefixo `/api/current-v2`
-- fisconforme modular: `backend.app.runtime_gold_current_v5:app` com prefixo `/api/current-v5/fisconforme-v2`
-- entrypoint principal de descoberta/orientação: `backend.app.runtime_main:app` com prefixo `/api/main`
+## Endpoints principais
 
 Status resumido por CNPJ:
 
 - `GET /api/current-v2/status/{cnpj}`
 - `GET /api/current-v5/status/{cnpj}`
 
-Esse endpoint informa:
+Esse status informa:
 
-- prontidão de referências, silver, gold e SEFIN;
-- listas de datasets ou referências faltantes por etapa;
-- próxima ação operacional recomendada, incluindo preparo silver com SEFIN quando faltar `itens_unificados_sefin`;
-- superfícies oficiais recomendadas para gold e Fisconforme.
+- prontidao de referencias, silver, gold e SEFIN;
+- faltas por etapa;
+- `next_action` operacional;
+- alerta quando o gold existe, mas a cobertura temporal SEFIN nas abas fiscais e parcial;
+- superficies recomendadas para silver, gold e Fisconforme.
 
-Status de prontidão da execução gold oficial:
+Status da execucao gold oficial:
 
 - `GET /api/current-v2/pipeline/{cnpj}/status`
 - `GET /api/gold20/pipeline/{cnpj}/status`
 - `GET /api/current-v5/pipeline/{cnpj}/status`
 - `GET /api/gold25/pipeline/{cnpj}/status`
 
-Esse endpoint informa:
+Esse status informa:
 
-- validação dos inputs do gold;
+- validacao de inputs;
 - origem selecionada dos itens;
-- contexto SEFIN, status operacional do enriquecimento e referências ausentes;
-- resumo operacional da qualidade de conversão antes da execução;
-- resolução temporal de vigência SEFIN na trilha oficial para `aba_mensal`, `aba_anual` e `aba_periodos` quando `sitafe_produto_sefin_aux` estiver disponível.
+- contexto SEFIN, referencias faltantes e vigencia temporal utilizavel em runtime;
+- resumo de qualidade da conversao antes da execucao.
 
-Superfície principal de orientação:
+Execucao gold oficial:
+
+- o `run` passa a expor cobertura temporal efetiva de `aba_mensal`, `aba_anual` e `aba_periodos`;
+- a nao cobertura e detalhada por motivo, como `sem_co_sefin` e `sem_intersecao_temporal`.
+
+Superficie principal de orientacao:
 
 - `GET /api/main/runtime-overview`
 - `GET /api/main/surfaces`
 - `GET /api/main/surfaces/catalog`
 - `GET /api/main/decommission`
 
-Essa superfície consolida o apontamento para `current-v2` e `current-v5` sem substituir os aliases operacionais.
-
-Preparação silver com diagnóstico de SEFIN:
+Preparo silver com diagnostico SEFIN:
 
 - `POST /api/v5b/silver/{cnpj}/prepare-sefin`
 
-Essa resposta agora informa também ausência de referências, fallback por erro de enriquecimento e status estruturado do enriquecimento SEFIN.
+## Foco atual
 
-As próximas evoluções seguem concentradas em:
+As proximas entregas devem continuar em:
 
-- aderência funcional do estoque;
-- refinamentos adicionais das regras temporais de ST e vigência SEFIN;
-- consolidação gradual das runtimes redundantes.
+- aderencia funcional do estoque;
+- refinamento das regras temporais de ST e vigencia SEFIN;
+- reducao de redundancia entre runtimes e contratos operacionais.

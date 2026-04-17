@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from backend.app.services.gold_temporal_resolution_service import get_gold_temporal_resolution_summary
 from backend.app.services.references_diagnostic_service import get_references_and_parquets_status
 from backend.app.services.runtime_surface_catalog_service import get_runtime_surface_catalog
 
@@ -50,6 +51,7 @@ def _build_sefin_context(
     references: dict[str, bool],
     silver: dict[str, dict],
     silver_prepare_ready: bool,
+    temporal_resolution_summary: dict | None = None,
 ) -> dict:
     missing_references = [name for name, exists in references.items() if not exists]
     silver_enriched_ready = silver.get("itens_unificados_sefin", {}).get("exists", False)
@@ -70,6 +72,8 @@ def _build_sefin_context(
         "silver_enriched_ready": silver_enriched_ready,
         "missing_references": missing_references,
         "missing_datasets": _missing_names(silver, REQUIRED_SILVER_FOR_SEFIN),
+        "temporal_resolution_summary": temporal_resolution_summary or {"status": "not_available", "partial_coverage": False, "targets_with_partial_coverage": [], "targets": {}},
+        "temporal_resolution_partial": bool(temporal_resolution_summary and temporal_resolution_summary.get("partial_coverage")),
     }
 
 
@@ -94,10 +98,12 @@ def get_cnpj_status(cnpj: str) -> dict:
     silver_gold_ready = all(silver[name]["exists"] for name in REQUIRED_SILVER_FOR_GOLD)
     gold_ready = all(gold[name]["exists"] for name in KEY_GOLD_OUTPUTS)
     sefin_ready = references_complete and silver.get("itens_unificados_sefin", {}).get("exists", False)
+    temporal_resolution_summary = get_gold_temporal_resolution_summary(cnpj) if gold_ready else None
     sefin_context = _build_sefin_context(
         references=references,
         silver=silver,
         silver_prepare_ready=silver_prepare_ready,
+        temporal_resolution_summary=temporal_resolution_summary,
     )
 
     next_action = "validar_referencias"
@@ -113,6 +119,9 @@ def get_cnpj_status(cnpj: str) -> dict:
         next_action = "revisar_quality"
 
     recommended_surfaces = _recommended_surfaces()
+    attention_flags: list[str] = []
+    if sefin_context["temporal_resolution_partial"]:
+        attention_flags.append("temporal_resolution_partial")
 
     return {
         "cnpj": cnpj,
@@ -137,6 +146,8 @@ def get_cnpj_status(cnpj: str) -> dict:
         },
         "next_action": next_action,
         "recommended_action_endpoint": _recommended_action_endpoint(next_action, recommended_surfaces),
+        "quality_attention_required": bool(attention_flags),
+        "attention_flags": attention_flags,
         "recommended_runtime": f"backend.app.{recommended_surfaces['gold']['alias']}:app",
         "recommended_surfaces": recommended_surfaces,
     }

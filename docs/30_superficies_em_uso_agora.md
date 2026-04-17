@@ -78,6 +78,7 @@ Esse resumo consolida:
 - prontidão mínima para executar gold;
 - prontidão de SEFIN;
 - contexto estruturado de SEFIN e referências em runtime;
+- alerta de cobertura temporal parcial quando o gold já existe, mas ainda há abas fiscais sem interseção de vigência;
 - listas de pendências por etapa;
 - próxima ação recomendada;
 - aliases e prefixos oficiais de gold e Fisconforme.
@@ -98,3 +99,5 @@ Nos endpoints `pipeline/.../status`, o foco é a execução gold oficial:
 - `preparar_silver_sefin`: silver para gold existe, mas ainda falta materializar `itens_unificados_sefin`.
 - `executar_gold`: silver mínima para gold já existe.
 - `revisar_quality`: os principais artefatos gold já foram materializados.
+
+Quando `next_action = revisar_quality`, vale olhar também `quality_attention_required` e `attention_flags`. Se houver `temporal_resolution_partial`, o próximo passo continua sendo revisar a qualidade, mas com foco nas abas fiscais com cobertura SEFIN parcial.

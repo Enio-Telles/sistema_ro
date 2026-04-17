@@ -24,6 +24,7 @@ def test_get_cnpj_status_requires_references_first(monkeypatch) -> None:
         }
 
     monkeypatch.setattr(service, "get_references_and_parquets_status", fake_status)
+    monkeypatch.setattr(service, "get_gold_temporal_resolution_summary", lambda cnpj: {"status": "available"})
 
     payload = service.get_cnpj_status("123")
 
@@ -38,6 +39,7 @@ def test_get_cnpj_status_requires_references_first(monkeypatch) -> None:
     assert payload["recommended_surfaces"]["gold"]["status_endpoint"] == "/api/current-v2/status/{cnpj}"
     assert payload["recommended_surfaces"]["gold"]["pipeline_status_endpoint"] == "/api/current-v2/pipeline/{cnpj}/status"
     assert payload["recommended_surfaces"]["fisconforme"]["status_endpoint"] == "/api/current-v5/status/{cnpj}"
+    assert payload["quality_attention_required"] is False
 
 
 def test_get_cnpj_status_promotes_quality_when_gold_is_ready(monkeypatch) -> None:
@@ -63,6 +65,20 @@ def test_get_cnpj_status_promotes_quality_when_gold_is_ready(monkeypatch) -> Non
         }
 
     monkeypatch.setattr(service, "get_references_and_parquets_status", fake_status)
+    monkeypatch.setattr(
+        service,
+        "get_gold_temporal_resolution_summary",
+        lambda cnpj: {
+            "status": "available",
+            "partial_coverage": True,
+            "targets_with_partial_coverage": ["aba_anual"],
+            "targets": {
+                "aba_anual": {
+                    "non_coverage_breakdown": {"sem_intersecao_temporal": 1, "sem_co_sefin": 0, "schema_insuficiente": 0}
+                }
+            },
+        },
+    )
 
     payload = service.get_cnpj_status("123")
 
@@ -70,8 +86,12 @@ def test_get_cnpj_status_promotes_quality_when_gold_is_ready(monkeypatch) -> Non
     assert payload["gold_ready"] is True
     assert payload["sefin_ready"] is True
     assert payload["sefin_context"]["status"] == "ready"
+    assert payload["sefin_context"]["temporal_resolution_partial"] is True
+    assert payload["sefin_context"]["temporal_resolution_summary"]["targets_with_partial_coverage"] == ["aba_anual"]
     assert payload["recommended_action_endpoint"] == "/api/current-v2/pipeline/{cnpj}/status"
     assert payload["missing"]["gold_outputs"] == []
+    assert payload["quality_attention_required"] is True
+    assert payload["attention_flags"] == ["temporal_resolution_partial"]
 
 
 def test_get_cnpj_status_requires_silver_sefin_before_gold(monkeypatch) -> None:
@@ -97,6 +117,7 @@ def test_get_cnpj_status_requires_silver_sefin_before_gold(monkeypatch) -> None:
         }
 
     monkeypatch.setattr(service, "get_references_and_parquets_status", fake_status)
+    monkeypatch.setattr(service, "get_gold_temporal_resolution_summary", lambda cnpj: {"status": "available"})
 
     payload = service.get_cnpj_status("123")
 
@@ -106,3 +127,4 @@ def test_get_cnpj_status_requires_silver_sefin_before_gold(monkeypatch) -> None:
     assert payload["recommended_action_endpoint"] == "/api/v5b/silver/{cnpj}/prepare-sefin"
     assert payload["sefin_context"]["status"] == "prepare_silver_sefin_required"
     assert payload["missing"]["silver_sefin"] == ["itens_unificados_sefin"]
+    assert payload["sefin_context"]["temporal_resolution_summary"]["status"] == "not_available"
