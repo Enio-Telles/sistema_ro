@@ -2,7 +2,7 @@
 
 ## Objetivo
 
-Iniciar a retirada controlada de superfícies antigas sem quebrar compatibilidade imediata.
+Consolidar a retirada controlada de superfícies antigas sem quebrar compatibilidade imediata.
 
 ## Runtime operacional recomendada nesta fase
 
@@ -18,14 +18,16 @@ Essa runtime expõe ao mesmo tempo:
 - mapa de depreciações;
 - plano de descomissionamento.
 
-## 1. Retirar primeiro do uso cotidiano
+## 1. Já retiradas do repositório e do uso cotidiano
 
-### Gold legado
+### Gold legado removido fisicamente
 
 - `runtime_gold_v14`
 - `runtime_gold_v15`
 - `runtime_gold_v16`
 - `runtime_gold_v17`
+- `runtime_gold_v18`
+- `runtime_gold_v19`
 - `runtime_gold_current`
 
 ### Substituição recomendada
@@ -50,8 +52,6 @@ Essa runtime expõe ao mesmo tempo:
 
 Manter temporariamente apenas para comparações controladas:
 
-- `runtime_gold_v18`
-- `runtime_gold_v19`
 - `runtime_gold_v21`
 - `runtime_gold_v22`
 - `runtime_gold_v23`
@@ -59,11 +59,10 @@ Manter temporariamente apenas para comparações controladas:
 
 ## 4. Ordem recomendada de desligamento
 
-1. parar de divulgar runtimes legadas em documentação operacional;
-2. usar cabeçalhos de depreciação para rotas legadas;
+1. manter `v14` a `v19` e `runtime_gold_current` apenas como histórico técnico;
+2. usar cabeçalhos de depreciação para rotas legadas e de transição ainda presentes;
 3. revisar se ainda há consumidores reais das runtimes de transição;
-4. remover primeiro as runtimes `v14` a `v17` e `runtime_gold_current`;
-5. depois revisar as runtimes `v21` a `v24` quando o Fisconforme v2 estiver estabilizado.
+4. revisar as runtimes `v21` a `v24` quando o Fisconforme v2 estiver estabilizado e sem consumidores legados.
 
 ## 5. Critério mínimo antes de remoção física
 

@@ -9,11 +9,17 @@ CORE_SQL_FILES = {
     "dados_cadastrais": "dados_cadastrais.sql",
     "efd_reg_0200": "efd_reg_0200.sql",
     "efd_c170": "efd_c170.sql",
-    "efd_bloco_h": "efd_bloco_h_template.sql",
-    "nfe_itens": "nfe_itens_template.sql",
-    "fisconforme_cadastral": "fisconforme_cadastral_template.sql",
+    "efd_bloco_h": "efd_bloco_h.sql",
+    "nfe_itens": "nfe_itens.sql",
+    "fisconforme_cadastral": "fisconforme_cadastral.sql",
     "fisconforme_malhas": "fisconforme_malhas.sql",
 }
+
+PLACEHOLDER_SQL_MARKERS = (
+    "1 AS placeholder",
+    "Substituir abaixo para SQL definitiva",
+    "TODO: projetar colunas mínimas necessárias",
+)
 
 
 @dataclass(frozen=True)
@@ -37,6 +43,10 @@ class SqlTemplate:
         return placeholders
 
 
+def is_placeholder_sql_content(content: str) -> bool:
+    return any(marker in content for marker in PLACEHOLDER_SQL_MARKERS)
+
+
 def resolve_sql_path(sql_root: Path, name: str) -> Path:
     filename = CORE_SQL_FILES.get(name, f"{name}.sql")
     path = sql_root / "core" / filename
@@ -47,7 +57,10 @@ def resolve_sql_path(sql_root: Path, name: str) -> Path:
 
 def load_sql_template(sql_root: Path, name: str) -> SqlTemplate:
     path = resolve_sql_path(sql_root, name)
-    return SqlTemplate(name=name, path=path, content=path.read_text(encoding="utf-8"))
+    content = path.read_text(encoding="utf-8")
+    if is_placeholder_sql_content(content):
+        raise ValueError(f"SQL core ainda em placeholder: {path}")
+    return SqlTemplate(name=name, path=path, content=content)
 
 
 def list_available_sql_names() -> Iterable[str]:

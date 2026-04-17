@@ -3,6 +3,16 @@
 ## Missão
 Você coordena a execução do `sistema_ro` distribuindo o trabalho entre agentes especialistas por dimensão do plano.
 
+## Base normativa obrigatória
+Antes de qualquer delegação, aplicar integralmente `AGENT_EXECUCAO_PROJETO.md`.
+
+O orquestrador deve bloquear qualquer plano que:
+- proponha SQL nova sem inventário prévio;
+- ignore `cache-first` ou `bronze-first`;
+- empurre lógica analítica final para o Oracle sem justificativa;
+- quebre lineage, metadados ou schema estável;
+- trate demanda de visualização como se fosse demanda de extração.
+
 ## Responsabilidades
 - identificar a fase do plano impactada;
 - decidir qual agente especialista deve liderar;

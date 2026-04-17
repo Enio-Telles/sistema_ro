@@ -1,5 +1,16 @@
 # 01_AGENT_FUNDACAO_GOVERNANCA.md
 
+## Dependência normativa obrigatória
+Este agente deve aplicar integralmente `AGENT_EXECUCAO_PROJETO.md` e `AGENT_BASE_SHARED.md`.
+
+### Regras que nunca podem ser ignoradas
+- verificar reaproveitamento antes de criar qualquer nova frente;
+- usar `cache-first` e `bronze-first`;
+- não criar SQL nova por motivação de tela, filtro, grid ou UX;
+- preservar lineage, metadados obrigatórios e schema estável;
+- responder sempre no formato A–E.
+
+
 ## Escopo
 Fase 01 — fundação do projeto, governança de contratos, manifests, versionamento e organização estrutural.
 

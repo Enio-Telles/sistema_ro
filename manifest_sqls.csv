@@ -1,0 +1,9 @@
+catalog_name,catalog_filename,core_filename,classificacao,oracle_ready,has_placeholder,next_action,notes
+lookup_contribuinte,lookup_contribuinte.sql,lookup_contribuinte.sql,canonical_real,true,false,keep_and_validate,query mínima promovida no core
+dados_cadastrais,dados_cadastrais.sql,dados_cadastrais.sql,canonical_real,true,false,keep_and_validate,query cadastral promovida no core
+efd_reg_0200,efd_reg_0200.sql,efd_reg_0200.sql,canonical_real,true,false,keep_and_validate,query implementada no core
+efd_c170,efd_c170.sql,efd_c170.sql,canonical_real,true,false,keep_and_validate,query implementada no core
+efd_bloco_h,efd_bloco_h.sql,efd_bloco_h.sql,canonical_real,true,false,keep_and_validate,core real e catálogo alinhado
+nfe_itens,nfe_itens.sql,nfe_itens.sql,canonical_real,true,false,keep_and_validate,query curada promovida a core
+fisconforme_cadastral,fisconforme_cadastral.sql,fisconforme_cadastral.sql,canonical_real,true,false,keep_and_validate,query curada promovida a ore
+fisconforme_malhas,fisconforme_malhas.sql,fisconforme_malhas.sql,canonical_real,true,false,keep_and_validate,query promovida a partir de referência interna do repositório
