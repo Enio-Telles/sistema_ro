@@ -22,6 +22,9 @@ def get_fisconforme_recommendation_v2() -> dict:
             "/api/current-v3/fisconforme-v2",
         ],
         "recommended_routes": [
+            # Prefer the current operational alias first for recommendations
+            "/api/current-v5/fisconforme-v2/{cnpj}",
+            "/api/current-v5/fisconforme-v2/lote",
             "/api/gold25/fisconforme-v2/{cnpj}",
             "/api/gold25/fisconforme-v2/lote",
             "/api/gold25/fisconforme-v2/cache/stats",
@@ -32,8 +35,6 @@ def get_fisconforme_recommendation_v2() -> dict:
             "/api/gold25/fisconforme-v2/notificacoes-lote-v3/download",
             "/api/gold25/fisconforme-v2/notificacao-docx-v2",
             "/api/gold25/fisconforme-v2/notificacao-docx-v2/download",
-            "/api/current-v5/fisconforme-v2/{cnpj}",
-            "/api/current-v5/fisconforme-v2/lote",
         ],
         "why": [
             "separa cache, extracao, acervo, notificacao e saida documental em modulos menores",
