@@ -21,10 +21,10 @@ Reduzir paralelismo operacional no `sistema_ro`, deixando explícito o que deve 
 ### Fisconforme modular
 
 - Runtime oficial por versão: `runtime_gold_v25.py`
-- Alias operacional: `runtime_gold_current_v3.py`
+- Alias operacional: `runtime_gold_current_v5.py`
 - Prefixos recomendados:
   - `/api/gold25/fisconforme-v2`
-  - `/api/current-v3/fisconforme-v2`
+  - `/api/current-v5/fisconforme-v2`
 
 ## 2. Superfícies de transição
 
@@ -59,7 +59,7 @@ Essas versões devem ser tratadas como históricas.
 
 ### Rotas legadas de Fisconforme
 
-- `/api/current-v3/fisconforme`
+- `/api/current-v5/fisconforme`
 - `/api/gold25/fisconforme`
 
 ## 4. Regra de evolução
@@ -73,7 +73,7 @@ Essas versões devem ser tratadas como históricas.
 ### Fazer
 
 - concentrar novas evoluções de gold em `gold_v20/current-v2`;
-- concentrar novas evoluções de Fisconforme em `gold_v25/current-v3` e `fisconforme-v2`;
+- concentrar novas evoluções de Fisconforme em `gold_v25/current-v5` e `fisconforme-v2`;
 - usar versões de transição apenas para validação comparativa e encerramento gradual.
 
 ## 5. Próxima limpeza recomendada

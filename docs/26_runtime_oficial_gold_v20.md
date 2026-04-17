@@ -33,6 +33,7 @@ Usar preferencialmente:
 
 - `backend/app/runtime_gold_current_v2.py`
 - prefixo `/api/current-v2`
+- status da execucao: `GET /api/current-v2/pipeline/{cnpj}/status`
 
 ### Para diagnostico explicito por versao
 
@@ -40,6 +41,28 @@ Usar:
 
 - `backend/app/runtime_gold_v20.py`
 - prefixo `/api/gold20`
+- status da execucao: `GET /api/gold20/pipeline/{cnpj}/status`
+
+## Contrato incremental de status da execucao
+
+As superfícies oficiais `gold_v20/current-v2` passam a expor um resumo de prontidão do gold antes do `run`.
+
+Campos principais:
+
+- `validation`
+- `selected_items_source`
+- `using_aggregated_sources`
+- `fontes_agr_validation`
+- `missing_references`
+- `sefin_context`
+- `conversion_quality_summary`
+- `warnings`
+
+Leitura prática:
+
+- `sefin_context.references_complete` indica se o conjunto de referências SEFIN está completo.
+- `sefin_context.using_sefin_enriched_items` indica uso direto de `itens_unificados_sefin`.
+- `conversion_quality_summary` resume diagnóstico de conversão, overrides e mapa manual já carregados.
 
 ## Observacao
 

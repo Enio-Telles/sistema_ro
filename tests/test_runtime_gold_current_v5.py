@@ -1,5 +1,6 @@
 from fastapi.testclient import TestClient
 
+import backend.app.status_router as status_router_module
 from backend.app.runtime_gold_current_v5 import app
 
 
@@ -42,3 +43,25 @@ def test_runtime_gold_current_v5_runtime_overview() -> None:
     assert payload['operational_index']['in_use_now']['fisconforme']['official_runtime'] == 'runtime_gold_v25'
     assert payload['surface_catalog']['official']['fisconforme_current_prefix'] == '/api/current-v5/fisconforme-v2'
     assert 'phases' in payload['decommission_plan']
+
+
+def test_runtime_gold_current_v5_status_summary(monkeypatch) -> None:
+    monkeypatch.setattr(
+        status_router_module,
+        'get_cnpj_status',
+        lambda cnpj: {
+            'cnpj': cnpj,
+            'next_action': 'revisar_quality',
+            'recommended_surfaces': {
+                'gold': {'alias': 'runtime_gold_current_v2'},
+                'fisconforme': {'alias': 'runtime_gold_current_v5'},
+            },
+        },
+    )
+
+    response = client.get('/api/current-v5/status/12345678000199')
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload['cnpj'] == '12345678000199'
+    assert payload['next_action'] == 'revisar_quality'
+    assert payload['recommended_surfaces']['fisconforme']['alias'] == 'runtime_gold_current_v5'

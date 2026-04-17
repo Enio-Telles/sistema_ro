@@ -17,7 +17,7 @@ CORE_SQL_FILES = {
 
 PLACEHOLDER_SQL_MARKERS = (
     "1 AS placeholder",
-    "Substituir abaixo para SQL definitiva",
+    "Substituir abaixo por SQL definitiva",
     "TODO: projetar colunas mínimas necessárias",
 )
 

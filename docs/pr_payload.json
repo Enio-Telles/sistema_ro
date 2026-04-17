@@ -1,0 +1,8 @@
+{
+  "owner": "Enio-Telles",
+  "repo": "sistema_ro",
+  "title": "chore: add runtime v2 integration tests and checklist for phases 05-08",
+  "body_file": "docs/pr_body_for_api.txt",
+  "head": "feature/phase-05-08",
+  "base": "main"
+}

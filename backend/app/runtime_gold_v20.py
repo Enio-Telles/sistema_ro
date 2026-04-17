@@ -14,7 +14,7 @@ from backend.app.references_diagnostic_router import router as references_router
 from backend.app.runtime_recommendation_router import router as runtime_recommendation_router
 from backend.app.status_router import router as status_router
 from backend.app.routers_v2 import agregacao, conversao, estoque, fisconforme, health
-from backend.app.services.pipeline_exec_gold_v20 import execute_gold_v20
+from backend.app.services.pipeline_exec_gold_v20 import execute_gold_v20, get_gold_v20_status
 
 pipeline_router = APIRouter()
 
@@ -22,6 +22,11 @@ pipeline_router = APIRouter()
 @pipeline_router.post("/{cnpj}/run")
 def run_pipeline(cnpj: str) -> dict:
     return execute_gold_v20(cnpj)
+
+
+@pipeline_router.get("/{cnpj}/status")
+def get_pipeline_status(cnpj: str) -> dict:
+    return get_gold_v20_status(cnpj)
 
 
 app = FastAPI(title="sistema_ro_gold_v20", version="2.8.0")
