@@ -12,6 +12,8 @@ def test_runtime_main_root() -> None:
     assert response.status_code == 200
     payload = response.json()
     assert payload['name'] == 'sistema_ro_main'
+    assert payload['official_entrypoints']['silver']['runtime'] == 'runtime_silver_v2'
+    assert payload['official_entrypoints']['silver']['prepare_sefin_endpoint'] == '/api/v5b/silver/{cnpj}/prepare-sefin'
     assert payload['official_entrypoints']['gold']['runtime'] == 'runtime_gold_current_v2'
     assert payload['official_entrypoints']['fisconforme']['runtime'] == 'runtime_gold_current_v5'
 
@@ -26,8 +28,11 @@ def test_runtime_main_runtime_overview() -> None:
     response = client.get('/api/main/runtime-overview')
     assert response.status_code == 200
     payload = response.json()
+    assert payload['recommendation']['official_runtime']['silver']['runtime'] == 'runtime_silver_v2'
+    assert payload['recommendation']['official_runtime']['silver']['prepare_sefin_endpoint'] == '/api/v5b/silver/{cnpj}/prepare-sefin'
     assert payload['recommendation']['official_runtime']['gold']['current_alias'] == 'runtime_gold_current_v2'
     assert payload['recommendation']['official_runtime']['fisconforme']['current_alias'] == 'runtime_gold_current_v5'
+    assert payload['operational_index']['in_use_now']['silver']['official_runtime'] == 'runtime_silver_v2'
 
 
 def test_runtime_main_pipeline_status(monkeypatch) -> None:

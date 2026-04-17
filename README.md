@@ -29,6 +29,7 @@ O repositório já possui execução técnica relevante nas trilhas de silver, g
 
 Superfícies oficiais atuais:
 
+- silver com preparo SEFIN: `backend.app.runtime_silver_v2:app` com prefixo `/api/v5b/silver`
 - gold: `backend.app.runtime_gold_current_v2:app` com prefixo `/api/current-v2`
 - fisconforme modular: `backend.app.runtime_gold_current_v5:app` com prefixo `/api/current-v5/fisconforme-v2`
 - entrypoint principal de descoberta/orientação: `backend.app.runtime_main:app` com prefixo `/api/main`
@@ -42,20 +43,23 @@ Esse endpoint informa:
 
 - prontidão de referências, silver, gold e SEFIN;
 - listas de datasets ou referências faltantes por etapa;
-- próxima ação operacional recomendada;
+- próxima ação operacional recomendada, incluindo preparo silver com SEFIN quando faltar `itens_unificados_sefin`;
 - superfícies oficiais recomendadas para gold e Fisconforme.
 
 Status de prontidão da execução gold oficial:
 
 - `GET /api/current-v2/pipeline/{cnpj}/status`
 - `GET /api/gold20/pipeline/{cnpj}/status`
+- `GET /api/current-v5/pipeline/{cnpj}/status`
+- `GET /api/gold25/pipeline/{cnpj}/status`
 
 Esse endpoint informa:
 
 - validação dos inputs do gold;
 - origem selecionada dos itens;
-- contexto SEFIN e referências ausentes;
-- resumo operacional da qualidade de conversão antes da execução.
+- contexto SEFIN, status operacional do enriquecimento e referências ausentes;
+- resumo operacional da qualidade de conversão antes da execução;
+- resolução temporal de vigência SEFIN na trilha oficial para `aba_mensal`, `aba_anual` e `aba_periodos` quando `sitafe_produto_sefin_aux` estiver disponível.
 
 Superfície principal de orientação:
 
@@ -66,8 +70,14 @@ Superfície principal de orientação:
 
 Essa superfície consolida o apontamento para `current-v2` e `current-v5` sem substituir os aliases operacionais.
 
+Preparação silver com diagnóstico de SEFIN:
+
+- `POST /api/v5b/silver/{cnpj}/prepare-sefin`
+
+Essa resposta agora informa também ausência de referências, fallback por erro de enriquecimento e status estruturado do enriquecimento SEFIN.
+
 As próximas evoluções seguem concentradas em:
 
 - aderência funcional do estoque;
-- integração mais consistente da vigência SEFIN;
+- refinamentos adicionais das regras temporais de ST e vigência SEFIN;
 - consolidação gradual das runtimes redundantes.

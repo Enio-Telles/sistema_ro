@@ -15,6 +15,11 @@ def get_runtime_overview() -> dict:
     return {
         "recommendation": {
             "official_runtime": {
+                "silver": {
+                    "runtime": catalog["official"]["silver_runtime"],
+                    "api_prefix": catalog["official"]["silver_prepare_prefix"],
+                    "prepare_sefin_endpoint": catalog["official"]["silver_prepare_sefin_endpoint"],
+                },
                 "gold": {
                     "runtime": gold_rec.get("official_runtime"),
                     "current_alias": catalog["official"]["gold_current_alias"],
@@ -27,6 +32,17 @@ def get_runtime_overview() -> dict:
                 }
             },
             "details": {
+                "silver": {
+                    "status": "silver_v2_official_prepare_with_sefin",
+                    "official_runtime": catalog["official"]["silver_runtime"],
+                    "recommended_routes": [
+                        catalog["official"]["silver_prepare_sefin_endpoint"],
+                    ],
+                    "why": [
+                        "prepara silver base e tenta enriquecer itens_unificados com referencias SEFIN",
+                        "preserva fallback seguro quando referencias obrigatorias nao estiverem completas",
+                    ],
+                },
                 "gold": gold_rec,
                 "fisconforme": fis_rec,
             }

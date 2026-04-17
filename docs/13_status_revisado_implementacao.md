@@ -54,17 +54,36 @@ O endpoint resumido de status do CNPJ agora consolida também:
 
 - referências faltantes;
 - pendências mínimas de silver e gold;
-- `next_action` operacional;
+- diagnóstico bruto de referências e contexto estruturado de SEFIN;
+- `next_action` operacional, incluindo preparo silver com SEFIN quando necessário;
 - superfícies oficiais recomendadas para gold e Fisconforme.
 
 Também foi adicionada a superfície oficial de status da execução `gold_v20/current-v2`, com:
 
 - validação de inputs;
 - contexto SEFIN;
+- diagnóstico bruto de referências SEFIN e status operacional do enriquecimento/fallback;
 - origem de itens usada pela execução;
 - resumo operacional de qualidade da conversão.
 
 `runtime_main` também passou a funcionar como entrypoint principal de descoberta operacional, expondo overview, catálogo de superfícies, depreciações e plano de descomissionamento.
+
+Agora esse overview/catálogo também referencia explicitamente `runtime_silver_v2` como superfície oficial complementar para `prepare-sefin`, alinhando a descoberta principal com o `next_action` do status por CNPJ.
+
+Também foi fechada uma parte da lacuna documental de estoque das fases 07 e 08:
+
+- `mov_estoque` passa a materializar `__qtd_decl_final_audit__`;
+- `aba_anual` e `aba_periodos` passam a preferir essa quantidade auditável quando presente;
+- `aba_periodos` agora expõe `data_inicio`, `data_fim` e `periodo_label`.
+- a trilha oficial do gold passou a injetar `sitafe_produto_sefin_aux` em `aba_mensal`, `aba_anual` e `aba_periodos`, permitindo resolver ST/alíquota/MVA por interseção temporal da janela mensal, anual e do período quando a referência estiver disponível em runtime.
+
+O mesmo contrato de `pipeline/{cnpj}/status` também foi padronizado em `gold_v25/current-v5`, evitando diferença desnecessária entre superfícies oficiais ativas.
+
+Também foi extraído um helper compartilhado de composição do `pipeline_router` das runtimes oficiais, reduzindo duplicação estrutural sem alterar os contratos expostos.
+
+Em seguida, a montagem das rotas comuns dessas superfícies também foi centralizada em helper compartilhado, reduzindo risco de divergência entre `main`, `gold_v20`, `current-v2`, `gold_v25` e `current-v5`.
+
+O mesmo padrão foi aplicado às runtimes de transição `gold21` a `gold24` e aos aliases `current-v3/current-v4`, preservando headers e comportamento de transição, mas reduzindo duplicação de composição.
 
 ### Bloco D — Fisconforme não atendido
 **Status revisado:** pendente parcial

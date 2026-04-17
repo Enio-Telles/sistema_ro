@@ -1,5 +1,6 @@
 from fastapi.testclient import TestClient
 
+import backend.app.runtime_gold_current_v5 as runtime_gold_current_v5_module
 import backend.app.status_router as status_router_module
 from backend.app.runtime_gold_current_v5 import app
 
@@ -65,3 +66,23 @@ def test_runtime_gold_current_v5_status_summary(monkeypatch) -> None:
     assert payload['cnpj'] == '12345678000199'
     assert payload['next_action'] == 'revisar_quality'
     assert payload['recommended_surfaces']['fisconforme']['alias'] == 'runtime_gold_current_v5'
+
+
+def test_runtime_gold_current_v5_pipeline_status(monkeypatch) -> None:
+    monkeypatch.setattr(
+        runtime_gold_current_v5_module,
+        'get_gold_v20_status',
+        lambda cnpj: {
+            'cnpj': cnpj,
+            'validation': {'ok': True},
+            'conversion_quality_summary': {'manual_overrides_rows': 3},
+            'sefin_context': {'using_sefin_enriched_items': True},
+        },
+    )
+
+    response = client.get('/api/current-v5/pipeline/12345678000199/status')
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload['cnpj'] == '12345678000199'
+    assert payload['conversion_quality_summary']['manual_overrides_rows'] == 3
+    assert payload['sefin_context']['using_sefin_enriched_items'] is True

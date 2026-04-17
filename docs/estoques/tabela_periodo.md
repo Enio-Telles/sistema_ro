@@ -82,11 +82,20 @@ O valor unitário da agregação usa `preco_item` e, na falta dele, `Vl_item`.
 
 O módulo cruza `co_sefin_agr` com `sitafe_produto_sefin_aux.parquet` e mantém vigências que intersectam o período analisado (definido por `__data_inicio__` e `__data_fim__`).
 
+Na trilha oficial atual, essa interseção usa:
+
+- `data_inicio`: menor `Dt_e_s`/`Dt_doc` materializada no período;
+- `data_fim`: maior `Dt_e_s`/`Dt_doc` materializada no período.
+
+Quando a referência auxiliar está disponível na execução oficial, os campos fiscais do período passam a preferir a vigência intersectante mais recente do `co_sefin_agr`, com fallback para os atributos já propagados pela `mov_estoque`.
+
 Campos relevantes:
 
 - `ST`: histórico textual dos períodos de ST;
 - `__tem_st_per__`: flag interna indicando se há ST vigente no período;
 - `aliq_interna`: prioridade para a alíquota da referência SEFIN, com fallback para a última alíquota da movimentação.
+
+Na implementação atual, o campo `ST` ainda é materializado como `ST`/`SEM ST`, mas a decisão já pode ser orientada pela vigência intersectante do período.
 
 ## ICMS por período
 

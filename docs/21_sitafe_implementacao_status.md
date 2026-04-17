@@ -53,6 +53,11 @@ As tabelas mensal, anual e de períodos ainda não implementam integralmente:
 - `ICMS_saidas_desac` e `ICMS_estoque_desac` da anual e períodos;
 - lógica completa de MVA ajustado.
 
+Incremento já fechado na trilha oficial:
+
+- `aba_periodos_v4` passou a resolver vigência por interseção entre `data_inicio`/`data_fim` do período e `sitafe_produto_sefin_aux`, quando a referência está disponível na execução oficial do gold.
+- `aba_mensal_v4` e `aba_anual_v4` agora usam a mesma referência para resolver ST/alíquota/MVA pela janela mensal e anual da trilha oficial.
+
 ### 3. Integração explícita na documentação operacional principal
 A documentação do fluxo principal ainda precisa destacar que o uso pleno do SITAFE depende da trilha enriquecida.
 

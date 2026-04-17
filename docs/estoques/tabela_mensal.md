@@ -125,13 +125,13 @@ A visão mensal aproveita o fechamento cronológico já calculado:
 
 ## ST mensal e ICMS de entrada desacobertada
 
-A regra de ST não usa apenas a última linha da `mov_estoque`. O processo cruza `co_sefin_agr` com `sitafe_produto_sefin_aux.parquet` e mantém os períodos cuja vigência intersecta o mês analisado.
+A regra de ST não usa apenas a última linha da `mov_estoque`. Na trilha oficial do gold, o processo cruza `co_sefin_agr` com `sitafe_produto_sefin_aux.parquet` e mantém as vigências cuja janela intersecta o mês analisado. Quando a referência não está disponível, o cálculo mantém fallback conservador para os atributos já propagados pela `mov_estoque`.
 
 Campos relevantes:
 
-- `ST`: histórico textual dos períodos de ST do mês;
+- `ST`: status textual `ST`/`SEM ST` resolvido pela janela mensal;
 - `__tem_st_mes__`: flag interna;
-- `MVA`: `it_pc_mva` da última movimentação válida do mês, apenas quando há ST;
+- `MVA`: `it_pc_mva` priorizado pela vigência mensal, com fallback para a última movimentação válida do mês;
 - `MVA_ajustado`: preenchido somente quando `it_in_mva_ajustado = 'S'`.
 
 `ICMS_entr_desacob` só é calculado quando:

@@ -44,6 +44,7 @@ def run_gold_v20(
     id_agrupados_df: pl.DataFrame | None = None,
     produtos_final_df: pl.DataFrame | None = None,
     diagnostico_conversao_df: pl.DataFrame | None = None,
+    sefin_vigencia_df: pl.DataFrame | None = None,
 ) -> dict[str, pl.DataFrame]:
     mercadorias = _mercadorias_from_precomputed(
         map_produto_agrupado_df=map_produto_agrupado_df,
@@ -60,9 +61,9 @@ def run_gold_v20(
     fatores = apply_manual_overrides(fatores, overrides_df)
     log_conversao_anomalias = build_conversion_anomalies(fatores)
     mov_estoque = build_mov_estoque_v3(c170_df, nfe_df, nfce_df, bloco_h_df, fatores, item_unidades)
-    aba_mensal = build_aba_mensal_v4(mov_estoque)
-    aba_anual = build_aba_anual_v4(mov_estoque)
-    aba_periodos = build_aba_periodos_v4(mov_estoque)
+    aba_mensal = build_aba_mensal_v4(mov_estoque, vigencia_df=sefin_vigencia_df)
+    aba_anual = build_aba_anual_v4(mov_estoque, vigencia_df=sefin_vigencia_df)
+    aba_periodos = build_aba_periodos_v4(mov_estoque, vigencia_df=sefin_vigencia_df)
     estoque_resumo = build_estoque_resumo(aba_anual, fatores)
     estoque_alertas = build_estoque_alertas(aba_anual, fatores)
     return {

@@ -6,6 +6,14 @@ Este documento substitui o uso disperso de versões e aliases em documentos oper
 
 ## Use agora
 
+### Silver / preparo com SEFIN
+
+- Runtime oficial: `runtime_silver_v2.py`
+- Prefixo preferido:
+  - `/api/v5b/silver`
+- Endpoint principal:
+  - `POST /api/v5b/silver/{cnpj}/prepare-sefin`
+
 ### Gold / estoque / conversão
 
 - Runtime por versão: `runtime_gold_v20.py`
@@ -46,10 +54,11 @@ Estas superfícies ainda podem ser usadas para comparação técnica controlada,
 
 Quando houver dúvida operacional:
 
-1. usar `current-v2` para gold;
-2. usar `current-v5/fisconforme-v2` para Fisconforme;
-3. usar `main` como entrypoint de descoberta, overview e catálogo;
-4. usar versões de transição apenas para comparação ou migração.
+1. usar `v5b/silver` para preparo silver com SEFIN;
+2. usar `current-v2` para gold;
+3. usar `current-v5/fisconforme-v2` para Fisconforme;
+4. usar `main` como entrypoint de descoberta, overview e catálogo;
+5. usar versões de transição apenas para comparação ou migração.
 
 ## Status resumido por CNPJ
 
@@ -59,6 +68,8 @@ Para orientação operacional rápida por contribuinte, usar:
 - `GET /api/current-v5/status/{cnpj}`
 - `GET /api/current-v2/pipeline/{cnpj}/status`
 - `GET /api/gold20/pipeline/{cnpj}/status`
+- `GET /api/current-v5/pipeline/{cnpj}/status`
+- `GET /api/gold25/pipeline/{cnpj}/status`
 
 Esse resumo consolida:
 
@@ -66,9 +77,11 @@ Esse resumo consolida:
 - prontidão mínima para preparar silver;
 - prontidão mínima para executar gold;
 - prontidão de SEFIN;
+- contexto estruturado de SEFIN e referências em runtime;
 - listas de pendências por etapa;
 - próxima ação recomendada;
 - aliases e prefixos oficiais de gold e Fisconforme.
+- superfície oficial complementar de silver com SEFIN.
 
 Nos endpoints `pipeline/.../status`, o foco é a execução gold oficial:
 
@@ -82,5 +95,6 @@ Nos endpoints `pipeline/.../status`, o foco é a execução gold oficial:
 - `validar_referencias`: faltam referências obrigatórias antes de avançar.
 - `carregar_silver_base`: referências estão prontas, mas ainda faltam bases mínimas.
 - `preparar_silver`: já existe carga mínima e o próximo passo é consolidar silver.
+- `preparar_silver_sefin`: silver para gold existe, mas ainda falta materializar `itens_unificados_sefin`.
 - `executar_gold`: silver mínima para gold já existe.
 - `revisar_quality`: os principais artefatos gold já foram materializados.

@@ -87,11 +87,11 @@ O valor unitário da agregação usa `preco_item` e, na falta dele, `Vl_item`.
 
 ## Regra anual de ST
 
-O módulo cruza `co_sefin_agr` com `sitafe_produto_sefin_aux.parquet` e mantém vigências que intersectam o ano analisado.
+Na trilha oficial do gold, o módulo cruza `co_sefin_agr` com `sitafe_produto_sefin_aux.parquet` e mantém vigências que intersectam o ano analisado. Quando a referência não está disponível, permanece o fallback conservador para os atributos propagados da `mov_estoque`.
 
 Campos relevantes:
 
-- `ST`: histórico textual dos períodos anuais;
+- `ST`: status textual `ST`/`SEM ST` resolvido pela janela anual;
 - `__tem_st_ano__`: flag interna;
 - `aliq_interna`: prioridade para a alíquota da referência SEFIN, com fallback para a última alíquota da movimentação.
 
