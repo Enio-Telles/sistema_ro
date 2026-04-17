@@ -75,6 +75,7 @@ Na trilha v4 atual:
 - o calculo por diferenca entre `estoque_final` e `saldo_final` permanece apenas como fallback de compatibilidade para datasets legados sem essas colunas.
 - em cenarios mistos, `entradas_desacob` continua compondo apenas `saidas_calculadas`; ela nao substitui nem soma novamente a divergencia final de inventario usada em `saidas_desacob` e `estoque_final_desacob`.
 - quando houver multiplos fechamentos no mesmo ano, `saidas_desacob` e `estoque_final_desacob` podem coexistir na linha anual agregada porque cada uma pode vir de inventarios finais diferentes.
+- com ST vigente, o zeramento continua restrito a `ICMS_saidas_desac`; `ICMS_estoque_desac` permanece devido quando houver `estoque_final_desacob`.
 
 ## PME e PMS do ano
 

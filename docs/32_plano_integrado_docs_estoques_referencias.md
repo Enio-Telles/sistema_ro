@@ -38,6 +38,7 @@ Os documentos de estoque convergem nestes contratos:
 - `aba_anual_v4` e `aba_periodos_v4` preferem a quantidade declarada auditavel;
 - `aba_anual_v4` e `aba_periodos_v4` passam a alinhar `saidas_desacob` e `estoque_final_desacob` ao rollup explicito de `divergencia_estoque_declarado` e `divergencia_estoque_calculado`, com fallback conservador para datasets legados sem essas colunas;
 - a cobertura v4 agora inclui cenarios mistos com movimentos reais, `entradas_desacob`, multiplos fechamentos e reflexo de ICMS/ST sem dupla contagem da divergencia final;
+- a cobertura anual tambem valida o caso em que ST zera apenas `ICMS_saidas_desac`, mantendo `ICMS_estoque_desac` sobre divergencia calculada agregada;
 - `aba_periodos_v4` expone `data_inicio`, `data_fim` e `periodo_label`;
 - `aba_mensal_v4`, `aba_anual_v4` e `aba_periodos_v4` resolvem ST/aliquota/MVA por interseccao temporal quando `sitafe_produto_sefin_aux` esta disponivel;
 - o gold oficial informa disponibilidade da vigencia temporal em runtime, cobertura efetiva por aba e motivos de nao cobertura.

@@ -460,3 +460,170 @@ def test_build_aba_anual_v4_keeps_icms_estoque_desac_with_st_when_multiple_closi
     assert row['estoque_final_desacob'] == 2.0
     assert row['ICMS_saidas_desac'] == 0.0
     assert row['ICMS_estoque_desac'] == 9.0
+
+
+def test_build_aba_anual_v4_combines_multiple_uncovered_exits_with_mixed_inventory_divergences_and_st() -> None:
+    mov = pl.DataFrame([
+        {
+            'id_agrupado': 'P7',
+            'descr_padrao': 'BISCOITO',
+            'unid_ref': 'UN',
+            'tipo_operacao': '0 - ESTOQUE INICIAL',
+            'dt_doc': date(2024, 1, 1),
+            'dt_e_s': date(2024, 1, 1),
+            'q_conv': 5.0,
+            'qtd': 5.0,
+            'preco_unit': 10.0,
+            'entr_desac_anual': 0.0,
+            'saldo_estoque_anual': 5.0,
+            'co_sefin_agr': '930',
+            'it_pc_interna': 12.0,
+            'it_in_st': 'N',
+        },
+        {
+            'id_agrupado': 'P7',
+            'descr_padrao': 'BISCOITO',
+            'unid_ref': 'UN',
+            'tipo_operacao': '2 - SAIDAS',
+            'dt_doc': date(2024, 1, 10),
+            'dt_e_s': date(2024, 1, 10),
+            'q_conv': 7.0,
+            'qtd': 7.0,
+            'preco_unit': 20.0,
+            'entr_desac_anual': 2.0,
+            'saldo_estoque_anual': 0.0,
+            'co_sefin_agr': '930',
+            'it_pc_interna': 12.0,
+            'it_in_st': 'N',
+        },
+        {
+            'id_agrupado': 'P7',
+            'descr_padrao': 'BISCOITO',
+            'unid_ref': 'UN',
+            'tipo_operacao': '3 - ESTOQUE FINAL',
+            'dt_doc': date(2024, 3, 31),
+            'dt_e_s': date(2024, 3, 31),
+            'q_conv': 0.0,
+            'qtd': 1.0,
+            '__qtd_decl_final_audit__': 1.0,
+            'preco_unit': None,
+            'entr_desac_anual': 0.0,
+            'saldo_estoque_anual': 0.0,
+            'co_sefin_agr': '930',
+            'it_pc_interna': 12.0,
+            'it_in_st': 'N',
+            'periodo_inventario': 1,
+            'divergencia_estoque_declarado': 1.0,
+            'divergencia_estoque_calculado': 0.0,
+        },
+        {
+            'id_agrupado': 'P7',
+            'descr_padrao': 'BISCOITO',
+            'unid_ref': 'UN',
+            'tipo_operacao': '0 - ESTOQUE INICIAL',
+            'dt_doc': date(2024, 4, 1),
+            'dt_e_s': date(2024, 4, 1),
+            'q_conv': 1.0,
+            'qtd': 1.0,
+            'preco_unit': 10.0,
+            'entr_desac_anual': 0.0,
+            'saldo_estoque_anual': 1.0,
+            'co_sefin_agr': '930',
+            'it_pc_interna': 12.0,
+            'it_in_st': 'N',
+        },
+        {
+            'id_agrupado': 'P7',
+            'descr_padrao': 'BISCOITO',
+            'unid_ref': 'UN',
+            'tipo_operacao': '1 - ENTRADA',
+            'dt_doc': date(2024, 5, 1),
+            'dt_e_s': date(2024, 5, 1),
+            'q_conv': 4.0,
+            'qtd': 4.0,
+            'preco_unit': 10.0,
+            'entr_desac_anual': 0.0,
+            'saldo_estoque_anual': 5.0,
+            'co_sefin_agr': '930',
+            'it_pc_interna': 12.0,
+            'it_in_st': 'N',
+        },
+        {
+            'id_agrupado': 'P7',
+            'descr_padrao': 'BISCOITO',
+            'unid_ref': 'UN',
+            'tipo_operacao': '2 - SAIDAS',
+            'dt_doc': date(2024, 6, 1),
+            'dt_e_s': date(2024, 6, 1),
+            'q_conv': 6.0,
+            'qtd': 6.0,
+            'preco_unit': 30.0,
+            'entr_desac_anual': 1.0,
+            'saldo_estoque_anual': 0.0,
+            'co_sefin_agr': '930',
+            'it_pc_interna': 12.0,
+            'it_in_st': 'N',
+        },
+        {
+            'id_agrupado': 'P7',
+            'descr_padrao': 'BISCOITO',
+            'unid_ref': 'UN',
+            'tipo_operacao': '1 - ENTRADA',
+            'dt_doc': date(2024, 11, 1),
+            'dt_e_s': date(2024, 11, 1),
+            'q_conv': 4.0,
+            'qtd': 4.0,
+            'preco_unit': 10.0,
+            'entr_desac_anual': 0.0,
+            'saldo_estoque_anual': 4.0,
+            'co_sefin_agr': '930',
+            'it_pc_interna': 12.0,
+            'it_in_st': 'N',
+        },
+        {
+            'id_agrupado': 'P7',
+            'descr_padrao': 'BISCOITO',
+            'unid_ref': 'UN',
+            'tipo_operacao': '3 - ESTOQUE FINAL',
+            'dt_doc': date(2024, 12, 31),
+            'dt_e_s': date(2024, 12, 31),
+            'q_conv': 0.0,
+            'qtd': 2.0,
+            '__qtd_decl_final_audit__': 2.0,
+            'preco_unit': None,
+            'entr_desac_anual': 0.0,
+            'saldo_estoque_anual': 4.0,
+            'co_sefin_agr': '930',
+            'it_pc_interna': 12.0,
+            'it_in_st': 'N',
+            'periodo_inventario': 2,
+            'divergencia_estoque_declarado': 0.0,
+            'divergencia_estoque_calculado': 2.0,
+        },
+    ])
+    vigencia = pl.DataFrame([
+        {
+            'co_sefin': '930',
+            'it_da_inicio': date(2024, 1, 1),
+            'it_da_final': date(2024, 12, 31),
+            'it_pc_interna': 18.0,
+            'it_in_st': 'S',
+        }
+    ])
+
+    result = build_aba_anual_v4(mov, vigencia_df=vigencia)
+    row = result.row(0, named=True)
+
+    assert row['ST'] == 'ST'
+    assert row['estoque_inicial'] == 6.0
+    assert row['entradas'] == 8.0
+    assert row['saidas'] == 13.0
+    assert row['entradas_desacob'] == 3.0
+    assert row['estoque_final'] == 3.0
+    assert row['saidas_calculadas'] == 14.0
+    assert row['divergencia_estoque_declarado'] == 1.0
+    assert row['divergencia_estoque_calculado'] == 2.0
+    assert row['saidas_desacob'] == 1.0
+    assert row['estoque_final_desacob'] == 2.0
+    assert row['ICMS_saidas_desac'] == 0.0
+    assert row['ICMS_estoque_desac'] == 9.0
