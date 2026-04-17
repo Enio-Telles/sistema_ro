@@ -53,6 +53,7 @@ Campos principais:
 - `selected_items_source`
 - `using_aggregated_sources`
 - `fontes_agr_validation`
+- `references_status`
 - `missing_references`
 - `sefin_context`
 - `conversion_quality_summary`
@@ -60,6 +61,8 @@ Campos principais:
 
 Leitura prática:
 
+- `references_status` expõe o diagnóstico bruto das referências SEFIN disponíveis em runtime.
+- `sefin_context.status` distingue `sefin_enriched_items`, `aggregated_sources`, `fallback_missing_references` e `fallback_without_sefin`.
 - `sefin_context.references_complete` indica se o conjunto de referências SEFIN está completo.
 - `sefin_context.using_sefin_enriched_items` indica uso direto de `itens_unificados_sefin`.
 - `conversion_quality_summary` resume diagnóstico de conversão, overrides e mapa manual já carregados.

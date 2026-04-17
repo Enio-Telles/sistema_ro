@@ -209,6 +209,13 @@ O objetivo imediato deixa de ser "implementar a proxima camada" e passa a ser:
 3. validar formulas de ICMS, ST e MVA com casos dirigidos;
 4. revisar arredondamentos e fallback de aliquotas;
 5. padronizar o uso de `co_sefin`, `aliq_interna`, `it_in_st`, `it_pc_mva` nas tabelas finais.
+6. fechar o contrato de inventario/período da trilha oficial:
+   - materializar `__qtd_decl_final_audit__` em `mov_estoque`;
+   - fazer anual/períodos preferirem a quantidade declarada auditável;
+   - expor `data_inicio`, `data_fim` e `periodo_label` em `aba_periodos`.
+7. consolidar vigência temporal SEFIN nas saídas derivadas oficiais:
+   - usar `sitafe_produto_sefin_aux` para resolver ST/alíquota/MVA por janela mensal, anual e por período;
+   - manter fallback conservador para atributos propagados da `mov_estoque` quando a referência não estiver disponível.
 
 ### Resultado esperado
 

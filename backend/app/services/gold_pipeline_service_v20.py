@@ -2,8 +2,17 @@ from __future__ import annotations
 
 import polars as pl
 
+from backend.app.services.paths import reference_dir
+from pipeline.references.loaders import resolve_reference_dataset
 from pipeline.persist_gold_v2 import persist_gold_outputs_v2
 from pipeline.run_gold_v20 import run_gold_v20
+
+
+def _load_sefin_vigencia_reference() -> pl.DataFrame:
+    try:
+        return resolve_reference_dataset(reference_dir(), "sitafe_produto_sefin_aux").read()
+    except FileNotFoundError:
+        return pl.DataFrame()
 
 
 def run_and_persist_gold_v20(
@@ -22,7 +31,9 @@ def run_and_persist_gold_v20(
     id_agrupados_df: pl.DataFrame | None = None,
     produtos_final_df: pl.DataFrame | None = None,
     diagnostico_conversao_df: pl.DataFrame | None = None,
+    sefin_vigencia_df: pl.DataFrame | None = None,
 ) -> dict:
+    vigencia_df = sefin_vigencia_df if sefin_vigencia_df is not None else _load_sefin_vigencia_reference()
     outputs = run_gold_v20(
         itens_df,
         c170_df=c170_df,
@@ -37,6 +48,7 @@ def run_and_persist_gold_v20(
         id_agrupados_df=id_agrupados_df,
         produtos_final_df=produtos_final_df,
         diagnostico_conversao_df=diagnostico_conversao_df,
+        sefin_vigencia_df=vigencia_df,
     )
     saved = persist_gold_outputs_v2(cnpj, outputs)
     return {

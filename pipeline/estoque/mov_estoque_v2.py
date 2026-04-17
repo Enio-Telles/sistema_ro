@@ -56,6 +56,10 @@ def build_mov_estoque_v2(
         pl.when(pl.col("tipo_operacao") == "3 - ESTOQUE FINAL")
         .then(pl.col("qtd").abs() * pl.col("fator").abs())
         .otherwise(None)
+        .alias("__qtd_decl_final_audit__"),
+        pl.when(pl.col("tipo_operacao") == "3 - ESTOQUE FINAL")
+        .then(pl.col("qtd").abs() * pl.col("fator").abs())
+        .otherwise(None)
         .alias("estoque_final_declarado"),
     )
 
@@ -94,11 +98,11 @@ def build_mov_estoque_v2(
         )
         mov = mov.with_columns(
             pl.when(pl.col("tipo_operacao") == "3 - ESTOQUE FINAL")
-            .then((pl.col("estoque_final_declarado") - pl.col("saldo_estoque_periodo")).clip(lower_bound=0))
+            .then((pl.col("__qtd_decl_final_audit__") - pl.col("saldo_estoque_periodo")).clip(lower_bound=0))
             .otherwise(0.0)
             .alias("divergencia_estoque_declarado"),
             pl.when(pl.col("tipo_operacao") == "3 - ESTOQUE FINAL")
-            .then((pl.col("saldo_estoque_periodo") - pl.col("estoque_final_declarado")).clip(lower_bound=0))
+            .then((pl.col("saldo_estoque_periodo") - pl.col("__qtd_decl_final_audit__")).clip(lower_bound=0))
             .otherwise(0.0)
             .alias("divergencia_estoque_calculado"),
         )

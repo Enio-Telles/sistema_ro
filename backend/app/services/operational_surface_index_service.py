@@ -4,6 +4,11 @@ from __future__ import annotations
 def get_operational_surface_index() -> dict:
     return {
         "in_use_now": {
+            "silver": {
+                "official_runtime": "runtime_silver_v2",
+                "preferred_prefixes": ["/api/v5b/silver"],
+                "prepare_sefin_endpoint": "/api/v5b/silver/{cnpj}/prepare-sefin",
+            },
             "gold": {
                 "official_runtime": "runtime_gold_v20",
                 "official_alias": "runtime_gold_current_v2",

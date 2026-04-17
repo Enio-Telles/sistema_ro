@@ -41,7 +41,10 @@ def test_get_gold_v20_status_exposes_conversion_and_sefin_context(monkeypatch) -
 
     assert payload["validation"]["ok"] is True
     assert payload["selected_items_source"] == "itens_unificados_sefin"
+    assert payload["references_status"] == {"ncm": True, "cest": False}
+    assert payload["sefin_context"]["status"] == "sefin_enriched_items"
     assert payload["sefin_context"]["references_complete"] is False
+    assert payload["sefin_context"]["references_status"] == {"ncm": True, "cest": False}
     assert payload["sefin_context"]["using_sefin_enriched_items"] is True
     assert payload["conversion_quality_summary"]["manual_overrides_rows"] == 1
     assert payload["conversion_quality_summary"]["diagnostico_conversao_rows"] == 1
@@ -80,7 +83,34 @@ def test_execute_gold_v20_returns_quality_summary_with_result_rows(monkeypatch) 
 
     assert payload["status"] == "ok"
     assert payload["pipeline_version"] == "gold_v20"
+    assert payload["references_status"] == {"ncm": True, "cest": True}
+    assert payload["sefin_context"]["status"] == "aggregated_sources"
     assert payload["conversion_quality_summary"]["fatores_conversao_rows"] == 5
     assert payload["conversion_quality_summary"]["log_conversao_anomalias_rows"] == 2
     assert payload["sefin_context"]["references_complete"] is True
     assert payload["sefin_context"]["using_aggregated_sources"] is True
+
+
+def test_get_gold_v20_status_marks_fallback_without_sefin_when_references_are_complete(monkeypatch) -> None:
+    monkeypatch.setattr(
+        service,
+        "load_gold_inputs_with_conversion_diagnosis",
+        lambda cnpj: _fake_raw_inputs(selected_items_source="itens_unificados", using_aggregated_sources=False),
+    )
+    monkeypatch.setattr(
+        service,
+        "validate_gold_inputs",
+        lambda inputs: {"ok": True, "missing": [], "empty": [], "stats": {"itens_df": 1}},
+    )
+    monkeypatch.setattr(
+        service,
+        "get_references_and_parquets_status",
+        lambda cnpj: {"references": {"ncm": True, "cest": True}},
+    )
+
+    payload = service.get_gold_v20_status("123")
+
+    assert payload["references_status"] == {"ncm": True, "cest": True}
+    assert payload["missing_references"] == []
+    assert payload["sefin_context"]["status"] == "fallback_without_sefin"
+    assert payload["sefin_context"]["using_sefin_enriched_items"] is False

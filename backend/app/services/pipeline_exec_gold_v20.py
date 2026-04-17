@@ -58,10 +58,22 @@ def _build_sefin_context(
     *,
     selected_items_source: str,
     using_aggregated_sources: bool,
+    references_status: dict[str, bool],
     missing_references: list[str],
 ) -> dict:
+    if using_aggregated_sources:
+        status = "aggregated_sources"
+    elif selected_items_source == "itens_unificados_sefin":
+        status = "sefin_enriched_items"
+    elif missing_references:
+        status = "fallback_missing_references"
+    else:
+        status = "fallback_without_sefin"
+
     return {
+        "status": status,
         "references_complete": not missing_references,
+        "references_status": references_status,
         "missing_references": missing_references,
         "selected_items_source": selected_items_source,
         "using_sefin_enriched_items": selected_items_source == "itens_unificados_sefin",
@@ -92,7 +104,8 @@ def _prepare_gold_v20_context(cnpj: str) -> dict:
         k: v for k, v in inputs.items() if k in {"itens_df", "c170_df", "nfe_df", "nfce_df", "bloco_h_df", "overrides_df", "base_info_df"}
     })
     references_status = get_references_and_parquets_status(cnpj)
-    missing_references = [name for name, exists in references_status["references"].items() if not exists]
+    reference_flags = references_status["references"]
+    missing_references = [name for name, exists in reference_flags.items() if not exists]
     manual_map_rows = 0 if inputs["mapa_manual_df"].is_empty() else inputs["mapa_manual_df"].height
     overrides_rows = 0 if inputs["overrides_df"].is_empty() else inputs["overrides_df"].height
     diagnostico_conversao_rows = 0 if inputs["diagnostico_conversao_df"].is_empty() else inputs["diagnostico_conversao_df"].height
@@ -103,6 +116,7 @@ def _prepare_gold_v20_context(cnpj: str) -> dict:
         "using_aggregated_sources": using_aggregated_sources,
         "fontes_agr_validation": fontes_agr_validation,
         "validation": validation,
+        "references_status": reference_flags,
         "missing_references": missing_references,
         "manual_map_rows": manual_map_rows,
         "overrides_rows": overrides_rows,
@@ -118,10 +132,12 @@ def get_gold_v20_status(cnpj: str) -> dict:
         "selected_items_source": context["selected_items_source"],
         "using_aggregated_sources": context["using_aggregated_sources"],
         "fontes_agr_validation": context["fontes_agr_validation"],
+        "references_status": context["references_status"],
         "missing_references": context["missing_references"],
         "sefin_context": _build_sefin_context(
             selected_items_source=context["selected_items_source"],
             using_aggregated_sources=context["using_aggregated_sources"],
+            references_status=context["references_status"],
             missing_references=context["missing_references"],
         ),
         "conversion_quality_summary": _build_conversion_quality_summary(
@@ -151,10 +167,12 @@ def execute_gold_v20(cnpj: str) -> dict:
             "selected_items_source": context["selected_items_source"],
             "using_aggregated_sources": context["using_aggregated_sources"],
             "fontes_agr_validation": context["fontes_agr_validation"],
+            "references_status": context["references_status"],
             "missing_references": context["missing_references"],
             "sefin_context": _build_sefin_context(
                 selected_items_source=context["selected_items_source"],
                 using_aggregated_sources=context["using_aggregated_sources"],
+                references_status=context["references_status"],
                 missing_references=context["missing_references"],
             ),
             "conversion_quality_summary": _build_conversion_quality_summary(
@@ -182,12 +200,14 @@ def execute_gold_v20(cnpj: str) -> dict:
     result["using_aggregated_sources"] = context["using_aggregated_sources"]
     result["fontes_agr_validation"] = context["fontes_agr_validation"]
     result["gold_consistency"] = consistency
+    result["references_status"] = context["references_status"]
     result["missing_references"] = context["missing_references"]
     result["manual_map_rows"] = context["manual_map_rows"]
     result["diagnostico_conversao_rows"] = context["diagnostico_conversao_rows"]
     result["sefin_context"] = _build_sefin_context(
         selected_items_source=context["selected_items_source"],
         using_aggregated_sources=context["using_aggregated_sources"],
+        references_status=context["references_status"],
         missing_references=context["missing_references"],
     )
     result["conversion_quality_summary"] = _build_conversion_quality_summary(

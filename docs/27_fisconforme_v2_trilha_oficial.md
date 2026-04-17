@@ -16,6 +16,11 @@ Para diagnostico por versao:
 - `backend/app/runtime_gold_v25.py`
 - prefixo `/api/gold25`
 
+Essas duas superfícies também expõem o status padronizado da execução gold compartilhada:
+
+- `GET /api/current-v5/pipeline/{cnpj}/status`
+- `GET /api/gold25/pipeline/{cnpj}/status`
+
 ## Rotas legadas e recomendadas
 
 ### Legado

@@ -21,4 +21,7 @@ def test_build_mov_estoque_v2_adds_periods_and_inventory_rows() -> None:
     assert result.filter(pl.col('tipo_operacao') == '0 - ESTOQUE INICIAL').height == 1
     assert result.filter(pl.col('tipo_operacao') == '3 - ESTOQUE FINAL').height == 1
     assert 'periodo_inventario' in result.columns
+    assert '__qtd_decl_final_audit__' in result.columns
     assert 'divergencia_estoque_declarado' in result.columns
+    final_row = result.filter(pl.col('tipo_operacao') == '3 - ESTOQUE FINAL').to_dicts()[0]
+    assert final_row['__qtd_decl_final_audit__'] == 8.0
