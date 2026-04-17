@@ -68,7 +68,7 @@ def get_runtime_surface_catalog() -> dict:
         "operational_guidance": {
             "silver_preferred_prefixes": ["/api/v5b/silver"],
             "gold_preferred_prefixes": ["/api/gold20", "/api/current-v2"],
-            "fisconforme_preferred_prefixes": ["/api/gold25/fisconforme-v2", "/api/current-v5/fisconforme-v2"],
+            "fisconforme_preferred_prefixes": ["/api/current-v5/fisconforme-v2", "/api/gold25/fisconforme-v2"],
         },
         "decommissioning_guidelines": [
             "nao abrir novas features nas runtimes marcadas como legacy",

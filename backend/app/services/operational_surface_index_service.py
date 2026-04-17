@@ -17,7 +17,7 @@ def get_operational_surface_index() -> dict:
             "fisconforme": {
                 "official_runtime": "runtime_gold_v25",
                 "official_alias": "runtime_gold_current_v5",
-                "preferred_prefixes": ["/api/gold25/fisconforme-v2", "/api/current-v5/fisconforme-v2"],
+                "preferred_prefixes": ["/api/current-v5/fisconforme-v2", "/api/gold25/fisconforme-v2"],
             },
         },
         "transition_only": {
