@@ -6,6 +6,11 @@
 -- observacao: cache cadastral por contribuinte
 -- status: query canônica promovida a partir do template curado
 -- regra: selecionar apenas colunas necessárias e preservar chaves físicas
+-- Consulta canônica de dados cadastrais do Fisconforme
+--
+-- Este script extrai o cadastro básico de contribuintes do Fisconforme.
+-- Seleciona apenas as colunas essenciais para construir o cache
+-- cadastral do pipeline e evita transformações pesadas na query.
 
 SELECT
     p.co_cnpj_cpf AS cnpj,
