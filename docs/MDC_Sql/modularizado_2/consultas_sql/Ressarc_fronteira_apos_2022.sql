@@ -1,18 +1,18 @@
 /* =========================================================================================
    PAINEL DE AUDITORIA 360º - RESSARCIMENTO DE ICMS ST (SPED x XML x SITAFE)
    =========================================================================================
-   Objetivo: Cruzar os dados declarados no SPED EFD (Blocos C100, C170, C176, 0200) 
-   com os dados reais das Notas Fiscais Eletrônicas (XMLs de Entrada e Saída) e 
+   Objetivo: Cruzar os dados declarados no SPED EFD (Blocos C100, C170, C176, 0200)
+   com os dados reais das Notas Fiscais Eletrônicas (XMLs de Entrada e Saída) e
    com a cobrança de fronteira do SITAFE (Estado de Rondônia).
-   
-   Lógica Principal: Aplica o método PEPS (Primeiro a Entrar, Primeiro a Sair - FIFO) 
+
+   Lógica Principal: Aplica o método PEPS (Primeiro a Entrar, Primeiro a Sair - FIFO)
    para ratear e limitar as quantidades de entrada de acordo com a quantidade vendida na saída.
 ========================================================================================= */
 
 -- Define o ponto como separador decimal para leitura correta do XML (XMLTABLE)
 ALTER SESSION SET NLS_NUMERIC_CHARACTERS='.,';
 
-WITH 
+WITH
     -------------------------------------------------------------------------
     -- 1. PARAMETROS: Tratamento de filtros informados pelo utilizador.
     -------------------------------------------------------------------------
@@ -24,7 +24,7 @@ WITH
             NVL(TO_DATE(:data_limite_processamento, 'DD/MM/YYYY'), TRUNC(SYSDATE)) AS dt_corte
         FROM dual
     ),
-    
+
     -------------------------------------------------------------------------
     -- 2. ARQUIVOS_RANKING: Controlo de Versionamento (Retificadoras SPED)
     -------------------------------------------------------------------------
@@ -69,7 +69,7 @@ WITH
         INNER JOIN CHAVES_ENTRADA_FILTRADAS cef ON x.chave_acesso = cef.chave_nfe_ult
         CROSS JOIN XMLTABLE(
             XMLNAMESPACES (DEFAULT 'http://www.portalfiscal.inf.br/nfe'),
-            '//det' PASSING x.xml 
+            '//det' PASSING x.xml
             COLUMNS
                 Prod_nItem           NUMBER       PATH '@nItem',
                 icms_vICMSSubstituto NUMBER       PATH 'imposto/ICMS//vICMSSubstituto' DEFAULT 0
@@ -81,7 +81,7 @@ WITH
     -------------------------------------------------------------------------
     DADOS_BASE AS (
         SELECT
-            arq.dt_ini, 
+            arq.dt_ini,
             TO_CHAR(arq.dt_ini, 'MM/YYYY') AS periodo_efd,
             CASE arq.cod_fin_efd
                 WHEN '0' THEN '0 - Original'
@@ -90,9 +90,9 @@ WITH
             END AS finalidade_efd,
 
             -- DADOS DA SAÍDA DECLARADOS NO SPED (Blocos C100 e C170)
-            c100.chv_nfe AS chave_saida, 
+            c100.chv_nfe AS chave_saida,
             c100.num_doc AS num_nf_saida,
-            CASE WHEN c100.dt_doc IS NOT NULL AND REGEXP_LIKE(c100.dt_doc, '^\d{8}$') 
+            CASE WHEN c100.dt_doc IS NOT NULL AND REGEXP_LIKE(c100.dt_doc, '^\d{8}$')
                  THEN TO_DATE(c100.dt_doc, 'DDMMYYYY') ELSE NULL END AS dt_emissao_saida,
             c170.num_item AS num_item_saida,
             c170.cod_item,
@@ -101,7 +101,7 @@ WITH
             c170.descr_compl,
             r0200.cod_ncm,
             r0200.cest,
-            NVL(c170.qtd, 0) AS qtd_saida, 
+            NVL(c170.qtd, 0) AS qtd_saida,
             c170.vl_item AS vl_total_item_saida,
             NVL(c170.vl_icms, 0) AS c170_vl_icms,
 
@@ -119,16 +119,16 @@ WITH
             -- DADOS DA ENTRADA DECLARADOS NO SPED (Registo C176)
             c176.cod_mot_res,
             c176.chave_nfe_ult AS chave_nfe_ultima_entrada,
-            c170_entrada.num_item AS num_item_ult_entr, 
-            CASE WHEN c176.dt_ult_e IS NOT NULL AND REGEXP_LIKE(c176.dt_ult_e, '^\d{8}$') 
+            c170_entrada.num_item AS num_item_ult_entr,
+            CASE WHEN c176.dt_ult_e IS NOT NULL AND REGEXP_LIKE(c176.dt_ult_e, '^\d{8}$')
                  THEN TO_DATE(c176.dt_ult_e, 'DDMMYYYY') ELSE NULL END AS dt_ultima_entrada,
-            NVL(c176.quant_ult_e, 0) AS qtd_entrada_sped, 
+            NVL(c176.quant_ult_e, 0) AS qtd_entrada_sped,
             NVL(c176.vl_unit_ult_e, 0) AS vl_unit_bc_st_entrada_sped,
             NVL(c176.vl_unit_icms_ult_e, 0) AS vl_unit_icms_proprio_entrada_sped,
             NVL(c176.vl_unit_res, 0) AS vl_unit_ressarcimento_st_sped,
 
             -- DADOS DA ENTRADA EXTRAÍDOS DO XML (fato_nfe_detalhe)
-            nfe_ent.dhemi      AS xml_dhemi_entrada, 
+            nfe_ent.dhemi      AS xml_dhemi_entrada,
             NVL(nfe_ent.prod_qcom, 0) AS xml_qtd_comercial_entrada,
             nfe_ent.prod_xprod AS xml_descricao_item_entrada,
             nfe_ent.prod_cean  AS xml_cean_entrada,
@@ -139,20 +139,20 @@ WITH
             nfe_ent.co_uf_dest AS xml_uf_dest_entrada,
             NVL(nfe_ent.prod_vprod, 0) AS xml_vprod_entrada,
             NVL(nfe_ent.ipi_vipi, 0)   AS xml_vipi_entrada,
-            
+
             -- TOTAIS DA ENTRADA (Extraídos do XML e do SITAFE)
             NVL(nfe_ent.icms_vbc, 0)                            AS xml_vbc_icms_entrada,
             nfe_ent.icms_picms                                  AS xml_aliquota_icms_proprio_entrada,
             NVL(nfe_ent.icms_vicms, 0)                          AS xml_icms_vicms_entrada_total,
-            NVL(nfe_ent.icms_vicmsstret, 0)                     AS xml_icms_vicmsstret_entrada, 
+            NVL(nfe_ent.icms_vicmsstret, 0)                     AS xml_icms_vicmsstret_entrada,
             NVL(nfe_ent.icms_vicmsst, 0)                        AS xml_icms_vicmsst_entrada, -- ST Destacado
-            
+
             -- CAMPO INTEGRADO VIA LEITURA DIRETA DO XML (XMLTABLE)
             NVL(xml_ext.icms_vICMSSubstituto, 0)                AS xml_icms_vicmssubstituto_entrada,
-            
-            NVL(TO_CHAR(calc_front.it_co_rotina_calculo), 'sem calculo') AS xml_fronteira_entrada, 
+
+            NVL(TO_CHAR(calc_front.it_co_rotina_calculo), 'sem calculo') AS xml_fronteira_entrada,
             NVL(calc_front.it_vl_icms, 0)                       AS xml_calc_fronteira_entrada_total,
-            
+
             -- CAMPOS DE PRODUTO SEFIN E MVA
             COALESCE(calc_front.it_co_sefin, cest_ncm.IT_CO_SEFIN) AS co_sefin_efetivo,
             h.it_pc_interna,
@@ -160,10 +160,10 @@ WITH
             h.it_in_mva_ajustado,
             h.it_pc_mva,
 
-            CASE 
+            CASE
                 WHEN h.it_in_mva_ajustado = 'S' THEN
                     (((1 + (NVL(h.it_pc_mva, 0) / 100)) * (1 - (NVL(nfe_ent.icms_picms, 0) / 100)) / NULLIF((1 - (NVL(h.it_pc_interna, 0) / 100)), 0)) - 1) * 100
-                ELSE 
+                ELSE
                     NVL(h.it_pc_mva, 0)
             END AS mva_calculado_efetivo,
 
@@ -171,7 +171,7 @@ WITH
                A P U R A Ç Ã O   O U R O   ( 4   N Í V E I S )
                Lógica baseada em cascata de prioridades para descobrir o valor unitário real de ST e Próprio.
                ========================================================================================= */
-            
+
             -- NÍVEL DEFINIDO PARA ICMS ST
             CASE
                 WHEN calc_front.it_co_rotina_calculo IS NOT NULL THEN '1 - Fronteira (SITAFE)'
@@ -189,51 +189,51 @@ WITH
             END AS xml_nivel_apuracao_proprio,
 
             -- CÁLCULO FINAL: ICMS ST UNITÁRIO APURADO
-            CASE 
-                WHEN calc_front.it_co_rotina_calculo IS NOT NULL THEN 
+            CASE
+                WHEN calc_front.it_co_rotina_calculo IS NOT NULL THEN
                      (NVL(calc_front.it_vl_icms, 0) / NULLIF(nfe_ent.prod_qcom, 0))
-                WHEN NVL(nfe_ent.icms_vicmsst, 0) > 0 THEN 
+                WHEN NVL(nfe_ent.icms_vicmsst, 0) > 0 THEN
                      (NVL(nfe_ent.icms_vicmsst, 0) / NULLIF(nfe_ent.prod_qcom, 0))
-                WHEN NVL(nfe_ent.icms_vicmsstret, 0) > 0 THEN 
+                WHEN NVL(nfe_ent.icms_vicmsstret, 0) > 0 THEN
                      (NVL(nfe_ent.icms_vicmsstret, 0) / NULLIF(nfe_ent.prod_qcom, 0))
-                ELSE 
+                ELSE
                      -- INFERÊNCIA ST (Nível 4)
                      GREATEST(0, (
                          (
-                             (NVL(nfe_ent.prod_vprod, NVL(nfe_ent.icms_vbc, 0)) + NVL(nfe_ent.ipi_vipi, 0)) 
+                             (NVL(nfe_ent.prod_vprod, NVL(nfe_ent.icms_vbc, 0)) + NVL(nfe_ent.ipi_vipi, 0))
                              * (1 + (
-                                 CASE 
+                                 CASE
                                      WHEN h.it_in_mva_ajustado = 'S' THEN
                                          (((1 + (NVL(h.it_pc_mva, 0) / 100)) * (1 - (NVL(nfe_ent.icms_picms, 0) / 100)) / NULLIF((1 - (NVL(h.it_pc_interna, 0) / 100)), 0)) - 1) * 100
                                      ELSE NVL(h.it_pc_mva, 0)
                                  END
                              ) / 100)
-                         ) * (NVL(h.it_pc_interna, 0) / 100) 
+                         ) * (NVL(h.it_pc_interna, 0) / 100)
                          - NVL(nfe_ent.icms_vicms, 0)
                      ) / NULLIF(nfe_ent.prod_qcom, 0))
             END AS xml_apurado_st_unitario,
 
             -- CÁLCULO FINAL: ICMS PRÓPRIO UNITÁRIO APURADO
-            CASE 
-                WHEN calc_front.it_co_rotina_calculo IS NOT NULL THEN 
+            CASE
+                WHEN calc_front.it_co_rotina_calculo IS NOT NULL THEN
                      (NVL(nfe_ent.icms_vicms, 0) / NULLIF(nfe_ent.prod_qcom, 0))
-                WHEN NVL(nfe_ent.icms_vicms, 0) > 0 THEN 
+                WHEN NVL(nfe_ent.icms_vicms, 0) > 0 THEN
                      (NVL(nfe_ent.icms_vicms, 0) / NULLIF(nfe_ent.prod_qcom, 0))
-                WHEN NVL(xml_ext.icms_vICMSSubstituto, 0) > 0 THEN 
+                WHEN NVL(xml_ext.icms_vICMSSubstituto, 0) > 0 THEN
                      (NVL(xml_ext.icms_vICMSSubstituto, 0) / NULLIF(nfe_ent.prod_qcom, 0))
-                ELSE 
+                ELSE
                      0 -- Se não se enquadra em nada, não há crédito de ICMS próprio.
             END AS xml_apurado_proprio_unitario
 
         FROM sped.reg_c176 c176
-            INNER JOIN ARQUIVOS_RANKING arq ON c176.reg_0000_id = arq.reg_0000_id AND arq.rn = 1 
+            INNER JOIN ARQUIVOS_RANKING arq ON c176.reg_0000_id = arq.reg_0000_id AND arq.rn = 1
             INNER JOIN sped.reg_c100 c100 ON c176.reg_c100_id = c100.id
             INNER JOIN sped.reg_c170 c170 ON c176.reg_c170_id = c170.id
             LEFT JOIN sped.reg_0200 r0200 ON r0200.reg_0000_id = c176.reg_0000_id AND r0200.cod_item = c170.cod_item
-            
+
             -- XML SAIDA
             LEFT JOIN bi.fato_nfe_detalhe nfe_sai ON nfe_sai.chave_acesso = c100.chv_nfe AND nfe_sai.seq_nitem = TO_NUMBER(c170.num_item)
-            
+
             -- SUBQUERY IDENTIFICACAO DO ITEM DE ENTRADA
             LEFT JOIN (
                 SELECT c100_in.chv_nfe, c170_in.cod_item, MAX(c170_in.num_item) AS num_item
@@ -242,23 +242,23 @@ WITH
                 INNER JOIN CHAVES_ENTRADA_FILTRADAS cef ON c100_in.chv_nfe = cef.chave_nfe_ult
                 GROUP BY c100_in.chv_nfe, c170_in.cod_item
             ) c170_entrada ON c170_entrada.chv_nfe = c176.chave_nfe_ult AND c170_entrada.cod_item = c170.cod_item
-            
+
             -- XML ENTRADA E CALCULO SITAFE
-            LEFT JOIN bi.fato_nfe_detalhe nfe_ent ON nfe_ent.chave_acesso = c176.chave_nfe_ult AND nfe_ent.seq_nitem = TO_NUMBER(c170_entrada.num_item) 
-            
+            LEFT JOIN bi.fato_nfe_detalhe nfe_ent ON nfe_ent.chave_acesso = c176.chave_nfe_ult AND nfe_ent.seq_nitem = TO_NUMBER(c170_entrada.num_item)
+
             -- EXTRAÇÃO DIRETA DO XML (vICMSSubstituto)
             LEFT JOIN XML_EXTRAIDO xml_ext ON xml_ext.chave_acesso = c176.chave_nfe_ult AND xml_ext.prod_nitem = TO_NUMBER(c170_entrada.num_item)
-            
+
             LEFT JOIN sitafe.sitafe_nfe_calculo_item calc_front ON calc_front.it_nu_chave_acesso = nfe_ent.chave_acesso AND calc_front.it_nu_item = nfe_ent.prod_nitem
 
             -- PRODUTO SEFIN E MVA
-            LEFT JOIN SITAFE.SITAFE_CEST_NCM cest_ncm 
+            LEFT JOIN SITAFE.SITAFE_CEST_NCM cest_ncm
                    ON cest_ncm.IT_NU_NCM = nfe_ent.prod_ncm
                   AND (nfe_ent.prod_cest IS NULL OR cest_ncm.IT_NU_CEST = nfe_ent.prod_cest)
                   AND cest_ncm.IT_IN_STATUS <> 'C'
             LEFT JOIN sitafe.sitafe_produto_sefin_aux h
                    ON h.it_co_sefin = COALESCE(calc_front.it_co_sefin, cest_ncm.IT_CO_SEFIN)
-                  AND TO_CHAR(nfe_ent.dhemi, 'YYYYMMDD') >= h.it_da_inicio 
+                  AND TO_CHAR(nfe_ent.dhemi, 'YYYYMMDD') >= h.it_da_inicio
                   AND (h.it_da_final IS NULL OR TO_CHAR(nfe_ent.dhemi, 'YYYYMMDD') <= h.it_da_final)
     ),
 
@@ -266,10 +266,10 @@ WITH
     -- 5. DADOS_ACUMULADOS: Aplicando a memória FIFO (PEPS)
     -------------------------------------------------------------------------
     DADOS_ACUMULADOS AS (
-        SELECT 
+        SELECT
             db.*,
             NVL(SUM(db.xml_qtd_comercial_entrada) OVER (
-                PARTITION BY db.chave_saida, db.num_item_saida 
+                PARTITION BY db.chave_saida, db.num_item_saida
                 ORDER BY db.xml_dhemi_entrada ASC, db.chave_nfe_ultima_entrada ASC
                 ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING
             ), 0) AS qtd_entrada_acumulada_anterior
@@ -280,7 +280,7 @@ WITH
     -- 6. DADOS_RATEIO: Definindo o teto/limite utilizável de cada entrada
     -------------------------------------------------------------------------
     DADOS_RATEIO AS (
-        SELECT 
+        SELECT
             da.*,
             GREATEST(0, LEAST(da.xml_qtd_comercial_entrada, da.qtd_saida - da.qtd_entrada_acumulada_anterior)) AS qtd_entrada_utilizada
         FROM DADOS_ACUMULADOS da
@@ -289,8 +289,8 @@ WITH
 -------------------------------------------------------------------------
 -- 7. SELEÇÃO FINAL: O PAINEL DE AUDITORIA 360º ORDENADO POR FONTE
 -------------------------------------------------------------------------
-SELECT 
-    dr.periodo_efd, 
+SELECT
+    dr.periodo_efd,
     dr.finalidade_efd,
 
     -- 1. SPED EFD - DADOS DA SAÍDA
@@ -349,16 +349,16 @@ SELECT
     dr.xml_iddest_entrada,
     dr.xml_uf_emit_entrada,
     dr.xml_uf_dest_entrada,
-    
+
     dr.xml_icms_vicmssubstituto_entrada, -- EXIBINDO O CAMPO EXTRAÍDO DO XML AQUI
-    
+
     dr.xml_fronteira_entrada,
     dr.co_sefin_efetivo,
     dr.it_pc_interna,
     dr.it_in_st,
     dr.it_in_mva_ajustado,
-    dr.it_pc_mva AS mva_original, 
-    dr.mva_calculado_efetivo, 
+    dr.it_pc_mva AS mva_original,
+    dr.mva_calculado_efetivo,
 
     -- 5. AUDITORIA: NÍVEIS IDENTIFICADOS E VALORES APURADOS (PADRÃO OURO)
     dr.xml_nivel_apuracao_st,
@@ -369,7 +369,7 @@ SELECT
     -- 6. AUDITORIA: COMPARAÇÕES, LIMITES E DIFERENÇAS FINANCEIRAS
     dr.qtd_entrada_acumulada_anterior,
     dr.qtd_entrada_utilizada AS qtd_base_calculo_ressarcimento,
-    
+
     CASE WHEN dr.xml_dhemi_saida IS NULL THEN 'XML SAÍDA AUSENTE' ELSE 'OK' END AS status_xml_saida,
     CASE WHEN dr.xml_dhemi_entrada IS NULL THEN 'XML ENTRADA AUSENTE' ELSE 'OK' END AS status_xml_entrada,
     CASE WHEN dr.dt_emissao_saida IS NULL OR dr.xml_dhemi_saida IS NULL THEN 'DATA EM FALTA'
@@ -379,17 +379,17 @@ SELECT
     CASE WHEN dr.cod_ncm = dr.xml_ncm_saida AND dr.cod_ncm = dr.xml_ncm_entrada THEN 'OK' ELSE 'NCM DIVERGENTE (SPED/XML)' END AS status_ncm,
     CASE WHEN dr.qtd_saida = NVL(dr.xml_qtd_comercial_saida, 0) THEN 'OK' ELSE 'DIVERGENTE' END AS status_qtd_saida,
     CASE WHEN dr.qtd_entrada_sped = dr.xml_qtd_comercial_entrada THEN 'OK' ELSE 'DIVERGENTE' END AS status_qtd_entrada_c176,
-    
+
     -- Validação: ICMS Próprio Informado (SPED) vs Apurado Ouro
     CASE WHEN ABS(ROUND(dr.vl_unit_icms_proprio_entrada_sped, 2) - ROUND(dr.xml_apurado_proprio_unitario, 2)) <= 0.05 THEN 'OK' ELSE 'DIVERGENTE' END AS status_icms_proprio_apurado,
     (dr.qtd_saida * dr.vl_unit_icms_proprio_entrada_sped) AS total_sped_icms_proprio_informado,
     (dr.qtd_entrada_utilizada * dr.xml_apurado_proprio_unitario) AS total_xml_icms_proprio_apurado,
-    
+
     -- Validação: ST Retido Informado (SPED) vs Apurado Ouro
     CASE WHEN ABS(ROUND(dr.vl_unit_ressarcimento_st_sped, 2) - ROUND(dr.xml_apurado_st_unitario, 2)) <= 0.05 THEN 'OK' ELSE 'DIVERGENTE' END AS status_icms_st_apurado,
     (dr.qtd_entrada_utilizada * dr.vl_unit_ressarcimento_st_sped) AS total_sped_ressarc_st_rateado,
     (dr.qtd_entrada_utilizada * dr.xml_apurado_st_unitario) AS total_apurado_ressarc_st_rateado,
-    
+
     -- O Foco do Ressarcimento (A Diferença a Pagar ou Glosar)
     (dr.qtd_entrada_utilizada * dr.vl_unit_ressarcimento_st_sped) - (dr.qtd_entrada_utilizada * dr.xml_apurado_st_unitario) AS diferenca_financeira_st_sped_vs_apurado
 

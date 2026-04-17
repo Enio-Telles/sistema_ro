@@ -12,7 +12,7 @@ OBSERVACAO:
 */
 SELECT
 :CO_CNPJ_CPF CO_CNPJ_CPF,
-      case when id_situacao is null then '<html><b>Σ TOTAL GERAL' 
+      case when id_situacao is null then '<html><b>Σ TOTAL GERAL'
       when id_situacao = '01 - Não pago e Vencido' then '<html><b style="color:#CF3434">01 - Não pago e Vencido'
       when id_situacao = '01 - Não pago a vencer' then '<html><b style="color:#3440CF">01 - Não pago a Vencer'
       else  '<html><p style="color:#121212">'||id_situacao  end situacao,
@@ -139,7 +139,7 @@ SELECT
       GROUPING SETS((),(id_situacao_,
                         id_situacao,
                         receitas))
-                        
+
 order by case when id_situacao_ is null then 1
                   when id_situacao_ = '01' then 2
                   else 3 end, total desc

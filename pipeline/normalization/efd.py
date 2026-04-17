@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import polars as pl
 
-from pipeline.normalization.keys import build_codigo_fonte, build_id_linha_origem, normalize_cnpj, normalize_ie, normalize_text
+from pipeline.normalization.keys import build_codigo_fonte, build_id_linha_origem, normalize_cnpj, normalize_text
 
 
 def normalize_efd_c170(df: pl.DataFrame, cnpj_base: str) -> pl.DataFrame:

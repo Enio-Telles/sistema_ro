@@ -5,7 +5,7 @@ SELECT
     cont.da_inicio_atividade in_atividade,
     cont.in_situacao situacao,
     e110.vl_sld_credor_transportar sld_credor_atual ,
-    cont.co_cad_icms ie, 
+    cont.co_cad_icms ie,
     l.no_municipio municipio,
     s.id_grupo,
     s.id_status,
@@ -37,19 +37,19 @@ WHERE
     AND cont.co_cad_icms not in ('00000000002208',
     '00000000032301',
     '00000001184849',
-    '00000001140671', 
+    '00000001140671',
     '00000000911721',
     '00000000963011',
     '00000004672437')
 
-GROUP BY 
+GROUP BY
     a.cod_mes,
     cont.co_cnpj_cpf,
     cont.no_razao_social,
     cont.da_inicio_atividade,
-    cont.in_situacao,    
+    cont.in_situacao,
     e110.vl_sld_credor_transportar,
-    cont.co_cad_icms, 
+    cont.co_cad_icms,
     l.no_municipio,
     s.id_grupo,
     s.id_status,

@@ -1,8 +1,8 @@
 WITH
 chaves  as (
                 select chave_acesso chaves from bi.fato_nfe_detalhe
-                where 
-                seq_nitem = 1 
+                where
+                seq_nitem = 1
                 and chave_acesso  in (
 
 '35250216603091000190550020000587271087614010'
@@ -38,7 +38,7 @@ nf_lcto_tp_lcto AS (
                         CASE tp_cod
                           WHEN '11' THEN 'ST'
                           WHEN '12' THEN 'AT'
-                          WHEN '16' THEN 'DA'                          
+                          WHEN '16' THEN 'DA'
                           ELSE 'OUTROS'  END AS tp_lcto,
                         vl_calc_nf,
                         vl_calc_lcto
@@ -47,19 +47,19 @@ nf_lcto_tp_lcto AS (
 nf_lcto_linhas_unicas AS (
                       SELECT
                         nf_chave AS nf,
-                        LISTAGG(    CASE 
+                        LISTAGG(    CASE
                                     WHEN status_nf_lcto <> 'C'                THEN tp_lcto || '_' || guia_lcto || ' (' || stt_lcto || ')'
                                     END, '; '    ) WITHIN GROUP (ORDER BY tp_lcto || '_' || guia_lcto) AS guia_lcto_atual,
-                    
+
                         LISTAGG(    CASE WHEN status_nf_lcto <> 'C'           THEN tp_lcto || '_' || TO_CHAR(vl_calc_nf,   'FM999G999G999G990D00')
                                     END, '; '    ) WITHIN GROUP (ORDER BY vl_calc_nf)||' ' AS calc_nf,
-                    
+
                         LISTAGG(    CASE WHEN status_nf_lcto <> 'C'           THEN tp_lcto || '_' || TO_CHAR(vl_calc_lcto, 'FM999G999G999G990D00')
                                     END, '; '    ) WITHIN GROUP (ORDER BY vl_calc_lcto)||' ' AS calc_lcto,
-                    
+
                         LISTAGG(      CASE WHEN status_nf_lcto = 'C'           THEN tp_lcto || '_' || guia_lcto || ' (' || stt_lcto || ')'
                                     END, '; '    ) WITHIN GROUP (ORDER BY tp_lcto || '_' || guia_lcto) AS guia_lcto_anterior
-                                    
+
                       FROM nf_lcto_tp_lcto
                       GROUP BY nf_chave
 )
@@ -73,20 +73,14 @@ SELECT
   nf.PROD_NCM,
   nf.PROD_CEST,
   NVL(d.it_co_rotina_calculo, 'sem calculo') AS rotina_item,
-  
-  d.it_vl_icms                            AS calc_item,  
+
+  d.it_vl_icms                            AS calc_item,
   a.calc_nf,
   a.calc_lcto,
   a.guia_lcto_atual,
   a.guia_lcto_anterior
-  
+
 FROM sitafe.sitafe_nfe_calculo_item d
 JOIN bi.fato_nfe_detalhe nf  ON nf.chave_acesso = d.it_nu_chave_acesso AND nf.prod_nitem   = d.it_nu_item
 LEFT JOIN nf_lcto_linhas_unicas a  ON a.nf = d.it_nu_chave_acesso
 WHERE d.it_nu_chave_acesso in (select nf_chave from nf_lcto)
-
-
-
-
-
-

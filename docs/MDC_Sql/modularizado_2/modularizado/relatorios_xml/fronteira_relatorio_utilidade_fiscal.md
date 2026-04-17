@@ -14,8 +14,8 @@ A maior força do relatório está em ligar **comando -> nota -> lançamento -> 
 
 ## 1. Dossiê Fronteira 2.0
 
-**Caminho no relatório:** `Dossiê Fronteira 2.0`  
-**Utilidade fiscal:** Altíssima  
+**Caminho no relatório:** `Dossiê Fronteira 2.0`
+**Utilidade fiscal:** Altíssima
 **Objetivo prático:** Porta de entrada do dossiê, localizando comando de Fronteira por comando, motorista, placa, emitente, destinatário ou chave.
 
 **Binds declarados**
@@ -43,8 +43,8 @@ A maior força do relatório está em ligar **comando -> nota -> lançamento -> 
 
 ## 2. Destinatário(s)
 
-**Caminho no relatório:** `Dossiê Fronteira 2.0 > Destinatário(s)`  
-**Utilidade fiscal:** Alta  
+**Caminho no relatório:** `Dossiê Fronteira 2.0 > Destinatário(s)`
+**Utilidade fiscal:** Alta
 **Objetivo prático:** Concentra destinatários por comando, com valor total de mercadorias.
 
 **Binds declarados**
@@ -69,8 +69,8 @@ A maior força do relatório está em ligar **comando -> nota -> lançamento -> 
 
 ## 3. Nota(s) Fiscal(is)
 
-**Caminho no relatório:** `Dossiê Fronteira 2.0 > Destinatário(s) > Nota(s) Fiscal(is)`  
-**Utilidade fiscal:** Altíssima  
+**Caminho no relatório:** `Dossiê Fronteira 2.0 > Destinatário(s) > Nota(s) Fiscal(is)`
+**Utilidade fiscal:** Altíssima
 **Objetivo prático:** Lista as notas fiscais do comando, com chave, datas, emitente, destinatário, UF, bases e valores de ICMS/ST.
 
 **Binds declarados**
@@ -93,8 +93,8 @@ A maior força do relatório está em ligar **comando -> nota -> lançamento -> 
 
 ## 4. Lançamento
 
-**Caminho no relatório:** `Dossiê Fronteira 2.0 > Destinatário(s) > Nota(s) Fiscal(is) > Lançamento`  
-**Utilidade fiscal:** Altíssima  
+**Caminho no relatório:** `Dossiê Fronteira 2.0 > Destinatário(s) > Nota(s) Fiscal(is) > Lançamento`
+**Utilidade fiscal:** Altíssima
 **Objetivo prático:** Traz o lançamento da nota no SITAFE/Fronteira: guia, situação, valores, frete crédito, processo de suspensão e pendência.
 
 **Binds declarados**
@@ -116,8 +116,8 @@ A maior força do relatório está em ligar **comando -> nota -> lançamento -> 
 
 ## 5. Mercadoria
 
-**Caminho no relatório:** `Dossiê Fronteira 2.0 > Mercadoria`  
-**Utilidade fiscal:** Alta  
+**Caminho no relatório:** `Dossiê Fronteira 2.0 > Mercadoria`
+**Utilidade fiscal:** Alta
 **Objetivo prático:** Agrupa mercadorias do comando por descrição, NCM e unidade, com quantidade e valor.
 
 **Binds declarados**
@@ -140,8 +140,8 @@ A maior força do relatório está em ligar **comando -> nota -> lançamento -> 
 
 ## 6. Destino(s)
 
-**Caminho no relatório:** `Dossiê Fronteira 2.0 > Destino(s)`  
-**Utilidade fiscal:** Média/Alta  
+**Caminho no relatório:** `Dossiê Fronteira 2.0 > Destino(s)`
+**Utilidade fiscal:** Média/Alta
 **Objetivo prático:** Agrupa o comando por município/UF de destino, somando valor de mercadorias.
 
 **Binds declarados**
@@ -162,4 +162,3 @@ A maior força do relatório está em ligar **comando -> nota -> lançamento -> 
 
 **Arquivo SQL extraído**
 - `sql_relatorios_xml/fronteira/06_destino_s.sql`
-

@@ -56,13 +56,13 @@ CROSS JOIN XMLTABLE(
     -- Define o Namespace padrão da NF-e para correta navegação no DOM
     XMLNAMESPACES (DEFAULT 'http://www.portalfiscal.inf.br/nfe'),
     -- '//det': Explode o XML para criar uma linha por item, independente da hierarquia
-    '//det' PASSING x.xml 
+    '//det' PASSING x.xml
     COLUMNS
         Prod_nItem           NUMBER       PATH '@nItem',
         PROD_cProd           VARCHAR2(74) PATH 'prod/cProd',
 
 /* * OBSERVAÇÕES TÉCNICAS:
-* - O uso de '//' nos paths (ex: 'imposto/ICMS//vBCST') permite buscar a tag 
+* - O uso de '//' nos paths (ex: 'imposto/ICMS//vBCST') permite buscar a tag
 * dentro de qualquer grupo de ICMS (ICMS10, ICMS60, ICMS70, etc).
 * - 'DEFAULT 0' evita retornos nulos (NULL) quando a tag não existe no XML.
 */

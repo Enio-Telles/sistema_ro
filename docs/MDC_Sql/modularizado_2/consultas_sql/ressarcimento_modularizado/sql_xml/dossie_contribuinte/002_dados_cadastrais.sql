@@ -18,7 +18,7 @@ SELECT
 								  localid.no_municipio																	"Município",
 								  localid.co_uf																			"UF",
 								  t.co_regime_pagto|| ' - '|| rp.no_regime_pagamento									"Regime de Pagamento",
-								  CASE WHEN t.in_situacao = '001' 
+								  CASE WHEN t.in_situacao = '001'
 										THEN '<html><p style="color:blue">'||t.in_situacao
 											|| ' - '|| s.desc_situacao
 										ELSE '<html><p style="color:red">'|| t.in_situacao
@@ -26,9 +26,9 @@ SELECT
 										END																				"Situação da IE",
 								  t.da_inicio_atividade																	"Data de Início da Atividade",
 								  to_date(us.data_ult_sit, 'YYYYMMDD')													"Data da última situação",
-								  to_char(trunc(months_between((CASE WHEN t.in_situacao = '001' 
+								  to_char(trunc(months_between((CASE WHEN t.in_situacao = '001'
 																		THEN SYSDATE
-																	ELSE to_date(us.data_ult_sit, 'YYYYMMDD') 
+																	ELSE to_date(us.data_ult_sit, 'YYYYMMDD')
 																END),
 																t.da_inicio_atividade),2))||' meses' 					"Período em atividade",
 								  'https://portalcontribuinte.sefin.ro.gov.br/Publico/parametropublica.jsp?NuDevedor=' || t.co_cad_icms redesim

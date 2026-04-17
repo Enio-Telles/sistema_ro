@@ -1,11 +1,11 @@
-SELECT 
+SELECT
 chave_Acesso, FNF.fone_dest_a8, DHEMI, XNOME_DEST, prod_xprod, fnf.xlgr_dest, fnf.xbairro_dest,  fnf.email_dest/*,
     infadfisco,
     infcpl*/
 FROM
     bi.fato_nfe_Detalhe FNF /*,
-    xdb_nfe.arquivo@XDB_NFE_PRODUCAO a, 
-         xmltable( XMLNamespaces (DEFAULT 'http://www.portalfiscal.inf.br/nfe'),'//infNFe' passing a.xml 
+    xdb_nfe.arquivo@XDB_NFE_PRODUCAO a,
+         xmltable( XMLNamespaces (DEFAULT 'http://www.portalfiscal.inf.br/nfe'),'//infNFe' passing a.xml
              columns
                     chave_acesso varchar2(50) path '@Id',
                     infAdFisco varchar2(2000) path 'infAdic/infAdFisco[1]',

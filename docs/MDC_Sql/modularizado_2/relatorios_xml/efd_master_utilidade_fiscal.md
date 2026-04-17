@@ -19,8 +19,8 @@ A maior força do relatório está em juntar, no mesmo dossiê, apuração, ajus
 
 ## 1. EFD Master 2.0
 
-**Caminho no relatório:** `EFD Master 2.0`  
-**Utilidade fiscal:** Altíssima  
+**Caminho no relatório:** `EFD Master 2.0`
+**Utilidade fiscal:** Altíssima
 **Objetivo prático:** Resumo executivo mensal/anual da apuração própria (E110), com indicação de meses sem arquivo e saldo credor transportado.
 
 **Binds declarados**
@@ -46,8 +46,8 @@ A maior força do relatório está em juntar, no mesmo dossiê, apuração, ajus
 
 ## 2. Reg 0000 (arquivos)
 
-**Caminho no relatório:** `EFD Master 2.0 > Reg 0000 (arquivos)`  
-**Utilidade fiscal:** Altíssima  
+**Caminho no relatório:** `EFD Master 2.0 > Reg 0000 (arquivos)`
+**Utilidade fiscal:** Altíssima
 **Objetivo prático:** Lista arquivos EFD, período, entrega, importação e identificação cadastral do arquivo.
 
 **Binds declarados**
@@ -73,8 +73,8 @@ A maior força do relatório está em juntar, no mesmo dossiê, apuração, ajus
 
 ## 3. Lançamento
 
-**Caminho no relatório:** `EFD Master 2.0 > Lançamento`  
-**Utilidade fiscal:** Alta  
+**Caminho no relatório:** `EFD Master 2.0 > Lançamento`
+**Utilidade fiscal:** Alta
 **Objetivo prático:** Arrecadação/lançamentos financeiros por receita, situação e guia no período.
 
 **Binds declarados**
@@ -100,8 +100,8 @@ A maior força do relatório está em juntar, no mesmo dossiê, apuração, ajus
 
 ## 4. Grupo CFOP
 
-**Caminho no relatório:** `EFD Master 2.0 > Grupo CFOP`  
-**Utilidade fiscal:** Alta  
+**Caminho no relatório:** `EFD Master 2.0 > Grupo CFOP`
+**Utilidade fiscal:** Alta
 **Objetivo prático:** Composição das operações por grupo de CFOP, separando entradas e saídas e somando base/ICMS/ST.
 
 **Binds declarados**
@@ -126,8 +126,8 @@ A maior força do relatório está em juntar, no mesmo dossiê, apuração, ajus
 
 ## 5. Ajustes C197 (Docs Fiscais)
 
-**Caminho no relatório:** `EFD Master 2.0 > Ajustes C197 (Docs Fiscais)`  
-**Utilidade fiscal:** Altíssima  
+**Caminho no relatório:** `EFD Master 2.0 > Ajustes C197 (Docs Fiscais)`
+**Utilidade fiscal:** Altíssima
 **Objetivo prático:** Mapeia ajustes documentais do C197 por reflexo na apuração, código e nome do ajuste.
 
 **Binds declarados**
@@ -152,8 +152,8 @@ A maior força do relatório está em juntar, no mesmo dossiê, apuração, ajus
 
 ## 6. Apuração E110
 
-**Caminho no relatório:** `EFD Master 2.0 > Apuração E110`  
-**Utilidade fiscal:** Altíssima  
+**Caminho no relatório:** `EFD Master 2.0 > Apuração E110`
+**Utilidade fiscal:** Altíssima
 **Objetivo prático:** Fechamento consolidado da apuração própria de ICMS: débitos, créditos, ajustes, saldo, deduções, recolher e saldo a transportar.
 
 **Binds declarados**
@@ -179,8 +179,8 @@ A maior força do relatório está em juntar, no mesmo dossiê, apuração, ajus
 
 ## 7. Ajustes E111 (Apuração)
 
-**Caminho no relatório:** `EFD Master 2.0 > Ajustes E111 (Apuração)`  
-**Utilidade fiscal:** Altíssima  
+**Caminho no relatório:** `EFD Master 2.0 > Ajustes E111 (Apuração)`
+**Utilidade fiscal:** Altíssima
 **Objetivo prático:** Classifica os ajustes do E111 por apuração (ICMS, ST, DIFAL, FCP) e por natureza do ajuste.
 
 **Binds declarados**
@@ -205,8 +205,8 @@ A maior força do relatório está em juntar, no mesmo dossiê, apuração, ajus
 
 ## 8. Apuração ST - E210
 
-**Caminho no relatório:** `EFD Master 2.0 > Apuração ST - E210`  
-**Utilidade fiscal:** Altíssima  
+**Caminho no relatório:** `EFD Master 2.0 > Apuração ST - E210`
+**Utilidade fiscal:** Altíssima
 **Objetivo prático:** Fechamento consolidado da apuração de ICMS-ST para UF_ST = RO.
 
 **Binds declarados**
@@ -232,8 +232,8 @@ A maior força do relatório está em juntar, no mesmo dossiê, apuração, ajus
 
 ## 9. Ajustes E220 (Apuração ST)
 
-**Caminho no relatório:** `EFD Master 2.0 > Ajustes E220 (Apuração ST)`  
-**Utilidade fiscal:** Altíssima  
+**Caminho no relatório:** `EFD Master 2.0 > Ajustes E220 (Apuração ST)`
+**Utilidade fiscal:** Altíssima
 **Objetivo prático:** Resumo de ajustes da apuração ST por tipo e código.
 
 **Binds declarados**
@@ -258,8 +258,8 @@ A maior força do relatório está em juntar, no mesmo dossiê, apuração, ajus
 
 ## 10. Entradas
 
-**Caminho no relatório:** `EFD Master 2.0 > Entradas`  
-**Utilidade fiscal:** Alta  
+**Caminho no relatório:** `EFD Master 2.0 > Entradas`
+**Utilidade fiscal:** Alta
 **Objetivo prático:** Visão agregada das entradas por fornecedor e UF, com indicadores de base, carga tributária e inadimplência do fornecedor.
 
 **Binds declarados**
@@ -287,8 +287,8 @@ A maior força do relatório está em juntar, no mesmo dossiê, apuração, ajus
 
 ## 11. Saídas
 
-**Caminho no relatório:** `EFD Master 2.0 > Saídas`  
-**Utilidade fiscal:** Alta  
+**Caminho no relatório:** `EFD Master 2.0 > Saídas`
+**Utilidade fiscal:** Alta
 **Objetivo prático:** Visão agregada das saídas por destinatário e UF, com base e ICMS/ST.
 
 **Binds declarados**
@@ -313,8 +313,8 @@ A maior força do relatório está em juntar, no mesmo dossiê, apuração, ajus
 
 ## 12. Fisconforme (malhas s / EFD)
 
-**Caminho no relatório:** `EFD Master 2.0 > Fisconforme (malhas s / EFD)`  
-**Utilidade fiscal:** Alta  
+**Caminho no relatório:** `EFD Master 2.0 > Fisconforme (malhas s / EFD)`
+**Utilidade fiscal:** Alta
 **Objetivo prático:** Situação de pendências/malhas por período e status, vinculadas a conjuntos específicos de malhas.
 
 **Binds declarados**
@@ -339,8 +339,8 @@ A maior força do relatório está em juntar, no mesmo dossiê, apuração, ajus
 
 ## 13. C100
 
-**Caminho no relatório:** `EFD Master 2.0 > C100`  
-**Utilidade fiscal:** Altíssima  
+**Caminho no relatório:** `EFD Master 2.0 > C100`
+**Utilidade fiscal:** Altíssima
 **Objetivo prático:** Extrai documentos C100 dos arquivos mais recentes por período para o contribuinte.
 
 **Binds declarados**
@@ -361,4 +361,3 @@ A maior força do relatório está em juntar, no mesmo dossiê, apuração, ajus
 
 **Arquivo SQL extraído**
 - `sql_relatorios_xml/efd_master/13_c100.sql`
-

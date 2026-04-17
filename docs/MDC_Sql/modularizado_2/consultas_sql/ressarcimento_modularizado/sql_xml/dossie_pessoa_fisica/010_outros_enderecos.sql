@@ -86,7 +86,7 @@ SELECT
               e.numero,
               e.complemento,
               e.bairro,
-              e.cidade, 
+              e.cidade,
               e.uf,
               e.cep,
               e.telefone,
@@ -105,7 +105,7 @@ group by '<html><p style="color:green">CRC',
               e.numero,
               e.complemento,
               e.bairro,
-              e.cidade, 
+              e.cidade,
               e.uf,
               e.cep,
               e.telefone,
@@ -128,7 +128,7 @@ null
       itcd_prod.tri_itd_pessoa t
 where t.pk_pessoa = :CPF
 union all
-select 
+select
        case when cv115.modelo = '06' then 'CV115 - ENERGIA ELÉTRICA'
             when cv115.modelo = '21' then 'CV115 - COMUNICAÇÃO'
             when cv115.modelo = '22' then 'CV115 - TELECOMUNICAÇÃO'
@@ -143,10 +143,10 @@ select
        cv115.uf                                                                 uf,
        cv115.cep                                                                cep,
        cv115.telefone                                                           telefone,
-       ''                                                                       email       
-from novo_sisconv.dados_cadastrais cv115 
+       ''                                                                       email
+from novo_sisconv.dados_cadastrais cv115
    where cv115.cpf_cnpj like '%'||:CPF
 ) b
 order by case when substr(b.fonte,1,5) = 'CV115' THEN 2
-              else 1 end,              
+              else 1 end,
           b.ordem desc

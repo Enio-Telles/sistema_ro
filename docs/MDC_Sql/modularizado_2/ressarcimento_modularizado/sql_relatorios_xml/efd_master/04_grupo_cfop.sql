@@ -8,7 +8,7 @@
 -- Tabelas/fontes identificadas: bi.fato_efd_sumarizada, bi.dm_cfop
 -- Binds declarados: CNPJ_CPF, DATA_INICIAL, DATA_FINAL
 
-select 
+select
                                     case when grupo is null then ' ' ELSE :CNPJ_CPF end CNPJ_CPF,
                                     case when grupo is null then null ELSE :DATA_INICIAL end DATA_INICIAL,
                                     case when grupo is null then null ELSE :DATA_FINAL end DATA_FINAL,
@@ -16,7 +16,7 @@ select
                                     case when descricao is null and operacao = 999 then '<html><b style="color:red">TOTAL DAS ENTRADAS ---------------------------------------------------'
                                     when descricao is null and operacao = 4999 then '<html><b style="color:blue">TOTAL DAS SAÍDAS ------------------------------------------------------' ELSE descricao end DESCRICAO,
                                     case when rr is null then ' ' else rr end Perc,
-                                                                                        
+
                                     lpad(TRIM(to_char(sum(vl_operacao), '999G999G999G990D00')), length(MAX(sum(vl_operacao))
                                                                                                                                              OVER()) + 6) VL_OPERACAO,
                                     lpad(TRIM(to_char(sum(vl_bc_icms), '999G999G999G990D00')), length(MAX(sum(vl_bc_icms))
@@ -26,11 +26,11 @@ select
                                     lpad(TRIM(to_char(sum(vl_bc_icms_st), '999G999G999G990D00')), length(MAX(sum(vl_bc_icms_st))
                                                                                                                                              OVER()) + 6) vl_bc_icms_st,
                                     lpad(TRIM(to_char(sum(vl_icms_st), '999G999G999G990D00')), length(MAX(sum(vl_icms_st))
-                                                                                                                                             OVER()) + 6) vl_icms_st,       
+                                                                                                                                             OVER()) + 6) vl_icms_st,
                                     lpad(TRIM(to_char(sum(vl_red_bc), '999G999G999G990D00')), length(MAX(sum(vl_red_bc))
-                                                                                                                                             OVER()) + 6) vl_red_bc                                                                                                         
-                                    
-                                    from 
+                                                                                                                                             OVER()) + 6) vl_red_bc
+
+                                    from
                                     (SELECT
                                         CASE
                                             WHEN c.co_grupo > 4000 THEN
@@ -69,7 +69,7 @@ select
                                     GROUP BY
                                         c.co_grupo,
                                         c.descricao_grupo
-                                    
+
                                     ORDER BY
                                        operacao asc,  c.co_grupo asc)
                                     group by grouping sets ((operacao),(

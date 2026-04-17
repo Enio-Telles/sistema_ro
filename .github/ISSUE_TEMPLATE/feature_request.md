@@ -45,7 +45,7 @@ O que já existe e deve ser reutilizado?
 - [ ]
 
 ## Riscos / restrições
-- 
+-
 
 ## MVP sugerido
-- 
+-

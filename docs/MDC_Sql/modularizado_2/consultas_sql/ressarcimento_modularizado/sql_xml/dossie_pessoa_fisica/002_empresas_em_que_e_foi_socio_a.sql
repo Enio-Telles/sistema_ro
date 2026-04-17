@@ -28,7 +28,7 @@ SELECT
             WHEN ult_fac = 9 THEN
                   NULL
             ELSE
-                  to_date(b.da_saida, 'yyyymmdd') 
+                  to_date(b.da_saida, 'yyyymmdd')
       END          fim_part,
       '<html><font color="red">'
       || lpad(
@@ -109,7 +109,7 @@ SELECT
             WHEN ult_fac = 9 THEN
                   NULL
             ELSE
-                  to_date(b.da_saida, 'yyyymmdd') 
+                  to_date(b.da_saida, 'yyyymmdd')
       END ,
       '<html><font color="red">'
       || lpad(

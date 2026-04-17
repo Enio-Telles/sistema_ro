@@ -1,5 +1,5 @@
 WITH PARAMETROS AS (
-    SELECT 
+    SELECT
         :CNPJ AS cnpj_filtro,
         TO_DATE(:data_inicial, 'DD/MM/YYYY') AS dt_ini_filtro,
         TO_DATE(:data_final,   'DD/MM/YYYY') AS dt_fim_filtro,
@@ -23,13 +23,13 @@ ARQUIVOS_RANKING AS (
         p.cod_item_filtro,
         /* Lógica de Versionamento */
         ROW_NUMBER() OVER (
-            PARTITION BY r.cnpj, r.dt_ini 
+            PARTITION BY r.cnpj, r.dt_ini
             ORDER BY r.data_entrega DESC
-        ) AS rn       
+        ) AS rn
     FROM sped.reg_0000 r
     JOIN PARAMETROS p ON r.cnpj = p.cnpj_filtro
-    WHERE 
-        r.data_entrega <= p.dt_corte 
+    WHERE
+        r.data_entrega <= p.dt_corte
         AND r.dt_ini BETWEEN p.dt_ini_filtro AND p.dt_fim_filtro
 )
 
@@ -44,7 +44,7 @@ SELECT
 
     EXTRACT(YEAR FROM arq.dt_ini)            AS Ano_efd,
     TO_CHAR(arq.dt_ini, 'MM/YYYY')           AS periodo_efd,
-    
+
     c100.reg                                 AS c100_reg,
     c100.cod_sit,
     CASE c100.cod_sit
@@ -59,29 +59,29 @@ SELECT
         WHEN '08' THEN 'Documento Fiscal emitido com base em Regime Especial ou Norma Específica'
         ELSE 'Código desconhecido'
     END AS descricao_cod_sit,
-    
+
     c100.ind_oper,
     CASE
         WHEN c100.ind_oper = 0 THEN 'ENTRADA'
         WHEN c100.ind_oper = 1 THEN 'SAÍDA'
     END AS Oper,
-    
+
     c100.IND_EMIT,
     CASE
         WHEN c100.IND_EMIT = 0 THEN 'Emissão própria'
         WHEN c100.IND_EMIT = 1 THEN 'Terceiros'
     END AS Descricao_IND_EMIT,
-    
+
     c100.chv_nfe,
     c100.num_doc,
     c100.cod_part,
-    
-    CASE 
+
+    CASE
         WHEN c100.dt_doc IS NOT NULL AND REGEXP_LIKE(c100.dt_doc, '^\d{8}$')
         THEN TO_DATE(c100.dt_doc, 'DDMMYYYY')
         ELSE NULL
     END AS dt_doc,
-    CASE 
+    CASE
         WHEN c100.dt_e_s IS NOT NULL AND REGEXP_LIKE(c100.dt_e_s, '^\d{8}$')
         THEN TO_DATE(c100.dt_e_s, 'DDMMYYYY')
         ELSE NULL
@@ -90,7 +90,7 @@ SELECT
     c170.reg                                 AS c170_reg,
     c170.num_item,
     c170.cod_item,
-    
+
     /* NOVA COLUNA CALCULADA COD */
     replace(replace(replace(LTRIM(c170.cod_item, '0'), ' ',''), '.', ''),'-','') AS COD,
 
@@ -113,7 +113,7 @@ SELECT
         WHEN r0200.tipo_item = '99' THEN 'Outras'
         ELSE 'Tipo Desconhecido'
     END AS Descricao_tipo_item,
-    
+
     r0200.cod_gen,
     CASE
         WHEN r0200.cod_gen = '00' THEN 'Serviço'
@@ -218,12 +218,12 @@ SELECT
         WHEN r0200.cod_gen = '99' THEN 'Outros Diversos'
         ELSE 'Código Desconhecido'
     END AS descricao_cod_gen,
-    
+
     r0200.cod_ncm,
     r0200.cest,
     REGEXP_SUBSTR(r0200.cest, '^\d{2}') AS segmento_cest,
     cest_segmento.no_segmento,
-    
+
     c170.cfop,
     cfop.DESCRICAO_CFOP,
     c170.cod_nat,
@@ -231,13 +231,13 @@ SELECT
     c170.cst_icms,
     cst.DESC_CST AS descricao_cst_icms,
     c170.aliq_icms,
-    
+
     c170.ind_mov,
     CASE
         WHEN c170.ind_mov = 0 THEN 'Mov. Física SIM'
         WHEN c170.ind_mov = 1 THEN 'Mov. Física NÃO'
     END AS Descricao_ind_mov,
-    
+
     r0200.unid_inv,
     c170.unid,
     c170.qtd,
@@ -257,30 +257,30 @@ SELECT
     c170.VL_ABAT_NT
 
 FROM sped.reg_c170 c170
-INNER JOIN ARQUIVOS_RANKING arq 
+INNER JOIN ARQUIVOS_RANKING arq
     ON arq.reg_0000_id = c170.reg_0000_id
 
-INNER JOIN sped.reg_c100 c100 
+INNER JOIN sped.reg_c100 c100
     ON c100.id = c170.reg_c100_id
 
-LEFT JOIN sped.reg_0200 r0200 
-    ON r0200.reg_0000_id = c170.reg_0000_id 
+LEFT JOIN sped.reg_0200 r0200
+    ON r0200.reg_0000_id = c170.reg_0000_id
     AND r0200.cod_item = c170.cod_item
 
-LEFT JOIN BI.DM_CFOP cfop 
+LEFT JOIN BI.DM_CFOP cfop
     ON cfop.CO_CFOP = c170.cfop
-LEFT JOIN BI.DM_CST cst 
+LEFT JOIN BI.DM_CST cst
     ON cst.CO_CST = c170.cst_icms
-LEFT JOIN SPED.REG_0400 cod_nat 
+LEFT JOIN SPED.REG_0400 cod_nat
     ON cod_nat.COD_NAT = c170.cod_nat
     AND arq.reg_0000_id = cod_nat.reg_0000_id
 LEFT JOIN BI.DM_CEST_SEGMENTO cest_segmento
-    ON REGEXP_SUBSTR(r0200.cest, '^\d{2}') = cest_segmento.cod_segmento    
+    ON REGEXP_SUBSTR(r0200.cest, '^\d{2}') = cest_segmento.cod_segmento
 
 WHERE arq.rn = 1
   /* FILTRO DINÂMICO DE COD */
   AND (
-        arq.cod_item_filtro IS NULL 
+        arq.cod_item_filtro IS NULL
         OR replace(replace(replace(LTRIM(c170.cod_item, '0'), ' ',''), '.', ''),'-','') = arq.cod_item_filtro
       )
 ORDER BY arq.dt_ini, c100.num_doc, c170.num_item;

@@ -31,46 +31,46 @@ SELECT
                                                       sitafe.sitafe_comando t
                                                  WHERE
                                                      t.it_nu_comando = case when :NU_COMANDO is null then '99999999999999999999' else :NU_COMANDO end
-                                                
+
                                                 UNION
-                                                
+
                                                 SELECT
                                                       t.it_nu_comando
                                                   FROM
                                                       sitafe.sitafe_comando t
                                                  WHERE
                                                      t.it_cpf_motorista = case when :CPF_MOTORISTA is null then '99999999999999999999' else :CPF_MOTORISTA end
-                                                
+
                                                 UNION
-                                                
+
                                                 SELECT
                                                       t.it_nu_comando
                                                   FROM
                                                       sitafe.sitafe_comando t
                                                  WHERE
                                                      t.it_nu_placa_tracao = case when :PLACA_TRATOR is null then '99999999999999999999' else :PLACA_TRATOR end
-                                                
+
                                                 UNION
-                                                
-                                                SELECT 
+
+                                                SELECT
                                                       it_nu_comando
                                                   FROM
                                                       sitafe.sitafe_nota_fiscal f
                                                  WHERE
                                                        f.it_nucnpj_cpf_destino_nf = case when :CNPJ_DESTINATARIO is null then '99999999999999999999' else :CNPJ_DESTINATARIO end
-                                                
+
                                                 UNION
-                                                
-                                                SELECT 
+
+                                                SELECT
                                                       it_nu_comando
                                                   FROM
                                                       sitafe.sitafe_nota_fiscal f
                                                  WHERE
                                                        f.IT_NU_CNPJ_EMITENTE_NF = case when :CNPJ_EMITENTE is null then '99999999999999999999' else :CNPJ_EMITENTE end
-                                                
+
                                                 UNION
-                                                
-                                                SELECT 
+
+                                                SELECT
                                                       it_nu_comando
                                                   FROM
                                                       sitafe.sitafe_nota_fiscal f

@@ -1,7 +1,7 @@
 WITH parametros AS (
-    SELECT 
+    SELECT
         :CNPJ AS cnpj,
-        TO_DATE(:DATA_INICIAL, 'DD/MM/YYYY') AS data1, 
+        TO_DATE(:DATA_INICIAL, 'DD/MM/YYYY') AS data1,
         TO_DATE(:DATA_FINAL, 'DD/MM/YYYY') AS data2
     FROM dual
 ),
@@ -45,7 +45,7 @@ xml_saida AS (
 ),
 efd_saida AS (
     -- 3. Captura dos valores escriturados na EFD (Bloco C) para Operações de Saída
-    SELECT 
+    SELECT
         c100.chv_nfe,
         c100.vl_icms AS icms_escriturado_efd
     FROM sped.reg_c100 c100
@@ -88,7 +88,7 @@ dados_pendencias AS (
 ),
 dados_malha AS (
     -- 7. Busca o título da malha
-    SELECT m.id, m.titulo FROM app_pendencia.malhas m 
+    SELECT m.id, m.titulo FROM app_pendencia.malhas m
 ),
 dados_notificacao AS (
     -- 8. Busca detalhes da notificação
@@ -99,13 +99,13 @@ dados_notificacao AS (
 )
 
 /* Passo Final: Combinação dos Campos da Imagem com os Valores do Débito */
-SELECT 
+SELECT
     -- ===== CAMPOS DA IMAGEM =====
-    dp.id_pendencia, 
+    dp.id_pendencia,
     dn.id_notificacao,
     f.malhas_id,
-    m.titulo AS titulo_malha,                    
-    dp.periodo,                                  
+    m.titulo AS titulo_malha,
+    dp.periodo,
     CASE dp.status
         WHEN 0 THEN '0 - pendente'
         WHEN 1 THEN '1 - contestado'
@@ -126,7 +126,7 @@ SELECT
     NVL(dn.dt_ciencia, dp.data_ciencia) AS data_ciencia_consolidada,
     dn.co_cpf_cnpj_ciencia AS cnpj_cpf_assinante,
     dn.no_pessoa_ciencia AS nome_assinante,
-    
+
     -- ===== CAMPOS DA AUDITORIA (NOVA LÓGICA) =====
     d.modelo,
     d.chave_acesso,
@@ -141,9 +141,9 @@ SELECT
 
 FROM debitos_a_menor d
 LEFT JOIN pendencias_fisconforme f ON d.chave_acesso = f.chave_acesso
-LEFT JOIN dados_pendencias dp ON f.malhas_id = dp.malhas_id AND f.referencia_malhas_id = dp.referencia_malhas_id 
-LEFT JOIN dados_malha m ON f.malhas_id = m.id    
+LEFT JOIN dados_pendencias dp ON f.malhas_id = dp.malhas_id AND f.referencia_malhas_id = dp.referencia_malhas_id
+LEFT JOIN dados_malha m ON f.malhas_id = m.id
 LEFT JOIN dados_notificacao dn ON dp.id_pendencia = dn.id_fisconforme
-ORDER BY 
-    d.data_emissao DESC, 
+ORDER BY
+    d.data_emissao DESC,
     d.num_doc DESC;

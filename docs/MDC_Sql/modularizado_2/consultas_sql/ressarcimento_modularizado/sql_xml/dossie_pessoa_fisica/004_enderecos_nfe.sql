@@ -11,7 +11,7 @@ OBSERVACAO:
  - Tags HTML, formatação de apresentação e scripts de SQL*Plus foram preservados quando existentes.
 */
 SELECT * FROM (
-select 
+select
       'ITCD' origem,
       null ano_mes,
      upper( t.tx_logradouro) logradouro,
@@ -20,7 +20,7 @@ select
       upper(t.tx_bairro) bairro,
       upper(t.tx_telefone) fone,
       upper(t.tx_cep) cep,
-      upper(t.tx_cidade) municipio, 
+      upper(t.tx_cidade) municipio,
       upper(t.tx_estado) uf,
       null max_valor_nf
 

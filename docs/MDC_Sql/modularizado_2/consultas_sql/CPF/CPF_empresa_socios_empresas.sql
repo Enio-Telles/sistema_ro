@@ -2,7 +2,7 @@
     Analise da Consulta: CPF_empresa_socios_empresas.sql
     Objetivo: Para cada socio de uma empresa, listar TODAS as outras empresas
     onde esse socio tambem participa (atual ou anteriormente).
-    
+
     Tabelas Utilizadas:
     - sitafe.sitafe_historico_contribuinte: Historico de contribuintes.
     - sitafe.sitafe_historico_socio: Historico de socios.
@@ -16,7 +16,7 @@
     2. Para cada socio, busca todas as empresas onde ele participa.
     3. Calcula inadimplencia de cada empresa relacionada.
     4. Usa GROUPING SETS para agregar por socio e detalhar por empresa.
-    
+
     Uso Tipico:
     - Identificar grupo economico.
     - Verificar "laranja" ou socios em comum entre empresas.

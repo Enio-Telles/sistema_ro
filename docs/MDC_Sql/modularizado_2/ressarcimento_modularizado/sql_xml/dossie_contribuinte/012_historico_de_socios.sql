@@ -10,7 +10,7 @@ OBSERVACAO:
  - SQL extraído do XML sem alteração funcional.
  - Tags HTML, formatação de apresentação e scripts de SQL*Plus foram preservados quando existentes.
 */
-with s_auto as 
+with s_auto as
 							(
 							select
 								bi.dm_pessoa.co_cnpj_cpf,
@@ -19,7 +19,7 @@ with s_auto as
 								bi.dm_pessoa
 							where
 								bi.dm_pessoa.co_cnpj_cpf = :CO_CNPJ_CPF
-							), 
+							),
 
 							hist_socio as (
 							select
@@ -29,7 +29,7 @@ with s_auto as
 								max(shs.it_da_fim_part_societaria)          da_saida
 							from
 								s_auto
-							left join sitafe.sitafe_historico_socio shs 
+							left join sitafe.sitafe_historico_socio shs
 								   on shs.it_nu_inscricao_estadual = s_auto.ie
 							group by
 								shs.gr_identificacao,
@@ -42,14 +42,14 @@ with s_auto as
 								shs.it_nu_inscricao_estadual
 							from
 								s_auto
-								left join sitafe.sitafe_historico_socio shs 
+								left join sitafe.sitafe_historico_socio shs
 									   on shs.it_nu_inscricao_estadual = s_auto.ie
 									  and shs.it_in_ultima_fac = '9'
 									  and (shs.it_da_fim_part_societaria = '        ' or shs.it_da_fim_part_societaria > to_char(sysdate, 'yyyymmdd'))
 							group by
 								shs.gr_identificacao,
 								shs.it_nu_inscricao_estadual
-							), 
+							),
 
 							tabela as (
 							select
@@ -92,5 +92,5 @@ with s_auto as
 							order by
 								1,
 								4 desc,
-								5 desc, 
+								5 desc,
 								3 asc

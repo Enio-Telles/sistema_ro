@@ -1,11 +1,11 @@
 # Matriz de dependências das consultas
 
 ## Blocos-base
-- `00_parametros_normalizados.sql`  
+- `00_parametros_normalizados.sql`
   Normaliza CNPJ/IE/NOME.
-- `01_lookup_contribuinte.sql`  
+- `01_lookup_contribuinte.sql`
   Pesquisa candidatos a contribuinte.
-- `02_base_contribuinte.sql`  
+- `02_base_contribuinte.sql`
   Resolve o contribuinte selecionado e vira base para os demais blocos.
 
 ## Dependências principais por domínio

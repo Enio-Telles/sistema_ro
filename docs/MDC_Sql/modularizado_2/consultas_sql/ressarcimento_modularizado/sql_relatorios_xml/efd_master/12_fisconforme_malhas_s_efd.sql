@@ -33,7 +33,7 @@ FROM
     LEFT JOIN app_pendencia.malhas        m ON t.malhas_id = m.id
 WHERE
     t.cpf_cnpj = :CNPJ_CPF
-    AND to_date(t.periodo, 'YYYYMM') BETWEEN :DATA_INICIAL AND :DATA_FINAL 
+    AND to_date(t.periodo, 'YYYYMM') BETWEEN :DATA_INICIAL AND :DATA_FINAL
     AND t.malhas_id IN ( '10380', '10420', '10440', '10400', '10500',
                      '10140', '10061', '10020', '10180', '10200',
                      '10120', '10040', '10060', '10100',

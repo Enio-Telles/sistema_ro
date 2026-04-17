@@ -19,15 +19,15 @@ SELECT
                                                CAD.IT_NO_SITUACAO_CONTRIBUINTE   SITUAÇÃO,
                                                '<html><font color="red">'||lpad(TRIM(to_char(i.inadimplencia, '999G999G999G990D00')), length(MAX(i.inadimplencia)
                                                                                                          OVER()) + 6)      inadimplencia
-                                        FROM 
+                                        FROM
                                                BI.DM_PESSOA P
-                                        
+
                                         LEFT JOIN SITAFE.SITAFE_TABELAS_CADASTRO CAD
-                                             ON P.IN_SITUACAO = CAD.IT_CO_SITUACAO_CONTRIBUINTE    
-                                        
+                                             ON P.IN_SITUACAO = CAD.IT_CO_SITUACAO_CONTRIBUINTE
+
                                         LEFT JOIN BI.DM_LOCALIDADE LOC
                                              ON P.CO_MUNICIPIO = LOC.CO_MUNICIPIO
-                                        
+
                                         LEFT JOIN (
                                             SELECT t.co_cnpj_cpf,
                                                    SUM(t.va_principal + t.va_multa + t.va_juros + t.va_acrescimo) inadimplencia
@@ -37,8 +37,8 @@ SELECT
                                                   AND t.vencido = '3'
                                             GROUP BY t.co_cnpj_cpf
                                         )               i ON p.co_cnpj_cpf = i.co_cnpj_cpf
-                                        
-                                        WHERE 
+
+                                        WHERE
                                                P.CO_CNPJ_CPF_CONTADOR = :CO_CNPJ_CPF_CONTADOR
-                                               
+
                                         order by decode(i.inadimplencia, null,0) desc, i.inadimplencia desc

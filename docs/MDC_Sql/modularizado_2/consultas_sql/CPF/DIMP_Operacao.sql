@@ -1,5 +1,5 @@
 WITH PARAMETROS AS (
-    SELECT 
+    SELECT
         :CPF AS cnpj_filtro, -- Atende tanto CNPJ quanto CPF conforme comentrio original
         TO_DATE(:data_inicial, 'DD/MM/YYYY') AS dt_ini_filtro,
         TO_DATE(:data_final,   'DD/MM/YYYY') AS dt_fim_filtro
@@ -18,7 +18,7 @@ SELECT
     MP.NAT_OPER_DESCRICAO
 
 FROM BI.MPG_F_DETALHE_OPERACAO MP
-INNER JOIN DIMP.REG0000S D ON MP.ID_REG0000 = D.ID AND MP.CNPJ_DECLARANTE = D.CNPJ  
+INNER JOIN DIMP.REG0000S D ON MP.ID_REG0000 = D.ID AND MP.CNPJ_DECLARANTE = D.CNPJ
 INNER JOIN PARAMETROS p ON MP.CNPJ_CPF = p.cnpj_filtro
 
 WHERE MP.DT_OP BETWEEN p.dt_ini_filtro AND p.dt_fim_filtro

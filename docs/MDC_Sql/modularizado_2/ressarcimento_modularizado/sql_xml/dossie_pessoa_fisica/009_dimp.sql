@@ -25,9 +25,9 @@ SELECT
                    MAX(total)
                    OVER()
              )+7
-      )    total 
-      
-      
+      )    total
+
+
   FROM
       (
             SELECT
@@ -68,5 +68,5 @@ SELECT
                                                || '/'
                                                || EXTRACT(MONTH FROM dt_ini)))
       )
-      
+
 order by ano desc, periodo desc

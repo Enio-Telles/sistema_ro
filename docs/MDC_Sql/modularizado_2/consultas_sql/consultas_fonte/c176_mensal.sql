@@ -7,7 +7,7 @@ WITH
             NVL(TO_DATE(:data_limite_processamento, 'DD/MM/YYYY'), TRUNC(SYSDATE)) AS dt_corte
         FROM dual
     ),
-    
+
     ARQUIVOS_RANKING AS (
         /* Garante apenas a última versão válida do arquivo para o período */
         SELECT
@@ -55,29 +55,29 @@ WITH
             TRUNC(arq.dt_ini, 'MM') AS mes_referencia,
             -- Soma condicional para Códigos de Ajuste referentes a Crédito Próprio
             SUM(
-                CASE 
-                    WHEN e111.cod_aj_apur IN ('RO020023', 'RO020049') THEN e111.vl_aj_apur 
-                    ELSE 0 
+                CASE
+                    WHEN e111.cod_aj_apur IN ('RO020023', 'RO020049') THEN e111.vl_aj_apur
+                    ELSE 0
                 END
             ) AS vl_ajuste_credito_proprio,
             -- Soma condicional para Códigos de Ajuste referentes a ST Retido
             SUM(
-                CASE 
-                    WHEN e111.cod_aj_apur IN ('RO020022', 'RO020047') THEN e111.vl_aj_apur 
-                    ELSE 0 
+                CASE
+                    WHEN e111.cod_aj_apur IN ('RO020022', 'RO020047') THEN e111.vl_aj_apur
+                    ELSE 0
                 END
             ) AS vl_ajuste_st_retido,
             -- Soma individual para outros Códigos de Ajuste solicitados (Exibição apenas)
             SUM(
-                CASE 
-                    WHEN e111.cod_aj_apur = 'RO020050' THEN e111.vl_aj_apur 
-                    ELSE 0 
+                CASE
+                    WHEN e111.cod_aj_apur = 'RO020050' THEN e111.vl_aj_apur
+                    ELSE 0
                 END
             ) AS vl_ajuste_ro020050,
             SUM(
-                CASE 
-                    WHEN e111.cod_aj_apur = 'RO020048' THEN e111.vl_aj_apur 
-                    ELSE 0 
+                CASE
+                    WHEN e111.cod_aj_apur = 'RO020048' THEN e111.vl_aj_apur
+                    ELSE 0
                 END
             ) AS vl_ajuste_ro020048
         FROM ARQUIVOS_RANKING arq
@@ -92,7 +92,7 @@ WITH
 SELECT
     COALESCE(res.cnpj, e.cnpj) AS cnpj,
     TO_CHAR(COALESCE(res.mes_referencia, e.mes_referencia), 'MM/YYYY') AS periodo_efd,
-    
+
     -- INCLUSÃO: Apresentando a quantidade de itens analisados que embasam o cálculo
     NVL(res.qtd_itens_analisados, 0) AS qtd_itens_analisados_c176,
 
@@ -111,8 +111,8 @@ SELECT
     NVL(e.vl_ajuste_ro020048, 0) AS total_ajuste_ro020048_e111
 
 FROM RESUMO_RESSARCIMENTO res
-FULL OUTER JOIN RESUMO_E111 e 
-    ON res.cnpj = e.cnpj 
+FULL OUTER JOIN RESUMO_E111 e
+    ON res.cnpj = e.cnpj
     AND res.mes_referencia = e.mes_referencia
-ORDER BY 
+ORDER BY
     COALESCE(res.mes_referencia, e.mes_referencia) ASC;

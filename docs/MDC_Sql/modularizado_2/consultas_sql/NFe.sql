@@ -1,35 +1,35 @@
 /*
  * CONSULTA ESPELHO: bi.fato_nfe_detalhe
  * Comentários baseados no MOC 7.0 Anexo I - Leiaute e Regras de Validação
- * * ATUALIZAÇÃO: 
+ * * ATUALIZAÇÃO:
  * 1. Tratamento de datas nulas (desde o início até ao dia de hoje)
  * 2. Otimização do filtro WHERE para melhor utilização de índices na base de dados
  */
 
 WITH parametros AS (
-    SELECT 
-        :CNPJ AS cnpj_filtro,          
-        
+    SELECT
+        :CNPJ AS cnpj_filtro,
+
         -- Se :DATA_INICIAL for nulo, assume 01/01/2006 (início histórico da NF-e)
         COALESCE(TO_DATE(:DATA_INICIAL, 'DD/MM/YYYY'), TO_DATE('01/01/2006', 'DD/MM/YYYY')) AS data_inicial,
-        
-        -- Se :DATA_FINAL for nulo, assume o momento atual (SYSDATE). 
+
+        -- Se :DATA_FINAL for nulo, assume o momento atual (SYSDATE).
         -- Nota: Adicionado "+ 1 - 1/86400" (lógica Oracle) para garantir que apanha até às 23:59:59 do dia de hoje.
         -- Se não for Oracle, pode usar CURRENT_TIMESTAMP ou similar.
         COALESCE(TO_DATE(:DATA_FINAL, 'DD/MM/YYYY'), TRUNC(SYSDATE) + 1 - 1/86400) AS data_final
-        
+
     FROM DUAL
 )
 SELECT
-    CASE 
+    CASE
         -- CNPJ consultado é o EMITENTE
         WHEN d.co_emitente = p.cnpj_filtro AND d.co_tp_nf = 1 THEN '1 - SAIDA'
         WHEN d.co_emitente = p.cnpj_filtro AND d.co_tp_nf = 0 THEN '0 - ENTRADA'
-        
+
         -- CNPJ consultado é o DESTINATÁRIO
         WHEN d.co_destinatario = p.cnpj_filtro AND d.co_tp_nf = 1 THEN '0 - ENTRADA'
         WHEN d.co_destinatario = p.cnpj_filtro AND d.co_tp_nf = 0 THEN '1 - SAIDA'
-        
+
         ELSE 'INDEFINIDO'
     END AS tipo_operacao,
     d.NSU, -- Numero Sequencial Unico (Controle Interno/Chave Primaria do DW)
@@ -244,17 +244,17 @@ SELECT
     d.CO_INDIEDEST_, -- Copia ou auxiliar de E16a (Indicador da IE do Destinatario)
     d.FONE_DEST_A8 -- Variacao ou auxiliar de E16 (Telefone do destinatario)
 
-FROM 
+FROM
     bi.fato_nfe_detalhe d,
     parametros p
-WHERE 
+WHERE
     /* * OTIMIZAÇÃO: A utilização de funções matemáticas (GREATEST, COALESCE) no campo de data da tabela de factos
      * invalida o uso de índices ("Index Scan"). Ao separar em duas condições de OR, a base de dados
      * pode usar os índices tanto da Emissão como da Saída.
      */
     (
         (d.dhemi BETWEEN p.data_inicial AND p.data_final)
-        OR 
+        OR
         (d.dhsaient BETWEEN p.data_inicial AND p.data_final)
     )
     AND (d.co_destinatario = p.cnpj_filtro OR d.co_emitente = p.cnpj_filtro)

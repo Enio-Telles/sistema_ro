@@ -22,6 +22,6 @@ SELECT
                                     bi.dm_processo_administrativo   t
                                     LEFT JOIN sitafe.sitafe_servico           serv ON t.co_servico = serv.it_co_servico
                                     left join bi.dm_pessoa pessoa on t.cpf_solicitante = pessoa.co_cnpj_cpf
-                                    
+
                                     where t.co_cpf_cnpj_contribuinte = :CO_CNPJ_CPF
                                 order by dt_abertura desc

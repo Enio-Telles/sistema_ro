@@ -136,9 +136,9 @@ def build_aba_anual_v3(mov_df: pl.DataFrame) -> pl.DataFrame:
     df = mov_df.with_columns(pl.coalesce([pl.col("dt_e_s"), pl.col("dt_doc")]).alias("data_ref"))
     if df.schema.get("data_ref") == pl.Utf8:
         df = df.with_columns(pl.col("data_ref").str.strptime(pl.Date, strict=False))
-    
+
     df = df.with_columns(
-        pl.col("data_ref").dt.year().alias("ano"), 
+        pl.col("data_ref").dt.year().alias("ano"),
         _normalize_st_expr(pl.col("it_in_st")).alias("__it_in_st_bool__"),
         _normalize_yes_no_expr(pl.col("it_in_mva_ajustado")).alias("__it_in_mva_ajustado_bool__") if "it_in_mva_ajustado" in df.columns else pl.lit(False).alias("__it_in_mva_ajustado_bool__"),
     )

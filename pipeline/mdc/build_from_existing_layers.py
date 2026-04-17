@@ -106,7 +106,7 @@ def build_diagnostico_conversao_unidade_base(itens_df: pl.DataFrame, produtos_df
         ref_cols = [col for col in ["id_agrupado", "unid_ref"] if col in produtos_df.columns]
         if ref_cols:
             df = df.join(produtos_df.select(ref_cols).unique(subset=["id_agrupado"]), on="id_agrupado", how="left")
-    selected = _select_existing(df, ["cnpj", "codigo_produto_original", "id_agrupado", "unid", "unid_ref"]) 
+    selected = _select_existing(df, ["cnpj", "codigo_produto_original", "id_agrupado", "unid", "unid_ref"])
     if selected.is_empty() or "unid" not in selected.columns:
         return selected
     if "unid_ref" not in selected.columns:

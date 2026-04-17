@@ -23,7 +23,6 @@ def write_sample_gold_parquets(cnpj: str) -> None:
 def remove_cnpj_dir(cnpj: str) -> None:
     # settings.cnpj_root is relative to repo; remove created test dir after test
     from backend.app.config import settings
-    import os
 
     path = settings.cnpj_root / cnpj
     if path.exists():

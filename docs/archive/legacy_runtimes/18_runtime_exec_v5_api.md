@@ -108,4 +108,3 @@ Campos (tipos e significado):
 - `using_sefin_items` (bool): se os itens SEFIN foram preferidos.
 - `missing_references` (array[string]): referências/parquets ausentes em runtime.
 - `warnings` (array[string]): avisos gerados pela execução.
-

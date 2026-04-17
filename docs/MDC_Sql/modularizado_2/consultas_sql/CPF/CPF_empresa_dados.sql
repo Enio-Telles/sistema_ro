@@ -1,7 +1,7 @@
 /*
     Analise da Consulta: CPF_empresa_dados.sql
     Objetivo: Exibir dados cadastrais completos de uma empresa/contribuinte.
-    
+
     Tabelas Utilizadas:
     - bi.dm_pessoa (t): Cadastro principal de pessoas juridicas/fisicas.
       Colunas: co_cnpj_cpf, co_cad_icms (IE), no_razao_social, endereco, in_situacao, etc.
@@ -27,7 +27,7 @@ SELECT
                           localid.co_uf                                                 "UF",
                           t.co_regime_pagto|| ' - '|| rp.no_regime_pagamento            "Regime de Pagamento",
                           -- Formatacao da situacao com cores HTML
-                          CASE WHEN t.in_situacao = '001' 
+                          CASE WHEN t.in_situacao = '001'
                                 THEN t.in_situacao
                                       || ' - '|| s.desc_situacao
                                 ELSE t.in_situacao
@@ -36,9 +36,9 @@ SELECT
                           t.da_inicio_atividade                                         "Data de Inicio da Atividade",
                           to_date(us.data_ult_sit, 'YYYYMMDD')                          "Data da Ultima situacao",
                           -- Calculo do periodo em atividade (em meses)
-                          to_char(trunc(months_between((CASE WHEN t.in_situacao = '001' 
+                          to_char(trunc(months_between((CASE WHEN t.in_situacao = '001'
                                                               THEN SYSDATE
-                                                          ELSE to_date(us.data_ult_sit, 'YYYYMMDD') 
+                                                          ELSE to_date(us.data_ult_sit, 'YYYYMMDD')
                                                       END),
                                                       t.da_inicio_atividade),2))||' meses'     "Periodo em atividade",
                           -- Link para portal do contribuinte

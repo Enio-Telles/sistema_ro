@@ -7,16 +7,16 @@ WITH DADOS_BRUTOS AS (
         localid.no_municipio                                                            AS "Munic�pio",
         localid.co_uf                                                                   AS "UF",
         t.co_regime_pagto || ' - ' || rp.no_regime_pagamento                            AS "Regime de Pagamento",
-        CASE WHEN t.in_situacao = '001' 
+        CASE WHEN t.in_situacao = '001'
              THEN t.in_situacao || ' - ' || s.desc_situacao
              ELSE t.in_situacao || ' - ' || convert(s.desc_situacao,'AL32UTF8','WE8MSWIN1252')
         END                                                                             AS "Situa��o da IE",
         -- Datas convertidas para Texto para permitir o UNPIVOT
         TO_CHAR(t.da_inicio_atividade, 'DD/MM/YYYY')                                    AS "Data de In�cio da Atividade",
         TO_CHAR(to_date(us.data_ult_sit, 'YYYYMMDD'), 'DD/MM/YYYY')                     AS "Data da �ltima situa��o",
-        to_char(trunc(months_between((CASE WHEN t.in_situacao = '001' 
+        to_char(trunc(months_between((CASE WHEN t.in_situacao = '001'
                                            THEN SYSDATE
-                                           ELSE to_date(us.data_ult_sit, 'YYYYMMDD') 
+                                           ELSE to_date(us.data_ult_sit, 'YYYYMMDD')
                                       END),
                                       t.da_inicio_atividade),2)) || ' meses'            AS "Per�odo em atividade",
         'https://portalcontribuinte.sefin.ro.gov.br/...NuDevedor=' || t.co_cad_icms     AS "Link Redesim"
@@ -40,8 +40,8 @@ WITH DADOS_BRUTOS AS (
         t.co_cnpj_cpf = :CNPJ
 )
 -- Transforma as colunas em linhas
-SELECT 
-    Campo, 
+SELECT
+    Campo,
     Valor
 FROM DADOS_BRUTOS
 UNPIVOT (

@@ -1,5 +1,5 @@
 WITH PARAMETROS AS (
-    SELECT 
+    SELECT
         :CNPJ AS cnpj_filtro,
         NVL(TO_DATE(:data_inicial, 'DD/MM/YYYY'), DATE '1900-01-01') AS dt_ini_filtro,
         NVL(TO_DATE(:data_final,   'DD/MM/YYYY'), TRUNC(SYSDATE))    AS dt_fim_filtro,

@@ -14,9 +14,9 @@ set pagesize 25;
                                                                 SET LINESIZE 110;
                                                                 set pagesize 25;
                                                                 SET LINESIZE 110;
-                                                                set newpage 0; 
-                                                                set echo off; 
-                                                                set feedback off; 
+                                                                set newpage 0;
+                                                                set echo off;
+                                                                set feedback off;
                                                                 set heading off;
                                                                 SELECT
                                                                     'Número do Auto de Infração: '

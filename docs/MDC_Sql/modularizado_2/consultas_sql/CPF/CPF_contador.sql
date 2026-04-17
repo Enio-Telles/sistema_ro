@@ -3,7 +3,7 @@
 -- Parâmetro: :CO_CAD_ICMS (Inscrição Estadual)
 
 SELECT
-    CASE 
+    CASE
         WHEN b.fim_ref IS NULL AND b.co_cnpj_cpf_contador = '   -   ' THEN 'Atual - sem contador indicado'
         WHEN b.fim_ref IS NULL AND b.co_cnpj_cpf_contador != '   -   ' THEN 'Atual'
         WHEN b.fim_ref IS NOT NULL AND b.co_cnpj_cpf_contador = '   -   ' THEN 'Anterior - Período sem indicação'
@@ -19,7 +19,7 @@ FROM (
     SELECT
         it_nu_inscricao_estadual ie,
         cnpj,
-        CASE 
+        CASE
             WHEN substr(gr_ident_contador, 2) IS NULL THEN '   -   '
             ELSE substr(gr_ident_contador, 2)
         END co_cnpj_cpf_contador,
