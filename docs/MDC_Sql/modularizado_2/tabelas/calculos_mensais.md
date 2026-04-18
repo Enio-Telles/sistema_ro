@@ -10,7 +10,7 @@ Tabela que resume a movimentação de estoque por produto e mês, reutilizando o
 def gerar_calculos_mensais(cnpj: str, pasta_cnpj: Path | None = None) -> bool
 ```
 
-Módulo: `src/transformacao/calculos_mensais.py` (wrapper)  
+Módulo: `src/transformacao/calculos_mensais.py` (wrapper)
 Implementação: `src/transformacao/calculos_mensais_pkg/calculos_mensais.py`
 
 ## Dependências

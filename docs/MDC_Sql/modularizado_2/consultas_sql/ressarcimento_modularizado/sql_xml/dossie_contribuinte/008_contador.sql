@@ -11,10 +11,10 @@ OBSERVACAO:
  - Tags HTML, formatação de apresentação e scripts de SQL*Plus foram preservados quando existentes.
 */
 select
-								case when b.fim_ref is null and b.co_cnpj_cpf_contador = '   -   ' then '<html><b>Atual - sem contador indicado' 
-									 when b.fim_ref is null and b.co_cnpj_cpf_contador != '   -   ' then '<html><b>Atual' 
-									 when b.fim_ref is not null and b.co_cnpj_cpf_contador = '   -   ' then 'Anterior - Período sem indicação de contador' 
-									 else 'Anterior' 
+								case when b.fim_ref is null and b.co_cnpj_cpf_contador = '   -   ' then '<html><b>Atual - sem contador indicado'
+									 when b.fim_ref is null and b.co_cnpj_cpf_contador != '   -   ' then '<html><b>Atual'
+									 when b.fim_ref is not null and b.co_cnpj_cpf_contador = '   -   ' then 'Anterior - Período sem indicação de contador'
+									 else 'Anterior'
 								end                     situacao,
 								b.co_cnpj_cpf_contador  co_cnpj_cpf_contador,
 								p.no_razao_social       nome,

@@ -13,7 +13,7 @@ SELECT
     :DATA_INICIAL DATA_INICIAL,
     :DATA_FINAL DATA_FINAL,
     cnpj_cpf CNPJ_CPF_EMIT,
-    
+
         CASE
         WHEN cod_mod IS NULL AND cnpj_cpf IS NULL and nome is null and co_uf is null THEN
             '<html><font size=4><b>---Σ Total geral'
@@ -60,7 +60,7 @@ SELECT
     || '%'                                ind_ibc,
     '<html><p style="color:red">'|| lpad(TRIM(to_char(ar.inadimplencia, '999G999G999G990D00')), length(MAX(ar.inadimplencia)
                                                                       OVER()) + 6) inadimp_forn
-    
+
 FROM
     (
         SELECT
@@ -96,7 +96,7 @@ FROM
             LEFT JOIN bi.dm_localidade            l ON r0150.cod_mun = l.co_mun_ibge
 
         WHERE
-                t.co_cnpj_cpf_declarante = :CNPJ_CPF 
+                t.co_cnpj_cpf_declarante = :CNPJ_CPF
             AND t.da_inicio_arquivo BETWEEN :DATA_INICIAL AND :DATA_FINAL
             AND rc100.cod_sit NOT IN ( '02', '04', '05' )
             AND rc100.ind_oper = '0'
@@ -116,7 +116,7 @@ GROUP BY
                  cnpj_cpf,
                  nome,
                  cod_mod, ar.inadimplencia ) )
-                 
+
 ORDER BY
         CASE
             WHEN CNPJ_CPF_EMIT IS NULL

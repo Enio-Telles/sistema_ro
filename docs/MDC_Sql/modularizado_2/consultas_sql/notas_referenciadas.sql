@@ -7,7 +7,7 @@ SELECT DISTINCT
               g.modelo,
               g.valor,
               g.icms
-              
+
         FROM
                 bi.fato_nfe_detalhe a
                 LEFT JOIN bi.dm_nfe_referenciada b ON a.chave_acesso = b.chave_acesso
@@ -35,7 +35,7 @@ SELECT DISTINCT
                          f1.dhemi BETWEEN :inicio AND :fim
                          AND f1.INFPROT_CSTAT IN ('100','150')) g ON b.dfe_referenciado = g.chave
         WHERE
-                
+
                 ((a.co_destinatario = :CNPJ) -- and d.co_tp_nf = 1)
 			OR		( a.co_emitente = :CNPJ) -- and d.co_tp_nf = 0)
 				)

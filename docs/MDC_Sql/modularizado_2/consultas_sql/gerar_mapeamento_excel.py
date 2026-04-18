@@ -1,6 +1,5 @@
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
-from openpyxl.utils import get_column_letter
 
 # Criar workbook
 wb = Workbook()
@@ -198,7 +197,7 @@ for categoria_data in campos:
     cell.alignment = left_align
     cell.border = thin_border
     row += 1
-    
+
     # Campos da categoria
     for campo, tipo, descricao in categoria_data['campos']:
         cells = [
@@ -254,7 +253,7 @@ for cst, desc in cst_data:
     else:
         ws_cst[f'A{row}'].alignment = center_align
         ws_cst[f'B{row}'].alignment = left_align
-    
+
     for cell in cells:
         cell.border = thin_border
     row += 1
@@ -312,7 +311,7 @@ for cfop, desc in cfop_data:
     else:
         ws_cfop[f'A{row}'].alignment = center_align
         ws_cfop[f'B{row}'].alignment = left_align
-    
+
     for cell in cells:
         cell.border = thin_border
     row += 1
@@ -354,7 +353,7 @@ for section_title, items in info_sections:
     cell.fill = header_fill
     cell.alignment = left_align
     row += 1
-    
+
     for item in items:
         ws_info.merge_cells(f'A{row}:A{row}')
         cell = ws_info[f'A{row}']
@@ -363,15 +362,15 @@ for section_title, items in info_sections:
         cell.border = thin_border
         ws_info.row_dimensions[row].height = 30
         row += 1
-    
+
     row += 1
 
 # Salvar arquivo
 output_file = r"c:\Users\03002693901\OneDrive - SECRETARIA DE ESTADO DE FINANCAS\GEFIS_ENIO\consultas_oracle_sql_developer\consultas_sql\MAPEAMENTO_EFD_REGC170.xlsx"
 wb.save(output_file)
 print(f"✅ Arquivo Excel criado com sucesso: {output_file}")
-print(f"\n📊 Abas criadas:")
-print(f"   1. Mapeamento Completo - Todos os 47 campos com descrições")
-print(f"   2. CST ICMS - Referência de códigos de situação tributária")
-print(f"   3. CFOP - Referência de códigos fiscais de operação")
-print(f"   4. Informações - Dicas e fórmulas importantes")
+print("\n📊 Abas criadas:")
+print("   1. Mapeamento Completo - Todos os 47 campos com descrições")
+print("   2. CST ICMS - Referência de códigos de situação tributária")
+print("   3. CFOP - Referência de códigos fiscais de operação")
+print("   4. Informações - Dicas e fórmulas importantes")

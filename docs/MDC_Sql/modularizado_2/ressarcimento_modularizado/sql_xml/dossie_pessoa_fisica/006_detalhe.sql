@@ -43,7 +43,7 @@ SELECT
             )),
             8
       )              rr,
-      
+
           lpad(
             TRIM(to_char(
                   SUM(total),
@@ -53,8 +53,8 @@ SELECT
                    MAX(SUM(total))
                    OVER()
              )+7
-      )    total  
-      
+      )    total
+
   FROM
       (
             SELECT

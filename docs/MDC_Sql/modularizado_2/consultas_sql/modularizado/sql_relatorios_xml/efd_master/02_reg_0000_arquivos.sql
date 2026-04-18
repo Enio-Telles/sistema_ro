@@ -35,8 +35,8 @@ FROM
 WHERE
     t.cnpj = :CNPJ_CPF
    and t.dt_ini between :DATA_INICIAL AND :DATA_FINAL
-     
-    
+
+
 ORDER BY
     t.dt_ini DESC,
     t.data_entrega DESC

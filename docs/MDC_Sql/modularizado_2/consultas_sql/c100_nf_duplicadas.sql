@@ -1,14 +1,14 @@
 -- ============================================================================
 -- SCRIPT: Verificação de Duplicidade de Notas Fiscais (Nível C100 - Cabeçalho)
 -- ============================================================================
--- OBJETIVO: 
+-- OBJETIVO:
 -- 1. Identificar se a mesma CHAVE DE NFE (chv_nfe) foi escriturada mais de uma vez.
 -- 2. Isso pode ocorrer por erro de escrituração (lançar 2x) ou duplicidade
 --    entre arquivos de períodos diferentes (ex: lançada em Jan e Fev).
 -- ============================================================================
 
 WITH PARAMETROS AS (
-    SELECT 
+    SELECT
         :CNPJ AS cnpj_alvo,
         TO_DATE(:inicio, 'DD/MM/YYYY') AS dt_ini_filtro,
         TO_DATE(:fim, 'DD/MM/YYYY')    AS dt_fim_filtro,
@@ -18,14 +18,14 @@ WITH PARAMETROS AS (
 
 -- 1. Seleção dos Arquivos Válidos (Mesma lógica robusta dos anteriores)
 ARQUIVOS_RANKEADOS AS (
-    SELECT 
+    SELECT
         r.id AS reg_0000_id,
         r.dt_ini,
         r.dt_fin,
         r.data_entrega,
         r.cod_fin,
         ROW_NUMBER() OVER (
-            PARTITION BY r.cnpj, r.dt_ini 
+            PARTITION BY r.cnpj, r.dt_ini
             ORDER BY r.data_entrega DESC
         ) AS rn
     FROM sped.reg_0000 r
@@ -46,7 +46,7 @@ DADOS_NOTAS AS (
         -- Dados de Origem para Rastreabilidade
         av.dt_ini AS periodo_apuracao_arquivo,
         TO_CHAR(av.dt_ini, 'MM/YYYY') AS mes_ref,
-        
+
         -- Dados da Nota
         c100.chv_nfe,
         c100.num_doc,
@@ -57,19 +57,19 @@ DADOS_NOTAS AS (
         c100.ind_oper, -- 0-Entrada, 1-Saída
         c100.cod_sit,  -- 00-Regular, 02-Cancelada, etc.
         c100.cod_part,
-        
+
         -- Contagem: Quantas vezes essa chave aparece neste universo de arquivos válidos?
         COUNT(*) OVER (PARTITION BY c100.chv_nfe) AS qtd_ocorrencias_chave
 
     FROM sped.reg_c100 c100
     INNER JOIN ARQUIVOS_VALIDOS av ON av.id_arquivo = c100.reg_0000_id
-    
-    WHERE c100.chv_nfe IS NOT NULL 
+
+    WHERE c100.chv_nfe IS NOT NULL
       AND LENGTH(TRIM(c100.chv_nfe)) = 44 -- Garante que é uma chave válida de NFe/NFCe
 )
 
 -- 3. Filtro Final: Exibe apenas as duplicadas
-SELECT 
+SELECT
     qtd_ocorrencias_chave AS "Qtd Repetições",
     chv_nfe               AS "Chave NFe",
     num_doc               AS "Número Doc",

@@ -8,13 +8,13 @@
 -- Tabelas/fontes identificadas: sped.reg_c100, sped.reg_0000
 -- Binds declarados: CNPJ, data_inicial, data_final
 
-SELECT 
+SELECT
 	--c100.ID,
     --c100.REG_0000_ID,
     --c100.REG,
     c100.IND_OPER,
     c100.IND_EMIT,
-    CASE 
+    CASE
         WHEN c100.IND_EMIT = 0 THEN '0 - Emissão Própria'
         WHEN c100.IND_EMIT = 1 THEN '1 - Terceiros'
     END AS IND_EMIT_DESC,
@@ -50,7 +50,7 @@ SELECT
     c100.UPDATED_AT
 FROM sped.reg_c100 c100
     INNER JOIN (
-        SELECT reg_0000_a.id 
+        SELECT reg_0000_a.id
         FROM sped.reg_0000 reg_0000_a
         INNER JOIN (
             SELECT
@@ -61,9 +61,9 @@ FROM sped.reg_c100 c100
                 AND reg_0000_b.dt_ini BETWEEN :data_inicial AND :data_final
             GROUP BY reg_0000_b.dt_ini
             ORDER BY reg_0000_b.dt_ini
-        ) datas 
-        ON reg_0000_a.dt_ini = datas.Periodo 
+        ) datas
+        ON reg_0000_a.dt_ini = datas.Periodo
             AND CAST(reg_0000_a.data_entrega AS DATE) = datas.Entrega
         WHERE reg_0000_a.cnpj = :CNPJ
-    ) datas_cnpj 
+    ) datas_cnpj
     ON c100.reg_0000_id = datas_cnpj.id

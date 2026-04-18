@@ -1,7 +1,7 @@
 /*
     Analise da Consulta: CPF_empresa_enderecos.sql
     Objetivo: Consolidar enderecos de uma empresa de multiplas fontes (cadastro e notas fiscais).
-    
+
     Tabelas Utilizadas:
     - bi.dm_pessoa (t): Cadastro oficial do contribuinte.
       Colunas: desc_endereco, bairro, nu_cep, co_municipio.
@@ -29,9 +29,9 @@ select 'DM_PESSOA/SITAFE' origem,
                                     from bi.dm_pessoa t
                                     LEFT JOIN bi.dm_localidade    localid ON t.co_municipio = localid.co_municipio
                                     where co_cnpj_cpf = :CO_CNPJ_CPF
-                                    
+
                                     union all
-                                    
+
                                     -- Enderecos de Notas Fiscais (historico)
                                     select * from (
                                     SELECT
@@ -57,5 +57,5 @@ select 'DM_PESSOA/SITAFE' origem,
                                         upper(cep_dest),
                                         upper(co_uf_dest),
                                         extract(year from dhemi)||'/'||extract(month from dhemi)
-                                    
+
                                     order by extract(year from dhemi)||'/'||extract(month from dhemi) desc)

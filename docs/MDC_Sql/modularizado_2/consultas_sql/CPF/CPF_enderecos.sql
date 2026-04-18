@@ -4,7 +4,7 @@
     Parametro: :CPF
 */
 
-WITH 
+WITH
 -- =============================================================================
 -- BLOCO 1: FONTES PESSOAIS (Consulta Original de Endereços)
 -- =============================================================================
@@ -35,13 +35,13 @@ tse AS (
         'TSE' as fonte,
         t.dt_eleicao as ordem_cronologica,
         to_char(EXTRACT(YEAR FROM t.dt_eleicao) || '/' || EXTRACT(MONTH FROM t.dt_eleicao)) as periodo,
-        NULL as endereco, 
-        NULL as numero, 
-        NULL as complemento, 
+        NULL as endereco,
+        NULL as numero,
+        NULL as complemento,
         NULL as bairro,
         UPPER(t.nm_ue) as municipio,
         UPPER(t.sg_uf) as uf,
-        NULL as cep, 
+        NULL as cep,
         NULL as telefone,
         t.nm_email as email
     FROM bi.dm_candidatos t
@@ -55,7 +55,7 @@ sitafe AS (
         to_date(t.it_da_transacao, 'YYYYMMDD') as ordem_cronologica,
         to_char(EXTRACT(YEAR FROM to_date(t.it_da_transacao, 'YYYYMMDD')) || '/' || EXTRACT(MONTH FROM to_date(t.it_da_transacao, 'YYYYMMDD'))) as periodo,
         UPPER(t.it_tx_logradouro_corresp) as endereco,
-        NULL as numero, 
+        NULL as numero,
         NULL as complemento,
         UPPER(t.it_no_bairro_corresp) as bairro,
         UPPER(l.no_municipio) as municipio,
@@ -78,7 +78,7 @@ crc AS (
         UPPER(e.numero) as numero,
         UPPER(e.complemento) as complemento,
         UPPER(e.bairro) as bairro,
-        UPPER(e.cidade) as municipio, 
+        UPPER(e.cidade) as municipio,
         UPPER(e.uf) as uf,
         e.cep,
         e.telefone,
@@ -90,7 +90,7 @@ crc AS (
 
 -- 5. ITCD
 itcd AS (
-    SELECT 
+    SELECT
         'ITCD' as fonte,
         CAST(NULL AS DATE) as ordem_cronologica,
         NULL as periodo,
@@ -98,7 +98,7 @@ itcd AS (
         UPPER(t.tx_numero) as numero,
         UPPER(t.tx_complemento) as complemento,
         UPPER(t.tx_bairro) as bairro,
-        UPPER(t.tx_cidade) as municipio, 
+        UPPER(t.tx_cidade) as municipio,
         UPPER(t.tx_estado) as uf,
         UPPER(t.tx_cep) as cep,
         UPPER(t.tx_telefone) as telefone,
@@ -125,7 +125,7 @@ cv115 AS (
         cv115.cep,
         cv115.telefone,
         '' as email
-    FROM novo_sisconv.dados_cadastrais cv115 
+    FROM novo_sisconv.dados_cadastrais cv115
     WHERE cv115.cpf_cnpj like '%' || :CPF
 ),
 
@@ -199,18 +199,18 @@ empresas_vinculadas AS (
         t.co_cnpj_cpf || '_' || UPPER(t.no_razao_social) as fonte,
         t.da_inicio_atividade as ordem_cronologica,
         to_char(t.da_inicio_atividade, 'YYYY/MM') as periodo,
-        
+
         -- Endereço da empresa
         UPPER(t.DESC_ENDERECO) as endereco,
         NULL as numero, -- Geralmente embutido no DESC_ENDERECO na tabela bi.dm_pessoa
-        
+
         -- CONSOLIDAÇÃO DE DADOS DA EMPRESA NO COMPLEMENTO
-        'CNPJ: ' || t.co_cnpj_cpf || ' | RAZÃO: ' || UPPER(t.no_razao_social) || 
-        CASE WHEN vencido.total_divida > 0 
+        'CNPJ: ' || t.co_cnpj_cpf || ' | RAZÃO: ' || UPPER(t.no_razao_social) ||
+        CASE WHEN vencido.total_divida > 0
              THEN ' | DÍVIDA: R$ ' || TRIM(to_char(vencido.total_divida, '999G999G990D00'))
              ELSE ' | SEM DÍVIDA ATIVA'
         END as complemento,
-        
+
         UPPER(t.BAIRRO) as bairro,
         UPPER(localid.no_municipio) as municipio,
         UPPER(localid.co_uf) as uf,
@@ -219,7 +219,7 @@ empresas_vinculadas AS (
         NULL as email,
         NULL as chave_acesso
     FROM bi.dm_pessoa t
-    
+
     -- Filtro de Sócio (traz apenas empresas onde o :CPF é sócio)
     INNER JOIN (
         SELECT DISTINCT substr(h.gr_identificacao, 2) AS cnpj_empresa
@@ -227,9 +227,9 @@ empresas_vinculadas AS (
         INNER JOIN sitafe.sitafe_historico_contribuinte h ON soc.it_nu_fac = h.it_nu_fac
         WHERE substr(soc.gr_identificacao, 2) = :CPF
     ) socios ON t.co_cnpj_cpf = socios.cnpj_empresa
-    
+
     LEFT JOIN bi.dm_localidade localid ON t.co_municipio = localid.co_municipio
-    
+
     -- Subquery de Dívida da Empresa
     LEFT JOIN (
         SELECT
@@ -260,12 +260,12 @@ uniao AS (
 
 -- Ranking e Deduplicação Final
 final AS (
-    SELECT 
+    SELECT
         u.*,
         ROW_NUMBER() OVER (
-            PARTITION BY 
-                UPPER(TRIM(u.endereco)), 
-                UPPER(TRIM(u.numero)), 
+            PARTITION BY
+                UPPER(TRIM(u.endereco)),
+                UPPER(TRIM(u.numero)),
                 UPPER(TRIM(u.bairro)),
                 UPPER(TRIM(u.municipio))
             ORDER BY u.ordem_cronologica DESC NULLS LAST
@@ -273,20 +273,20 @@ final AS (
     FROM uniao u
 )
 
-SELECT 
-    fonte, 
-    periodo, 
-    endereco, 
-    numero, 
-    complemento, 
-    bairro, 
-    municipio, 
-    uf, 
-    cep, 
-    telefone, 
+SELECT
+    fonte,
+    periodo,
+    endereco,
+    numero,
+    complemento,
+    bairro,
+    municipio,
+    uf,
+    cep,
+    telefone,
     email,
     chave_acesso
 FROM final
 WHERE rnk_geral = 1
-ORDER BY 
+ORDER BY
     ordem_cronologica DESC NULLS LAST

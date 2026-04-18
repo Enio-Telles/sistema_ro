@@ -25,7 +25,7 @@ with total as
 								  null                                                                      autos
 							  from
 								  vistoria.empresas_vistorias@vistoria_producao t
-							left join vistoria.modalidades@vistoria_producao  m on t.modalidade_id = m.id     
+							left join vistoria.modalidades@vistoria_producao  m on t.modalidade_id = m.id
 							left join bi.dm_pessoa p on t.cpf_auditor = p.co_cnpj_cpf
 							left join bi.dm_pessoa ps on t.cpf_solicitante = ps.co_cnpj_cpf
 							left join vistoria.documentos_assinados@vistoria_producao  d on t.id = d.empresa_vistoria_id
@@ -45,7 +45,7 @@ with total as
 									to_date(df.it_da_lancamento,'yyyymmdd')                                 dt_vistoria,
 									dft.it_nu_documento_origem                                              modalidade,
 									null                                                                    dsf,
-									dft.it_nu_diligencia                                                    processo,            
+									dft.it_nu_diligencia                                                    processo,
 									null                                                                    solicitante,
 									su.it_co_matricula_usuario||' - '||su.it_no_usuario                     auditor,
 									da.autos                                                                autos

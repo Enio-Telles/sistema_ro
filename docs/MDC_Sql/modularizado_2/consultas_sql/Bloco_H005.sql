@@ -24,9 +24,9 @@ SELECT
                 'Desconhecido'
         END
     AS VARCHAR2(100))                                                AS descr_compl,
-    
+
     d.vl_inv
-    
+
 FROM
          bi.dm_efd_arquivo_valido a
     INNER JOIN bi.dm_contribuinte    c ON a.co_cnpj_cpf_declarante = c.co_cnpj_cpf

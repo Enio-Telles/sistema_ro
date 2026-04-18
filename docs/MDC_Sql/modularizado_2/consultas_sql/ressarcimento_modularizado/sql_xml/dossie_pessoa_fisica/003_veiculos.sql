@@ -17,7 +17,7 @@ SELECT
       dual
 UNION ALL
 SELECT
-      2 codigo, 
+      2 codigo,
       '<html>----Modelo: '
       ||'<b>'|| tb.it_no_marca_modelo
       || '</b> - Ano Fabricação <b>'

@@ -8,13 +8,13 @@ Este pacote contém uma proposta de **atomização do dossiê NIF** em consultas
 
 ## Princípios aplicados
 
-1. **Uma chave de contribuinte por vez**  
+1. **Uma chave de contribuinte por vez**
    Resolver `CO_CNPJ_CPF` e `CO_CAD_ICMS` no início e reutilizar essa base em todas as consultas.
 
-2. **Nada de HTML na camada SQL operacional**  
+2. **Nada de HTML na camada SQL operacional**
    As consultas aqui retornam dados crus ou enriquecidos, mas sem formatação visual.
 
-3. **Totais fora do detalhe**  
+3. **Totais fora do detalhe**
    Linhas de subtotal e títulos visuais foram removidas. Agregações ficam em consultas dedicadas.
 
 4. **Separação entre fatos e agregados**
@@ -26,21 +26,21 @@ Este pacote contém uma proposta de **atomização do dossiê NIF** em consultas
 
 ## Estrutura
 
-- `consultas_sql/00_base/`  
+- `consultas_sql/00_base/`
   Resolução de parâmetros, contribuinte e chaves.
-- `consultas_sql/10_cadastro/`  
+- `consultas_sql/10_cadastro/`
   Cadastro, endereços, atividades, veículos, processos.
-- `consultas_sql/20_societario/`  
+- `consultas_sql/20_societario/`
   Sócios, empresas relacionadas, inadimplência de empresas vinculadas.
-- `consultas_sql/30_documentos_fiscais/`  
+- `consultas_sql/30_documentos_fiscais/`
   NFe/NFCe, VAF, MDF-e, IP de transmissão.
-- `consultas_sql/40_arrecadacao_regularidade/`  
+- `consultas_sql/40_arrecadacao_regularidade/`
   Conta corrente, regime especial, parcelamentos, DIMP.
-- `consultas_sql/50_fiscalizacao_conformidade/`  
+- `consultas_sql/50_fiscalizacao_conformidade/`
   Vistorias, ações fiscais, autos, notificações.
-- `consultas_sql/90_orquestracao/`  
+- `consultas_sql/90_orquestracao/`
   Manifestação de dependências e exemplo de consolidação lógica.
-- `docs/`  
+- `docs/`
   Plano de implementação em Polars e matriz de dependências.
 
 ## Ordem sugerida de execução

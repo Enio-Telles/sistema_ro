@@ -1,7 +1,7 @@
 /*
     Analise da Consulta: CPF_empresas.sql
     Objetivo: Listar todas as empresas onde um CPF e/foi socio.
-    
+
     Tabelas Utilizadas:
     - sitafe.sitafe_historico_socio (t): Historico de participacao societaria.
     - sitafe.sitafe_historico_contribuinte (h): Historico de contribuintes.
@@ -34,7 +34,7 @@ SELECT
             WHEN ult_fac = 9 THEN
                   NULL
             ELSE
-                  to_date(b.da_saida, 'yyyymmdd') 
+                  to_date(b.da_saida, 'yyyymmdd')
       END          fim_part,
       lpad(
             TRIM(to_char(

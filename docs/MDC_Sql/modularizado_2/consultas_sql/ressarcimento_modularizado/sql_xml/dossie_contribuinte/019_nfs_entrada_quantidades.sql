@@ -56,7 +56,7 @@ SELECT
  GROUP BY
 	  EXTRACT(YEAR FROM dhemi),
 	  t.co_uf_emit) b
-	  
+
 group by ano
 
 order by ano desc

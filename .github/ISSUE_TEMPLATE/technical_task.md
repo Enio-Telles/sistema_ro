@@ -33,10 +33,10 @@ Que problema técnico ou risco isso reduz?
 - [ ] release
 
 ## Áreas afetadas
-- 
+-
 
 ## Riscos
-- 
+-
 
 ## Critérios de pronto
 - [ ]

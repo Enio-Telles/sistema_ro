@@ -16,7 +16,7 @@ WITH total AS (
         null autos
     FROM
         vistoria.empresas_vistorias@vistoria_producao t
-        LEFT JOIN vistoria.modalidades@vistoria_producao m ON t.modalidade_id = m.id     
+        LEFT JOIN vistoria.modalidades@vistoria_producao m ON t.modalidade_id = m.id
         LEFT JOIN bi.dm_pessoa p ON t.cpf_auditor = p.co_cnpj_cpf
         LEFT JOIN bi.dm_pessoa ps ON t.cpf_solicitante = ps.co_cnpj_cpf
         LEFT JOIN vistoria.documentos_assinados@vistoria_producao d ON t.id = d.empresa_vistoria_id
@@ -27,7 +27,7 @@ WITH total AS (
     SELECT
         'SITAFE VISTORIA' tipo,
         to_char(df.it_nu_diligencia) id,
-        CASE 
+        CASE
             WHEN df.it_co_situacao_diligencia = 01 THEN '01 - DOC. REGISTRADO'
             WHEN df.it_co_situacao_diligencia = 02 THEN '02 - DIL. GERADA'
             WHEN df.it_co_situacao_diligencia = 03 THEN '03 - DIL. ENTREGUE'
@@ -37,7 +37,7 @@ WITH total AS (
         to_date(df.it_da_lancamento,'yyyymmdd') dt_vistoria,
         dft.it_nu_documento_origem modalidade,
         null dsf,
-        dft.it_nu_diligencia processo,            
+        dft.it_nu_diligencia processo,
         null solicitante,
         su.it_co_matricula_usuario||' - '||su.it_no_usuario auditor,
         da.autos autos
@@ -71,6 +71,6 @@ SELECT
     d.documento_assinatura RELATORIO
 FROM
     total t
-    LEFT JOIN vistoria.documentos_assinados@vistoria_producao d 
+    LEFT JOIN vistoria.documentos_assinados@vistoria_producao d
         ON t.tipo || t.id = 'APP VISTORIA' || d.empresa_vistoria_id
 ORDER BY 4 DESC

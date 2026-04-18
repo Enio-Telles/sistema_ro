@@ -11,13 +11,13 @@ OBSERVACAO:
  - Tags HTML, formatação de apresentação e scripts de SQL*Plus foram preservados quando existentes.
 */
 WITH IP_ALVO AS (
-                                    SELECT SUBSTR(IP.CHAVE_ACESSO,7,14) CNPJ, 
+                                    SELECT SUBSTR(IP.CHAVE_ACESSO,7,14) CNPJ,
                                                     IP.IP_TRANSMISSOR            IP,
                                                     COUNT(IP.CHAVE_ACESSO)       QTD_NOTAS
-                                       FROM BI.DM_IP_TRANSMISSOR IP 
+                                       FROM BI.DM_IP_TRANSMISSOR IP
                                     WHERE SUBSTR(IP.CHAVE_ACESSO,7,14) = :CO_CNPJ_CPF
                                       AND IP.TIPO_REG = '55'
-                                    GROUP BY SUBSTR(IP.CHAVE_ACESSO,7,14), 
+                                    GROUP BY SUBSTR(IP.CHAVE_ACESSO,7,14),
                                                      IP.IP_TRANSMISSOR)
                                     , OUTROS_CNPJS AS (
                                     SELECT IP_OUTROS.IP_TRANSMISSOR,

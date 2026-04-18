@@ -417,7 +417,7 @@ CANDIDATOS_VINCULO_ENTRADA_BASE AS (
                 ELSE 0
             END
             +
-            /* 2. GTIN / CÓDIGO DE BARRAS IDÊNTICO (+300) 
+            /* 2. GTIN / CÓDIGO DE BARRAS IDÊNTICO (+300)
                   Procura o prod_cean ou prod_ceantrib do XML, ou cod_barra do SPED
                   e cruza com o cod_barra da saída.
             */
@@ -999,7 +999,7 @@ SELECT
     b.item_xml_entrada_padrao           AS aud_xml_entrada_item_padrao,
     b.score_vinculo_entrada             AS aud_score_vinculo_entrada,
     b.diff_qtd_vinculo                  AS aud_diff_qtd_vinculo,
-    
+
     /* RECALIBRAGEM DOS NÍVEIS DE CONFIANÇA */
     CASE
         WHEN b.score_vinculo_entrada >= 2200 THEN 'ALTA CONFIANCA'

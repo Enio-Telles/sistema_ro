@@ -1,7 +1,7 @@
 /*
     Analise da Consulta: CPF_empresa_reg_pgto.sql
     Objetivo: Exibir historico de regimes de pagamento de uma empresa.
-    
+
     Tabela Utilizada:
     - BI.dm_regime_pagto_contribuinte: Historico de regimes por periodo.
       Colunas: co_cnpj_cpf, co_regime_pagto, desc_reg_pagto, da_referencia.
@@ -11,7 +11,7 @@
     - Simples Nacional
     - Estimativa
     - Substituto Tributario
-    
+
     Logica Principal:
     1. Agrupa por regime e mostra periodo de vigencia (inicio e fim).
     2. Se o fim coincidir com o mes atual, exibe 'Atual'.

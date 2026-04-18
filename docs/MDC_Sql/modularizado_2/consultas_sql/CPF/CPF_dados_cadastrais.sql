@@ -15,7 +15,7 @@ SELECT
     to_date(us.data_ult_sit, 'YYYYMMDD')                                    DATA_ULTIMA_SITUACAO,
     to_char(trunc(months_between(
         CASE WHEN t.in_situacao = '001' THEN SYSDATE
-             ELSE to_date(us.data_ult_sit, 'YYYYMMDD') 
+             ELSE to_date(us.data_ult_sit, 'YYYYMMDD')
         END,
         t.da_inicio_atividade),2))||' meses'                                PERIODO_ATIVIDADE
 FROM

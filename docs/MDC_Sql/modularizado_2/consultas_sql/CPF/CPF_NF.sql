@@ -2,7 +2,7 @@
     Análise da Consulta: CPF_NF.sql
     Objetivo: Extrair detalhes de Notas Fiscais Eletrônicas (NF-e) onde o CPF informado
     é o DESTINATÁRIO da mercadoria.
-    
+
     Tabela Utilizada:
     - bi.fato_nfe_detalhe (t): Tabela fato com detalhes das NF-e.
       Colunas Chave: co_destinatario (CPF/CNPJ destino), dhemi (data emissão),
@@ -45,7 +45,7 @@ SELECT
 
 -- GROUPING SETS: Gera agregações em múltiplos níveis em uma única query
 group by grouping sets (
-      
+
       (),                                                      -- Nível 1: Total Geral (tudo NULL)
       (extract(year from t.dhemi)),                            -- Nível 2: Total por Ano
       (t.co_emitente, upper(t.xnome_emit)),                    -- Nível 3: Total por Emitente
@@ -64,7 +64,7 @@ group by grouping sets (
        upper(t.prod_xprod),
        t.prod_ucom,
        t.prod_qcom)
-      
+
       )
 
 -- Ordenação hierárquica: Totais primeiro, depois detalhes
@@ -73,6 +73,6 @@ order by case when ano is null and cnpj is null and uf is null and nome is null 
       when ano is not null and cnpj is not null and chave_acesso is not null then 3       -- Detalhe
       when ano is null and cnpj is null and uf is not null then 4                         -- Total UF
       else 5 end, ano desc, data desc, valor desc
-      
+
 
 --dhemi desc

@@ -17,19 +17,19 @@ Descreva em 2 a 5 linhas o que esta PR implementa.
 - [ ] testes
 
 Descreva as mudanças principais:
-- 
-- 
-- 
+-
+-
+-
 
 ## Reaproveitamento
 Liste SQLs, Parquets, manifests, módulos ou contratos reaproveitados:
-- 
-- 
+-
+-
 
 ## Contratos e dados
 Entradas / saídas / schemas / chaves afetadas:
-- 
-- 
+-
+-
 
 ## Riscos
 - [ ] sem risco relevante
@@ -41,7 +41,7 @@ Entradas / saídas / schemas / chaves afetadas:
 - [ ] risco de reprocessamento
 
 Detalhe:
-- 
+-
 
 ## Breaking change
 - [ ] não
@@ -63,7 +63,7 @@ Se sim, explique:
 - [ ] validação de performance
 
 Evidências:
-- 
+-
 
 ## Checklist antes do merge
 - [ ] objetivo claro

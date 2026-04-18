@@ -6,7 +6,7 @@ SELECT
     SUBSTR(p.periodo, 5, 2) || '/' || SUBSTR(p.periodo, 1, 4) AS periodo,
     p.data_ciencia,
     p.status,
-        CASE 
+        CASE
         WHEN p.status = '0' THEN 'pendente'
         WHEN p.status = '4' THEN 'pendente indeferido'
         WHEN p.status = '6' THEN 'notificado'

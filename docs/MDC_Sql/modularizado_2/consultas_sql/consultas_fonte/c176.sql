@@ -79,16 +79,16 @@ SELECT
     c176.vl_unit_ult_e AS vl_unit_bc_st_entrada,
     c176.vl_unit_icms_ult_e AS vl_unit_icms_proprio_entrada,
     c176.vl_unit_res AS vl_unit_ressarcimento_st,
-    
+
     -- Cálculos de Apoio (Conforme regras de ressarcimento)
     (
         NVL(c170.qtd, 0) * NVL(c176.vl_unit_icms_ult_e, 0)
     ) AS vl_ressarc_credito_proprio,
-    
+
     (
         NVL(c170.qtd, 0) * NVL(c176.vl_unit_res, 0)
     ) AS vl_ressarc_st_retido,
-    
+
     CASE
         WHEN NVL(c170.vl_icms, 0) > 0 THEN (c170.qtd * c176.vl_unit_res) + (c170.qtd * c176.vl_unit_icms_ult_e)
         ELSE (c170.qtd * c176.vl_unit_res)

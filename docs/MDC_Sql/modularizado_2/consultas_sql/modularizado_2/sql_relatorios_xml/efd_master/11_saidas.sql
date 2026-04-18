@@ -13,7 +13,7 @@ SELECT
     :DATA_INICIAL DATA_INICIAL,
     :DATA_FINAL DATA_FINAL,
     cnpj_cpf CNPJ_CPF_DEST,
-    
+
         CASE
         WHEN cod_mod IS NULL AND cnpj_cpf IS NULL and nome is null and co_uf is null THEN
             '<html><font size=4><b>---Σ Total geral'
@@ -92,7 +92,7 @@ FROM
                                              AND rc100.cod_part = r0150.cod_part
             LEFT JOIN bi.dm_localidade            l ON r0150.cod_mun = l.co_mun_ibge
         WHERE
-                t.co_cnpj_cpf_declarante = :CNPJ_CPF 
+                t.co_cnpj_cpf_declarante = :CNPJ_CPF
             AND t.da_inicio_arquivo BETWEEN :DATA_INICIAL AND :DATA_FINAL
             AND rc100.cod_sit NOT IN ( '02', '04', '05' )
             AND rc100.ind_oper = '1'
@@ -104,7 +104,7 @@ GROUP BY
                  nome,
                  '<html><p style=color:blue>1 - Saída',
                  cod_mod ) )
-                 
+
 ORDER BY
         CASE
             WHEN CNPJ_CPF_DEST IS NULL

@@ -341,11 +341,11 @@ A terceira trilha passa a ser organizada assim:
 ## 2. Diferença desta trilha para as anteriores
 
 ### Em relação à trilha V4 de ressarcimento
-A V4 anterior é melhor para reconstruir **qual item da entrada** corresponde ao item da saída.  
+A V4 anterior é melhor para reconstruir **qual item da entrada** corresponde ao item da saída.
 A trilha pós-2022 com Fronteira é melhor para reconstruir **qual valor unitário do tributo** parece mais confiável entre SPED, XML, SITAFE e inferência por MVA.
 
 ### Em relação à trilha de mudança de tributação
-A trilha de mudança de tributação é centrada em estoque e inventário.  
+A trilha de mudança de tributação é centrada em estoque e inventário.
 A trilha pós-2022 com Fronteira é centrada em saída com `C176`, entrada vinculada e apuração unitária do tributo.
 
 O ganho do pacote unificado é justamente permitir que o projeto trate as três perguntas separadamente:

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import polars as pl
-from pipeline.mercadorias.identity import build_mercadoria_id, build_apresentacao_id
+from pipeline.mercadorias.identity import build_mercadoria_id
 
 
 def build_produtos_agrupados(itens_df: pl.DataFrame) -> pl.DataFrame:

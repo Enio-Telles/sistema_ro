@@ -31,7 +31,7 @@ SELECT
                                             WHEN t.it_da_baixa > '1' THEN
                                                 TO_DATE(t.it_da_baixa, 'YYYYMMDD')
                                         END da_baixa,
-                                    
+
                                         t.it_tx_observacao observacao,
                                         t.it_tx_motivo_baixa motivo_baixa,
                                         CASE
@@ -71,7 +71,7 @@ SELECT
                                                 WHEN t.it_da_baixa > '1' THEN
                                                     TO_DATE(t.it_da_baixa, 'YYYYMMDD')
                                             END,
-                                        t.it_tx_motivo_baixa, 
+                                        t.it_tx_motivo_baixa,
                                         CASE
                                             WHEN t.it_da_baixa = '       ' THEN
                                                     '<html><strong><font color="blue">'

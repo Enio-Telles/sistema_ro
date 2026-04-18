@@ -1,4 +1,4 @@
-select 
+select
 CASE t.status
     WHEN 0 THEN '0 - pendente'
     WHEN 1 THEN '1 - contestado'

@@ -1,7 +1,7 @@
 /*
     Analise da Consulta: CPF_empresa_atividades.sql
     Objetivo: Listar as atividades economicas (CNAEs) de uma empresa - principal e secundarias.
-    
+
     Tabelas Utilizadas:
     - bi.dm_cnae_secundaria: CNAEs secundarios vinculados ao CNPJ/CPF.
       Colunas: co_cnpj_cpf, co_cnae_secundaria.

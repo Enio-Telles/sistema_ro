@@ -4,17 +4,17 @@ with itcd as(
 									cpf_de_cujus,
 									'<html><b style="color:red">Consta óbito em '||count(1)||' processo(s) de inventário, números '||LISTAGG(numero_processo,' * ') within group (order by data_envio desc)||'.</b><b> Checar DIEF(s) em:</b>' info,
 									'https://itcd.sefin.ro.gov.br/visualizar_consulta_autenticacao_sistemas_sefin' link
-									
+
 								from (
 										--sistema antigo de itcd
-										select 
+										select
 										   prot.da_envio              data_envio,
 										   proc.nu_ident_inventariado cpf_de_cujus,
 										   prot.co_protocolo          numero_processo
-										from 
-											itcd_prod.tri_itd_processo proc, 
-											itcd_prod.tri_itd_protocolo prot, 
-											itcd_prod.tri_itd_fato_gerador fg 
+										from
+											itcd_prod.tri_itd_processo proc,
+											itcd_prod.tri_itd_protocolo prot,
+											itcd_prod.tri_itd_fato_gerador fg
 										where prot.fk_fato_gerador = 1
 										  and prot.fk_situacao = 5
 										  --and proc.nu_ident_inventariado = regexp_replace(:CPF_,'\D+', '')
@@ -26,9 +26,9 @@ with itcd as(
 											proc.data_envio         data_envio,
 											inv.cpf_cnpj            cpf_de_cujus,
 											proc.numero_processo    numero_processo
-											
-										from 
-											ITCD.processos proc, 
+
+										from
+											ITCD.processos proc,
 											itcd.inventariados inv
 										where proc.fato_gerador_id = 1
 										  and proc.situacao_id = 5

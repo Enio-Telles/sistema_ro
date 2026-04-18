@@ -1,7 +1,7 @@
 ﻿/*
     Analise da Consulta: CPF_processos_administrativos.sql
     Objetivo: Listar processos administrativos abertos por/para um contribuinte.
-    
+
     Tabelas Utilizadas:
     - bi.dm_processo_administrativo (t): Processos administrativos.
       Colunas: dt_abertura, nu_processo, co_servico, in_status, cpf_solicitante, co_cpf_cnpj_contribuinte.
@@ -14,7 +14,7 @@
     - Pedido de baixa/suspensao
     - Restituicao/compensacao
     - Recursos administrativos
-    
+
     Logica Principal:
     1. Busca processos pelo CPF/CNPJ do contribuinte.
     2. Enriquece com descricao do servico.

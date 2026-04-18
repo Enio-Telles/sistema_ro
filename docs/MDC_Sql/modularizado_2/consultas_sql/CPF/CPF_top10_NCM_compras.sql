@@ -15,13 +15,13 @@ SELECT * FROM (
         MAX(n.dhemi) AS ULTIMA_COMPRA,
         COUNT(DISTINCT n.co_emitente) AS QTD_FORNECEDORES,
         ROUND(
-            SUM(n.prod_vprod + n.prod_vfrete + n.prod_vseg + n.prod_voutro - n.prod_vdesc) / 
+            SUM(n.prod_vprod + n.prod_vfrete + n.prod_vseg + n.prod_voutro - n.prod_vdesc) /
             NULLIF(SUM(SUM(n.prod_vprod + n.prod_vfrete + n.prod_vseg + n.prod_voutro - n.prod_vdesc)) OVER(), 0) * 100
         , 2) AS PERCENTUAL_TOTAL,
         ROW_NUMBER() OVER (ORDER BY SUM(n.prod_vprod + n.prod_vfrete + n.prod_vseg + n.prod_voutro - n.prod_vdesc) DESC) AS RANKING
     FROM bi.fato_nfe_detalhe n
     LEFT JOIN bi.dm_ncm ncm ON n.prod_ncm = ncm.co_ncm
-    WHERE 
+    WHERE
         -- Notas de entrada (compras)
         (
             (n.co_destinatario = :CO_CNPJ_CPF AND n.co_tp_nf = 1)  -- Destinatário em NF própria
@@ -29,7 +29,7 @@ SELECT * FROM (
         )
         AND n.infprot_cstat IN ('100', '150')  -- Apenas autorizadas
         AND n.prod_ncm IS NOT NULL
-    GROUP BY 
+    GROUP BY
         n.prod_ncm,
         ncm.no_ncm
     ORDER BY VALOR_TOTAL DESC
