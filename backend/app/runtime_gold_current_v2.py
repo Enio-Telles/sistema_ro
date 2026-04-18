@@ -5,6 +5,10 @@ from backend.app.agregacao_review_router import router as agregacao_review_route
 from backend.app.aggregated_sources_v2_router import router as aggregated_sources_v2_router
 from backend.app.conversao_quality_router import router as conversao_quality_router
 from backend.app.estoque_quality_router import router as estoque_quality_router
+from backend.app.fisconforme_dsf_v2_router import router as fisconforme_dsf_v2_router
+from backend.app.fisconforme_output_v2_router import router as fisconforme_output_v2_router
+from backend.app.fisconforme_recommendation_v2_router import router as fisconforme_recommendation_v2_router
+from backend.app.fisconforme_refresh_v2_router import router as fisconforme_refresh_v2_router
 from backend.app.gold_consistency_router import router as gold_consistency_router
 from backend.app.layer_status_router import router as layer_status_router
 from backend.app.manual_map_router import router as manual_map_router
@@ -43,6 +47,10 @@ app.include_router(estoque.router, prefix="/api/current-v2/estoque", tags=["esto
 app.include_router(estoque_quality_router, prefix="/api/current-v2/estoque", tags=["estoque_quality"])
 app.include_router(gold_consistency_router, prefix="/api/current-v2/gold", tags=["gold_consistency"])
 app.include_router(fisconforme.router, prefix="/api/current-v2/fisconforme", tags=["fisconforme"])
+app.include_router(fisconforme_refresh_v2_router, prefix="/api/current-v2/fisconforme", tags=["fisconforme_refresh"])
+app.include_router(fisconforme_dsf_v2_router, prefix="/api/current-v2/fisconforme", tags=["fisconforme_dsf"])
+app.include_router(fisconforme_output_v2_router, prefix="/api/current-v2/fisconforme", tags=["fisconforme_output"])
+app.include_router(fisconforme_recommendation_v2_router, prefix="/api/current-v2/fisconforme/recommendation", tags=["fisconforme_recommendation"])
 app.include_router(pipeline_router, prefix="/api/current-v2/pipeline", tags=["pipeline"])
 app.include_router(references_router, prefix="/api/current-v2/references", tags=["references"])
 

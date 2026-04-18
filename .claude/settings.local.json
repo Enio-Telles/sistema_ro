@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la /c/sistema_ro/.claude/worktrees/goofy-thompson/backend/app/*.py)",
+      "Bash(grep -l \"FastAPI\\\\|@app\\\\|@router\" /c/sistema_ro/.claude/worktrees/goofy-thompson/backend/app/*.py)",
+      "Bash(python -m pytest tests/test_derivados_fiscais_anual_v4.py tests/test_derivados_fiscais_mensal_v4.py tests/test_derivados_fiscais_periodos_v4.py tests/test_derivados_fiscais_v3_alignment.py -v)",
+      "Bash(python -m pytest --tb=short -q)",
+      "Bash(python -c \"import polars as pl; df = pl.read_parquet\\('/c/sistema_ro/.claude/worktrees/goofy-thompson/referencias/CO_SEFIN/sitafe_produto_sefin_aux.parquet'\\); print\\(df.schema\\); print\\(df.head\\(3\\)\\)\")",
+      "Bash(python -c ':*)",
+      "Bash(python -m pytest tests/test_derivados_fiscais_sitafe_v4.py tests/test_derivados_fiscais_anual_v4.py tests/test_derivados_fiscais_periodos_v4.py -x -q)",
+      "Bash(python -m pytest -q)",
+      "Bash(python -c \"from backend.app.runtime_gold_current_v2 import app; print\\('OK', app.title\\)\")",
+      "Bash(python -c \"from backend.app.main import app; print\\('OK', app.title, app.version\\)\")"
+    ]
+  }
+}
