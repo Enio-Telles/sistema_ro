@@ -24,5 +24,7 @@ module.exports = {
       version: 'detect',
     },
   },
-  rules: {},
+  rules: {
+    'react/react-in-jsx-scope': 'off'
+  },
 };

@@ -16,7 +16,7 @@ repos:
     hooks:
       - id: eslint-frontend
         name: eslint (frontend)
-        entry: bash -lc 'cd frontend && npm run lint'
-        language: system
+        entry: npm run lint --prefix frontend
+        language: node
         pass_filenames: false
         files: '\.(ts|tsx|js|jsx|json|css|md)$'

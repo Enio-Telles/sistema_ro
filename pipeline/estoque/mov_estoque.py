@@ -41,7 +41,6 @@ def build_mov_estoque(
         return pl.DataFrame()
 
     mov = pl.concat(frames, how="diagonal_relaxed")
-    join_cols = [c for c in ["id_agrupado", "mercadoria_id", "apresentacao_id"] if c in fatores_df.columns and c in mov.columns]
     if "id_agrupado" in mov.columns and "id_agrupado" in fatores_df.columns:
         factor_select = [c for c in ["id_agrupado", "mercadoria_id", "apresentacao_id", "unid_ref", "fator", "tipo_fator", "confianca_fator", "fonte_fator"] if c in fatores_df.columns]
         mov = mov.join(fatores_df.select(factor_select).unique(subset=["id_agrupado"]), on="id_agrupado", how="left")
