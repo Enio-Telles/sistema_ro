@@ -9,12 +9,12 @@ router = APIRouter()
 
 
 @router.post("/{cnpj}/run")
-def run_pipeline(cnpj: str = Path(..., regex="^[0-9]{14}$")) -> dict:
+def run_pipeline(cnpj: str = Path(..., pattern="^[0-9]{14}$")) -> dict:
     return execute_pipeline_from_storage_v5(cnpj)
 
 
 @router.get("/{cnpj}/status")
-def pipeline_status(cnpj: str = Path(..., regex="^[0-9]{14}$")) -> dict:
+def pipeline_status(cnpj: str = Path(..., pattern="^[0-9]{14}$")) -> dict:
     inputs = load_gold_inputs_prefer_sefin(cnpj)
     selected_items_source = str(inputs.pop("selected_items_source"))
     using_sefin_items = bool(inputs.pop("using_sefin_items"))
