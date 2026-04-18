@@ -4,6 +4,15 @@
 
 Consolidar o `sistema_ro` como trilha operacional estavel antes de abrir novas frentes grandes. O foco e fazer a arquitetura nova operar com previsibilidade, corretude fiscal e baixo retrabalho.
 
+## Estado incrementado ja absorvido
+
+- `backend.app.main` foi alinhado ao entrypoint operacional oficial, deixando de expor o scaffold legado;
+- a superficie oficial `current-v2` agora expoe tabelas operacionais read-only de estoque com paginacao, filtros, ordenacao, selecao de colunas e exportacao CSV;
+- o frontend real passou a existir em `frontend/` com shell React + TypeScript e estrutura `src-tauri/`;
+- a navegacao do usuario foi reorganizada para `EFD`, `Documentos Fiscais` e `Analise Fiscal`, com separacao explicita da `Area Tecnica`;
+- o primeiro modulo funcional do frontend foi entregue em `Analise Fiscal > Estoque`;
+- `EFD` e `Documentos Fiscais` permanecem presentes apenas como placeholders honestos, sem simular cobertura ainda nao implementada.
+
 ## Premissas
 
 - a arquitetura alvo ja existe em boa parte: `mdc_base -> agregacao -> fontes_agr -> gold_produtos`;
@@ -166,7 +175,7 @@ Resultado esperado:
 
 - migrar Fisconforme nao atendido;
 - subir reconciliacoes adicionais;
-- preparar frontend definitivo.
+- expandir frontend alem do shell inicial e do modulo de estoque somente depois da estabilizacao do escopo atual.
 
 ## Backlog de alta prioridade
 
@@ -177,12 +186,17 @@ Imediato:
 - [ ] consolidar trilha recomendada unica de derivados fiscais
 - [ ] ligar `diagnostico_conversao_unidade_base` ao fluxo operacional real
 - [ ] ampliar testes do fluxo `mdc_base -> agregacao -> fontes_agr -> gold`
+- [x] alinhar `backend.app.main` ao entrypoint operacional oficial
+- [x] expor tabelas operacionais de estoque em `current-v2`
+- [x] iniciar frontend real com shell React/Tauri
+- [x] entregar `Analise Fiscal > Estoque` como primeiro modulo funcional
 
 Seguinte:
 
 - [ ] diagnostico de datasets defasados por camada
 - [ ] reduzir duplicacao entre paths e dataset refs antigos e novos
 - [ ] desenhar servicos do Fisconforme sem router monolitico
+- [ ] expandir `EFD` e `Documentos Fiscais` somente depois de estabilizar o modulo atual de estoque
 
 ## Criterio para abrir nova frente grande
 
@@ -196,4 +210,4 @@ Antes de expandir o projeto em outro dominio, ele deve cumprir:
 
 ## Direcao executiva
 
-O proximo passo de codigo continua sendo consolidar a trilha nova e fechar corretude funcional, nao abrir uma nova camada por inercia.
+O proximo passo de codigo continua sendo consolidar a trilha nova e fechar corretude funcional, agora com frontend real ja iniciado, mas sem abrir novos dominios de UI antes de estabilizar estoque, contratos tabulares e qualidade operacional.

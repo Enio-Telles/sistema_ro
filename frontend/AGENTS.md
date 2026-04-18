@@ -1,30 +1,60 @@
-# AGENT – Frontend (frontend/)
+# AGENT - Frontend (frontend/)
 
-Este agente cobre a interface web e desktop (React e Tauri) presente em `frontend/`. O frontend deve servir como camada de apresentação, consumindo dados e serviços já definidos, sem replicar lógica fiscal ou de agregação.
+Este agente cobre a interface web e desktop (React e Tauri) presente em `frontend/`.
+O frontend existe para servir a experiencia operacional do usuario sem replicar logica fiscal, sem criar contratos paralelos e sem misturar manutencao com navegacao analitica principal.
 
 ## Responsabilidades
 
-- **Prover uma interface operacional** para usuários internos consultarem dados de mercadorias, estoque e conformidade fiscal.
-- **Consumir APIs estáveis** do backend e exibir dados em tabelas com filtros, paginação, ordenação e exportação.
-- **Manter estado** (CNPJ, período, filtros) ao navegar entre telas.
-- **Permitir ações manuais** (por exemplo, ajustes de quantidade) somente quando explicitamente suportadas pelas APIs, registrando logs de auditoria.
-- **Oferecer feedback claro** de erros, validações e progresso de execuções.
+- prover uma interface operacional baseada em tabelas, filtros, ordenacao, exportacao e rastreabilidade;
+- manter separacao explicita entre `Area do Usuario` e `Area Tecnica`;
+- organizar a navegacao principal do usuario em:
+  - `EFD`
+  - `Documentos Fiscais`
+  - `Analise Fiscal`
+- consumir somente APIs oficiais e contratos estaveis do backend;
+- preservar estado de CNPJ, aba, filtros, colunas e contexto de exploracao.
 
-## Convenções
+## Estado atual confirmado
 
-- Use componentes reutilizáveis e gire o estado global de forma organizada (Redux ou equivalente).
-- Siga o padrão operacional: tabelas, filtros textuais/por período, buscas e exportações são preferidas a dashboards gráficos.
-- Para desktop, encapsule a aplicação React em Tauri, aproveitando recursos locais (cache, leitura de Parquets) quando aplicável.
-- Nunca implemente lógica fiscal ou de agregação no cliente; sempre delegue ao backend ou ao pipeline.
-- Garanta que mudanças no schema de API sejam refletidas na UI e nas validações.
+- a shell React + TypeScript ja existe neste diretorio;
+- a estrutura `src-tauri/` deve ser mantida como casca desktop oficial;
+- o primeiro modulo funcional entregue e `Analise Fiscal > Estoque`;
+- `EFD` e `Documentos Fiscais` ja existem na navegacao, mas continuam como placeholders honestos;
+- a `Area Tecnica` existe para status, pipeline, consistencia e qualidade, sem poluir a experiencia principal do usuario.
 
-## Anti‑padrões
+## Regras obrigatorias
 
-- Processar grandes volumes de dados no navegador/cliente.
-- Fazer requisições não paginadas que causem timeout ou sobrecarga no backend.
-- Modificar dados críticos sem registro de log ou sem utilizar endpoints de atualização.
-- Criar telas sem considerar reuso de componentes existentes.
+- nao abrir nova frente de UI antes de estabilizar o modulo funcional atual;
+- nao implementar logica fiscal, agregacao ou reconciliacao no cliente;
+- nao criar SQL nova por necessidade de tela;
+- nao consumir rotas legadas quando houver superficie oficial equivalente;
+- manter a abordagem Tauri, mesmo quando a validacao local ocorrer pelo frontend web;
+- refletir qualquer mudanca de contrato de API no frontend e nos testes no mesmo trabalho.
 
-## Formato A–E
+## Contrato de UX
 
-Ao planejar novas funcionalidades, responda no formato A–E, indicando APIs a reutilizar, justificação de UI, e etapas de implementação (layout, chamadas, testes de interface).
+Toda tabela relevante deve suportar, quando aplicavel:
+
+- filtro textual;
+- filtros por coluna;
+- ordenacao;
+- selecao de colunas;
+- paginacao ou virtualizacao;
+- exportacao;
+- persistencia local de contexto;
+- destaque em nova aba interna com contexto preservado.
+
+## Separacao de dominio
+
+- `EFD` deve conter apenas dados e relacoes de escrituracao;
+- `Documentos Fiscais` deve conter notas fiscais, CT-e, Fisconforme, Fronteira e modulos documentais equivalentes;
+- cruzamentos entre escrituracao e documentos pertencem a `Analise Fiscal`;
+- detalhes tecnicos de operacao pertencem a `Area Tecnica`, nunca a navegacao principal do usuario.
+
+## Anti-padroes
+
+- processar grandes volumes no navegador;
+- requisicoes sem paginacao para datasets densos;
+- esconder estado vazio ou parquet ausente com sucesso ficticio;
+- criar UI que misture manutencao com experiencia analitica;
+- introduzir componente novo quando um componente compartilhado resolver o caso.

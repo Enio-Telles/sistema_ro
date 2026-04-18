@@ -59,11 +59,15 @@ Status: pendente estruturado
 
 ### Bloco E - frontend
 
-Status: pendente
+Status: iniciado com primeiro modulo funcional
 
-- [ ] iniciar frontend real a partir da especificacao existente
-- [ ] criar modulos de Mercadorias, Estoque e Fisconforme
-- [ ] ligar frontend as APIs operacionais
+- [x] iniciar frontend real a partir da especificacao existente
+- [x] separar `Area do Usuario` e `Area Tecnica`
+- [x] organizar navegacao em `EFD`, `Documentos Fiscais` e `Analise Fiscal`
+- [x] ligar `Analise Fiscal > Estoque` as APIs operacionais oficiais
+- [x] criar contrato de tabela operacional read-only para estoque em `current-v2`
+- [ ] estabilizar o modulo de estoque antes de expandir `EFD` ou `Documentos Fiscais`
+- [ ] validar build desktop Tauri quando o ambiente local tiver `cargo` e `rustc`
 
 ## Incrementos relevantes ja absorvidos
 
@@ -71,6 +75,10 @@ Status: pendente
 - `runtime_main` centraliza overview, catalogo, deprecacoes e descomissionamento;
 - o gold oficial agora informa vigencia temporal disponivel em runtime, cobertura aplicada por aba e motivos de nao cobertura;
 - a trilha de estoque ficou mais aderente ao contrato documental sem alterar o schema persistido das abas finais.
+- `backend.app.main` foi alinhado ao entrypoint oficial;
+- a superficie `current-v2` agora expoe tabelas operacionais de estoque com filtros, ordenacao, selecao de colunas, paginacao e exportacao CSV;
+- o frontend passou a existir em `frontend/` com shell React + TypeScript e estrutura `src-tauri/`;
+- a primeira experiencia funcional do usuario ficou em `Analise Fiscal > Estoque`, preservando `EFD` e `Documentos Fiscais` como placeholders canonicos.
 
 ## Proxima prioridade tecnica
 

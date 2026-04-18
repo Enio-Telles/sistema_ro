@@ -1,15 +1,22 @@
 # Frontend do sistema_ro
 
-Esta pasta será a base do frontend operacional do projeto.
+Este diretório passa a conter a shell operacional React + TypeScript com casca Tauri para o `sistema_ro`.
 
-## Módulos previstos
-- `mercadorias/` — agregação, conversão, produtos consolidados e cadastros agrupados
-- `estoque/` — movimentação, mensal, anual, períodos, resumo fiscal, alertas e Bloco H
-- `fisconforme/` — fluxo Consulta, Resultados e Para Notificações
+## Objetivo desta etapa
 
-## Regras de implementação
-- foco em tabela operacional
-- persistência de filtros e colunas
-- abertura em nova aba com contexto
-- exportação
-- visualização de anomalias sem poluição visual
+- separar `Área do Usuário` e `Área Técnica`;
+- organizar a navegação do usuário em `EFD`, `Documentos Fiscais` e `Análise Fiscal`;
+- entregar o primeiro módulo funcional em `Análise Fiscal > Estoque`;
+- consumir somente superfícies oficiais do backend.
+
+## Comandos
+
+- `npm install`
+- `npm run dev`
+- `npm run test`
+- `npm run build`
+
+## Tauri
+
+A estrutura `src-tauri/` está presente para preservar a abordagem desktop baseada em Tauri.
+Neste ambiente, a validação principal desta entrega ocorre pelo frontend web porque `cargo` e `rustc` não estão instalados.
