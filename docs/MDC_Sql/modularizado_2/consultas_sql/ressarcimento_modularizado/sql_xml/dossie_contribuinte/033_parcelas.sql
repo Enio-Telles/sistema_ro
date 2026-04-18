@@ -24,7 +24,7 @@ SELECT
 						t.va_juros,
 						t.va_acrescimo,
 						t.va_pago
-						
+
 					FROM
 						bi.fato_lanc_arrec           t
 						LEFT JOIN bi.dm_situacao_lancamento    lanc ON t.id_situacao = lanc.it_co_situacao

@@ -3,23 +3,23 @@
    ===================================================================================
    Objetivo: Cruzar dados de Notas Fiscais Eletrônicas (NFe) do BI com os lançamentos
    contábeis e fiscais do sistema SITAFE.
-   
+
    Otimizações (Auditoria):
    1. Remoção de DISTINCT oneroso e substituição por GROUP BY na Subquery ORIGEM.
-   2. Adequação SARGable: Filtros de data convertidos para string (YYYYMMDD) para 
+   2. Adequação SARGable: Filtros de data convertidos para string (YYYYMMDD) para
       permitir o uso de índices B-Tree na tabela sitafe_nota_fiscal.
    3. Eliminação de CROSS JOIN em subqueries para evitar Cartesian Plans.
    4. Reordenação dos Joins priorizando a Fato NFe filtrada como Driving Table.
 =================================================================================== */
 
 WITH PARAMETROS AS (
-    SELECT 
+    SELECT
         :cnpj AS cnpj_filtro,
-        
+
         -- Datas no formato original para a tabela do BI (assumindo DATE)
         ADD_MONTHS(TO_DATE(:data_inicial, 'DD/MM/YYYY'), -6) AS dt_ini_bi,
         TO_DATE(:data_final,   'DD/MM/YYYY') AS dt_fim_bi,
-        
+
         -- Datas convertidas para STRING (YYYYMMDD) para a tabela SITAFE (CHAR 8)
         TO_CHAR(ADD_MONTHS(TO_DATE(:data_inicial, 'DD/MM/YYYY'), -6), 'YYYYMMDD') AS dt_ini_sitafe,
         TO_CHAR(TO_DATE(:data_final, 'DD/MM/YYYY'), 'YYYYMMDD') AS dt_fim_sitafe
@@ -29,7 +29,7 @@ WITH PARAMETROS AS (
 -- SUBCONSULTA 'ORIGEM': Busca os dados originais no BI (Data Warehouse)
 -- Otimizada com GROUP BY para garantir unicidade da chave sem estourar TEMP TABLESPACE
 ORIGEM_NFE AS (
-    SELECT 
+    SELECT
         NF1.CHAVE_ACESSO AS CHAVE,
         MAX(NF1.NNF) AS NOTA,
         MAX(NF1.CO_EMITENTE) AS CNPJ_EMIT,
@@ -38,22 +38,22 @@ ORIGEM_NFE AS (
         MAX(NF1.CO_UF_EMIT) AS UF_EMITENTE
     FROM BI.FATO_NFE_DETALHE NF1
     INNER JOIN PARAMETROS P ON 1=1 -- Força a amarração das variáveis sem Cross Join solto
-    WHERE 
-        NF1.CO_DESTINATARIO = P.cnpj_filtro 
-        AND NF1.DHEMI >= P.dt_ini_bi 
+    WHERE
+        NF1.CO_DESTINATARIO = P.cnpj_filtro
+        AND NF1.DHEMI >= P.dt_ini_bi
         AND NF1.DHEMI <= P.dt_fim_bi
-        AND NF1.CO_TP_NF = 1 
-        AND NF1.CO_UF_EMIT <> 'RO' 
+        AND NF1.CO_TP_NF = 1
+        AND NF1.CO_UF_EMIT <> 'RO'
         AND NF1.INFPROT_CSTAT IN ('100','150')
     GROUP BY NF1.CHAVE_ACESSO
 )
 
-SELECT 
+SELECT
       -- ==============================================================================
       -- DADOS DE IDENTIFICAÇÃO DA NOTA E EMITENTE
       -- ==============================================================================
-      origem.chave,                                                                                                     
-      origem.nota,                                                                                                      
+      origem.chave,
+      origem.nota,
       origem.cnpj_emit,
       origem.nome_emit,
       origem.uf_emitente,
@@ -70,7 +70,7 @@ SELECT
       item.it_co_ncm                                                                               NCM,
       item.it_un_comercial                                                                         prod_ucom,
       item.it_qt_comercial                                                                         prod_qcom,
-      
+
       -- ==============================================================================
       -- VALORES MONETÁRIOS DO ITEM (Custos e Impostos)
       -- ==============================================================================
@@ -82,7 +82,7 @@ SELECT
       item.it_va_seguro                                                                            prod_vseg,
       -- CÁLCULO: Valor Total Líquido do Produto
       (item.it_va_produto + item.it_va_frete - item.it_va_desconto + item.it_va_outro + item.it_va_seguro) total_produto,
-      
+
       -- Impostos (ICMS Base e ST)
       item.it_va_bc                                                                                icms_vbc,
       item.it_pc_icms                                                                              icms_picms,
@@ -97,9 +97,9 @@ SELECT
       lanc.it_nu_guia_lancamento                                                                   guia,
       lanc.it_va_principal_original                                                                valor_devido,
       CASE WHEN lanc.it_co_receita IS NULL THEN 0 ELSE lanc.it_va_total_pgto_efetuado END          valor_pago,
-      
+
       -- TRADUÇÃO DE STATUS
-      CASE 
+      CASE
             WHEN lanc.it_co_situacao_lancamento IN ('00', '03') THEN 'PAGO'
             WHEN lanc.it_co_situacao_lancamento = '28' THEN 'BAIXA DE ACORDO COM O DEC 11430/2004'
             WHEN lanc.it_co_situacao_lancamento = '68' THEN 'SUSPENSO'
@@ -114,7 +114,7 @@ SELECT
             WHEN lanc.it_co_situacao_lancamento = '46' THEN 'SUSPENSÃO JUDICIAL'
             WHEN lanc.it_co_situacao_lancamento = '50' THEN 'LANÇAMENTO INDEVIDO'
             WHEN lanc.it_co_situacao_lancamento IS NULL THEN ' '
-            ELSE 'VERIFICAR' 
+            ELSE 'VERIFICAR'
       END situação,
 
       -- ==============================================================================
@@ -143,48 +143,48 @@ SELECT
       m.it_pc_interna
 
 FROM ORIGEM_NFE origem
-    
+
     -- Inicia os Joins pela Nota Fiscal do SITAFE (Driving path otimizado)
-    JOIN sitafe.sitafe_nota_fiscal nf 
+    JOIN sitafe.sitafe_nota_fiscal nf
         ON nf.it_nu_identificao_nf_e = origem.chave
-        
+
     -- Busca os parâmetros para garantir os filtros SARGable (via INNER JOIN 1=1 ou CROSS JOIN seguro)
     INNER JOIN PARAMETROS p ON 1=1
-        
+
     -- Explode para o Lançamento (Nota)
-    JOIN sitafe.sitafe_nf_lancamento nl 
+    JOIN sitafe.sitafe_nf_lancamento nl
         ON nl.it_nu_identificacao_nf = nf.it_nu_identificacao_nf
-        
+
     -- Detalha itens da NFe
-    JOIN sitafe.sitafe_nfe_item item 
+    JOIN sitafe.sitafe_nfe_item item
         ON item.it_nu_chave_acesso = origem.chave
-        
+
     -- Detalha os Lançamentos Financeiros (Guias)
-    JOIN sitafe.sitafe_lancamento lanc 
+    JOIN sitafe.sitafe_lancamento lanc
         ON lanc.it_nu_guia_lancamento = nl.it_nu_guia_lancamento
-        
+
     -- Cruza Item da NFe com o Item do Lançamento
-    JOIN sitafe.sitafe_lancamento_item lanc_item 
-        ON lanc_item.it_nu_identificacao_ndf = nl.it_nu_identificacao_ndf 
+    JOIN sitafe.sitafe_lancamento_item lanc_item
+        ON lanc_item.it_nu_identificacao_ndf = nl.it_nu_identificacao_ndf
         AND lanc_item.it_co_produto = item.it_co_sefin
-        
+
     -- Classificação Fiscal Estadual
-    JOIN sitafe.sitafe_mercadoria m 
+    JOIN sitafe.sitafe_mercadoria m
         ON m.it_co_sefin = lanc_item.it_co_produto
-        
+
     -- Descrição do Produto
-    LEFT JOIN sitafe.sitafe_produto_sefin prod_sefin 
+    LEFT JOIN sitafe.sitafe_produto_sefin prod_sefin
         ON prod_sefin.it_co_sefin = lanc_item.it_co_produto
 
 WHERE
     -- Filtros aplicados de forma SARGable (coluna isolada, sem funções)
-    nf.it_nucnpj_cpf_destino_nf = p.cnpj_filtro 
+    nf.it_nucnpj_cpf_destino_nf = p.cnpj_filtro
     AND nf.it_da_emissao_nf BETWEEN p.dt_ini_sitafe AND p.dt_fim_sitafe
     AND nl.it_nu_cnpj_cpf_destino_nf = p.cnpj_filtro
 
 ORDER BY
-    origem.emissao, 
-    origem.cnpj_emit, 
+    origem.emissao,
+    origem.cnpj_emit,
     origem.nota,
     CASE WHEN item.it_nu_item IS NULL THEN 1 ELSE 2 END,
     to_number(item.it_nu_item)

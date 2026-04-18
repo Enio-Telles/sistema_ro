@@ -12,7 +12,7 @@ Observações:
 
 Próximos passos (proposta)
 
-1. Confirmar priorização: quais fases/docs quer priorizar agora (ex.: 05–08, runtime, conversão). 
+1. Confirmar priorização: quais fases/docs quer priorizar agora (ex.: 05–08, runtime, conversão).
 2. Gerar checklist detalhada por arquivo/entrada (comparar `docs/` ↔ `sql/` ↔ `pipeline/` ↔ `tests/`).
 3. Criar branch para o trabalho prioritário (ex.: `feature/phase-05`) e scaffolding mínimo.
 4. Implementar itens pendentes, adicionar testes e atualizar `docs/` com critérios de aceite.

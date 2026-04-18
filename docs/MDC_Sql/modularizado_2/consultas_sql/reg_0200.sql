@@ -1,6 +1,6 @@
 WITH PARAMETROS AS (
     -- 1. Define os filtros da consulta
-    SELECT 
+    SELECT
         :CNPJ AS cnpj_filtro,
         NVL(TO_DATE(:data_inicial, 'DD/MM/YYYY'), TO_DATE('01/01/1900', 'DD/MM/YYYY')) AS dt_ini_filtro,
         NVL(TO_DATE(:data_final, 'DD/MM/YYYY'), TRUNC(SYSDATE)) AS dt_fim_filtro,
@@ -17,7 +17,7 @@ RANKING_0000 AS (
         r.dt_ini,
         r.data_entrega,
         ROW_NUMBER() OVER (
-            PARTITION BY r.cnpj, r.dt_ini 
+            PARTITION BY r.cnpj, r.dt_ini
             ORDER BY r.data_entrega DESC, r.id DESC
         ) AS rn
     FROM sped.reg_0000 r
@@ -35,14 +35,14 @@ ARQUIVOS_VALIDOS AS (
 
 DADOS_0200 AS (
     -- 4. Traz TODAS as colunas da 0200 apenas para os arquivos válidos
-    SELECT 
+    SELECT
         r200.* FROM sped.reg_0200 r200
     INNER JOIN ARQUIVOS_VALIDOS av ON r200.reg_0000_id = av.reg_0000_id
 ),
 
 DADOS_0205 AS (
     -- 5. CTE Modular para a REG_0205 (Alterações de Item)
-    SELECT 
+    SELECT
         r205.descr_ant_item,
         r205.dt_fim,
         r205.dt_ini,
@@ -55,7 +55,7 @@ DADOS_0205 AS (
 
 DADOS_0220 AS (
     -- 6. CTE Modular para a REG_0220 (Fatores de Conversão)
-    SELECT 
+    SELECT
         r220.reg_0000_id,
         r220.reg_0200_id,
         r220.unid_conv,
@@ -67,7 +67,7 @@ DADOS_0220 AS (
 -- 7. UNIÃO FINAL
 SELECT
     TO_CHAR(arq.dt_ini, 'MM/YYYY') AS periodo_efd,
-    
+
     -- Traz todas as colunas da CTE DADOS_0200
     r200.cod_item,
     r200.cod_ant_item,
@@ -76,7 +76,7 @@ SELECT
     r200.aliq_icms,
     r200.unid_inv,
     r205.descr_ant_item,
-    
+
     r205.dt_ini AS dt_ini_ant_item,
     r205.dt_fim AS dt_fim_ant_item,
     r220.unid_conv,
@@ -206,17 +206,17 @@ SELECT
         ELSE 'Código Desconhecido'
     END AS descricao_cod_gen,
 
-    
+
     arq.cod_fin AS cod_fin_efd,
     arq.data_entrega AS data_entrega_efd_periodo
 
 FROM ARQUIVOS_VALIDOS arq
-INNER JOIN DADOS_0200 r200 
+INNER JOIN DADOS_0200 r200
     ON arq.reg_0000_id = r200.reg_0000_id
-LEFT JOIN DADOS_0205 r205 
-    ON r205.reg_0000_id = r200.reg_0000_id 
+LEFT JOIN DADOS_0205 r205
+    ON r205.reg_0000_id = r200.reg_0000_id
    AND r205.reg_0200_id = r200.id
-LEFT JOIN DADOS_0220 r220 
-    ON r220.reg_0000_id = r200.reg_0000_id 
+LEFT JOIN DADOS_0220 r220
+    ON r220.reg_0000_id = r200.reg_0000_id
    AND r220.reg_0200_id = r200.id
 ORDER BY arq.dt_ini ASC;

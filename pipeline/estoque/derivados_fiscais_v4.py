@@ -248,7 +248,7 @@ def build_aba_anual_v4(mov_df: pl.DataFrame, vigencia_df: pl.DataFrame | None = 
     df = mov_df.with_columns(pl.coalesce([pl.col("dt_e_s"), pl.col("dt_doc")]).alias("data_ref"))
     if df.schema.get("data_ref") == pl.Utf8:
         df = df.with_columns(pl.col("data_ref").str.strptime(pl.Date, strict=False))
-    
+
     df = df.with_columns(pl.col("data_ref").dt.year().alias("ano"), _normalize_st_expr(pl.col("it_in_st")).alias("__it_in_st_bool__"))
 
     agg_exprs: list[pl.Expr] = [

@@ -1,7 +1,7 @@
 /*
     Analise da Consulta: CPF_empresa_situacao.sql
     Objetivo: Exibir historico de alteracoes de situacao cadastral de uma empresa.
-    
+
     Tabelas Utilizadas:
     - sitafe.sitafe_historico_gr_situacao (t): Historico de situacoes.
       Colunas: tuk, it_co_situacao_contribuinte.
@@ -15,7 +15,7 @@
     - 002: Suspenso
     - 003: Baixado
     - 004: Cancelado
-    
+
     Logica Principal:
     1. Busca historico de situacoes pela Inscricao Estadual.
     2. Filtra situacoes relevantes (exclui 030, 150, 005 - intermediarias).

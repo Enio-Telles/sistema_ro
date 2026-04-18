@@ -1,4 +1,4 @@
-SELECT 
+SELECT
 dest_xnome,
 dest_nro,
 dest_xcpl,

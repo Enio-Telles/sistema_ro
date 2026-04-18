@@ -1,5 +1,5 @@
 WITH PARAMETROS AS (
-    SELECT 
+    SELECT
         :CNPJ AS cnpj_filtro,
         TO_DATE(:data_inicial, 'DD/MM/YYYY') AS dt_ini_filtro,
         TO_DATE(:data_final,   'DD/MM/YYYY') AS dt_fim_filtro,
@@ -24,7 +24,7 @@ SELECT
     COUNT(*) AS Qtd_Operacoes
 
 FROM BI.MPG_F_DETALHE_OPERACAO MP
-INNER JOIN DIMP.REG0000S D ON MP.ID_REG0000 = D.ID AND MP.CNPJ_DECLARANTE = D.CNPJ  
+INNER JOIN DIMP.REG0000S D ON MP.ID_REG0000 = D.ID AND MP.CNPJ_DECLARANTE = D.CNPJ
 INNER JOIN PARAMETROS p ON MP.CNPJ_CPF = p.cnpj_filtro -- Join direto com parâmetros para filtro
 
 WHERE MP.DT_OP BETWEEN p.dt_ini_filtro AND p.dt_fim_filtro
@@ -32,11 +32,11 @@ WHERE MP.DT_OP BETWEEN p.dt_ini_filtro AND p.dt_fim_filtro
   AND MP.ID_ORIGEM_INFORMACAO = 'DIMP'
   AND MP.FLAG_CANCELADO = 0
   AND MP.NAT_OPER IN (1, 2, 6, 7)
-  
-GROUP BY 
-    --D.NOME, 
-    MP.CNPJ_CPF, 
+
+GROUP BY
+    --D.NOME,
+    MP.CNPJ_CPF,
     TO_CHAR(MP.DT_OP, 'MM/YYYY'),
     TRUNC(MP.DT_OP, 'MM') -- Mantido para ajudar na ordenação
-ORDER BY 
+ORDER BY
     TRUNC(MP.DT_OP, 'MM') DESC;

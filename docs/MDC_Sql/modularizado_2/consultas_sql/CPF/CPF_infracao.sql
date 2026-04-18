@@ -1,7 +1,7 @@
 ﻿/*
     Analise da Consulta: CPF_infracao.sql
     Objetivo: Listar autos de infracao lavrados contra um contribuinte.
-    
+
     Tabelas Utilizadas:
     - bi.fato_acao_fiscal_ainf (t): Autos de infracao.
       Colunas: da_lavratura_auto, nu_termo_infracao, va_tributo, va_multa, va_juros, etc.
@@ -16,7 +16,7 @@
     3. Agrupa devedores solidarios (LISTAGG) para tributo e multa.
     4. Usa GROUPING SETS para gerar total geral e detalhes.
     5. Formata valores monetarios com separadores.
-    
+
     Campos Retornados:
     - Tributo, multa, juros e total por auto.
     - Periodo fiscalizado.
@@ -28,9 +28,9 @@ SELECT
       da_lavratura,
       nu_termo_infracao,
       case when local is null then 'VALOR TOTAL DOS AUTOS DE INFRACOES LAVRADOS:' else local end local,
-      LPAD(TRIM(to_char(va_tributo, '999G999G999G990D00')),18) va_tributo,      
-      LPAD(TRIM(to_char(va_multa, '999G999G999G990D00')),18) va_multa,   
-      LPAD(TRIM(to_char(va_juros, '999G999G999G990D00')),18) va_juros,   
+      LPAD(TRIM(to_char(va_tributo, '999G999G999G990D00')),18) va_tributo,
+      LPAD(TRIM(to_char(va_multa, '999G999G999G990D00')),18) va_multa,
+      LPAD(TRIM(to_char(va_juros, '999G999G999G990D00')),18) va_juros,
        LPAD(TRIM(to_char(total, '999G999G999G990D00')),18) total,
       periodo_fiscalizado,
       situacao_tate,

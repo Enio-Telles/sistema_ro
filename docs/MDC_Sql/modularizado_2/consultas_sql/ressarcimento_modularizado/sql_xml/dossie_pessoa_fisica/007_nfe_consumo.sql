@@ -34,7 +34,7 @@ SELECT
                                 '150')
 
 group by grouping sets (
-      
+
       (),
       (extract(year from t.dhemi)),
       (t.co_emitente,
@@ -54,15 +54,15 @@ group by grouping sets (
      '<html><b>'||upper(t.prod_xprod),
       t.prod_ucom,
       t.prod_qcom)
-      
+
       )
 
 
 order by case when ano is null and cnpj is null and uf is null and nome is null  then 1
       when ano is not null and cnpj is null and uf is null then 2
       when ano is not null and cnpj is not null and chave_acesso is not null then 3
-      when ano is null and cnpj is null and uf is not null then 4 
+      when ano is null and cnpj is null and uf is not null then 4
       else 5 end, ano desc, data desc, valor desc
-      
+
 
 --dhemi desc

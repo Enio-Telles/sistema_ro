@@ -16,7 +16,7 @@ SET PAGESIZE 25;
                                             SET ECHO OFF;
                                             SET FEEDBACK OFF;
                                             SET HEADING OFF;
-                                            
+
                                             SELECT
                                                 LISTAGG(CONVERT(t.it_no_ocorrencia, 'AL32UTF8', 'WE8MSWIN1252'), ' ') WITHIN GROUP(
                                                     ORDER BY

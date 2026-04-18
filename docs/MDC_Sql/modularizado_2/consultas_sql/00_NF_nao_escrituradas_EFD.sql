@@ -1,16 +1,16 @@
 -- ==========================================================================================
 -- RELATÓRIO: APENAS CHAVES DE ACESSO NÃO ESCRITURADAS (FALTA NO SPED)
 -- Objetivo: Listar somente as chaves de acesso (NFe/NFCe) que existem na base do governo
---           dentro do período filtrado, mas que NÃO foram encontradas na VERSÃO VÁLIDA 
+--           dentro do período filtrado, mas que NÃO foram encontradas na VERSÃO VÁLIDA
 --           dos arquivos SPED entregues até a data limite de processamento.
 -- ==========================================================================================
 
 WITH PARAMETROS AS (
-    SELECT 
+    SELECT
         :cnpj AS cnpj_filtro,
         TO_DATE(:data_inicial, 'DD/MM/YYYY') AS dt_ini_filtro,
         TO_DATE(:data_final, 'DD/MM/YYYY')   AS dt_fim_filtro,
-        -- Define até quando considerar os arquivos SPED enviados. 
+        -- Define até quando considerar os arquivos SPED enviados.
         -- Se nulo, considera até hoje (SYSDATE).
         NVL(TO_DATE(:data_limite_processamento, 'DD/MM/YYYY'), TRUNC(SYSDATE)) AS dt_corte
     FROM dual
@@ -19,14 +19,14 @@ WITH PARAMETROS AS (
 -- 1. Mapeia os Arquivos Válidos (Última Retificação) até a data de corte
 --    Se houver retificadora, pega apenas a mais recente entregue até o limite definido.
 ARQUIVOS_VALIDOS_ATE_CORTE AS (
-    SELECT 
+    SELECT
         r.id AS reg_0000_id,
         r.cnpj,
         r.dt_ini,
         r.data_entrega,
         -- Rankeia por data de entrega decrescente para o mesmo período (dt_ini) e CNPJ
         ROW_NUMBER() OVER (
-            PARTITION BY r.cnpj, r.dt_ini 
+            PARTITION BY r.cnpj, r.dt_ini
             ORDER BY r.data_entrega DESC
         ) AS rn
     FROM sped.reg_0000 r
@@ -47,7 +47,7 @@ CHAVES_NO_SPED AS (
 -- 3. Mapeia as chaves esperadas (Base do Governo - BI) dentro do período
 CHAVES_NO_GOVERNO AS (
     -- Notas Fiscais Eletrônicas (Modelo 55)
-    SELECT 
+    SELECT
         d.chave_acesso AS chv_nfe
     FROM bi.fato_nfe_detalhe d
     INNER JOIN PARAMETROS p ON 1=1
@@ -59,7 +59,7 @@ CHAVES_NO_GOVERNO AS (
     UNION ALL
 
     -- Notas Fiscais de Consumidor (Modelo 65)
-    SELECT 
+    SELECT
         d.chave_acesso AS chv_nfe
     FROM bi.fato_nfce_detalhe d
     INNER JOIN PARAMETROS p ON d.co_emitente = p.cnpj_filtro
@@ -69,7 +69,7 @@ CHAVES_NO_GOVERNO AS (
 
 -- 4. Operação Final: Governo MENOS Sped
 --    Retorna apenas as chaves que estão na lista do Governo mas NÃO estão na lista do SPED Válido
-SELECT chv_nfe 
+SELECT chv_nfe
 FROM CHAVES_NO_GOVERNO
 WHERE chv_nfe NOT IN (SELECT chv_nfe FROM CHAVES_NO_SPED)
 

@@ -15,15 +15,15 @@ SELECT ip.ip_transmissor,
                                            pemit.no_razao_social    razao,
                                            locemit.no_municipio mun,
                                            count(DISTINCT ip.CHAVE_ACESSO) quant_nfs,
-                                           case 
-                                                     when pcont.CO_CNPJ_CPF is not null 
+                                           case
+                                                     when pcont.CO_CNPJ_CPF is not null
                                                          then pcont.CO_CNPJ_CPF
                                                      else hc.cnpj_cont end as cnpj_cont,
-                                                 case 
-                                             when pcont.NO_RAZAO_SOCIAL is not null 
+                                                 case
+                                             when pcont.NO_RAZAO_SOCIAL is not null
                                                then pcont.NO_RAZAO_SOCIAL
                                              else hc.razao_cont end as razao_cont
-                                           
+
                                       FROM bi.dm_ip_transmissor    ip
                                       LEFT JOIN bi.dm_pessoa            pemit ON pemit.co_cnpj_cpf = substr(ip.chave_acesso, 7,14)
                                       LEFT JOIN bi.dm_localidade        locemit ON pemit.co_municipio = locemit.co_municipio
@@ -43,12 +43,12 @@ SELECT ip.ip_transmissor,
                                      GROUP BY ip.ip_transmissor,
                                               substr(ip.chave_acesso, 7,14),
                                                         pemit.no_razao_social,
-                                               case 
-                                             when pcont.CO_CNPJ_CPF is not null 
+                                               case
+                                             when pcont.CO_CNPJ_CPF is not null
                                                then pcont.CO_CNPJ_CPF
                                              else hc.cnpj_cont end,
-                                           case 
-                                             when pcont.NO_RAZAO_SOCIAL is not null 
+                                           case
+                                             when pcont.NO_RAZAO_SOCIAL is not null
                                                then pcont.NO_RAZAO_SOCIAL
                                              else hc.razao_cont end,
                                             locemit.no_municipio

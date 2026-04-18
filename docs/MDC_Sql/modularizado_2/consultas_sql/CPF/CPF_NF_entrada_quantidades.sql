@@ -2,8 +2,8 @@
 -- Extraído de dossie_contribuinte.xml - NFs Entrada Quantidades
 -- Parâmetro: :CO_CNPJ_CPF
 
-SELECT 
-    :CO_CNPJ_CPF CO_CNPJ_CPF, 
+SELECT
+    :CO_CNPJ_CPF CO_CNPJ_CPF,
     ano ANO,
     sum(total_nfes) TOTAL_NFS,
     sum(origem_ro) ORIGEM_RO,

@@ -1,24 +1,24 @@
 WITH parametros AS (
-    SELECT 
-        :CNPJ AS cnpj_filtro,          
+    SELECT
+        :CNPJ AS cnpj_filtro,
         TO_DATE(:DATA_INI, 'DD/MM/YYYY') AS data_inicial,
         TO_DATE(:DATA_FIM, 'DD/MM/YYYY') AS data_final
     FROM DUAL
 )
 SELECT
     -- Lógica para definir o tipo de operação (Entrada/Saída) baseada no CNPJ filtro
-    CASE 
-        WHEN d.co_destinatario = p.cnpj_filtro AND d.co_tp_nf = 1 THEN 'ENTRADA' 
-        WHEN d.co_destinatario = p.cnpj_filtro AND d.co_tp_nf = 0 THEN 'ENTRADA' 
-        WHEN d.co_emitente     = p.cnpj_filtro AND d.co_tp_nf = 0 THEN 'ENTRADA' 
-        WHEN d.co_emitente     = p.cnpj_filtro AND d.co_tp_nf = 1 THEN 'SAIDA'   
+    CASE
+        WHEN d.co_destinatario = p.cnpj_filtro AND d.co_tp_nf = 1 THEN 'ENTRADA'
+        WHEN d.co_destinatario = p.cnpj_filtro AND d.co_tp_nf = 0 THEN 'ENTRADA'
+        WHEN d.co_emitente     = p.cnpj_filtro AND d.co_tp_nf = 0 THEN 'ENTRADA'
+        WHEN d.co_emitente     = p.cnpj_filtro AND d.co_tp_nf = 1 THEN 'SAIDA'
         ELSE 'DESCONHECIDO'
     END AS entrada_saida,
 
     d.NSU, -- Número Sequencial Único (Controle de distribuição/banco de dados)
     d.CHAVE_ACESSO, -- Chave de Acesso da NF-e (ID: A03)
     d.PROD_NITEM, -- Número do item (1-990) (ID: H02)
-    
+
     -- Grupo B. Identificação da Nota Fiscal eletrônica
     d.IDE_CO_CUF, -- Código da UF do emitente do Documento Fiscal (ID: B02)
     d.IDE_CO_INDPAG, -- Indicador da forma de pagamento (ID: B05)
@@ -41,7 +41,7 @@ SELECT
     d.CO_UF_EMIT, -- Sigla da UF do emitente (ID: C12)
     d.CO_CAD_ICMS_EMIT, -- Inscrição Estadual do Emitente (ID: C17)
     d.CO_CRT, -- Código de Regime Tributário (1=Simples Nacional, 3=Normal) (ID: C21)
-    
+
     -- Endereço do Emitente (Grupo C05)
     d.XLGR_EMIT, -- Logradouro do emitente
     d.NRO_EMIT, -- Número do endereço do emitente
@@ -59,7 +59,7 @@ SELECT
     d.XNOME_DEST, -- Razão Social ou nome do destinatário (ID: E04)
     d.CO_UF_DEST, -- Sigla da UF do destinatário (ID: E12)
     d.CO_INDIEDEST, -- Indicador da IE do Destinatário (ID: E16a)
-    
+
     -- Endereço do Destinatário (Grupo E05)
     d.XLGR_DEST, -- Logradouro do destinatário
     d.NRO_DEST, -- Número do endereço do destinatário
@@ -120,7 +120,7 @@ SELECT
     d.ICMS_VICMSST, -- Valor do ICMS ST (ID: N23)
     d.ICMS_VICMSSTDEST, -- Valor do ICMS ST da UF destino (ID: N32)
     d.ICMS_VICMSSTRET, -- Valor do ICMS ST retido (ID: N27)
-    
+
     -- Fundo de Combate à Pobreza (FCP)
     d.ICMS_VBCFCP, -- Valor da Base de Cálculo do FCP (ID: N17a)
     d.ICMS_PFCP, -- Percentual do FCP (ID: N17b)
@@ -187,14 +187,14 @@ SELECT
 
 FROM bi.fato_nfce_detalhe d,
     parametros p
-WHERE 
+WHERE
     d.dhemi BETWEEN p.data_inicial AND p.data_final
     AND (d.co_destinatario = p.cnpj_filtro OR d.co_emitente = p.cnpj_filtro)
     AND d.INFPROT_CSTAT in (100,150)
     --AND PROD_CPROD LIKE '%226052'
     -- AND ENTRADA_SAIDA
-ORDER BY 
-    d.dhemi ASC, 
+ORDER BY
+    d.dhemi ASC,
     d.nsu ASC,
-    d.nnf ASC, 
+    d.nnf ASC,
     d.prod_nitem ASC;

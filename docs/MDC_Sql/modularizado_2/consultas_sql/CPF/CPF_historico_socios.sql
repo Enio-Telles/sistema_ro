@@ -8,7 +8,7 @@ WITH s_auto AS (
         bi.dm_pessoa.co_cad_icms ie
     FROM bi.dm_pessoa
     WHERE bi.dm_pessoa.co_cnpj_cpf = :CO_CNPJ_CPF
-), 
+),
 hist_socio AS (
     SELECT
         shs.gr_identificacao,
@@ -16,7 +16,7 @@ hist_socio AS (
         min(shs.it_da_inicio_part_societaria) da_entrada,
         max(shs.it_da_fim_part_societaria) da_saida
     FROM s_auto
-    LEFT JOIN sitafe.sitafe_historico_socio shs 
+    LEFT JOIN sitafe.sitafe_historico_socio shs
         ON shs.it_nu_inscricao_estadual = s_auto.ie
     GROUP BY
         shs.gr_identificacao,
@@ -27,14 +27,14 @@ ult_socio AS (
         shs.gr_identificacao,
         shs.it_nu_inscricao_estadual
     FROM s_auto
-    LEFT JOIN sitafe.sitafe_historico_socio shs 
+    LEFT JOIN sitafe.sitafe_historico_socio shs
         ON shs.it_nu_inscricao_estadual = s_auto.ie
         AND shs.it_in_ultima_fac = '9'
         AND (shs.it_da_fim_part_societaria = '        ' OR shs.it_da_fim_part_societaria > to_char(sysdate, 'yyyymmdd'))
     GROUP BY
         shs.gr_identificacao,
         shs.it_nu_inscricao_estadual
-), 
+),
 tabela AS (
     SELECT
         CASE

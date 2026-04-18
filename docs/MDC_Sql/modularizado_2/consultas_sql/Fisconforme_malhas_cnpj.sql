@@ -1,10 +1,10 @@
 WITH PendenciasRankeadas AS (
-    SELECT 
-        dp.id AS id_pendencia, 
+    SELECT
+        dp.id AS id_pendencia,
         dn.id_notificacao,
         dp.malhas_id,
-        m.titulo AS titulo_malha,                    
-        dp.periodo,                                  
+        m.titulo AS titulo_malha,
+        dp.periodo,
         CASE dp.status
             WHEN 0  THEN '0 - pendente'
             WHEN 1  THEN '1 - contestado'
@@ -23,17 +23,17 @@ WITH PendenciasRankeadas AS (
         dn.tp_status AS status_notificacao,
         -- Descomentamos a data de ciência para usá-la na ordenação
         NVL(dn.dt_ciencia, dp.data_ciencia) AS data_ciencia_consolidada,
-        
+
         -- Função analítica que cria um ranking ordenado pela data mais recente
         ROW_NUMBER() OVER (
-            PARTITION BY dp.id 
+            PARTITION BY dp.id
             ORDER BY NVL(dn.dt_ciencia, dp.data_ciencia) DESC NULLS LAST
         ) AS rn
 
     FROM app_pendencia.pendencias dp
-    LEFT JOIN app_pendencia.malhas m 
+    LEFT JOIN app_pendencia.malhas m
         ON dp.malhas_id = m.id
-    LEFT JOIN bi.fato_det_notificacao dn 
+    LEFT JOIN bi.fato_det_notificacao dn
         ON dp.id = dn.id_fisconforme
     WHERE dp.cpf_cnpj = :CNPJ
       --AND dp.malhas_id IN (10061, 10120)
@@ -41,7 +41,7 @@ WITH PendenciasRankeadas AS (
       --AND dp.periodo < '202601'
 )
 -- Consulta final filtrando apenas a linha mais recente (Ranking = 1)
-SELECT 
+SELECT
     id_pendencia,
     id_notificacao,
     malhas_id,

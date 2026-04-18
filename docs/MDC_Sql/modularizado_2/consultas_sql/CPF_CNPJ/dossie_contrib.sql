@@ -17,7 +17,7 @@ SELECT
 						  co_cad_icms,
 						  nome,
 						  inicio_ativ
-					  FROM 
+					  FROM
 						  dual
 							LEFT JOIN(
 								SELECT
@@ -27,12 +27,12 @@ SELECT
 									  t.da_inicio_atividade            inicio_ativ
 								  FROM
 									  bi.dm_pessoa t
-								 WHERE 
+								 WHERE
 									  t.co_cnpj_cpf like '%'||regexp_replace(:CNPJ,'\D+', '')||'%'
 								  and t.co_cad_icms like '%'||regexp_replace(:IE,'\D+', '')
 								  and upper(t.no_razao_social) like '%'||regexp_replace(upper(:NOME),'\s', '%')||'%'
 						  )b ON b.co_cnpj_cpf like REGEXP_REPLACE(:CNPJ,'\D+', '')||'%'
-					order by 
+					order by
 						case when :NOME is not null then nome end
 
 
@@ -47,7 +47,7 @@ SELECT
 								  localid.no_municipio																	"Município",
 								  localid.co_uf																			"UF",
 								  t.co_regime_pagto|| ' - '|| rp.no_regime_pagamento									"Regime de Pagamento",
-								  CASE WHEN t.in_situacao = '001' 
+								  CASE WHEN t.in_situacao = '001'
 										THEN '<html><p style="color:blue">'||t.in_situacao
 											|| ' - '|| s.desc_situacao
 										ELSE '<html><p style="color:red">'|| t.in_situacao
@@ -55,9 +55,9 @@ SELECT
 										END																				"Situação da IE",
 								  t.da_inicio_atividade																	"Data de Início da Atividade",
 								  to_date(us.data_ult_sit, 'YYYYMMDD')													"Data da última situação",
-								  to_char(trunc(months_between((CASE WHEN t.in_situacao = '001' 
+								  to_char(trunc(months_between((CASE WHEN t.in_situacao = '001'
 																		THEN SYSDATE
-																	ELSE to_date(us.data_ult_sit, 'YYYYMMDD') 
+																	ELSE to_date(us.data_ult_sit, 'YYYYMMDD')
 																END),
 																t.da_inicio_atividade),2))||' meses' 					"Período em atividade",
 								  'https://portalcontribuinte.sefin.ro.gov.br/Publico/parametropublica.jsp?NuDevedor=' || t.co_cad_icms redesim
@@ -104,9 +104,9 @@ select '<html><b>DM_PESSOA/SITAFE' origem,
                                     from bi.dm_pessoa t
                                     LEFT JOIN bi.dm_localidade    localid ON t.co_municipio = localid.co_municipio
                                     where co_cnpj_cpf = :CO_CNPJ_CPF
-                                    
+
                                     union all
-                                    
+
                                     select * from (
                                     SELECT
                                         'NFE' origem,
@@ -131,7 +131,7 @@ select '<html><b>DM_PESSOA/SITAFE' origem,
                                         upper(cep_dest),
                                         upper(co_uf_dest),
                                         extract(year from dhemi)||'/'||extract(month from dhemi)
-                                    
+
                                     order by extract(year from dhemi)||'/'||extract(month from dhemi) desc)
 
 
@@ -141,7 +141,7 @@ select '<html><b>DM_PESSOA/SITAFE' origem,
 SELECT
                                         to_date(u.it_da_transacao, 'YYYYMMDD')        data,
                                         t.it_co_situacao_contribuinte                 sit,
-                                        CONVERT(cad_sit.it_no_situacao_contribuinte, 'AL32UTF8', 'WE8MSWIN1252')descricao,                                           
+                                        CONVERT(cad_sit.it_no_situacao_contribuinte, 'AL32UTF8', 'WE8MSWIN1252')descricao,
                                         u.it_nu_fac                                   fac,
                                         u.it_co_usuario                               usuario,
                                         u.tuk
@@ -163,7 +163,7 @@ SELECT
 -- ============================================================================
 -- 05. Observação
 -- ============================================================================
-                                            
+
                                             SELECT
                                                 LISTAGG(CONVERT(t.it_no_ocorrencia, 'AL32UTF8', 'WE8MSWIN1252'), ' ') WITHIN GROUP(
                                                     ORDER BY
@@ -226,10 +226,10 @@ SELECT
 -- 08. Contador
 -- ============================================================================
 select
-								case when b.fim_ref is null and b.co_cnpj_cpf_contador = '   -   ' then '<html><b>Atual - sem contador indicado' 
-									 when b.fim_ref is null and b.co_cnpj_cpf_contador != '   -   ' then '<html><b>Atual' 
-									 when b.fim_ref is not null and b.co_cnpj_cpf_contador = '   -   ' then 'Anterior - Período sem indicação de contador' 
-									 else 'Anterior' 
+								case when b.fim_ref is null and b.co_cnpj_cpf_contador = '   -   ' then '<html><b>Atual - sem contador indicado'
+									 when b.fim_ref is null and b.co_cnpj_cpf_contador != '   -   ' then '<html><b>Atual'
+									 when b.fim_ref is not null and b.co_cnpj_cpf_contador = '   -   ' then 'Anterior - Período sem indicação de contador'
+									 else 'Anterior'
 								end                     situacao,
 								b.co_cnpj_cpf_contador  co_cnpj_cpf_contador,
 								p.no_razao_social       nome,
@@ -296,15 +296,15 @@ SELECT
                                                CAD.IT_NO_SITUACAO_CONTRIBUINTE   SITUAÇÃO,
                                                '<html><font color="red">'||lpad(TRIM(to_char(i.inadimplencia, '999G999G999G990D00')), length(MAX(i.inadimplencia)
                                                                                                          OVER()) + 6)      inadimplencia
-                                        FROM 
+                                        FROM
                                                BI.DM_PESSOA P
-                                        
+
                                         LEFT JOIN SITAFE.SITAFE_TABELAS_CADASTRO CAD
-                                             ON P.IN_SITUACAO = CAD.IT_CO_SITUACAO_CONTRIBUINTE    
-                                        
+                                             ON P.IN_SITUACAO = CAD.IT_CO_SITUACAO_CONTRIBUINTE
+
                                         LEFT JOIN BI.DM_LOCALIDADE LOC
                                              ON P.CO_MUNICIPIO = LOC.CO_MUNICIPIO
-                                        
+
                                         LEFT JOIN (
                                             SELECT t.co_cnpj_cpf,
                                                    SUM(t.va_principal + t.va_multa + t.va_juros + t.va_acrescimo) inadimplencia
@@ -314,10 +314,10 @@ SELECT
                                                   AND t.vencido = '3'
                                             GROUP BY t.co_cnpj_cpf
                                         )               i ON p.co_cnpj_cpf = i.co_cnpj_cpf
-                                        
-                                        WHERE 
+
+                                        WHERE
                                                P.CO_CNPJ_CPF_CONTADOR = :CO_CNPJ_CPF_CONTADOR
-                                               
+
                                         order by decode(i.inadimplencia, null,0) desc, i.inadimplencia desc
 
 
@@ -374,7 +374,7 @@ with total as
 								  null                                                                      autos
 							  from
 								  vistoria.empresas_vistorias@vistoria_producao t
-							left join vistoria.modalidades@vistoria_producao  m on t.modalidade_id = m.id     
+							left join vistoria.modalidades@vistoria_producao  m on t.modalidade_id = m.id
 							left join bi.dm_pessoa p on t.cpf_auditor = p.co_cnpj_cpf
 							left join bi.dm_pessoa ps on t.cpf_solicitante = ps.co_cnpj_cpf
 							left join vistoria.documentos_assinados@vistoria_producao  d on t.id = d.empresa_vistoria_id
@@ -394,7 +394,7 @@ with total as
 									to_date(df.it_da_lancamento,'yyyymmdd')                                 dt_vistoria,
 									dft.it_nu_documento_origem                                              modalidade,
 									null                                                                    dsf,
-									dft.it_nu_diligencia                                                    processo,            
+									dft.it_nu_diligencia                                                    processo,
 									null                                                                    solicitante,
 									su.it_co_matricula_usuario||' - '||su.it_no_usuario                     auditor,
 									da.autos                                                                autos
@@ -435,7 +435,7 @@ with total as
 -- ============================================================================
 -- 12. Histórico de Sócios
 -- ============================================================================
-with s_auto as 
+with s_auto as
 							(
 							select
 								bi.dm_pessoa.co_cnpj_cpf,
@@ -444,7 +444,7 @@ with s_auto as
 								bi.dm_pessoa
 							where
 								bi.dm_pessoa.co_cnpj_cpf = :CO_CNPJ_CPF
-							), 
+							),
 
 							hist_socio as (
 							select
@@ -454,7 +454,7 @@ with s_auto as
 								max(shs.it_da_fim_part_societaria)          da_saida
 							from
 								s_auto
-							left join sitafe.sitafe_historico_socio shs 
+							left join sitafe.sitafe_historico_socio shs
 								   on shs.it_nu_inscricao_estadual = s_auto.ie
 							group by
 								shs.gr_identificacao,
@@ -467,14 +467,14 @@ with s_auto as
 								shs.it_nu_inscricao_estadual
 							from
 								s_auto
-								left join sitafe.sitafe_historico_socio shs 
+								left join sitafe.sitafe_historico_socio shs
 									   on shs.it_nu_inscricao_estadual = s_auto.ie
 									  and shs.it_in_ultima_fac = '9'
 									  and (shs.it_da_fim_part_societaria = '        ' or shs.it_da_fim_part_societaria > to_char(sysdate, 'yyyymmdd'))
 							group by
 								shs.gr_identificacao,
 								shs.it_nu_inscricao_estadual
-							), 
+							),
 
 							tabela as (
 							select
@@ -517,21 +517,21 @@ with s_auto as
 							order by
 								1,
 								4 desc,
-								5 desc, 
+								5 desc,
 								3 asc
 
 
 -- ============================================================================
 -- 13. DIMP Sócios
 -- ============================================================================
-with 
+with
 						cartao as (
 						select case
-								when ano is null and periodo is null 
+								when ano is null and periodo is null
 								  then '<html><b style="color:blue">Σ TOTAL GERAL'
-								when ano is not null and periodo is null 
+								when ano is not null and periodo is null
 								  then '<html><b style="color:green">Σ Total no ano ' || ano
-								when ano is not null and periodo is not null 
+								when ano is not null and periodo is not null
 								  then '----Total no período ' || periodo
 							   end                                                                      info,
 							   operacoes,
@@ -543,9 +543,9 @@ with
 							   sum(valor)                                                               cartao
 						from bi.mpg_f_detalhe_operacao
 						where cnpj_cpf = :CO_CNPJ_CPF
-						group by grouping sets 
+						group by grouping sets
 								( ( ),
-									(extract(year from dt_op)), 
+									(extract(year from dt_op)),
 										(extract(year from dt_op), extract(year from dt_op)||'/'||lpad(extract(month from dt_op),2,'0'))
 								)
 							 )
@@ -554,11 +554,11 @@ with
 
 						saidas as (
 						select case
-								when ano is null and periodo is null 
+								when ano is null and periodo is null
 								  then '<html><b style="color:blue">Σ TOTAL GERAL'
-								when ano is not null and periodo is null 
+								when ano is not null and periodo is null
 								  then '<html><b style="color:green">Σ Total no ano ' || ano
-								when ano is not null and periodo is not null 
+								when ano is not null and periodo is not null
 								  then '----Total no período ' || periodo
 							   end                                                                                      info,
 							   nfe_nfce                                                                                 nfe_nfce
@@ -569,9 +569,9 @@ with
 						from BI.fato_nfe_nfce_sumarizada
 						where co_emitente = :CO_CNPJ_CPF
 						  and co_tp_nf = 1
-						group by grouping sets 
+						group by grouping sets
 								( ( ),
-									(extract(year from da_referencia)), 
+									(extract(year from da_referencia)),
 										(extract(year from da_referencia), extract(year from da_referencia)||'/'||lpad(extract(month from da_referencia),2,'0'))
 								)
 							 )
@@ -581,15 +581,15 @@ with
 							   cartao.operacoes                                                                                         operacoes_cartao,
 							   lpad(trim(to_char(cartao.cartao, '999G999G999G990D00')), length(max(cartao.cartao) over()) + 7)          valor_cartao,
 							   lpad(trim(to_char(saidas.nfe_nfce , '999G999G999G990D00')), length(max(saidas.nfe_nfce) over()) + 7)     valor_nfe_nfce,
-							   case when substr(nvl(cartao.info,saidas.info),1,6) = '<html>' 
+							   case when substr(nvl(cartao.info,saidas.info),1,6) = '<html>'
 									 then lpad(trim(to_char('-')),
 											   length(max(cartao.cartao) over()) + 7)
-									when nvl(cartao.cartao,0) - nvl(saidas.nfe_nfce,0) > 0 
+									when nvl(cartao.cartao,0) - nvl(saidas.nfe_nfce,0) > 0
 									 then lpad(trim(to_char(nvl(cartao.cartao,0)-nvl(saidas.nfe_nfce,0),'999G999G999G990D00')),
 											   length(max(nvl(cartao.cartao,0)) over()) + 7)
 									else lpad(to_char('-'),
 											  length(max(cartao.cartao) over()) + 7)
-									end                                                                                                 excesso_valor 
+									end                                                                                                 excesso_valor
 						from cartao
 						left join saidas
 							   on cartao.info = saidas.info
@@ -847,7 +847,7 @@ SELECT
                         11
                   )
       END CO_CNPJ_CPF,
-      case when id_situacao is null then '<html><b>Σ TOTAL GERAL' 
+      case when id_situacao is null then '<html><b>Σ TOTAL GERAL'
       when id_situacao = '01 - Não pago e Vencido' then '<html><b style="color:#CF3434">01 - Não pago e Vencido'
       when id_situacao = '01 - Não pago a vencer' then '<html><b style="color:#3440CF">01 - Não pago a Vencer'
       else  '<html><p style="color:#121212">'||id_situacao  end situacao,
@@ -990,7 +990,7 @@ SELECT
       GROUPING SETS((),(id_situacao_,
                         id_situacao,
                         receitas))
-                        
+
 order by case when id_situacao_ is null then 1
                   when id_situacao_ = '01' then 2
                   else 3 end, total desc
@@ -1005,9 +1005,9 @@ SELECT
 							LPAD(TRIM(TO_CHAR(ENTRADA, '999G999G999G990D00')), LENGTH(MAX(ENTRADA)OVER()) + 7) 							ENTRADA,
 							LPAD(TRIM(TO_CHAR(SAIDA, '999G999G999G990D00')),LENGTH(MAX(SAIDA)OVER()) + 7) 								SAIDA,
 							LPAD(TRIM(TO_CHAR(SAIDA-ENTRADA, '999G999G999G990D00')),LENGTH(MAX(SAIDA-ENTRADA)OVER()) + 7)				DIFERENCA,
-							CASE 
+							CASE
 								WHEN NVL(ENTRADA,0) = 0 THEN 'N/D'
-								WHEN NVL(SAIDA, 0) / NVL(ENTRADA, 0) < 1 
+								WHEN NVL(SAIDA, 0) / NVL(ENTRADA, 0) < 1
 									THEN '<HTML><B STYLE="COLOR:#D7463A">'|| NVL(ROUND(((NVL(SAIDA,0)-NVL(ENTRADA,0))/NVL(ENTRADA,0))*100,2),2)||'%'
 								ELSE'<HTML><B STYLE="COLOR:#3A51D7">'||NVL(ROUND(((NVL(SAIDA,0)-NVL(ENTRADA,0))/NVL(ENTRADA,0))*100,2),2)||'%'
 							END          																								AGREG
@@ -1028,7 +1028,7 @@ SELECT
 								WHERE
 									( T.CO_EMITENTE = :CO_CNPJ_CPF OR T.CO_DESTINATARIO = :CO_CNPJ_CPF )
 									AND C.IN_VAF = 'X'
-								GROUP BY GROUPING SETS((:CO_CNPJ_CPF),(EXTRACT(YEAR FROM DA_REFERENCIA)))	
+								GROUP BY GROUPING SETS((:CO_CNPJ_CPF),(EXTRACT(YEAR FROM DA_REFERENCIA)))
 								ORDER BY ANO DESC)
 
 
@@ -1231,7 +1231,7 @@ SELECT
  GROUP BY
 	  EXTRACT(YEAR FROM dhemi),
 	  t.co_uf_emit) b
-	  
+
 group by ano
 
 order by ano desc
@@ -1576,7 +1576,7 @@ SELECT
 -- ============================================================================
 SELECT
 :CO_CNPJ_CPF CO_CNPJ_CPF,
-      case when id_situacao is null then '<html><b>Σ TOTAL GERAL' 
+      case when id_situacao is null then '<html><b>Σ TOTAL GERAL'
       when id_situacao = '01 - Não pago e Vencido' then '<html><b style="color:#CF3434">01 - Não pago e Vencido'
       when id_situacao = '01 - Não pago a vencer' then '<html><b style="color:#3440CF">01 - Não pago a Vencer'
       else  '<html><p style="color:#121212">'||id_situacao  end situacao,
@@ -1703,7 +1703,7 @@ SELECT
       GROUPING SETS((),(id_situacao_,
                         id_situacao,
                         receitas))
-                        
+
 order by case when id_situacao_ is null then 1
                   when id_situacao_ = '01' then 2
                   else 3 end, total desc
@@ -1744,7 +1744,7 @@ SELECT
             )),
             8
       )              rr,
-      
+
           lpad(
             TRIM(to_char(
                   SUM(total),
@@ -1754,8 +1754,8 @@ SELECT
                    MAX(SUM(total))
                    OVER()
              )+7
-      )    total  
-      
+      )    total
+
   FROM
       (
             SELECT
@@ -1825,7 +1825,7 @@ SELECT
                                             WHEN t.it_da_baixa > '1' THEN
                                                 TO_DATE(t.it_da_baixa, 'YYYYMMDD')
                                         END da_baixa,
-                                    
+
                                         t.it_tx_observacao observacao,
                                         t.it_tx_motivo_baixa motivo_baixa,
                                         CASE
@@ -1865,7 +1865,7 @@ SELECT
                                                 WHEN t.it_da_baixa > '1' THEN
                                                     TO_DATE(t.it_da_baixa, 'YYYYMMDD')
                                             END,
-                                        t.it_tx_motivo_baixa, 
+                                        t.it_tx_motivo_baixa,
                                         CASE
                                             WHEN t.it_da_baixa = '       ' THEN
                                                     '<html><strong><font color="blue">'
@@ -1883,14 +1883,14 @@ SELECT
 -- ============================================================================
 -- 31. DIMP
 -- ============================================================================
-with 
+with
 						cartao as (
 						select case
-								when ano is null and periodo is null 
+								when ano is null and periodo is null
 								  then '<html><b style="color:blue">Σ TOTAL GERAL'
-								when ano is not null and periodo is null 
+								when ano is not null and periodo is null
 								  then '<html><b style="color:green">Σ Total no ano ' || ano
-								when ano is not null and periodo is not null 
+								when ano is not null and periodo is not null
 								  then '----Total no período ' || periodo
 							   end                                                                      info,
 							   operacoes,
@@ -1902,9 +1902,9 @@ with
 							   sum(valor)                                                               cartao
 						from bi.mpg_f_detalhe_operacao
 						where cnpj_cpf = :CO_CNPJ_CPF
-						group by grouping sets 
+						group by grouping sets
 								( ( ),
-									(extract(year from dt_op)), 
+									(extract(year from dt_op)),
 										(extract(year from dt_op), extract(year from dt_op)||'/'||lpad(extract(month from dt_op),2,'0'))
 								)
 							 )
@@ -1913,11 +1913,11 @@ with
 
 						saidas as (
 						select case
-								when ano is null and periodo is null 
+								when ano is null and periodo is null
 								  then '<html><b style="color:blue">Σ TOTAL GERAL'
-								when ano is not null and periodo is null 
+								when ano is not null and periodo is null
 								  then '<html><b style="color:green">Σ Total no ano ' || ano
-								when ano is not null and periodo is not null 
+								when ano is not null and periodo is not null
 								  then '----Total no período ' || periodo
 							   end                                                                                      info,
 							   nfe_nfce                                                                                 nfe_nfce
@@ -1928,9 +1928,9 @@ with
 						from BI.fato_nfe_nfce_sumarizada
 						where co_emitente = :CO_CNPJ_CPF
 						  and co_tp_nf = 1
-						group by grouping sets 
+						group by grouping sets
 								( ( ),
-									(extract(year from da_referencia)), 
+									(extract(year from da_referencia)),
 										(extract(year from da_referencia), extract(year from da_referencia)||'/'||lpad(extract(month from da_referencia),2,'0'))
 								)
 							 )
@@ -1940,15 +1940,15 @@ with
 							   cartao.operacoes                                                                                         operacoes_cartao,
 							   lpad(trim(to_char(cartao.cartao, '999G999G999G990D00')), length(max(cartao.cartao) over()) + 7)          valor_cartao,
 							   lpad(trim(to_char(saidas.nfe_nfce , '999G999G999G990D00')), length(max(saidas.nfe_nfce) over()) + 7)     valor_nfe_nfce,
-							   case when substr(nvl(cartao.info,saidas.info),1,6) = '<html>' 
+							   case when substr(nvl(cartao.info,saidas.info),1,6) = '<html>'
 									 then lpad(trim(to_char('-')),
 											   length(max(cartao.cartao) over()) + 7)
-									when nvl(cartao.cartao,0) - nvl(saidas.nfe_nfce,0) > 0 
+									when nvl(cartao.cartao,0) - nvl(saidas.nfe_nfce,0) > 0
 									 then lpad(trim(to_char(nvl(cartao.cartao,0)-nvl(saidas.nfe_nfce,0),'999G999G999G990D00')),
 											   length(max(nvl(cartao.cartao,0)) over()) + 7)
 									else lpad(to_char('-'),
 											  length(max(cartao.cartao) over()) + 7)
-									end                                                                                                 excesso_valor 
+									end                                                                                                 excesso_valor
 						from cartao
 						left join saidas
 							   on cartao.info = saidas.info
@@ -2018,7 +2018,7 @@ SELECT
 						t.va_juros,
 						t.va_acrescimo,
 						t.va_pago
-						
+
 					FROM
 						bi.fato_lanc_arrec           t
 						LEFT JOIN bi.dm_situacao_lancamento    lanc ON t.id_situacao = lanc.it_co_situacao
@@ -2059,7 +2059,7 @@ SELECT
 -- ============================================================================
 -- 35. Ações Fiscais
 -- ============================================================================
-select 
+select
 								t.in_modelo_acao_fiscal   tipo,
 								t.no_situacao_acao        situacao,
 								t.nu_acao_fiscal          acao_fiscal,
@@ -2076,13 +2076,13 @@ select
 								t.tx_observacao
 
 						from bi.dm_acao_fiscal t
-						left join bi.dm_acao_fiscal_origem_acao o 
+						left join bi.dm_acao_fiscal_origem_acao o
 							   on t.nu_acao_fiscal = o.nu_acao_fiscal
 						where co_cnpj_cpf = :CO_CNPJ_CPF
 
 						union
 
-						select 
+						select
             'DSF' as                                                                tipo,
             case when df.it_co_situacao_diligencia = 01 then '01 - DOC. REGISTRADO'
                  when df.it_co_situacao_diligencia = 02 then '02 - DIL. GERADA'
@@ -2091,7 +2091,7 @@ select
                  when df.it_co_situacao_diligencia = 05 then '05 - DIL. EXCLUÍDA'
             end                                                                     situacao,
             to_char(df.it_nu_diligencia)                                            acao_fiscal,
-            dft.it_nu_diligencia                                                    dsf, 
+            dft.it_nu_diligencia                                                    dsf,
             null                                                                    p_ini,
             null                                                                    p_fin,
             df.it_prazo_max                                                         prazo,
@@ -2122,7 +2122,7 @@ select
                 on dta.tuk = dft.tuk
     where dft.it_nu_identificacao = :CO_CNPJ_CPF
 union
-select 
+select
             'DSF' as                                                                tipo,
             case when df.it_co_situacao_diligencia = 01 then '01 - DOC. REGISTRADO'
                  when df.it_co_situacao_diligencia = 02 then '02 - DIL. GERADA'
@@ -2131,7 +2131,7 @@ select
                  when df.it_co_situacao_diligencia = 05 then '05 - DIL. EXCLUÍDA'
             end                                                                     situacao,
             to_char(df.it_nu_diligencia)                                            acao_fiscal,
-            dft.it_nu_diligencia                                                    dsf, 
+            dft.it_nu_diligencia                                                    dsf,
             null                                                                    p_ini,
             null                                                                    p_fin,
             df.it_prazo_max                                                         prazo,
@@ -2198,11 +2198,11 @@ select
 							t.in_in_sit_lanc_multa sit_guia_m,
 							solid_multa.solidarios_multa solid_multa
 						from bi.fato_acao_fiscal_ainf t
-						left join bi.dm_acao_fiscal u 
+						left join bi.dm_acao_fiscal u
 							on t.nu_acao_fiscal = u.nu_acao_fiscal
 						left join bi.dm_acao_fiscal_historico_tate tate
 							on t.nu_termo_infracao = tate.nu_termo_infracao
-						left join (select d.it_nu_guia, listagg(ptrib.co_cnpj_cpf||' - '||ptrib.no_razao_social,', ') within group (order by d.it_nu_guia) solidarios_trib 
+						left join (select d.it_nu_guia, listagg(ptrib.co_cnpj_cpf||' - '||ptrib.no_razao_social,', ') within group (order by d.it_nu_guia) solidarios_trib
 									from sitafe.sitafe_devedor_solidario d
 									left join bi.dm_pessoa ptrib
 										on d.it_nu_cpf_cnpj_devedor = ptrib.co_cnpj_cpf
@@ -2287,9 +2287,9 @@ WITH ACAO_FISCAL AS (
                                     DA_LAVRATURA,
 									NU_TERMO_INFRACAO,
 									CASE WHEN LOCAL IS NULL THEN '<html><b>VALOR TOTAL DOS AUTOS DE INFRAÇÕES LAVRADOS:' ELSE LOCAL END LOCAL,
-									LPAD(TRIM(TO_CHAR(VA_TRIBUTO, '999G999G999G990D00')),18) VA_TRIBUTO,      
-									LPAD(TRIM(TO_CHAR(VA_MULTA, '999G999G999G990D00')),18) VA_MULTA,   
-									LPAD(TRIM(TO_CHAR(VA_JUROS, '999G999G999G990D00')),18) VA_JUROS,   
+									LPAD(TRIM(TO_CHAR(VA_TRIBUTO, '999G999G999G990D00')),18) VA_TRIBUTO,
+									LPAD(TRIM(TO_CHAR(VA_MULTA, '999G999G999G990D00')),18) VA_MULTA,
+									LPAD(TRIM(TO_CHAR(VA_JUROS, '999G999G999G990D00')),18) VA_JUROS,
 									LPAD(TRIM(TO_CHAR(TOTAL, '999G999G999G990D00')),18) TOTAL,
 									PERIODO_FISCALIZADO,
 									SITUACAO_TATE,
@@ -2415,9 +2415,9 @@ WITH ACAO_FISCAL AS (
 SELECT
 
 					  case when malha is null and status is null then
-					  '<html><b>TOTAL DE NOTIFICAÇÕES RECEBIDAS: '||quant 
+					  '<html><b>TOTAL DE NOTIFICAÇÕES RECEBIDAS: '||quant
 					  when malha is null and status is not null then
-					   '<html><b>-------Quantidade '||status||': '||quant 
+					   '<html><b>-------Quantidade '||status||': '||quant
 					  when malha is not null and periodo is null and status is null then
 					  '<html>------------'||malha||' - <b>'||quant
 					  else
@@ -2538,7 +2538,7 @@ order by t.dt_envio desc
 -- ============================================================================
 -- 43. Arquivo da Notificação
 -- ============================================================================
-select case when CHAVE != 'NOTIFICACAO' then 'Anexo'||' - '||tipo else chave||' - '||tipo end tipo, 'https://det.sefin.ro.gov.br/arquivo/download_anexos?uuid='||t.uuid||chr(38)||'id_anexo='||t.id_anexo link_do_anexo 
+select case when CHAVE != 'NOTIFICACAO' then 'Anexo'||' - '||tipo else chave||' - '||tipo end tipo, 'https://det.sefin.ro.gov.br/arquivo/download_anexos?uuid='||t.uuid||chr(38)||'id_anexo='||t.id_anexo link_do_anexo
 								from bi.vm_dm_det_arquivos t
 							WHERE ID_NOTIFICACAO = :ID_NOTIFICACAO
 
@@ -2558,7 +2558,7 @@ SELECT
                                     bi.dm_processo_administrativo   t
                                     LEFT JOIN sitafe.sitafe_servico           serv ON t.co_servico = serv.it_co_servico
                                     left join bi.dm_pessoa pessoa on t.cpf_solicitante = pessoa.co_cnpj_cpf
-                                    
+
                                     where t.co_cpf_cnpj_contribuinte = :CO_CNPJ_CPF
                                 order by dt_abertura desc
 
@@ -2589,7 +2589,7 @@ select
 								  left join sitafe.sitafe_tab_veiculo    tb on t.it_co_marca_modelo = tb.it_co_marca_modelo
 							 where
 								  it_nu_devedor = :CO_CNPJ_CPF
-								  
+
 							union all
 
 							select
@@ -2621,13 +2621,13 @@ select
 -- 46. IP(s) das NFs
 -- ============================================================================
 WITH IP_ALVO AS (
-                                    SELECT SUBSTR(IP.CHAVE_ACESSO,7,14) CNPJ, 
+                                    SELECT SUBSTR(IP.CHAVE_ACESSO,7,14) CNPJ,
                                                     IP.IP_TRANSMISSOR            IP,
                                                     COUNT(IP.CHAVE_ACESSO)       QTD_NOTAS
-                                       FROM BI.DM_IP_TRANSMISSOR IP 
+                                       FROM BI.DM_IP_TRANSMISSOR IP
                                     WHERE SUBSTR(IP.CHAVE_ACESSO,7,14) = :CO_CNPJ_CPF
                                       AND IP.TIPO_REG = '55'
-                                    GROUP BY SUBSTR(IP.CHAVE_ACESSO,7,14), 
+                                    GROUP BY SUBSTR(IP.CHAVE_ACESSO,7,14),
                                                      IP.IP_TRANSMISSOR)
                                     , OUTROS_CNPJS AS (
                                     SELECT IP_OUTROS.IP_TRANSMISSOR,
@@ -2652,15 +2652,15 @@ SELECT ip.ip_transmissor,
                                            pemit.no_razao_social    razao,
                                            locemit.no_municipio mun,
                                            count(DISTINCT ip.CHAVE_ACESSO) quant_nfs,
-                                           case 
-                                                     when pcont.CO_CNPJ_CPF is not null 
+                                           case
+                                                     when pcont.CO_CNPJ_CPF is not null
                                                          then pcont.CO_CNPJ_CPF
                                                      else hc.cnpj_cont end as cnpj_cont,
-                                                 case 
-                                             when pcont.NO_RAZAO_SOCIAL is not null 
+                                                 case
+                                             when pcont.NO_RAZAO_SOCIAL is not null
                                                then pcont.NO_RAZAO_SOCIAL
                                              else hc.razao_cont end as razao_cont
-                                           
+
                                       FROM bi.dm_ip_transmissor    ip
                                       LEFT JOIN bi.dm_pessoa            pemit ON pemit.co_cnpj_cpf = substr(ip.chave_acesso, 7,14)
                                       LEFT JOIN bi.dm_localidade        locemit ON pemit.co_municipio = locemit.co_municipio
@@ -2680,12 +2680,12 @@ SELECT ip.ip_transmissor,
                                      GROUP BY ip.ip_transmissor,
                                               substr(ip.chave_acesso, 7,14),
                                                         pemit.no_razao_social,
-                                               case 
-                                             when pcont.CO_CNPJ_CPF is not null 
+                                               case
+                                             when pcont.CO_CNPJ_CPF is not null
                                                then pcont.CO_CNPJ_CPF
                                              else hc.cnpj_cont end,
-                                           case 
-                                             when pcont.NO_RAZAO_SOCIAL is not null 
+                                           case
+                                             when pcont.NO_RAZAO_SOCIAL is not null
                                                then pcont.NO_RAZAO_SOCIAL
                                              else hc.razao_cont end,
                                             locemit.no_municipio
@@ -2740,4 +2740,3 @@ SELECT ip.ip_transmissor,
                                             locdest.no_municipio,
                                             pdest.no_razao_social
                                          ORDER BY SUM(d.prod_vprod) DESC
-

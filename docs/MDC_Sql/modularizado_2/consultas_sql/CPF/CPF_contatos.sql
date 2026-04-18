@@ -7,7 +7,7 @@
 */
 
 WITH parametros AS (
-    SELECT 
+    SELECT
         :CPF AS documento_filtro
     FROM DUAL
 ),
@@ -24,10 +24,10 @@ contatos_dest AS (
         d.co_uf_dest AS UF,
         EXTRACT(YEAR FROM d.dhemi) AS ANO_REFERENCIA,
         COUNT(*) OVER (PARTITION BY d.fone_dest, d.email_dest) AS QTD_OCORRENCIAS
-    FROM 
+    FROM
         bi.fato_nfe_detalhe d,
         parametros p
-    WHERE 
+    WHERE
         d.co_destinatario = p.documento_filtro
         AND d.infprot_cstat IN ('100', '150')
         AND (d.fone_dest IS NOT NULL OR d.email_dest IS NOT NULL)
@@ -46,10 +46,10 @@ contatos_emit AS (
         d.co_uf_emit AS UF,
         EXTRACT(YEAR FROM d.dhemi) AS ANO_REFERENCIA,
         COUNT(*) OVER (PARTITION BY d.fone_emit) AS QTD_OCORRENCIAS
-    FROM 
+    FROM
         bi.fato_nfe_detalhe d,
         parametros p
-    WHERE 
+    WHERE
         d.co_emitente = p.documento_filtro
         AND d.infprot_cstat IN ('100', '150')
         AND d.fone_emit IS NOT NULL

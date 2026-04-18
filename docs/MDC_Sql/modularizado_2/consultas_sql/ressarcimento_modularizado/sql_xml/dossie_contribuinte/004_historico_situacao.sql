@@ -13,7 +13,7 @@ OBSERVACAO:
 SELECT
                                         to_date(u.it_da_transacao, 'YYYYMMDD')        data,
                                         t.it_co_situacao_contribuinte                 sit,
-                                        CONVERT(cad_sit.it_no_situacao_contribuinte, 'AL32UTF8', 'WE8MSWIN1252')descricao,                                           
+                                        CONVERT(cad_sit.it_no_situacao_contribuinte, 'AL32UTF8', 'WE8MSWIN1252')descricao,
                                         u.it_nu_fac                                   fac,
                                         u.it_co_usuario                               usuario,
                                         u.tuk

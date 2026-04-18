@@ -10,7 +10,7 @@ Tabela que resume a auditoria anual por produto, confrontando estoque inicial, e
 def gerar_calculos_anuais(cnpj: str, pasta_cnpj: Path | None = None) -> bool
 ```
 
-Módulo: `src/transformacao/calculos_anuais.py` (wrapper)  
+Módulo: `src/transformacao/calculos_anuais.py` (wrapper)
 Implementação: `src/transformacao/calculos_anuais_pkg/calculos_anuais.py`
 
 ## Dependências

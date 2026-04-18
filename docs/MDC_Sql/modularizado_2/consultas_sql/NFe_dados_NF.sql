@@ -7,8 +7,8 @@
 ALTER SESSION SET NLS_NUMERIC_CHARACTERS='.,';
 
 WITH PARAMETROS AS (
-    SELECT 
-        :CNPJ AS cnpj_filtro,          
+    SELECT
+        :CNPJ AS cnpj_filtro,
         COALESCE(TO_DATE(:DATA_INICIAL, 'DD/MM/YYYY'), TO_DATE('01/01/2006', 'DD/MM/YYYY')) AS data_inicial,
         COALESCE(TO_DATE(:DATA_FINAL, 'DD/MM/YYYY'), TRUNC(SYSDATE) + 1 - 1/86400) AS data_final
     FROM DUAL
@@ -18,10 +18,10 @@ LISTA_NFES AS (
     SELECT DISTINCT f.CHAVE_ACESSO
     FROM bi.fato_nfe_detalhe f
     CROSS JOIN PARAMETROS p
-    WHERE 
+    WHERE
         (
             (f.dhemi BETWEEN p.data_inicial AND p.data_final)
-            OR 
+            OR
             (f.dhsaient BETWEEN p.data_inicial AND p.data_final)
         )
         AND (f.co_destinatario = p.cnpj_filtro OR f.co_emitente = p.cnpj_filtro)
@@ -46,7 +46,7 @@ FROM bi.nfe_xml x
 INNER JOIN LISTA_NFES l ON x.chave_acesso = l.chave_acesso
 CROSS JOIN XMLTABLE(
     XMLNAMESPACES (DEFAULT 'http://www.portalfiscal.inf.br/nfe'),
-    '//det' PASSING x.xml 
+    '//det' PASSING x.xml
     COLUMNS
         Prod_nItem           NUMBER       PATH '@nItem',
         PROD_cProd           VARCHAR2(74) PATH 'prod/cProd',

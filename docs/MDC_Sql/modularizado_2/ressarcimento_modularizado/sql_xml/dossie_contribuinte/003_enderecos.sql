@@ -23,9 +23,9 @@ select '<html><b>DM_PESSOA/SITAFE' origem,
                                     from bi.dm_pessoa t
                                     LEFT JOIN bi.dm_localidade    localid ON t.co_municipio = localid.co_municipio
                                     where co_cnpj_cpf = :CO_CNPJ_CPF
-                                    
+
                                     union all
-                                    
+
                                     select * from (
                                     SELECT
                                         'NFE' origem,
@@ -50,5 +50,5 @@ select '<html><b>DM_PESSOA/SITAFE' origem,
                                         upper(cep_dest),
                                         upper(co_uf_dest),
                                         extract(year from dhemi)||'/'||extract(month from dhemi)
-                                    
+
                                     order by extract(year from dhemi)||'/'||extract(month from dhemi) desc)

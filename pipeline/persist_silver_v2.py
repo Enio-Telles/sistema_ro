@@ -19,7 +19,7 @@ def persist_silver_outputs_v2(cnpj: str, outputs: dict[str, pl.DataFrame]) -> di
         if name not in SILVER_DATASET_NAMES_V2:
             continue
         ref = dataset_ref(cnpj=cnpj, layer=SILVER_DATASET_NAMES_V2[name], name=name)
-        
+
         meta = {
             "dataset_id": f"{name}_{SILVER_DATASET_NAMES_V2[name]}",
             "layer": SILVER_DATASET_NAMES_V2[name],
@@ -28,7 +28,7 @@ def persist_silver_outputs_v2(cnpj: str, outputs: dict[str, pl.DataFrame]) -> di
             "cnpj": cnpj,
             "upstream_datasets": []
         }
-        
+
         save_parquet(df, ref, metadata=meta)
         saved[name] = str(ref.path)
     return saved

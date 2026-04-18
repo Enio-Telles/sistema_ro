@@ -1,7 +1,7 @@
 ﻿/*
     Analise da Consulta: CPF_endereco_NF.sql
     Objetivo: Consolidar enderecos de um CPF a partir de cadastros (ITCD) e notas fiscais (NF-e).
-    
+
     Tabelas Utilizadas:
     - itcd_prod.tri_itd_pessoa: Cadastro do ITCD (pessoa).
     - bi.fato_nfe_detalhe: Detalhes das NF-e (endereco de destino).
@@ -14,36 +14,36 @@
     5. Retorna apenas o registro mais recente de cada endereco unico.
 */
 
-SELECT 
-    origem, 
-    ano_mes, 
-    logradouro, 
-    numero, 
-    complemento, 
-    bairro, 
-    fone, 
-    
-    cep, 
-    municipio, 
-    uf, 
+SELECT
+    origem,
+    ano_mes,
+    logradouro,
+    numero,
+    complemento,
+    bairro,
+    fone,
+
+    cep,
+    municipio,
+    uf,
     chave_acesso,
     email
 FROM (
-    SELECT 
+    SELECT
         t.*,
         -- Agrupa por endereco completo para evitar repeticoes entre fontes diferentes
         ROW_NUMBER() OVER (
-            PARTITION BY 
-                upper(trim(logradouro)), 
-                upper(trim(numero)), 
+            PARTITION BY
+                upper(trim(logradouro)),
+                upper(trim(numero)),
                 upper(trim(bairro)),
                 upper(trim(municipio))
-            ORDER BY 
+            ORDER BY
                 ordem_cronologica DESC NULLS LAST
         ) as rnk_geral
     FROM (
         -- Bloco 1: Cadastro ITCD
-        SELECT 
+        SELECT
             'ITCD' origem,
             null ano_mes,
             upper(t.tx_logradouro) logradouro,
@@ -51,9 +51,9 @@ FROM (
             upper(t.tx_complemento) complemento,
             upper(t.tx_bairro) bairro,
             upper(t.tx_telefone) fone,
-            
+
             upper(t.tx_cep) cep,
-            upper(t.tx_cidade) municipio, 
+            upper(t.tx_cidade) municipio,
             upper(t.tx_estado) uf,
             null chave_acesso,
             null email,
@@ -72,7 +72,7 @@ FROM (
             upper(xcpl_dest) complemento,
             upper(xbairro_dest) bairro,
             upper(fone_dest) fone,
-            
+
             upper(cep_dest) cep,
             upper(xmun_dest) municipio,
             upper(co_uf_dest) uf,

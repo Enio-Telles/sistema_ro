@@ -2,7 +2,7 @@
     Análise da Consulta: CPF_NFCe.sql
     Objetivo: Extrair detalhes de Notas Fiscais ao Consumidor Eletrônicas (NFC-e) onde o CPF
     informado é o DESTINATÁRIO (consumidor final).
-    
+
     Tabela Utilizada:
     - bi.fato_nfce_detalhe (t): Tabela fato com detalhes das NFC-e.
       Similar à NF-e, mas específica para vendas ao consumidor final.
@@ -13,7 +13,7 @@
     2. Calcula o valor do item: (valor produto + frete + seguro - desconto + outros).
     3. Usa GROUPING SETS para gerar múltiplos níveis de agregação.
     4. Estrutura idêntica à CPF_NF.sql, mas para NFC-e.
-    
+
     Diferença NF-e vs NFC-e:
     - NF-e: Operações entre empresas (B2B) ou empresa-pessoa física com maior valor.
     - NFC-e: Vendas no varejo para consumidor final (substitui cupom fiscal).
@@ -44,7 +44,7 @@ SELECT
 
 -- GROUPING SETS: Agregações em múltiplos níveis
 group by grouping sets (
-      
+
       (),                                                      -- Total Geral
       (extract(year from t.dhemi)),                            -- Total por Ano
       (t.co_emitente, upper(t.xnome_emit)),                    -- Total por Emitente
@@ -63,15 +63,15 @@ group by grouping sets (
        upper(t.prod_xprod),
        t.prod_ucom,
        t.prod_qcom)
-      
+
       )
 
 -- Ordenação: Totais primeiro, depois detalhes
 order by case when ano is null and cnpj is null and uf is null and nome is null  then 1
       when ano is not null and cnpj is null and uf is null then 2
       when ano is not null and cnpj is not null and chave_acesso is not null then 3
-      when ano is null and cnpj is null and uf is not null then 4 
+      when ano is null and cnpj is null and uf is not null then 4
       else 5 end, ano desc, data desc, valor desc
-      
+
 
 --dhemi desc

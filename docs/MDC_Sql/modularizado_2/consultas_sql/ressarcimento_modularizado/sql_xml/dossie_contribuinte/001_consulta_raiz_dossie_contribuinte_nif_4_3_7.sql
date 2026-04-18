@@ -17,7 +17,7 @@ SELECT
 						  co_cad_icms,
 						  nome,
 						  inicio_ativ
-					  FROM 
+					  FROM
 						  dual
 							LEFT JOIN(
 								SELECT
@@ -27,10 +27,10 @@ SELECT
 									  t.da_inicio_atividade            inicio_ativ
 								  FROM
 									  bi.dm_pessoa t
-								 WHERE 
+								 WHERE
 									  t.co_cnpj_cpf like '%'||regexp_replace(:CNPJ,'\D+', '')||'%'
 								  and t.co_cad_icms like '%'||regexp_replace(:IE,'\D+', '')
 								  and upper(t.no_razao_social) like '%'||regexp_replace(upper(:NOME),'\s', '%')||'%'
 						  )b ON b.co_cnpj_cpf like REGEXP_REPLACE(:CNPJ,'\D+', '')||'%'
-					order by 
+					order by
 						case when :NOME is not null then nome end

@@ -11,9 +11,9 @@
 select cnpj_cpf CNPJ_CPF,
 data_inicial DATA_INICIAL,
 data_final DATA_FINAL,
-case when cod_aj is null  and substr(ref_apur,1,1) = 'C' then  '<html><b>Total - Reflexo na Apuração - <b style=color:blue>'||ref_apur 
+case when cod_aj is null  and substr(ref_apur,1,1) = 'C' then  '<html><b>Total - Reflexo na Apuração - <b style=color:blue>'||ref_apur
 when cod_aj is null  and substr(ref_apur,1,1) = 'D' then  '<html><b>Total - Reflexo na Apuração - <b style=color:red>'||ref_apur
-when cod_aj is null  then '<html><b>Total - Reflexo na Apuração - '||ref_apur 
+when cod_aj is null  then '<html><b>Total - Reflexo na Apuração - '||ref_apur
 when substr(ref_apur,1,1) = 'C' then  '<html><p style=color:blue>' ||ref_apur
 when substr(ref_apur,1,1) = 'D' then  '<html><p style=color:red>' ||ref_apur
 else ref_apur
@@ -23,7 +23,7 @@ vl_bc_icms VL_BC_ICMS,
 vl_icms VL_ICMS,
 vl_outros VL_OUTROS,
 cod_aj COD_AJ,
-no_cod_aj NO_COD_AJ from 
+no_cod_aj NO_COD_AJ from
 
 
 (SELECT

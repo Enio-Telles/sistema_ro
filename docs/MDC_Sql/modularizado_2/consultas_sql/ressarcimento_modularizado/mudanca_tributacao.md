@@ -26,7 +26,7 @@ O objetivo tributário implícito é auditar cenários de **mudança de tributa�
 - a mercadoria sai da ST para o regime normal e o contribuinte pretende se creditar do imposto vinculado ao estoque remanescente;
 - a mercadoria entra na ST e o contribuinte precisa medir o estoque afetado para futura apuração do débito.
 
-A documentação operacional usada neste projeto indica exatamente essa lógica: em mudança de tributação, o contribuinte deve levantar o estoque no Bloco H; quando a mercadoria sai da ST para o regime normal, o `H005` deve usar motivo `02`, o `H020` deve demonstrar o imposto a ser creditado por item e o efeito financeiro deve ser levado ao `E111`; quando a mercadoria entra na ST, a apuração tende a repercutir em `E210/E220`. Logo, a consulta está na trilha correta do problema, mas ainda não resolve toda a obrigação acessória e nem toda a apuração. 
+A documentação operacional usada neste projeto indica exatamente essa lógica: em mudança de tributação, o contribuinte deve levantar o estoque no Bloco H; quando a mercadoria sai da ST para o regime normal, o `H005` deve usar motivo `02`, o `H020` deve demonstrar o imposto a ser creditado por item e o efeito financeiro deve ser levado ao `E111`; quando a mercadoria entra na ST, a apuração tende a repercutir em `E210/E220`. Logo, a consulta está na trilha correta do problema, mas ainda não resolve toda a obrigação acessória e nem toda a apuração.
 
 ---
 

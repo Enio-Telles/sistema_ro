@@ -13,12 +13,12 @@ DROP TABLE IF EXISTS dbo.cfop;
 CREATE TABLE dbo.cfop AS
 SELECT *
 FROM dblink('dbname=postgres user=postgres password=sefin', -- Credenciais
-            'SELECT 
-                id, 
-                co_cfop, 
-                descricao AS ds_cfop, 
-                codigo_tributacao, 
-                finalidade, 
+            'SELECT
+                id,
+                co_cfop,
+                descricao AS ds_cfop,
+                codigo_tributacao,
+                finalidade,
                 (CASE WHEN lower(excluir_estorno::text) IN (''true'', ''t'', ''1'') THEN TRUE ELSE FALSE END) AS excluir_estorno,
                 (CASE WHEN lower(excluir_estoque::text) IN (''true'', ''t'', ''1'') THEN TRUE ELSE FALSE END) AS excluir_estoque,
                 (CASE WHEN lower(saida_faturamento::text) IN (''true'', ''t'', ''1'') THEN TRUE ELSE FALSE END) AS saida_faturamento,
@@ -30,16 +30,16 @@ FROM dblink('dbname=postgres user=postgres password=sefin', -- Credenciais
 AS t(
     id integer,
     co_cfop character varying(4),
-    ds_cfop character varying(500), 
-    codigo_tributacao integer,      
-    finalidade integer,             
+    ds_cfop character varying(500),
+    codigo_tributacao integer,
+    finalidade integer,
     excluir_estorno boolean,
     excluir_estoque boolean,
     saida_faturamento boolean,
     ciap boolean,
     fat_simples boolean,
     dev_simples boolean,
-    ativ_simples integer              
+    ativ_simples integer
 );
 
 -- Adiciona uma chave primária
@@ -56,8 +56,8 @@ CREATE TABLE dbo.mov_estoque_completa_otimizada AS
 WITH RECURSIVE
 -- CTE para buscar o intervalo de datas da designação fiscal
 DatasFiscais AS (
-    SELECT data_inicio::date, data_final::date 
-    FROM dbo.designacao_fiscal 
+    SELECT data_inicio::date, data_final::date
+    FROM dbo.designacao_fiscal
     LIMIT 1 -- Garante apenas uma linha, conforme mencionado
 ),
 C170_entrada AS (
@@ -104,7 +104,7 @@ C170_entrada AS (
     LEFT JOIN dbo.nf_detalhe nf ON nf.chave_acesso = c170.chave_acesso
         AND nf.nitem = c170.num_item AND nf.tpnf = '0' AND nf.status = 0
     CROSS JOIN DatasFiscais df -- Junta com as datas
-    WHERE c170.ind_oper = 0 
+    WHERE c170.ind_oper = 0
       AND GREATEST(c170.dt_e_s, c170.dt_doc)::date BETWEEN df.data_inicio AND df.data_final -- Filtro de data
 ),
 NF_saida AS (
@@ -150,7 +150,7 @@ NF_saida AS (
     INNER JOIN dbo.nf_resumo nfr ON nf.nf_resumo_id = nfr.id
     INNER JOIN dbo.produto p ON p.chave_produto = nf.chave_produto
     CROSS JOIN DatasFiscais df -- Junta com as datas
-    WHERE nf.tpnf = '1' 
+    WHERE nf.tpnf = '1'
       AND nf.status = 0
       AND (nfr.excluir_omissao = FALSE OR nfr.excluir_omissao IS NULL)
       AND nf.demi::date BETWEEN df.data_inicio AND df.data_final -- Filtro de data
@@ -199,7 +199,7 @@ inventario_entrada AS (
     INNER JOIN dbo.produto p ON p.chave_produto = h010.chave_produto
     CROSS JOIN DatasFiscais df -- Junta com as datas
     -- Pega o inventário cujo dia seguinte é o início do período fiscal
-    WHERE (h005.dt_inv + INTERVAL '1 day')::date = df.data_inicio 
+    WHERE (h005.dt_inv + INTERVAL '1 day')::date = df.data_inicio
 ),
 inventario_final AS (
     SELECT DISTINCT
@@ -255,13 +255,13 @@ cfops_excluir AS (
 ),
 -- Filtra os anos ativos com base nas datas fiscais
 produtos_e_anos_ativos AS (
-    SELECT DISTINCT produto_id, EXTRACT(YEAR FROM data_evento)::INTEGER AS ano 
-    FROM C170_entrada 
+    SELECT DISTINCT produto_id, EXTRACT(YEAR FROM data_evento)::INTEGER AS ano
+    FROM C170_entrada
     UNION
-    SELECT DISTINCT produto_id, EXTRACT(YEAR FROM data_evento)::INTEGER AS ano 
-    FROM NF_saida 
+    SELECT DISTINCT produto_id, EXTRACT(YEAR FROM data_evento)::INTEGER AS ano
+    FROM NF_saida
     UNION
-    SELECT DISTINCT produto_id, EXTRACT(YEAR FROM data_evento)::INTEGER AS ano 
+    SELECT DISTINCT produto_id, EXTRACT(YEAR FROM data_evento)::INTEGER AS ano
     FROM inventario_entrada
 ),
 -- União preliminar com dados já filtrados
@@ -273,16 +273,16 @@ uniao_preliminar AS (
 ),
 -- Lógica de estoque inicial faltante considera os anos ativos DENTRO do período fiscal
 produtos_com_estoque_inicial AS (
-    SELECT DISTINCT 
-        produto_id, 
+    SELECT DISTINCT
+        produto_id,
         EXTRACT(YEAR FROM data_evento)::INTEGER AS ano
     FROM uniao_preliminar
     WHERE entrada_saida LIKE '0%'
 ),
 -- Lógica de estoque final faltante considera os anos ativos DENTRO do período fiscal
 produtos_com_estoque_final AS (
-    SELECT DISTINCT 
-        produto_id, 
+    SELECT DISTINCT
+        produto_id,
         EXTRACT(YEAR FROM data_evento)::INTEGER AS ano
     FROM uniao_preliminar
     WHERE entrada_saida LIKE '3%'
@@ -297,7 +297,7 @@ estoques_iniciais_faltantes AS (
         GREATEST(TO_DATE(pa.ano::TEXT || '-01-01', 'YYYY-MM-DD'), (SELECT data_inicio FROM DatasFiscais)) AS data_evento,
         CAST(NULL AS INTEGER) AS num_item, pa.produto_id, p.codigo_barra, p.codigo_produto, p.descricao_produto,
         p.chave_produto, p.codigo_tributacao, p.unid_inv AS unid,
-        CAST(0 AS NUMERIC) AS qtd, CAST(0 AS NUMERIC) AS vl_item, 
+        CAST(0 AS NUMERIC) AS qtd, CAST(0 AS NUMERIC) AS vl_item,
         CAST(NULL AS NUMERIC) AS vl_desc, CAST(NULL AS NUMERIC) AS vdesc, CAST(NULL AS NUMERIC) AS voutro, CAST(0 AS NUMERIC) AS preco_item,
         CAST(NULL AS INTEGER) AS mot_inv,
         -- Colunas C170 (nulas)
@@ -313,14 +313,14 @@ estoques_iniciais_faltantes AS (
         CAST(NULL AS NUMERIC) AS vb_st_nf,
         CAST(NULL AS NUMERIC) AS picms_st_nf,
         CAST(NULL AS NUMERIC) AS vicms_st_nf
-    FROM produtos_e_anos_ativos pa 
+    FROM produtos_e_anos_ativos pa
     JOIN dbo.produto p ON pa.produto_id = p.produto_id
     CROSS JOIN DatasFiscais df
     WHERE pa.ano >= EXTRACT(YEAR FROM df.data_inicio) AND pa.ano <= EXTRACT(YEAR FROM df.data_final)
       AND NOT EXISTS (
-        SELECT 1 FROM uniao_preliminar u 
-        WHERE u.produto_id = pa.produto_id 
-          AND u.entrada_saida LIKE '0%' 
+        SELECT 1 FROM uniao_preliminar u
+        WHERE u.produto_id = pa.produto_id
+          AND u.entrada_saida LIKE '0%'
           AND EXTRACT(YEAR FROM u.data_evento) = pa.ano
     )
 ),
@@ -355,9 +355,9 @@ estoques_finais_faltantes AS (
     CROSS JOIN DatasFiscais df
     WHERE pa.ano >= EXTRACT(YEAR FROM df.data_inicio) AND pa.ano <= EXTRACT(YEAR FROM df.data_final)
       AND NOT EXISTS (
-        SELECT 1 FROM uniao_preliminar u 
-        WHERE u.produto_id = pa.produto_id 
-          AND u.entrada_saida LIKE '3%' 
+        SELECT 1 FROM uniao_preliminar u
+        WHERE u.produto_id = pa.produto_id
+          AND u.entrada_saida LIKE '3%'
           AND EXTRACT(YEAR FROM u.data_evento) = pa.ano
     )
 ),
@@ -373,26 +373,26 @@ movimentacoes_com_periodo AS (
 ),
 movimentacoes_com_flags_custo AS (
     SELECT mcp.*,
-        CASE 
-            WHEN mcp.entrada_saida = '1 - ENTRADA' 
-                 AND (mcp.cfop_c170 IN (SELECT co_cfop FROM cfops_devolucao) 
-                      OR mcp.cfop_nf IN (SELECT co_cfop FROM cfops_devolucao)) 
-            THEN TRUE ELSE FALSE 
+        CASE
+            WHEN mcp.entrada_saida = '1 - ENTRADA'
+                 AND (mcp.cfop_c170 IN (SELECT co_cfop FROM cfops_devolucao)
+                      OR mcp.cfop_nf IN (SELECT co_cfop FROM cfops_devolucao))
+            THEN TRUE ELSE FALSE
         END AS eh_devolucao,
         CASE
             WHEN mcp.entrada_saida = '1 - ENTRADA' AND
-                 (CASE 
-                    WHEN mcp.entrada_saida = '1 - ENTRADA' 
-                         AND (mcp.cfop_c170 IN (SELECT co_cfop FROM cfops_devolucao) 
-                              OR mcp.cfop_nf IN (SELECT co_cfop FROM cfops_devolucao)) 
-                    THEN TRUE ELSE FALSE 
+                 (CASE
+                    WHEN mcp.entrada_saida = '1 - ENTRADA'
+                         AND (mcp.cfop_c170 IN (SELECT co_cfop FROM cfops_devolucao)
+                              OR mcp.cfop_nf IN (SELECT co_cfop FROM cfops_devolucao))
+                    THEN TRUE ELSE FALSE
                  END) = FALSE
             THEN TRUE
             ELSE FALSE
         END AS eh_compra_para_preco_medio,
         CASE
             WHEN mcp.entrada_saida = '2 - SAIDA'
-                 AND mcp.finnfe <> 4 
+                 AND mcp.finnfe <> 4
                  AND (mcp.cfop_nf NOT IN (SELECT co_cfop FROM cfops_devolucao))
             THEN TRUE
             ELSE FALSE
@@ -409,17 +409,17 @@ movimentacoes_numeradas AS (
     FROM movimentacoes_com_flags_custo
 ),
 movimentacoes_base_calculo AS (
-    SELECT 
-        produto_id, 
-        grupo_periodo, 
-        entrada_saida, 
-        CASE 
-            WHEN dev_ou_exclusao = 'excluir' THEN 0 
+    SELECT
+        produto_id,
+        grupo_periodo,
+        entrada_saida,
+        CASE
+            WHEN dev_ou_exclusao = 'excluir' THEN 0
             WHEN entrada_saida LIKE '3%' THEN qtd * -1 -- Negativar qtd para estoque final
-            ELSE qtd 
-        END AS qtd, 
-        preco_item, 
-        eh_devolucao, 
+            ELSE qtd
+        END AS qtd,
+        preco_item,
+        eh_devolucao,
         rn
     FROM movimentacoes_numeradas
 ),
@@ -434,19 +434,19 @@ calculo_custo_recursivo AS (
         COALESCE(base.preco_item, 0)::NUMERIC AS valor_saldo_estoque_zeros,
         COALESCE(base.preco_item, 0)::NUMERIC AS valor_saldo_estoque_dev,
         COALESCE(base.preco_item, 0)::NUMERIC AS valor_saldo_estoque_dev_zeros,
-        CASE 
+        CASE
             WHEN base.qtd > 0 THEN (COALESCE(base.preco_item, 0) / NULLIF(base.qtd, 0))::NUMERIC
             ELSE 0::NUMERIC
         END AS custo_medio,
-        CASE 
+        CASE
             WHEN base.qtd > 0 AND COALESCE(base.preco_item, 0) > 0 THEN (COALESCE(base.preco_item, 0) / NULLIF(base.qtd, 0))::NUMERIC
             ELSE 0::NUMERIC
         END AS custo_medio_zeros,
-        CASE 
+        CASE
             WHEN base.qtd > 0 THEN (COALESCE(base.preco_item, 0) / NULLIF(base.qtd, 0))::NUMERIC
             ELSE 0::NUMERIC
         END AS custo_medio_dev,
-        CASE 
+        CASE
             WHEN base.qtd > 0 AND COALESCE(base.preco_item, 0) > 0 THEN (COALESCE(base.preco_item, 0) / NULLIF(base.qtd, 0))::NUMERIC
             ELSE 0::NUMERIC
         END AS custo_medio_dev_zeros
@@ -496,7 +496,7 @@ calculo_custo_recursivo AS (
         (CASE
             WHEN GREATEST(0, (prev.saldo_apos_operacao + curr.qtd)) <= 0 THEN 0
             WHEN curr.entrada_saida LIKE '2%' OR curr.entrada_saida LIKE '3%' THEN prev.custo_medio_dev
-            ELSE 
+            ELSE
                 ((CASE
                     WHEN curr.eh_devolucao THEN prev.valor_saldo_estoque_dev + (curr.qtd * prev.custo_medio_dev)
                     ELSE prev.valor_saldo_estoque_dev + COALESCE(curr.preco_item, 0)
@@ -505,17 +505,17 @@ calculo_custo_recursivo AS (
         (CASE
             WHEN GREATEST(0, (prev.saldo_apos_operacao + curr.qtd)) <= 0 THEN 0
             WHEN curr.entrada_saida LIKE '2%' OR curr.entrada_saida LIKE '3%' THEN prev.custo_medio_dev_zeros
-            ELSE 
+            ELSE
                 ((CASE
                     WHEN curr.eh_devolucao THEN prev.valor_saldo_estoque_dev_zeros + (curr.qtd * prev.custo_medio_dev_zeros)
                     ELSE prev.valor_saldo_estoque_dev_zeros + (CASE WHEN COALESCE(curr.preco_item, 0) > 0 THEN COALESCE(curr.preco_item, 0) ELSE 0 END)
                  END) / NULLIF(prev.saldo_apos_operacao + curr.qtd, 0))
         END)::NUMERIC AS custo_medio_dev_zeros
-    FROM 
+    FROM
         movimentacoes_base_calculo curr
-    JOIN 
-        calculo_custo_recursivo prev ON curr.produto_id = prev.produto_id 
-                                    AND curr.grupo_periodo = prev.grupo_periodo 
+    JOIN
+        calculo_custo_recursivo prev ON curr.produto_id = prev.produto_id
+                                    AND curr.grupo_periodo = prev.grupo_periodo
                                     AND curr.rn = prev.rn + 1
 ),
 resultado_calculado AS (
@@ -531,7 +531,7 @@ resultado_calculado AS (
     JOIN calculo_custo_recursivo c ON m.produto_id = c.produto_id AND m.grupo_periodo = c.grupo_periodo AND m.rn = c.rn
 ),
 periodos AS (
-    SELECT 
+    SELECT
         produto_id, grupo_periodo, MIN(data_evento) AS data_inicio_periodo, MAX(data_evento) AS data_fim_periodo
     FROM movimentacoes_numeradas
     GROUP BY produto_id, grupo_periodo
@@ -571,8 +571,8 @@ SELECT
     res.saldo_apos_operacao,
     res.valor_saldo_estoque,
     CASE
-        WHEN mov.eh_devolucao THEN res.custo_medio_zeros_anterior 
-        ELSE NULL 
+        WHEN mov.eh_devolucao THEN res.custo_medio_zeros_anterior
+        ELSE NULL
     END AS custo_medio_zeros_dev_anterior, -- Renomeado para clareza
     mov.codigo_tributacao AS cod_trib,
     CASE
@@ -599,7 +599,7 @@ SELECT
     /
     NULLIF((SUM(CASE WHEN mov.eh_compra_para_preco_medio AND mov.vl_item > 0 THEN mov.qtd ELSE 0 END) OVER (PARTITION BY mov.produto_id, mov.grupo_periodo ORDER BY mov.rn)), 0)
     AS preco_medio_entrada_zeros,
-    CASE 
+    CASE
         WHEN res.saldo_bruto < 0 THEN ABS(res.saldo_bruto)
         ELSE 0
     END AS entradas_desacobertadas_operacao,
@@ -611,7 +611,7 @@ SELECT
     mov.num_item,
     mov.cfop_c170,
     mov.cfop_nf,
-    
+
     -- Colunas C170
     mov.aliq_icms_c170,
     mov.aliq_nf_c170,
@@ -625,7 +625,7 @@ SELECT
     mov.vb_st_nf,
     mov.picms_st_nf,
     mov.vicms_st_nf,
-    
+
     cfop.ds_cfop,
     cfop.excluir_estoque,
     cfop.dev_simples,
@@ -637,8 +637,8 @@ SELECT
     SUM(CASE WHEN mov.entrada_saida LIKE '2%' AND COALESCE(cfop.excluir_estoque, FALSE) = FALSE THEN ABS(mov.qtd) ELSE 0 END)
         OVER (PARTITION BY mov.produto_id, mov.grupo_periodo) AS saidas_totais -- Exclui '3%'
 FROM movimentacoes_numeradas mov
-JOIN periodos p 
-  ON p.produto_id = mov.produto_id 
+JOIN periodos p
+  ON p.produto_id = mov.produto_id
  AND p.grupo_periodo = mov.grupo_periodo
 JOIN resultado_calculado res
   ON mov.produto_id = res.produto_id
@@ -648,8 +648,8 @@ LEFT JOIN dbo.cfop cfop ON cfop.co_cfop = COALESCE(mov.cfop_c170, mov.cfop_nf)
 LEFT JOIN dbo.multipla_classificacao mc
   ON mov.produto_id = mc.produto_id
  AND mov.data_evento BETWEEN mc.vigencia_inicio AND mc.vigencia_fim
-ORDER BY 
-    mov.produto_id, 
+ORDER BY
+    mov.produto_id,
     mov.rn;
 
 -- =============================================================
@@ -660,11 +660,11 @@ DROP TABLE IF EXISTS dbo.relatorio_mensal_estoque;
 
 -- Cria a tabela com o relatório mensal agregado
 CREATE TABLE dbo.relatorio_mensal_estoque AS
-WITH 
+WITH
 -- Adiciona o filtro de datas da designacao_fiscal
 DatasFiscais AS (
-    SELECT data_inicio::date, data_final::date 
-    FROM dbo.designacao_fiscal 
+    SELECT data_inicio::date, data_final::date
+    FROM dbo.designacao_fiscal
     LIMIT 1
 ),
 -- CTE para extrair o período (MM/YYYY) e identificar a última movimentação REAL de cada mês (excluindo estoque final)
@@ -693,7 +693,7 @@ totais_mensais AS (
         SUM(CASE WHEN entrada_saida = '2 - SAIDA' AND COALESCE(excluir_estoque, FALSE) = FALSE AND COALESCE(dev_simples, FALSE) = FALSE THEN preco_item ELSE 0 END) AS valor_total_saidas,
         SUM(entradas_desacobertadas_operacao) AS total_entradas_desacobertadas
     FROM
-        movimentacoes_com_periodo 
+        movimentacoes_com_periodo
     GROUP BY
         produto_id, codigo_produto, descricao_produto, periodo
 ),
@@ -702,9 +702,9 @@ valores_finais_mes AS (
     SELECT
         produto_id,
         periodo,
-        saldo_apos_operacao AS quantidade_final_periodo, 
-        custo_medio_dev AS custo_medio_unitario, 
-        (saldo_apos_operacao * custo_medio_dev) AS valor_estoque_final_periodo 
+        saldo_apos_operacao AS quantidade_final_periodo,
+        custo_medio_dev AS custo_medio_unitario,
+        (saldo_apos_operacao * custo_medio_dev) AS valor_estoque_final_periodo
     FROM
         movimentacoes_com_periodo
     WHERE
@@ -748,11 +748,11 @@ DROP TABLE IF EXISTS dbo.relatorio_anual_estoque;
 
 -- Cria a tabela com o relatório anual agregado
 CREATE TABLE dbo.relatorio_anual_estoque AS
-WITH 
+WITH
 -- Adiciona o filtro de datas da designacao_fiscal
 DatasFiscais AS (
-    SELECT data_inicio::date, data_final::date 
-    FROM dbo.designacao_fiscal 
+    SELECT data_inicio::date, data_final::date
+    FROM dbo.designacao_fiscal
     LIMIT 1
 ),
 -- Adiciona o ano a cada movimentação, já filtrando pelo período fiscal
@@ -776,12 +776,12 @@ estoque_inicial_ano AS (
             produto_id,
             ano_apuracao,
             qtd_operacao AS estoque_inicial_qtd,
-            ROW_NUMBER() OVER(PARTITION BY produto_id, ano_apuracao ORDER BY data_evento) as rn 
+            ROW_NUMBER() OVER(PARTITION BY produto_id, ano_apuracao ORDER BY data_evento) as rn
         FROM
             movimentacoes_com_ano
         WHERE entrada_saida LIKE '0%' -- Busca a linha de estoque inicial (que já foi filtrada pela data de início)
     ) AS ranked_inicial
-    WHERE rn = 1 
+    WHERE rn = 1
 ),
 -- Calcula os totais anuais de entradas, saídas declaradas e entradas desacobertadas
 totais_anuais AS (
@@ -805,7 +805,7 @@ valores_finais_ano AS (
         ano_apuracao,
         -- Pega o estoque final declarado da última linha '3 - ESTOQUE FINAL'
         FIRST_VALUE(estoque_final_declarado) OVER (PARTITION BY produto_id, ano_apuracao ORDER BY data_evento DESC, nnf DESC, num_item DESC) as estoque_final_declarado
-     FROM 
+     FROM
         movimentacoes_com_ano
     WHERE entrada_saida LIKE '3%' -- Garante que estamos pegando o valor da linha de estoque final
 )
@@ -825,12 +825,12 @@ SELECT
     (COALESCE(ei.estoque_inicial_qtd, 0) + COALESCE(t.entradas_totais, 0) + COALESCE(t.entradas_desacobertadas, 0) - COALESCE(vf.estoque_final_declarado, 0)) AS saidas_totais_calculadas,
     COALESCE(t.saidas_totais_declaradas, 0) AS saidas_totais_declaradas,
     COALESCE(t.entradas_desacobertadas, 0) AS entradas_desacobertadas,
-    COALESCE(t.entradas_desac_estoque_final_val, 0) AS entradas_desac_estoque_final, 
+    COALESCE(t.entradas_desac_estoque_final_val, 0) AS entradas_desac_estoque_final,
     -- Saídas Desacobertadas = Saídas Calculadas - Saídas Declaradas
     GREATEST(0, (COALESCE(ei.estoque_inicial_qtd, 0) + COALESCE(t.entradas_totais, 0) + COALESCE(t.entradas_desacobertadas, 0) - COALESCE(vf.estoque_final_declarado, 0)) - COALESCE(t.saidas_totais_declaradas, 0)) AS saidas_desacobertadas
 FROM
     totais_anuais t
-LEFT JOIN 
+LEFT JOIN
     estoque_inicial_ano ei ON t.produto_id = ei.produto_id AND t.ano_apuracao = ei.ano_apuracao
 LEFT JOIN
     valores_finais_ano vf ON t.produto_id = vf.produto_id AND t.ano_apuracao = vf.ano_apuracao
@@ -853,4 +853,3 @@ CREATE INDEX idx_mov_estoque_chave_acesso ON dbo.mov_estoque_completa_otimizada 
 CREATE INDEX idx_mov_estoque_codigo_produto ON dbo.mov_estoque_completa_otimizada (codigo_produto);
 CREATE INDEX idx_mov_estoque_data_evento ON dbo.mov_estoque_completa_otimizada (data_evento);
 CREATE INDEX idx_mov_estoque_produto_id ON dbo.mov_estoque_completa_otimizada (produto_id);
-
