@@ -33,7 +33,7 @@ select
 								  left join sitafe.sitafe_tab_veiculo    tb on t.it_co_marca_modelo = tb.it_co_marca_modelo
 							 where
 								  it_nu_devedor = :CO_CNPJ_CPF
-								  
+
 							union all
 
 							select

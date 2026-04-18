@@ -24,9 +24,9 @@ O fator é determinado pela proporção entre o preço médio unitário da unida
 
 ![][image1]**Exemplo Prático:**
 
-* **Unidade de Referência (UN):** Preço Médio R$ 10,00  
-* **Unidade Caixa (CX 12):** Preço Médio R$ 120,00  
-* **Cálculo:** ![][image2]  
+* **Unidade de Referência (UN):** Preço Médio R$ 10,00
+* **Unidade Caixa (CX 12):** Preço Médio R$ 120,00
+* **Cálculo:** ![][image2]
 * **Resultado:** O fator da CX é **12.0** e o da UN é **1.0**.
 
 ## **3\. Intervenção Manual e Ajustes (Excel)**
@@ -35,9 +35,9 @@ Caso a automação encontre dados inconsistentes (ex: falta de histórico de pre
 
 ### **Fluxo de Trabalho:**
 
-1. **Exportação**: Clique em "Exportar Fatores (Excel)".  
-2. **Edição**: No Excel, altere apenas a coluna fator.  
-3. **Importação**: Carregue o ficheiro de volta no sistema.  
+1. **Exportação**: Clique em "Exportar Fatores (Excel)".
+2. **Edição**: No Excel, altere apenas a coluna fator.
+3. **Importação**: Carregue o ficheiro de volta no sistema.
 4. **Processamento**: Utilize o botão **"Processar TUDO"** para aplicar as alterações a todo o histórico de movimentos.
 
 ### **Estrutura do Ficheiro de Importação**
@@ -58,7 +58,7 @@ Se alterar a **Unidade de Referência** na interface antes de exportar, o sistem
 
 Uma vez definido o fator, a função apply\_conversion transforma os dados brutos:
 
-* **Quantidade Convertida (![][image3]):** ![][image4]  
+* **Quantidade Convertida (![][image3]):** ![][image4]
 * **Preço Unitário Convertido (![][image5]):** ![][image6]
 
 **Consequência:** Uma compra de "1 CX" com fator 12 torna-se "12 UN" no cálculo de stock, mantendo o valor total da operação inalterado.
@@ -76,8 +76,8 @@ O ConversionErrorDetector monitoriza automaticamente anomalias que possam compro
 
 ## **Notas Técnicas e Performance**
 
-* **Motor Polars**: O processamento utiliza a **Lazy API do Polars**, permitindo que milhares de linhas sejam convertidas em milissegundos através de execução paralela.  
-* **Integridade**: O sistema realiza a **deduplicação** de movimentos (baseada na Chave de Acesso e Item) antes da conversão para evitar inflação artificial do stock.  
+* **Motor Polars**: O processamento utiliza a **Lazy API do Polars**, permitindo que milhares de linhas sejam convertidas em milissegundos através de execução paralela.
+* **Integridade**: O sistema realiza a **deduplicação** de movimentos (baseada na Chave de Acesso e Item) antes da conversão para evitar inflação artificial do stock.
 * **Recálculo Individual**: Através de recalculate\_single\_product, é possível testar alterações num único produto sem necessidade de reprocessar toda a base de dados.
 
 [image1]: <data:image/png;base64,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>

@@ -1,7 +1,7 @@
 /*
     CONSULTA INTEGRADA: DADOS CADASTRAIS DE EMPRESAS VINCULADAS A UM CPF
     --------------------------------------------------------------------
-    Objetivo: Dado um CPF (:CPF), localiza todas as empresas (CNPJs) onde 
+    Objetivo: Dado um CPF (:CPF), localiza todas as empresas (CNPJs) onde
     ele figura como sócio e retorna os dados cadastrais detalhados e débitos.
 */
 
@@ -19,13 +19,13 @@ SELECT
     -- Cálculo do tempo de atividade (Query 1)
     to_char(trunc(months_between(
         CASE WHEN t.in_situacao = '001' THEN SYSDATE
-             ELSE to_date(us.data_ult_sit, 'YYYYMMDD') 
+             ELSE to_date(us.data_ult_sit, 'YYYYMMDD')
         END,
         t.da_inicio_atividade), 2)) || ' meses'             AS PERIODO_ATIVIDADE,
     -- Cálculo de Inadimplência (Vindo da Query 2)
     lpad(
         TRIM(to_char(
-            NVL(vencido.total_divida, 0), 
+            NVL(vencido.total_divida, 0),
             '999G999G999G990D00'
         )),
         length(NVL(vencido.total_divida, 0)) + 6
@@ -39,7 +39,7 @@ FROM
         INNER JOIN sitafe.sitafe_historico_contribuinte h ON soc.it_nu_fac = h.it_nu_fac
         WHERE substr(soc.gr_identificacao, 2) = :CPF  -- PARÂMETRO DE ENTRADA (CPF DO SÓCIO)
     ) socios ON t.co_cnpj_cpf = socios.cnpj_empresa
-    
+
     -- 2. JOINS de Metadados (Lógica da Query 1)
     LEFT JOIN bi.dm_localidade localid ON t.co_municipio = localid.co_municipio
     LEFT JOIN bi.dm_regime_pagto_descricao rp ON t.co_regime_pagto = rp.co_regime_pagamento
@@ -61,7 +61,7 @@ FROM
             AND u.it_co_usuario NOT IN ('INTERNET', 'P30015AC   ')
         GROUP BY u.it_nu_inscricao_estadual
     ) us ON t.co_cad_icms = us.it_nu_inscricao_estadual
-    
+
     -- 3. JOIN de Inadimplência (Lógica da Query 2)
     LEFT JOIN (
         SELECT

@@ -1,6 +1,6 @@
 WITH PARAMETROS AS (
     -- 1. Padronização dos inputs e definição da Data de Corte
-    SELECT 
+    SELECT
         :CNPJ AS cnpj_filtro,
         TO_DATE(:data_inicial, 'DD/MM/YYYY') AS dt_ini_filtro,
         TO_DATE(:data_final,   'DD/MM/YYYY') AS dt_fim_filtro,
@@ -10,7 +10,7 @@ WITH PARAMETROS AS (
 
 TODOS_ARQUIVOS_VALIDOS AS (
     -- 2. Seleção do arquivo mais recente respeitando a Data de Corte
-    SELECT 
+    SELECT
         r.ID              AS reg_0000_id,
         r.DT_INI          AS dt_ini,
         r.DT_FIN          AS dt_fin,
@@ -19,7 +19,7 @@ TODOS_ARQUIVOS_VALIDOS AS (
         r.COD_FIN         AS cod_fin_efd,
         p.dt_corte, p.dt_ini_filtro, p.dt_fim_filtro,
         ROW_NUMBER() OVER (
-            PARTITION BY r.CNPJ, r.DT_INI 
+            PARTITION BY r.CNPJ, r.DT_INI
             ORDER BY r.DATA_ENTREGA DESC
         ) AS rn
     FROM sped.reg_0000 r
@@ -30,14 +30,14 @@ TODOS_ARQUIVOS_VALIDOS AS (
 ARQUIVOS_DO_PERIODO AS (
     -- 3a. Arquivos EFD cujo período de apuração está dentro do filtro
     SELECT * FROM TODOS_ARQUIVOS_VALIDOS
-    WHERE rn = 1 
+    WHERE rn = 1
       AND dt_ini BETWEEN dt_ini_filtro AND dt_fim_filtro
 ),
 
 OUTROS_ARQUIVOS AS (
     -- 3b. Arquivos EFD de outros períodos (para notas extemporâneas)
     SELECT * FROM TODOS_ARQUIVOS_VALIDOS
-    WHERE rn = 1 
+    WHERE rn = 1
       AND (dt_ini < dt_ini_filtro OR dt_ini > dt_fim_filtro)
 ),
 
@@ -87,9 +87,9 @@ SELECT
     SUM(vl_icms)                       AS total_icms_c197,
     SUM(vl_outros)                     AS total_outros_c197
 FROM BASE_C197
-GROUP BY 
+GROUP BY
     TO_CHAR(periodo_efd_dt, 'YYYY/MM'),
     cod_aj,
     descr_compl_aj
-ORDER BY 
+ORDER BY
     periodo_efd, total_icms_c197 DESC;

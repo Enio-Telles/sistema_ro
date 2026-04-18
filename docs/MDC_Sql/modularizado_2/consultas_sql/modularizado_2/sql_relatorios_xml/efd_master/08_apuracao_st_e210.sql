@@ -15,11 +15,11 @@ SELECT
    '<html><p style="color:red">'||lpad(TRIM(to_char(SUM(t.vl_tot_debitos), '999G999G999G990D00')), length(MAX(SUM(t.vl_tot_debitos))
                                                                         OVER()) + 6)      "V. Total Débitos - Saídas",
    '<html><p style="color:red">'||lpad(TRIM(to_char(SUM(t.vl_aj_debitos), '999G999G999G990D00')), length(MAX(SUM(t.vl_aj_debitos))
-                                                                        OVER()) + 6)      "V. Total Aj. a Déb. Doc Fisc",                                                                        
+                                                                        OVER()) + 6)      "V. Total Aj. a Déb. Doc Fisc",
    '<html><p style="color:red">'||lpad(TRIM(to_char(SUM(t.vl_tot_aj_debitos), '999G999G999G990D00')), length(MAX(SUM(t.vl_tot_aj_debitos))
-                                                                        OVER()) + 6)      "V. Total dos Aj. a Débito",    
+                                                                        OVER()) + 6)      "V. Total dos Aj. a Débito",
    '<html><p style="color:red">'||lpad(TRIM(to_char(SUM(t.vl_estornos_cred), '999G999G999G990D00')), length(MAX(SUM(t.vl_estornos_cred))
-                                                                        OVER()) + 6)      "V. Total dos Aj.  Est. Créd.", 
+                                                                        OVER()) + 6)      "V. Total dos Aj.  Est. Créd.",
    '<html><p style="color:blue">'||lpad(TRIM(to_char(SUM(t.vl_tot_creditos), '999G999G999G990D00')), length(MAX(SUM(t.vl_tot_creditos))
                                                                         OVER()) + 6)      "V. Total Créditos - Entradas",
    '<html><p style="color:blue">'||lpad(TRIM(to_char(SUM(t.vl_aj_creditos), '999G999G999G990D00')), length(MAX(SUM(t.vl_aj_creditos))
@@ -35,7 +35,7 @@ SELECT
     '<html>'||lpad(TRIM(to_char(SUM(t.vl_tot_ded), '999G999G999G990D00')), length(MAX(SUM(t.vl_tot_ded))
                                                                         OVER()) + 6)      "V. Total de Deduções",
    '<html><b style="color:red">'||lpad(TRIM(to_char(SUM(t.vl_recolher), '999G999G999G990D00')), length(MAX(SUM(t.vl_recolher))
-                                                                        OVER()) + 6)      "V. Total de ICMS a Recolher",                                                                      
+                                                                        OVER()) + 6)      "V. Total de ICMS a Recolher",
    '<html><b style="color:blue">'||lpad(TRIM(to_char(SUM(t.vl_sld_credor_transportar), '999G999G999G990D00')), length(MAX(SUM(t.vl_sld_credor_transportar))
                                                                         OVER()) + 6)      "V. Sld. Cred. a Transp.",
     '<html>'||lpad(TRIM(to_char(SUM(t.vl_deb_esp), '999G999G999G990D00')), length(MAX(SUM(t.vl_deb_esp))
@@ -43,8 +43,8 @@ SELECT
 
 FROM
     bi.fato_efd_sumarizada t
-left join bi.dm_pessoa p on t.CO_CNPJ_CPF_DECLARANTE = p.co_cnpj_cpf 
-    
+left join bi.dm_pessoa p on t.CO_CNPJ_CPF_DECLARANTE = p.co_cnpj_cpf
+
 WHERE
         t.co_cnpj_cpf_declarante = :CNPJ_CPF
     AND t.da_referencia between :DATA_INICIAL and :DATA_FINAL

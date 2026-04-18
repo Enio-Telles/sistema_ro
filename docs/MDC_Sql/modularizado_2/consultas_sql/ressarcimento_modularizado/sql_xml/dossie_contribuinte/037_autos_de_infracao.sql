@@ -27,11 +27,11 @@ select
 							t.in_in_sit_lanc_multa sit_guia_m,
 							solid_multa.solidarios_multa solid_multa
 						from bi.fato_acao_fiscal_ainf t
-						left join bi.dm_acao_fiscal u 
+						left join bi.dm_acao_fiscal u
 							on t.nu_acao_fiscal = u.nu_acao_fiscal
 						left join bi.dm_acao_fiscal_historico_tate tate
 							on t.nu_termo_infracao = tate.nu_termo_infracao
-						left join (select d.it_nu_guia, listagg(ptrib.co_cnpj_cpf||' - '||ptrib.no_razao_social,', ') within group (order by d.it_nu_guia) solidarios_trib 
+						left join (select d.it_nu_guia, listagg(ptrib.co_cnpj_cpf||' - '||ptrib.no_razao_social,', ') within group (order by d.it_nu_guia) solidarios_trib
 									from sitafe.sitafe_devedor_solidario d
 									left join bi.dm_pessoa ptrib
 										on d.it_nu_cpf_cnpj_devedor = ptrib.co_cnpj_cpf

@@ -1,9 +1,9 @@
 
 WITH PARAMETROS AS (
-    
-    SELECT 
+
+    SELECT
         :CNPJ AS cnpj_filtro,
-        
+
         NVL(TO_DATE(:data_limite_processamento, 'DD/MM/YYYY'), TRUNC(SYSDATE)) AS dt_corte
     FROM dual
 ),
@@ -66,15 +66,15 @@ WHERE
     r.data_entrega <= p.dt_corte
 
 )
-SELECT 
+SELECT
     reg_0000_id,
     reg,
     cod_ver,
     cod_fin,
-    CASE 
+    CASE
        WHEN cod_fin = 0 THEN '0 - Remessa do arquivo original'
        WHEN cod_fin = 1 THEN '1 - Remessa do arquivo substituto'
-       ELSE 'Outros'    
+       ELSE 'Outros'
     END AS finalidade_arquivo,
     --dt_ini,
     dt_fin,
@@ -87,18 +87,18 @@ SELECT
     im, -- inscricao municipal
     suframa,
     --ind_perfil,
-    CASE 
+    CASE
        WHEN ind_perfil = 'A' THEN 'Perfil A'
        WHEN ind_perfil = 'B' THEN 'Perfil B'
        WHEN ind_perfil = 'C' THEN 'Perfil C'
-       ELSE 'Outros'    
+       ELSE 'Outros'
     END AS ind_perfil,
     --ind_ativ,
-     CASE 
+     CASE
        WHEN ind_ativ = 0 THEN '0 – Industrial ou equiparado a industrial'
        WHEN ind_ativ = 1 THEN '1 – Outros.'
-       ELSE 'Outros'    
-    END AS ind_ativ,   
+       ELSE 'Outros'
+    END AS ind_ativ,
     arquivo_nome,
     created_at,
     updated_at,

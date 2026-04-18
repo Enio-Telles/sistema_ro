@@ -10,7 +10,7 @@ Tabela cronológica e auditável do fluxo de mercadorias, consolidando C170, NFe
 def gerar_movimentacao_estoque(cnpj: str, pasta_cnpj: Path | None = None) -> bool
 ```
 
-Módulo: `src/transformacao/movimentacao_estoque.py` (wrapper)  
+Módulo: `src/transformacao/movimentacao_estoque.py` (wrapper)
 Implementação: `src/transformacao/movimentacao_estoque_pkg/movimentacao_estoque.py`
 
 ## Dependências

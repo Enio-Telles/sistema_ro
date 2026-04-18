@@ -1,5 +1,5 @@
 WITH PARAMETROS AS (
-    SELECT 
+    SELECT
         :CNPJ                                         AS cnpj_filtro,
         NVL(TO_DATE(:data_limite_processamento, 'DD/MM/YYYY'), TRUNC(SYSDATE)) AS dt_corte
     FROM dual
@@ -12,7 +12,7 @@ ARQUIVOS_RANKING AS (
         r.cnpj,
         r.dt_ini,
         ROW_NUMBER() OVER (
-            PARTITION BY r.cnpj, r.dt_ini 
+            PARTITION BY r.cnpj, r.dt_ini
             ORDER BY r.data_entrega DESC, r.id DESC
         ) AS rn
     FROM sped.reg_0000 r
@@ -22,13 +22,13 @@ ARQUIVOS_RANKING AS (
 
 -- 2. H005: Cabeçalho do Inventário (Nível 1)
 CTE_H005 AS (
-    SELECT 
+    SELECT
         id AS reg_h005_id, -- Chave Primária do Inventário
         reg_0000_id,
         TO_DATE(dt_inv, 'DDMMYYYY') AS dt_inv,
         NVL(CAST(vl_inv AS NUMBER), 0) AS vl_inv_total,
         mot_inv AS cod_mot_inv,
-        DECODE(mot_inv, 
+        DECODE(mot_inv,
                '01', '01 - No final do período',
                '02', '02 - Mudança de tributação (ICMS)',
                '03', '03 - Baixa cadastral/paralisação temporária',
@@ -42,7 +42,7 @@ CTE_H005 AS (
 
 -- 3. H010: Itens do Inventário (Nível 2 - Vinculado ao H005)
 CTE_H010 AS (
-    SELECT 
+    SELECT
         id AS reg_h010_id,       -- Chave Primária do Item
         reg_h005_id,             -- Chave Estrangeira para o Cabeçalho H005
         reg_0000_id,
@@ -61,7 +61,7 @@ CTE_H010 AS (
 
 -- 4. H020: Tributação do Item (Nível 3 - Vinculado ao H010)
 CTE_H020 AS (
-    SELECT 
+    SELECT
         reg_h010_id,             -- Chave Estrangeira para o Item H010
         reg_0000_id,
         cst_icms,
@@ -73,7 +73,7 @@ CTE_H020 AS (
 
 -- 5. 0200: Cadastro de Produtos (Dimensão)
 CTE_0200 AS (
-    SELECT 
+    SELECT
         reg_0000_id,
         cod_item,
         descr_item AS descricao_produto,
@@ -87,23 +87,23 @@ CTE_0200 AS (
 -- ==========================================
 -- CONSULTA FINAL: Montagem do Relatório
 -- ==========================================
-SELECT 
-    /*+ PARALLEL(8) */ 
+SELECT
+    /*+ PARALLEL(8) */
     arq.cnpj,
-    
+
     -- Dados do Cabeçalho (H005)
     h005.dt_inv,
     h005.cod_mot_inv,
     h005.mot_inv_desc,
     h005.vl_inv_total AS valor_total_inventario_h005,
-    
+
     -- Dados do Produto (0200)
     h010.codigo_produto_limpo,
     r0200.descricao_produto,
     r0200.cod_ncm,
     r0200.cest,
     r0200.tipo_item,
-    
+
     -- Dados do Item no Inventário (H010)
     h010.unidade_medida,
     h010.quantidade,
@@ -112,7 +112,7 @@ SELECT
     h010.ind_prop AS indicador_propriedade,
     h010.cod_part AS participante_terceiro,
     h010.txt_compl AS obs_complementar,
-    
+
     -- Dados de Tributação (H020)
     h020.cst_icms,
     h020.bc_icms,
@@ -121,25 +121,25 @@ SELECT
 FROM ARQUIVOS_RANKING arq
 
 -- 1. Traz o cabeçalho do inventário (Arquivo -> H005)
-INNER JOIN CTE_H005 h005 
+INNER JOIN CTE_H005 h005
     ON h005.reg_0000_id = arq.reg_0000_id
 
 -- 2. Traz os itens do inventário vinculados EXATAMENTE àquele cabeçalho (H005 -> H010)
-INNER JOIN CTE_H010 h010 
-    ON h010.reg_h005_id = h005.reg_h005_id 
+INNER JOIN CTE_H010 h010
+    ON h010.reg_h005_id = h005.reg_h005_id
    AND h010.reg_0000_id = arq.reg_0000_id
 
 -- 3. Traz a tributação vinculada EXATAMENTE àquele item (H010 -> H020)
-LEFT JOIN CTE_H020 h020 
-    ON h020.reg_h010_id = h010.reg_h010_id 
+LEFT JOIN CTE_H020 h020
+    ON h020.reg_h010_id = h010.reg_h010_id
    AND h020.reg_0000_id = arq.reg_0000_id
 
 -- 4. Traz o cadastro do produto (H010 -> 0200)
-LEFT JOIN CTE_0200 r0200 
-    ON r0200.reg_0000_id = arq.reg_0000_id 
+LEFT JOIN CTE_0200 r0200
+    ON r0200.reg_0000_id = arq.reg_0000_id
    AND r0200.cod_item = h010.codigo_produto_original
 
 WHERE arq.rn = 1
-ORDER BY 
-    h005.dt_inv DESC, 
+ORDER BY
+    h005.dt_inv DESC,
     h010.codigo_produto_limpo;

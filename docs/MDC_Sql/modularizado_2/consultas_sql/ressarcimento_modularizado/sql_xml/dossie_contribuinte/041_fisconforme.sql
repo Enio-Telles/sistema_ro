@@ -13,9 +13,9 @@ OBSERVACAO:
 SELECT
 
 					  case when malha is null and status is null then
-					  '<html><b>TOTAL DE NOTIFICAÇÕES RECEBIDAS: '||quant 
+					  '<html><b>TOTAL DE NOTIFICAÇÕES RECEBIDAS: '||quant
 					  when malha is null and status is not null then
-					   '<html><b>-------Quantidade '||status||': '||quant 
+					   '<html><b>-------Quantidade '||status||': '||quant
 					  when malha is not null and periodo is null and status is null then
 					  '<html>------------'||malha||' - <b>'||quant
 					  else

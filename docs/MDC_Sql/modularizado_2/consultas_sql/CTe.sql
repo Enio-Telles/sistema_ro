@@ -1,21 +1,21 @@
 WITH parametros AS (
-    SELECT 
+    SELECT
         TRIM(:CNPJ) AS cnpj_filtro,
         TO_DATE(:DATA_INI, 'DD/MM/YYYY') AS data_inicial,
         -- Adiciona as 23:59:59 para garantir que pegue o dia final inteiro
         TO_DATE(:DATA_FIM || ' 23:59:59', 'DD/MM/YYYY HH24:MI:SS') AS data_final
     FROM DUAL
 )
-SELECT 
+SELECT
     /* Lógica do Tomador */
-    CASE cte.CO_TOMADOR3 
+    CASE cte.CO_TOMADOR3
         WHEN 0 THEN 'Remetente'
         WHEN 1 THEN 'Expedidor'
         WHEN 2 THEN 'Recebedor'
         WHEN 3 THEN 'Destinatário'
         ELSE 'Outros'
     END AS TIPO_TOMADOR,
-    
+
     /* Seleção das colunas (mantida a lista original) */
  cte.NSU,
 cte.CHAVE_ACESSO,
@@ -147,11 +147,11 @@ cte.IN_SCHEMA,
 cte.DT_GRAVACAO,
 cte.TP_EMIS
 
-FROM 
+FROM
     bi.fato_cte_detalhe cte
     CROSS JOIN parametros p -- Sintaxe ANSI explícita, mais limpa
 
-WHERE 
+WHERE
     /* 1. Filtro de Período (Pela Data de Emissão - DHEMI) */
     cte.DHEMI BETWEEN p.data_inicial AND p.data_final
 

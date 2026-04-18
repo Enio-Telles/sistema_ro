@@ -12,7 +12,7 @@ def _count_tipo_fator(df: pl.DataFrame | None, tipo: str) -> int:
 def _count_true(df: pl.DataFrame | None, column: str) -> int:
     if df is None or df.is_empty() or column not in df.columns:
         return 0
-    return df.filter(df[column] == True).height
+    return df.filter(pl.col(column)).height
 
 
 def summarize_conversion_quality(

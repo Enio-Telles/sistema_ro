@@ -1,5 +1,5 @@
 WITH PARAMETROS AS (
-    SELECT 
+    SELECT
         :CNPJ AS cnpj_filtro,
         TO_DATE(:data_inicial, 'DD/MM/YYYY') AS dt_ini_filtro,
         TO_DATE(:data_final,   'DD/MM/YYYY') AS dt_fim_filtro,
@@ -15,21 +15,21 @@ ARQUIVOS_RANKING AS (
         reg_0000.dt_ini,
         reg_0000.dt_fin,
         reg_0000.data_entrega,
-        CASE 
+        CASE
             WHEN reg_0000.cod_fin = 0 THEN '0 - Remessa do arquivo original'
             WHEN reg_0000.cod_fin = 1 THEN '1 - Remessa do arquivo substituto'
-            ELSE 'Outros'    
+            ELSE 'Outros'
         END AS desc_finalidade,
-        p.dt_corte, 
-        p.dt_ini_filtro, 
+        p.dt_corte,
+        p.dt_ini_filtro,
         p.dt_fim_filtro,
         ROW_NUMBER() OVER (
-            PARTITION BY reg_0000.cnpj, reg_0000.dt_ini 
+            PARTITION BY reg_0000.cnpj, reg_0000.dt_ini
             ORDER BY reg_0000.data_entrega DESC
-        ) AS rn        
+        ) AS rn
     FROM sped.reg_0000 reg_0000
     JOIN PARAMETROS p ON reg_0000.cnpj = p.cnpj_filtro
-    WHERE 
+    WHERE
         reg_0000.data_entrega <= p.dt_corte
         AND reg_0000.dt_ini BETWEEN p.dt_ini_filtro AND p.dt_fim_filtro
 ),
@@ -45,29 +45,29 @@ BASE_DADOS AS (
         c170.descr_compl,
         c170.qtd qtd_saida_c170,
         c170.vl_icms AS vl_icms_c170, -- Trazido para cá para usar no cálculo final
-        
+
         /* CÁLCULO DA JANELA (MANTIDO) */
-        GREATEST(0, 
+        GREATEST(0,
             c170.qtd - NVL(
                 SUM(nfe_ent.prod_qcom) OVER (
-                    PARTITION BY c100.chv_nfe, c170.num_item 
+                    PARTITION BY c100.chv_nfe, c170.num_item
                     ORDER BY c176.chave_nfe_ult, c176.num_item_ult_e
                     ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING
                 ), 0
             )
         ) AS qtd_a_ressarc_c170,
-        
+
         /* CÁLCULO DA JANELA PARA NF */
-        GREATEST(0, 
+        GREATEST(0,
             nfe.prod_qcom - NVL(
                 SUM(nfe_ent.prod_qcom) OVER (
-                    PARTITION BY c100.chv_nfe, c170.num_item 
+                    PARTITION BY c100.chv_nfe, c170.num_item
                     ORDER BY c176.chave_nfe_ult, c176.num_item_ult_e
                     ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING
                 ), 0
             )
         ) AS qtd_a_ressarc_nf,
-        
+
         nfe_ent.prod_qcom AS qtd_entrada_nf,
         nfe_ent.prod_vprod valor_entrada_nf,
         nfe.prod_qcom qtd_saida_nf,
@@ -90,21 +90,21 @@ BASE_DADOS AS (
         c176.vl_unit_icms_ult_e icms_ult_e,
         c176.aliq_st_ult_e aliq_st_ult_e,
         c176.vl_unit_res vr_un_ressarc,
-        
+
         /* Campos auxiliares para o cálculo final */
         nfe.icms_vicms AS vl_icms_nf_saida,
-        
+
         arq.cod_fin_efd,
-        arq.data_entrega 
+        arq.data_entrega
     FROM
         sped.reg_c176 c176
     INNER JOIN ARQUIVOS_RANKING arq ON c176.reg_0000_id = arq.reg_0000_id
     LEFT JOIN sped.reg_c100 c100 ON c176.reg_c100_id = c100.id
     LEFT JOIN sped.reg_c170 c170 ON c176.reg_c100_id = c100.id AND c176.reg_c170_id = c170.id
-    LEFT JOIN bi.fato_nfe_detalhe nfe 
-      ON c100.chv_nfe = nfe.chave_acesso 
+    LEFT JOIN bi.fato_nfe_detalhe nfe
+      ON c100.chv_nfe = nfe.chave_acesso
       AND LTRIM(c170.cod_item, '0') = LTRIM(nfe.prod_cprod, '0')
-    LEFT JOIN bi.fato_nfe_detalhe nfe_ent 
+    LEFT JOIN bi.fato_nfe_detalhe nfe_ent
       ON c176.chave_nfe_ult = nfe_ent.chave_acesso
       AND LTRIM(c170.cod_item, '0') = LTRIM(nfe_ent.prod_cprod, '0')
     WHERE arq.rn = 1
@@ -112,15 +112,15 @@ BASE_DADOS AS (
 
 /* CTE 2: CALCULA A QTD_RESSARC EFETIVA */
 BASE_COM_QTD AS (
-    SELECT 
+    SELECT
         bd.*,
-        CASE 
-            WHEN bd.qtd_a_ressarc_c170 > bd.qtd_entrada_nf THEN bd.qtd_entrada_nf 
-            ELSE bd.qtd_a_ressarc_c170 
+        CASE
+            WHEN bd.qtd_a_ressarc_c170 > bd.qtd_entrada_nf THEN bd.qtd_entrada_nf
+            ELSE bd.qtd_a_ressarc_c170
         END AS qtd_ressarc_c170,
-        CASE 
-            WHEN bd.qtd_a_ressarc_nf > bd.qtd_entrada_nf THEN bd.qtd_entrada_nf 
-            ELSE bd.qtd_a_ressarc_nf 
+        CASE
+            WHEN bd.qtd_a_ressarc_nf > bd.qtd_entrada_nf THEN bd.qtd_entrada_nf
+            ELSE bd.qtd_a_ressarc_nf
         END AS qtd_ressarc_nf
     FROM BASE_DADOS bd
 )
@@ -160,20 +160,20 @@ SELECT
     bq.icms_ult_e,
     bq.aliq_st_ult_e,
     bq.vr_un_ressarc,
-    
+
     /* NOVA FÓRMULA: VR_TOTAL_RESSARC_C170 USANDO QTD_RESSARC */
-    CASE 
+    CASE
         WHEN bq.vl_icms_c170 > 0 THEN (bq.qtd_ressarc_c170 * bq.vr_un_ressarc) + (bq.qtd_ressarc_c170 * bq.icms_ult_e)
-        ELSE bq.qtd_ressarc_c170 * bq.vr_un_ressarc 
+        ELSE bq.qtd_ressarc_c170 * bq.vr_un_ressarc
     END AS vr_total_ressarc_c170,
     /* FIM NOVA FÓRMULA */
 
-    /* FÓRMULA NF (Mantive a lógica, mas atualizei para usar a nova qtd_ressarc se desejar, 
-       mas no original usava prod_qcom. Se precisar alterar essa também, avise. 
+    /* FÓRMULA NF (Mantive a lógica, mas atualizei para usar a nova qtd_ressarc se desejar,
+       mas no original usava prod_qcom. Se precisar alterar essa também, avise.
        Abaixo mantive o original usando nfe.prod_qcom, apenas ajustando as colunas) */
-    CASE 
+    CASE
         WHEN bq.vl_icms_nf_saida > 0 THEN (bq.qtd_ressarc_nf * bq.vr_un_ressarc) + (bq.qtd_ressarc_nf * bq.icms_ult_e)
-        ELSE bq.qtd_ressarc_nf * bq.vr_un_ressarc 
+        ELSE bq.qtd_ressarc_nf * bq.vr_un_ressarc
     END AS vr_total_ressarc_nf,
 
     bq.cod_fin_efd,

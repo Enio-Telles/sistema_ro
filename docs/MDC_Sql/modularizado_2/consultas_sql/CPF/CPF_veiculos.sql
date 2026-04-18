@@ -1,7 +1,7 @@
 ﻿/*
     Analise da Consulta: CPF_veiculos.sql
     Objetivo: Listar veiculos atuais e anteriores de propriedade de um CPF.
-    
+
     Tabelas Utilizadas:
     - sitafe.sitafe_veiculo (t): Veiculos atuais (propriedade vigente).
       Colunas: it_nu_devedor (CPF), it_nu_placa, it_co_renavam, it_nu_chassi, it_co_marca_modelo.
@@ -15,7 +15,7 @@
     2. Segundo bloco: Veiculos ANTERIORES (historico DETRAN).
     3. Exclui do historico os veiculos que ainda sao do CPF (NOT IN).
     4. Formata saida com HTML para destaque visual.
-    
+
     Cores:
     - Verde (#4ACC70): Proprietario atual.
     - Laranja: Ja foi proprietario.
@@ -29,7 +29,7 @@ SELECT
 UNION ALL
 -- Veiculos ATUAIS
 SELECT
-      2 codigo, 
+      2 codigo,
       '----Modelo: '
       || tb.it_no_marca_modelo
       || ' - Ano Fabricacao '

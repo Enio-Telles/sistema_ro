@@ -2,12 +2,12 @@
 --IT_DA_INICIO = INICIO YYYYMMDD
 -- IT_DA_FINAL = FIM YYYYMMDD
 WITH classif AS
-(SELECT  s2.it_no_produto, 
+(SELECT  s2.it_no_produto,
     s1.* FROM sitafe.sitafe_produto_sefin_aux s1
-LEFT JOIN sitafe.sitafe_produto_sefin s2 ON s1.it_co_sefin = s2.it_co_sefin 
+LEFT JOIN sitafe.sitafe_produto_sefin s2 ON s1.it_co_sefin = s2.it_co_sefin
 
 )
-SELECT 
+SELECT
 n.IT_NU_NCM,
 n.IT_NU_CEST,
 n.it_co_sefin,

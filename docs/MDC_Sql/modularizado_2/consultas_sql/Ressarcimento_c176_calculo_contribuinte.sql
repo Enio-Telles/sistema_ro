@@ -1,5 +1,5 @@
 WITH PARAMETROS AS (
-    SELECT 
+    SELECT
         :CNPJ AS cnpj_filtro,
         TO_DATE(:data_inicial, 'DD/MM/YYYY') AS dt_ini_filtro,
         TO_DATE(:data_final,   'DD/MM/YYYY') AS dt_fim_filtro,
@@ -15,9 +15,9 @@ ARQUIVOS_FILTRADOS AS (
         r.cod_fin AS cod_fin_efd,
         r.data_entrega,
         ROW_NUMBER() OVER (
-            PARTITION BY r.cnpj, r.dt_ini 
+            PARTITION BY r.cnpj, r.dt_ini
             ORDER BY r.data_entrega DESC
-        ) AS rn        
+        ) AS rn
     FROM sped.reg_0000 r, PARAMETROS p
     WHERE r.cnpj = p.cnpj_filtro
       AND r.data_entrega <= p.dt_corte
@@ -107,8 +107,8 @@ NFE_SAIDA AS (
         nfe.icms_vicmsst AS icms_st_saida_nf,
         nfe.icms_cst AS cst_icms_nf
     FROM C100_C170_DADOS cd
-    LEFT JOIN bi.fato_nfe_detalhe nfe 
-      ON cd.chv_nfe = nfe.chave_acesso 
+    LEFT JOIN bi.fato_nfe_detalhe nfe
+      ON cd.chv_nfe = nfe.chave_acesso
       AND LTRIM(cd.cod_item, '0') = LTRIM(nfe.prod_cprod, '0')
 ),
 
@@ -118,33 +118,33 @@ NFE_COM_ENTRADA AS (
         ns.*,
         nfe_ent.prod_qcom AS qtd_entrada_nf,
         nfe_ent.prod_vprod AS valor_entrada_nf,
-        GREATEST(0, 
+        GREATEST(0,
             ns.qtd_c170 - NVL(
                 SUM(nfe_ent.prod_qcom) OVER (
-                    PARTITION BY ns.chv_nfe, ns.num_item 
+                    PARTITION BY ns.chv_nfe, ns.num_item
                     ORDER BY ns.chave_nfe_ult, ns.num_item_ult_e
                     ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING
                 ), 0
             )
         ) AS qtd_a_ressarc_c170,
-        GREATEST(0, 
+        GREATEST(0,
             ns.qtd_saida_nf - NVL(
                 SUM(nfe_ent.prod_qcom) OVER (
-                    PARTITION BY ns.chv_nfe, ns.num_item 
+                    PARTITION BY ns.chv_nfe, ns.num_item
                     ORDER BY ns.chave_nfe_ult, ns.num_item_ult_e
                     ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING
                 ), 0
             )
         ) AS qtd_a_ressarc_nf
     FROM NFE_SAIDA ns
-    LEFT JOIN bi.fato_nfe_detalhe nfe_ent 
+    LEFT JOIN bi.fato_nfe_detalhe nfe_ent
       ON ns.chave_nfe_ult = nfe_ent.chave_acesso
       AND LTRIM(ns.cod_item, '0') = LTRIM(nfe_ent.prod_cprod, '0')
 ),
 
 /* CTE 6: Calcula qtd_ressarc efetiva */
 QTD_RESSARC AS (
-    SELECT 
+    SELECT
         ne.*,
         LEAST(ne.qtd_a_ressarc_c170, NVL(ne.qtd_entrada_nf, ne.qtd_a_ressarc_c170)) AS qtd_ressarc_c170,
         LEAST(ne.qtd_a_ressarc_nf, NVL(ne.qtd_entrada_nf, ne.qtd_a_ressarc_nf)) AS qtd_ressarc_nf
@@ -191,25 +191,25 @@ SELECT
     qr.qtd_ressarc_c170 * (qr.vl_unit_res) AS ressarc_st_c170,
     qr.qtd_ressarc_c170 * (qr.vl_unit_icms_ult_e) AS ressarc_prop_c170,
     qr.qtd_ressarc_c170 * (qr.vl_unit_res) + qr.qtd_ressarc_c170 * (qr.vl_unit_icms_ult_e) AS total_ressarc_c170,
-    CASE 
+    CASE
         WHEN qr.vl_icms_c170 > 0 THEN qr.qtd_ressarc_c170 * (qr.vl_unit_res + qr.vl_unit_icms_ult_e)
-        ELSE qr.qtd_ressarc_c170 * qr.vl_unit_res 
+        ELSE qr.qtd_ressarc_c170 * qr.vl_unit_res
     END AS vr_total_ressarc_c170,
     qr.qtd_ressarc_nf * (qr.vl_unit_res) AS ressarc_st_nf,
     qr.qtd_ressarc_nf * (qr.vl_unit_icms_ult_e) AS ressarc_prop_nf,
     qtd_saida_nf*(vl_unit_res + vl_unit_icms_ult_e) AS ressarc_qtd_saída_c170,
     qr.qtd_ressarc_nf * (qr.vl_unit_res) + qr.qtd_ressarc_nf * (qr.vl_unit_icms_ult_e) AS total_ressarc_nf,
-    CASE 
+    CASE
         WHEN qr.icms_saida_nf > 0 THEN qr.qtd_ressarc_nf * (qr.vl_unit_res + qr.vl_unit_icms_ult_e)
-        ELSE qr.qtd_ressarc_nf * qr.vl_unit_res 
+        ELSE qr.qtd_ressarc_nf * qr.vl_unit_res
     END AS vr_total_ressarc_nf,
     /* Diferença entre ressarcimento C170 e NF */
-    (CASE 
+    (CASE
         WHEN qr.vl_icms_c170 > 0 THEN qr.qtd_ressarc_c170 * (qr.vl_unit_res + qr.vl_unit_icms_ult_e)
-        ELSE qr.qtd_ressarc_c170 * qr.vl_unit_res 
-    END) - (CASE 
+        ELSE qr.qtd_ressarc_c170 * qr.vl_unit_res
+    END) - (CASE
         WHEN qr.icms_saida_nf > 0 THEN qr.qtd_ressarc_nf * (qr.vl_unit_res + qr.vl_unit_icms_ult_e)
-        ELSE qr.qtd_ressarc_nf * qr.vl_unit_res 
+        ELSE qr.qtd_ressarc_nf * qr.vl_unit_res
     END) AS dif_ressarc,
     qr.cod_fin_efd,
     qr.data_entrega

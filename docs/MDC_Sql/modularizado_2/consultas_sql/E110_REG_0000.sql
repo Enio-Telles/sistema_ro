@@ -1,5 +1,5 @@
 WITH PARAMETROS AS (
-    SELECT 
+    SELECT
         :CNPJ AS cnpj_filtro,
         TO_DATE(:data_inicial, 'DD/MM/YYYY') AS dt_ini_filtro,
         TO_DATE(:data_final,   'DD/MM/YYYY') AS dt_fim_filtro,
@@ -15,33 +15,33 @@ reg_0000.cod_fin AS cod_fin_efd,
 reg_0000.dt_ini,
 reg_0000.dt_fin,
 reg_0000.data_entrega,
-       CASE 
+       CASE
           WHEN reg_0000.cod_fin = 0 THEN '0 - Remessa do arquivo original'
         WHEN reg_0000.cod_fin = 1 THEN '1 - Remessa do arquivo substituto'
-         ELSE 'Outros'    
+         ELSE 'Outros'
        END AS desc_finalidade,
       -- Colunas de controle trazidas do CTE Parametros para filtro posterior
-        p.dt_corte, 
-        p.dt_ini_filtro, 
+        p.dt_corte,
+        p.dt_ini_filtro,
         p.dt_fim_filtro,
         -- Lógica de Versionamento:
         -- Particiona por Empresa e Mês de Referência (dt_inicio)
         -- Ordena por Data de Entrega decrescente (o mais recente fica com rn=1)
         ROW_NUMBER() OVER (
-            PARTITION BY reg_0000.cnpj, reg_0000.dt_ini 
+            PARTITION BY reg_0000.cnpj, reg_0000.dt_ini
             ORDER BY reg_0000.data_entrega DESC
-        ) AS rn       
+        ) AS rn
 FROM sped.reg_0000 reg_0000
  JOIN PARAMETROS p ON reg_0000.cnpj = p.cnpj_filtro
-     WHERE 
-        
+     WHERE
+
         reg_0000.data_entrega <= p.dt_corte -- Filtro de "Viagem no Tempo": Ignora retificações feitas após a data de corte
         AND reg_0000.dt_ini BETWEEN p.dt_ini_filtro AND p.dt_fim_filtro
         )
 
 SELECT
     TO_CHAR(arq.dt_ini, 'MM/YYYY') AS periodo_efd,
-    
+
     /* Tratamento de Nulos para evitar erros em somas ou relatórios */
     NVL(e110.vl_tot_debitos, 0)        AS vl_tot_debitos,
     NVL(e110.vl_aj_debitos, 0)         AS vl_aj_debitos,
@@ -59,9 +59,9 @@ SELECT
     NVL(e110.deb_esp, 0)               AS deb_esp,
     arq.cod_fin_efd,
     arq.data_entrega                   AS Data_entrega_efd_periodo
-    
+
 FROM sped.reg_e110 e110
-INNER JOIN ARQUIVOS_RANKING arq 
+INNER JOIN ARQUIVOS_RANKING arq
   ON e110.reg_0000_id = arq.reg_0000_id
 WHERE arq.rn = 1 /* Filtra apenas a versão mais recente (Original ou Retificadora Final) */
 ORDER BY arq.dt_ini ASC

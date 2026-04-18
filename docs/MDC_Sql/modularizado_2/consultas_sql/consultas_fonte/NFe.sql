@@ -3,12 +3,12 @@
  */
 
 WITH parametros AS (
-    SELECT 
+    SELECT
         :CNPJ AS cnpj_filtro
     FROM DUAL
 )
 SELECT
-    CASE 
+    CASE
         -- CNPJ consultado é o EMITENTE
         WHEN d.co_emitente = p.cnpj_filtro AND d.co_tp_nf = 1 THEN '1 - SAIDA'
         WHEN d.co_emitente = p.cnpj_filtro AND d.co_tp_nf = 0 THEN '0 - ENTRADA'

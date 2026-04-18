@@ -14,7 +14,7 @@
 						  co_cad_icms,
 						  nome,
 						  inicio_ativ
-					  FROM 
+					  FROM
 						  dual
 							LEFT JOIN(
 								SELECT
@@ -24,12 +24,12 @@
 									  t.da_inicio_atividade            inicio_ativ
 								  FROM
 									  bi.dm_pessoa t
-								 WHERE 
+								 WHERE
 									  t.co_cnpj_cpf like '%'||regexp_replace(:CNPJ,'\D+', '')||'%'
 								  and t.co_cad_icms like '%'||regexp_replace(:IE,'\D+', '')
 								  and upper(t.no_razao_social) like '%'||regexp_replace(upper(:NOME),'\s', '%')||'%'
 						  )b ON b.co_cnpj_cpf like REGEXP_REPLACE(:CNPJ,'\D+', '')||'%'
-					order by 
+					order by
 						case when :NOME is not null then nome end]]></sql>
 		<binds>
 			<bind id="CNPJ">
@@ -63,12 +63,12 @@
 			<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
 			<header enable="false" generatedate="false">
 				<data>
-				
-					
-					
-					
-					
-					
+
+
+
+
+
+
 					null																																		</data>
 			</header>
 			<footer enable="false" generatedate="false">
@@ -93,7 +93,7 @@
 								  localid.no_municipio																	"Município",
 								  localid.co_uf																			"UF",
 								  t.co_regime_pagto|| ' - '|| rp.no_regime_pagamento									"Regime de Pagamento",
-								  CASE WHEN t.in_situacao = '001' 
+								  CASE WHEN t.in_situacao = '001'
 										THEN '<html><p style="color:blue">'||t.in_situacao
 											|| ' - '|| s.desc_situacao
 										ELSE '<html><p style="color:red">'|| t.in_situacao
@@ -101,9 +101,9 @@
 										END																				"Situação da IE",
 								  t.da_inicio_atividade																	"Data de Início da Atividade",
 								  to_date(us.data_ult_sit, 'YYYYMMDD')													"Data da última situação",
-								  to_char(trunc(months_between((CASE WHEN t.in_situacao = '001' 
+								  to_char(trunc(months_between((CASE WHEN t.in_situacao = '001'
 																		THEN SYSDATE
-																	ELSE to_date(us.data_ult_sit, 'YYYYMMDD') 
+																	ELSE to_date(us.data_ult_sit, 'YYYYMMDD')
 																END),
 																t.da_inicio_atividade),2))||' meses' 					"Período em atividade",
 								  'https://portalcontribuinte.sefin.ro.gov.br/Publico/parametropublica.jsp?NuDevedor=' || t.co_cad_icms redesim
@@ -152,12 +152,12 @@
 				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
 				<header enable="false" generatedate="false">
 					<data>
-					
-						
-						
-						
-						
-						
+
+
+
+
+
+
 						null																																									</data>
 				</header>
 				<footer enable="false" generatedate="false">
@@ -188,9 +188,9 @@
                                     from bi.dm_pessoa t
                                     LEFT JOIN bi.dm_localidade    localid ON t.co_municipio = localid.co_municipio
                                     where co_cnpj_cpf = :CO_CNPJ_CPF
-                                    
+
                                     union all
-                                    
+
                                     select * from (
                                     SELECT
                                         'NFE' origem,
@@ -215,7 +215,7 @@
                                         upper(cep_dest),
                                         upper(co_uf_dest),
                                         extract(year from dhemi)||'/'||extract(month from dhemi)
-                                    
+
                                     order by extract(year from dhemi)||'/'||extract(month from dhemi) desc)]]></sql>
 			<binds>
 				<bind id="CO_CNPJ_CPF">
@@ -237,12 +237,12 @@
 				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
 				<header enable="false" generatedate="false">
 					<data>
-					
-						
-						
-						
-						
-						
+
+
+
+
+
+
 						null																																									</data>
 				</header>
 				<footer enable="false" generatedate="false">
@@ -263,7 +263,7 @@
 			<sql><![CDATA[SELECT
                                         to_date(u.it_da_transacao, 'YYYYMMDD')        data,
                                         t.it_co_situacao_contribuinte                 sit,
-                                        CONVERT(cad_sit.it_no_situacao_contribuinte, 'AL32UTF8', 'WE8MSWIN1252')descricao,                                           
+                                        CONVERT(cad_sit.it_no_situacao_contribuinte, 'AL32UTF8', 'WE8MSWIN1252')descricao,
                                         u.it_nu_fac                                   fac,
                                         u.it_co_usuario                               usuario,
                                         u.tuk
@@ -300,12 +300,12 @@
 				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
 				<header enable="false" generatedate="false">
 					<data>
-					
-						
-						
-						
-						
-						
+
+
+
+
+
+
 						null																																									</data>
 				</header>
 				<footer enable="false" generatedate="false">
@@ -354,12 +354,12 @@
 				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
 				<header enable="false" generatedate="false">
 					<data>
-					
-						
-						
-						
-						
-						
+
+
+
+
+
+
 						null																																									</data>
 				</header>
 				<footer enable="false" generatedate="false">
@@ -423,12 +423,12 @@
 				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
 				<header enable="false" generatedate="false">
 					<data>
-					
-						
-						
-						
-						
-						
+
+
+
+
+
+
 						null																																									</data>
 				</header>
 				<footer enable="false" generatedate="false">
@@ -447,10 +447,10 @@
 		</CustomValues>
 		<query>
 			<sql><![CDATA[select
-								case when b.fim_ref is null and b.co_cnpj_cpf_contador = '   -   ' then '<html><b>Atual - sem contador indicado' 
-									 when b.fim_ref is null and b.co_cnpj_cpf_contador != '   -   ' then '<html><b>Atual' 
-									 when b.fim_ref is not null and b.co_cnpj_cpf_contador = '   -   ' then 'Anterior - Período sem indicação de contador' 
-									 else 'Anterior' 
+								case when b.fim_ref is null and b.co_cnpj_cpf_contador = '   -   ' then '<html><b>Atual - sem contador indicado'
+									 when b.fim_ref is null and b.co_cnpj_cpf_contador != '   -   ' then '<html><b>Atual'
+									 when b.fim_ref is not null and b.co_cnpj_cpf_contador = '   -   ' then 'Anterior - Período sem indicação de contador'
+									 else 'Anterior'
 								end                     situacao,
 								b.co_cnpj_cpf_contador  co_cnpj_cpf_contador,
 								p.no_razao_social       nome,
@@ -523,12 +523,12 @@
 				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
 				<header enable="false" generatedate="false">
 					<data>
-					
-						
-						
-						
-						
-						
+
+
+
+
+
+
 						null																																									</data>
 				</header>
 				<footer enable="false" generatedate="false">
@@ -596,12 +596,12 @@
 				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
 				<header enable="false" generatedate="false">
 					<data>
-					
-						
-						
-						
-						
-						
+
+
+
+
+
+
 						null																																									</data>
 				</header>
 				<footer enable="false" generatedate="false">
@@ -634,7 +634,7 @@
 								  null                                                                      autos
 							  from
 								  vistoria.empresas_vistorias@vistoria_producao t
-							left join vistoria.modalidades@vistoria_producao  m on t.modalidade_id = m.id     
+							left join vistoria.modalidades@vistoria_producao  m on t.modalidade_id = m.id
 							left join bi.dm_pessoa p on t.cpf_auditor = p.co_cnpj_cpf
 							left join bi.dm_pessoa ps on t.cpf_solicitante = ps.co_cnpj_cpf
 							left join vistoria.documentos_assinados@vistoria_producao  d on t.id = d.empresa_vistoria_id
@@ -654,7 +654,7 @@
 									to_date(df.it_da_lancamento,'yyyymmdd')                                 dt_vistoria,
 									dft.it_nu_documento_origem                                              modalidade,
 									null                                                                    dsf,
-									dft.it_nu_diligencia                                                    processo,            
+									dft.it_nu_diligencia                                                    processo,
 									null                                                                    solicitante,
 									su.it_co_matricula_usuario||' - '||su.it_no_usuario                     auditor,
 									da.autos                                                                autos
@@ -710,12 +710,12 @@
 				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
 				<header enable="false" generatedate="false">
 					<data>
-					
-						
-						
-						
-						
-						
+
+
+
+
+
+
 						null																																									</data>
 				</header>
 				<footer enable="false" generatedate="false">
@@ -733,7 +733,7 @@
 			<TYPE><![CDATA[horizontal]]></TYPE>
 		</CustomValues>
 		<query>
-			<sql><![CDATA[with s_auto as 
+			<sql><![CDATA[with s_auto as
 							(
 							select
 								bi.dm_pessoa.co_cnpj_cpf,
@@ -742,7 +742,7 @@
 								bi.dm_pessoa
 							where
 								bi.dm_pessoa.co_cnpj_cpf = :CO_CNPJ_CPF
-							), 
+							),
 
 							hist_socio as (
 							select
@@ -752,7 +752,7 @@
 								max(shs.it_da_fim_part_societaria)          da_saida
 							from
 								s_auto
-							left join sitafe.sitafe_historico_socio shs 
+							left join sitafe.sitafe_historico_socio shs
 								   on shs.it_nu_inscricao_estadual = s_auto.ie
 							group by
 								shs.gr_identificacao,
@@ -765,14 +765,14 @@
 								shs.it_nu_inscricao_estadual
 							from
 								s_auto
-								left join sitafe.sitafe_historico_socio shs 
+								left join sitafe.sitafe_historico_socio shs
 									   on shs.it_nu_inscricao_estadual = s_auto.ie
 									  and shs.it_in_ultima_fac = '9'
 									  and (shs.it_da_fim_part_societaria = '        ' or shs.it_da_fim_part_societaria > to_char(sysdate, 'yyyymmdd'))
 							group by
 								shs.gr_identificacao,
 								shs.it_nu_inscricao_estadual
-							), 
+							),
 
 							tabela as (
 							select
@@ -815,7 +815,7 @@
 							order by
 								1,
 								4 desc,
-								5 desc, 
+								5 desc,
 								3 asc]]></sql>
 			<binds>
 				<bind id="CO_CNPJ_CPF">
@@ -837,12 +837,12 @@
 				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
 				<header enable="false" generatedate="false">
 					<data>
-					
-						
-						
-						
-						
-						
+
+
+
+
+
+
 						null																																									</data>
 				</header>
 				<footer enable="false" generatedate="false">
@@ -1098,12 +1098,12 @@
 				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
 				<header enable="false" generatedate="false">
 					<data>
-					
-						
-						
-						
-						
-						
+
+
+
+
+
+
 						null																																									</data>
 				</header>
 				<footer enable="false" generatedate="false">
@@ -1127,9 +1127,9 @@
 							LPAD(TRIM(TO_CHAR(ENTRADA, '999G999G999G990D00')), LENGTH(MAX(ENTRADA)OVER()) + 7) 							ENTRADA,
 							LPAD(TRIM(TO_CHAR(SAIDA, '999G999G999G990D00')),LENGTH(MAX(SAIDA)OVER()) + 7) 								SAIDA,
 							LPAD(TRIM(TO_CHAR(SAIDA-ENTRADA, '999G999G999G990D00')),LENGTH(MAX(SAIDA-ENTRADA)OVER()) + 7)				DIFERENCA,
-							CASE 
+							CASE
 								WHEN NVL(ENTRADA,0) = 0 THEN 'N/D'
-								WHEN NVL(SAIDA, 0) / NVL(ENTRADA, 0) < 1 
+								WHEN NVL(SAIDA, 0) / NVL(ENTRADA, 0) < 1
 									THEN '<HTML><B STYLE="COLOR:#D7463A">'|| NVL(ROUND(((NVL(SAIDA,0)-NVL(ENTRADA,0))/NVL(ENTRADA,0))*100,2),2)||'%'
 								ELSE'<HTML><B STYLE="COLOR:#3A51D7">'||NVL(ROUND(((NVL(SAIDA,0)-NVL(ENTRADA,0))/NVL(ENTRADA,0))*100,2),2)||'%'
 							END          																								AGREG
@@ -1150,7 +1150,7 @@
 								WHERE
 									( T.CO_EMITENTE = :CO_CNPJ_CPF OR T.CO_DESTINATARIO = :CO_CNPJ_CPF )
 									AND C.IN_VAF = 'X'
-								GROUP BY GROUPING SETS((:CO_CNPJ_CPF),(EXTRACT(YEAR FROM DA_REFERENCIA)))	
+								GROUP BY GROUPING SETS((:CO_CNPJ_CPF),(EXTRACT(YEAR FROM DA_REFERENCIA)))
 								ORDER BY ANO DESC)]]></sql>
 		</query>
 			<pdf version="VERSION_1_7" compression="CONTENT">
@@ -1164,12 +1164,12 @@
 				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
 				<header enable="false" generatedate="false">
 					<data>
-					
-						
-						
-						
-						
-						
+
+
+
+
+
+
 						null																																									</data>
 				</header>
 				<footer enable="false" generatedate="false">
@@ -1206,12 +1206,12 @@
 				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
 				<header enable="false" generatedate="false">
 					<data>
-					
-						
-						
-						
-						
-						
+
+
+
+
+
+
 						null																																									</data>
 				</header>
 				<footer enable="false" generatedate="false">
@@ -1275,7 +1275,7 @@ SELECT
  GROUP BY
 	  EXTRACT(YEAR FROM dhemi),
 	  t.co_uf_emit) b
-	  
+
 group by ano
 
 order by ano desc]]></sql>
@@ -1291,12 +1291,12 @@ order by ano desc]]></sql>
 				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
 				<header enable="false" generatedate="false">
 					<data>
-					
-						
-						
-						
-						
-						
+
+
+
+
+
+
 						null																																									</data>
 				</header>
 				<footer enable="false" generatedate="false">
@@ -1336,12 +1336,12 @@ select D.CHAVE_ACESSO, D.PROD_NITEM, D.IDE_CO_CUF, D.IDE_CO_INDPAG, D.IDE_CO_MOD
 				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
 				<header enable="false" generatedate="false">
 					<data>
-					
-						
-						
-						
-						
-						
+
+
+
+
+
+
 						null																																									</data>
 				</header>
 				<footer enable="false" generatedate="false">
@@ -1401,12 +1401,12 @@ select D.CHAVE_ACESSO, D.PROD_NITEM, D.IDE_CO_CUF, D.IDE_CO_INDPAG, D.IDE_CO_MOD
 				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
 				<header enable="false" generatedate="false">
 					<data>
-					
-						
-						
-						
-						
-						
+
+
+
+
+
+
 						null																																									</data>
 				</header>
 				<footer enable="false" generatedate="false">
@@ -1426,7 +1426,7 @@ select D.CHAVE_ACESSO, D.PROD_NITEM, D.IDE_CO_CUF, D.IDE_CO_INDPAG, D.IDE_CO_MOD
 		<query>
 			<sql><![CDATA[SELECT
 :CO_CNPJ_CPF CO_CNPJ_CPF,
-      case when id_situacao is null then '<html><b>Σ TOTAL GERAL' 
+      case when id_situacao is null then '<html><b>Σ TOTAL GERAL'
       when id_situacao = '01 - Não pago e Vencido' then '<html><b style="color:#CF3434">01 - Não pago e Vencido'
       when id_situacao = '01 - Não pago a vencer' then '<html><b style="color:#3440CF">01 - Não pago a Vencer'
       else  '<html><p style="color:#121212">'||id_situacao  end situacao,
@@ -1553,7 +1553,7 @@ select D.CHAVE_ACESSO, D.PROD_NITEM, D.IDE_CO_CUF, D.IDE_CO_INDPAG, D.IDE_CO_MOD
       GROUPING SETS((),(id_situacao_,
                         id_situacao,
                         receitas))
-                        
+
 order by case when id_situacao_ is null then 1
                   when id_situacao_ = '01' then 2
                   else 3 end, total desc]]></sql>
@@ -1569,12 +1569,12 @@ order by case when id_situacao_ is null then 1
 				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
 				<header enable="false" generatedate="false">
 					<data>
-					
-						
-						
-						
-						
-						
+
+
+
+
+
+
 						null																																									</data>
 				</header>
 				<footer enable="false" generatedate="false">
@@ -1613,7 +1613,7 @@ order by case when id_situacao_ is null then 1
                                             WHEN t.it_da_baixa > '1' THEN
                                                 TO_DATE(t.it_da_baixa, 'YYYYMMDD')
                                         END da_baixa,
-                                    
+
                                         t.it_tx_observacao observacao,
                                         t.it_tx_motivo_baixa motivo_baixa,
                                         CASE
@@ -1653,7 +1653,7 @@ order by case when id_situacao_ is null then 1
                                                 WHEN t.it_da_baixa > '1' THEN
                                                     TO_DATE(t.it_da_baixa, 'YYYYMMDD')
                                             END,
-                                        t.it_tx_motivo_baixa, 
+                                        t.it_tx_motivo_baixa,
                                         CASE
                                             WHEN t.it_da_baixa = '       ' THEN
                                                     '<html><strong><font color="blue">'
@@ -1678,12 +1678,12 @@ order by case when id_situacao_ is null then 1
 				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
 				<header enable="false" generatedate="false">
 					<data>
-					
-						
-						
-						
-						
-						
+
+
+
+
+
+
 						null																																									</data>
 				</header>
 				<footer enable="false" generatedate="false">
@@ -1701,14 +1701,14 @@ order by case when id_situacao_ is null then 1
 			<TYPE><![CDATA[horizontal]]></TYPE>
 		</CustomValues>
 		<query>
-			<sql><![CDATA[with 
+			<sql><![CDATA[with
 						cartao as (
 						select case
-								when ano is null and periodo is null 
+								when ano is null and periodo is null
 								  then '<html><b style="color:blue">Σ TOTAL GERAL'
-								when ano is not null and periodo is null 
+								when ano is not null and periodo is null
 								  then '<html><b style="color:green">Σ Total no ano ' || ano
-								when ano is not null and periodo is not null 
+								when ano is not null and periodo is not null
 								  then '----Total no período ' || periodo
 							   end                                                                      info,
 							   operacoes,
@@ -1720,9 +1720,9 @@ order by case when id_situacao_ is null then 1
 							   sum(valor)                                                               cartao
 						from bi.mpg_f_detalhe_operacao
 						where cnpj_cpf = :CO_CNPJ_CPF
-						group by grouping sets 
+						group by grouping sets
 								( ( ),
-									(extract(year from dt_op)), 
+									(extract(year from dt_op)),
 										(extract(year from dt_op), extract(year from dt_op)||'/'||lpad(extract(month from dt_op),2,'0'))
 								)
 							 )
@@ -1731,11 +1731,11 @@ order by case when id_situacao_ is null then 1
 
 						saidas as (
 						select case
-								when ano is null and periodo is null 
+								when ano is null and periodo is null
 								  then '<html><b style="color:blue">Σ TOTAL GERAL'
-								when ano is not null and periodo is null 
+								when ano is not null and periodo is null
 								  then '<html><b style="color:green">Σ Total no ano ' || ano
-								when ano is not null and periodo is not null 
+								when ano is not null and periodo is not null
 								  then '----Total no período ' || periodo
 							   end                                                                                      info,
 							   nfe_nfce                                                                                 nfe_nfce
@@ -1746,9 +1746,9 @@ order by case when id_situacao_ is null then 1
 						from BI.fato_nfe_nfce_sumarizada
 						where co_emitente = :CO_CNPJ_CPF
 						  and co_tp_nf = 1
-						group by grouping sets 
+						group by grouping sets
 								( ( ),
-									(extract(year from da_referencia)), 
+									(extract(year from da_referencia)),
 										(extract(year from da_referencia), extract(year from da_referencia)||'/'||lpad(extract(month from da_referencia),2,'0'))
 								)
 							 )
@@ -1758,15 +1758,15 @@ order by case when id_situacao_ is null then 1
 							   cartao.operacoes                                                                                         operacoes_cartao,
 							   lpad(trim(to_char(cartao.cartao, '999G999G999G990D00')), length(max(cartao.cartao) over()) + 7)          valor_cartao,
 							   lpad(trim(to_char(saidas.nfe_nfce , '999G999G999G990D00')), length(max(saidas.nfe_nfce) over()) + 7)     valor_nfe_nfce,
-							   case when substr(nvl(cartao.info,saidas.info),1,6) = '<html>' 
+							   case when substr(nvl(cartao.info,saidas.info),1,6) = '<html>'
 									 then lpad(trim(to_char('-')),
 											   length(max(cartao.cartao) over()) + 7)
-									when nvl(cartao.cartao,0) - nvl(saidas.nfe_nfce,0) > 0 
+									when nvl(cartao.cartao,0) - nvl(saidas.nfe_nfce,0) > 0
 									 then lpad(trim(to_char(nvl(cartao.cartao,0)-nvl(saidas.nfe_nfce,0),'999G999G999G990D00')),
 											   length(max(nvl(cartao.cartao,0)) over()) + 7)
 									else lpad(to_char('-'),
 											  length(max(cartao.cartao) over()) + 7)
-									end                                                                                                 excesso_valor 
+									end                                                                                                 excesso_valor
 						from cartao
 						left join saidas
 							   on cartao.info = saidas.info]]></sql>
@@ -1782,12 +1782,12 @@ order by case when id_situacao_ is null then 1
 				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
 				<header enable="false" generatedate="false">
 					<data>
-					
-						
-						
-						
-						
-						
+
+
+
+
+
+
 						null																																									</data>
 				</header>
 				<footer enable="false" generatedate="false">
@@ -1867,12 +1867,12 @@ order by case when id_situacao_ is null then 1
 				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
 				<header enable="false" generatedate="false">
 					<data>
-					
-						
-						
-						
-						
-						
+
+
+
+
+
+
 						null																																									</data>
 				</header>
 				<footer enable="false" generatedate="false">
@@ -1890,7 +1890,7 @@ order by case when id_situacao_ is null then 1
 			<TYPE><![CDATA[horizontal]]></TYPE>
 		</CustomValues>
 		<query>
-			<sql><![CDATA[select 
+			<sql><![CDATA[select
 								t.in_modelo_acao_fiscal   tipo,
 								t.no_situacao_acao        situacao,
 								t.nu_acao_fiscal          acao_fiscal,
@@ -1907,13 +1907,13 @@ order by case when id_situacao_ is null then 1
 								t.tx_observacao
 
 						from bi.dm_acao_fiscal t
-						left join bi.dm_acao_fiscal_origem_acao o 
+						left join bi.dm_acao_fiscal_origem_acao o
 							   on t.nu_acao_fiscal = o.nu_acao_fiscal
 						where co_cnpj_cpf = :CO_CNPJ_CPF
 
 						union
 
-						select 
+						select
             'DSF' as                                                                tipo,
             case when df.it_co_situacao_diligencia = 01 then '01 - DOC. REGISTRADO'
                  when df.it_co_situacao_diligencia = 02 then '02 - DIL. GERADA'
@@ -1922,7 +1922,7 @@ order by case when id_situacao_ is null then 1
                  when df.it_co_situacao_diligencia = 05 then '05 - DIL. EXCLUÍDA'
             end                                                                     situacao,
             to_char(df.it_nu_diligencia)                                            acao_fiscal,
-            dft.it_nu_diligencia                                                    dsf, 
+            dft.it_nu_diligencia                                                    dsf,
             null                                                                    p_ini,
             null                                                                    p_fin,
             df.it_prazo_max                                                         prazo,
@@ -1953,7 +1953,7 @@ order by case when id_situacao_ is null then 1
                 on dta.tuk = dft.tuk
     where dft.it_nu_identificacao = :CO_CNPJ_CPF
 union
-select 
+select
             'DSF' as                                                                tipo,
             case when df.it_co_situacao_diligencia = 01 then '01 - DOC. REGISTRADO'
                  when df.it_co_situacao_diligencia = 02 then '02 - DIL. GERADA'
@@ -1962,7 +1962,7 @@ select
                  when df.it_co_situacao_diligencia = 05 then '05 - DIL. EXCLUÍDA'
             end                                                                     situacao,
             to_char(df.it_nu_diligencia)                                            acao_fiscal,
-            dft.it_nu_diligencia                                                    dsf, 
+            dft.it_nu_diligencia                                                    dsf,
             null                                                                    p_ini,
             null                                                                    p_fin,
             df.it_prazo_max                                                         prazo,
@@ -2013,12 +2013,12 @@ select
 				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
 				<header enable="false" generatedate="false">
 					<data>
-					
-						
-						
-						
-						
-						
+
+
+
+
+
+
 						null																																									</data>
 				</header>
 				<footer enable="false" generatedate="false">
@@ -2048,9 +2048,9 @@ select
                                     DA_LAVRATURA,
 									NU_TERMO_INFRACAO,
 									CASE WHEN LOCAL IS NULL THEN '<html><b>VALOR TOTAL DOS AUTOS DE INFRAÇÕES LAVRADOS:' ELSE LOCAL END LOCAL,
-									LPAD(TRIM(TO_CHAR(VA_TRIBUTO, '999G999G999G990D00')),18) VA_TRIBUTO,      
-									LPAD(TRIM(TO_CHAR(VA_MULTA, '999G999G999G990D00')),18) VA_MULTA,   
-									LPAD(TRIM(TO_CHAR(VA_JUROS, '999G999G999G990D00')),18) VA_JUROS,   
+									LPAD(TRIM(TO_CHAR(VA_TRIBUTO, '999G999G999G990D00')),18) VA_TRIBUTO,
+									LPAD(TRIM(TO_CHAR(VA_MULTA, '999G999G999G990D00')),18) VA_MULTA,
+									LPAD(TRIM(TO_CHAR(VA_JUROS, '999G999G999G990D00')),18) VA_JUROS,
 									LPAD(TRIM(TO_CHAR(TOTAL, '999G999G999G990D00')),18) TOTAL,
 									PERIODO_FISCALIZADO,
 									SITUACAO_TATE,
@@ -2130,12 +2130,12 @@ select
 				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
 				<header enable="false" generatedate="false">
 					<data>
-					
-						
-						
-						
-						
-						
+
+
+
+
+
+
 						null																																									</data>
 				</header>
 				<footer enable="false" generatedate="false">
@@ -2156,9 +2156,9 @@ select
 			<sql><![CDATA[SELECT
 
 					  case when malha is null and status is null then
-					  '<html><b>TOTAL DE NOTIFICAÇÕES RECEBIDAS: '||quant 
+					  '<html><b>TOTAL DE NOTIFICAÇÕES RECEBIDAS: '||quant
 					  when malha is null and status is not null then
-					   '<html><b>-------Quantidade '||status||': '||quant 
+					   '<html><b>-------Quantidade '||status||': '||quant
 					  when malha is not null and periodo is null and status is null then
 					  '<html>------------'||malha||' - <b>'||quant
 					  else
@@ -2262,12 +2262,12 @@ select
 				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
 				<header enable="false" generatedate="false">
 					<data>
-					
-						
-						
-						
-						
-						
+
+
+
+
+
+
 						null																																									</data>
 				</header>
 				<footer enable="false" generatedate="false">
@@ -2316,12 +2316,12 @@ order by t.dt_envio desc]]></sql>
 				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
 				<header enable="false" generatedate="false">
 					<data>
-					
-						
-						
-						
-						
-						
+
+
+
+
+
+
 						null																																									</data>
 				</header>
 				<footer enable="false" generatedate="false">
@@ -2351,7 +2351,7 @@ order by t.dt_envio desc]]></sql>
                                     bi.dm_processo_administrativo   t
                                     LEFT JOIN sitafe.sitafe_servico           serv ON t.co_servico = serv.it_co_servico
                                     left join bi.dm_pessoa pessoa on t.cpf_solicitante = pessoa.co_cnpj_cpf
-                                    
+
                                     where t.co_cpf_cnpj_contribuinte = :CO_CNPJ_CPF
                                 order by dt_abertura desc]]></sql>
 		</query>
@@ -2366,12 +2366,12 @@ order by t.dt_envio desc]]></sql>
 				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
 				<header enable="false" generatedate="false">
 					<data>
-					
-						
-						
-						
-						
-						
+
+
+
+
+
+
 						null																																									</data>
 				</header>
 				<footer enable="false" generatedate="false">
@@ -2412,7 +2412,7 @@ order by t.dt_envio desc]]></sql>
 								  left join sitafe.sitafe_tab_veiculo    tb on t.it_co_marca_modelo = tb.it_co_marca_modelo
 							 where
 								  it_nu_devedor = :CO_CNPJ_CPF
-								  
+
 							union all
 
 							select
@@ -2450,12 +2450,12 @@ order by t.dt_envio desc]]></sql>
 				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
 				<header enable="false" generatedate="false">
 					<data>
-					
-						
-						
-						
-						
-						
+
+
+
+
+
+
 						null																																									</data>
 				</header>
 				<footer enable="false" generatedate="false">
@@ -2474,13 +2474,13 @@ order by t.dt_envio desc]]></sql>
 		</CustomValues>
 		<query>
 			<sql><![CDATA[WITH IP_ALVO AS (
-                                    SELECT SUBSTR(IP.CHAVE_ACESSO,7,14) CNPJ, 
+                                    SELECT SUBSTR(IP.CHAVE_ACESSO,7,14) CNPJ,
                                                     IP.IP_TRANSMISSOR            IP,
                                                     COUNT(IP.CHAVE_ACESSO)       QTD_NOTAS
-                                       FROM BI.DM_IP_TRANSMISSOR IP 
+                                       FROM BI.DM_IP_TRANSMISSOR IP
                                     WHERE SUBSTR(IP.CHAVE_ACESSO,7,14) = :CO_CNPJ_CPF
                                       AND IP.TIPO_REG = '55'
-                                    GROUP BY SUBSTR(IP.CHAVE_ACESSO,7,14), 
+                                    GROUP BY SUBSTR(IP.CHAVE_ACESSO,7,14),
                                                      IP.IP_TRANSMISSOR)
                                     , OUTROS_CNPJS AS (
                                     SELECT IP_OUTROS.IP_TRANSMISSOR,
@@ -2507,12 +2507,12 @@ order by t.dt_envio desc]]></sql>
 				<table font="null" size="10" style="NORMAL" color="-16777216" userowshading="false" oddrowshading="-1" evenrowshading="-1" showborders="true" spacingbefore="12" spacingafter="12" horizontalalign="LEFT" />
 				<header enable="false" generatedate="false">
 					<data>
-					
-						
-						
-						
-						
-						
+
+
+
+
+
+
 						null																																									</data>
 				</header>
 				<footer enable="false" generatedate="false">

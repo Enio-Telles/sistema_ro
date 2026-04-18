@@ -16,9 +16,9 @@
           AND nfe.seq_nitem = '1'
           AND nfe.dhemi >= :DATA_INICIAL
           AND nfe.dhemi <= :DATA_FINAL
-    
+
         UNION ALL
-    
+
         -- 2. Captura de NFC-e (Varejo/Saída)
         SELECT
             nfce.chave_acesso,
@@ -35,23 +35,23 @@
           AND nfce.dhemi >= :DATA_INICIAL
           AND nfce.dhemi <= :DATA_FINAL
     ),
-    
+
     efd_saida AS (
         -- 3. Captura dos valores escriturados na EFD (Bloco C) para Operações de Saída
-        SELECT 
+        SELECT
             c100.chv_nfe,
             c100.vl_icms AS icms_escriturado_efd
         FROM sped.reg_c100 c100
-        INNER JOIN sped.reg_0000 r0000 
+        INNER JOIN sped.reg_0000 r0000
             ON c100.reg_0000_id = r0000.id
-        INNER JOIN bi.dm_efd_arquivo_valido arqv 
+        INNER JOIN bi.dm_efd_arquivo_valido arqv
             ON c100.reg_0000_id = arqv.reg_0000_id
         WHERE r0000.cnpj = :CNPJ
           AND c100.ind_oper = '1' -- Garante que estamos olhando apenas para saídas na EFD
           -- Restringir a data de entrega/apuração ajuda a usar partições da EFD no Oracle
           AND r0000.dt_ini >= :DATA_INICIAL
     )
-    
+
     -- 4. Cruzamento e Identificação do Débito Declarado a Menor
     SELECT
         x.modelo,
@@ -65,10 +65,10 @@
         (x.icms_destacado_nfe - NVL(e.icms_escriturado_efd, 0)) AS diferenca_icms_nao_debitado,
         'Débito a Menor na EFD' AS status_auditoria
     FROM xml_saida x
-    INNER JOIN efd_saida e 
+    INNER JOIN efd_saida e
         ON x.chave_acesso = e.chv_nfe
     -- O filtro vital que atende à sua regra de malha:
     WHERE NVL(e.icms_escriturado_efd, 0) < x.icms_destacado_nfe
-    ORDER BY 
-        x.data_emissao, 
+    ORDER BY
+        x.data_emissao,
         x.num_doc;

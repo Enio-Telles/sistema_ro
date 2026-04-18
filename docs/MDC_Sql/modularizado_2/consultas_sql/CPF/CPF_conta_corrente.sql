@@ -2,7 +2,7 @@
     Análise da Consulta: CPF_conta_corrente.sql
     Objetivo: Gerar um extrato de "Conta Corrente" fiscal para um CPF, categorizando os lançamentos
     entre Vencidos, A Vencer e Outras Situações (ex: Pagos).
-    
+
     Tabelas Utilizadas (Baseado no Metadata/SQL):
     - bi.fato_lanc_arrec (t): Tabela fato contendo os lançamentos e arrecadações.
       Colunas Chave: id_cpf_cnpj, id_situacao, da_vencimento, valores (va_principal, va_pago, etc).
@@ -15,7 +15,7 @@
          - Vencimento < Hoje -> '01 - Não pago e Vencido'
          - Vencimento > Hoje -> '01 - Não pago a vencer'
        - Outros -> Usa a descrição da tabela dimensão (ex: Pago).
-    
+
     2. Cálculo do Valor:
        - Se va_pago é NULL (não pago), soma os componentes da dívida (principal + multa + juros + acréscimo).
        - Se va_pago existe, usa o valor pago.
@@ -29,7 +29,7 @@
 SELECT
             :CPF cpf,
             -- Formatação da Situação com HTML para cores (Vermelho para vencido, Azul para a vencer)
-            case when id_situacao is null then 'Σ TOTAL GERAL' 
+            case when id_situacao is null then 'Σ TOTAL GERAL'
             when id_situacao = '01 - Não pago e Vencido' then '01 - Não pago e Vencido'
             when id_situacao = '01 - Não pago a vencer' then '01 - Não pago a Vencer'
             else  id_situacao  end situacao,
@@ -163,7 +163,7 @@ SELECT
       GROUPING SETS((),(id_situacao_,
                         id_situacao,
                         receitas))
-                        
+
 order by case when id_situacao_ is null then 1
                   when id_situacao_ = '01' then 2
                   else 3 end, total desc

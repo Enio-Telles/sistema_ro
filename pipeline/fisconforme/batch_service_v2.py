@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-from typing import Callable
 
-import polars as pl
 
 from pipeline.fisconforme.query_service_v2 import FisconformeProvider, limpar_cnpj_fisconforme, query_fisconforme_v2
 

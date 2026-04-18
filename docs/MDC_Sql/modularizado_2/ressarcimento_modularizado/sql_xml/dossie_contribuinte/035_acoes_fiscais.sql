@@ -10,7 +10,7 @@ OBSERVACAO:
  - SQL extraído do XML sem alteração funcional.
  - Tags HTML, formatação de apresentação e scripts de SQL*Plus foram preservados quando existentes.
 */
-select 
+select
 								t.in_modelo_acao_fiscal   tipo,
 								t.no_situacao_acao        situacao,
 								t.nu_acao_fiscal          acao_fiscal,
@@ -27,13 +27,13 @@ select
 								t.tx_observacao
 
 						from bi.dm_acao_fiscal t
-						left join bi.dm_acao_fiscal_origem_acao o 
+						left join bi.dm_acao_fiscal_origem_acao o
 							   on t.nu_acao_fiscal = o.nu_acao_fiscal
 						where co_cnpj_cpf = :CO_CNPJ_CPF
 
 						union
 
-						select 
+						select
             'DSF' as                                                                tipo,
             case when df.it_co_situacao_diligencia = 01 then '01 - DOC. REGISTRADO'
                  when df.it_co_situacao_diligencia = 02 then '02 - DIL. GERADA'
@@ -42,7 +42,7 @@ select
                  when df.it_co_situacao_diligencia = 05 then '05 - DIL. EXCLUÍDA'
             end                                                                     situacao,
             to_char(df.it_nu_diligencia)                                            acao_fiscal,
-            dft.it_nu_diligencia                                                    dsf, 
+            dft.it_nu_diligencia                                                    dsf,
             null                                                                    p_ini,
             null                                                                    p_fin,
             df.it_prazo_max                                                         prazo,
@@ -73,7 +73,7 @@ select
                 on dta.tuk = dft.tuk
     where dft.it_nu_identificacao = :CO_CNPJ_CPF
 union
-select 
+select
             'DSF' as                                                                tipo,
             case when df.it_co_situacao_diligencia = 01 then '01 - DOC. REGISTRADO'
                  when df.it_co_situacao_diligencia = 02 then '02 - DIL. GERADA'
@@ -82,7 +82,7 @@ select
                  when df.it_co_situacao_diligencia = 05 then '05 - DIL. EXCLUÍDA'
             end                                                                     situacao,
             to_char(df.it_nu_diligencia)                                            acao_fiscal,
-            dft.it_nu_diligencia                                                    dsf, 
+            dft.it_nu_diligencia                                                    dsf,
             null                                                                    p_ini,
             null                                                                    p_fin,
             df.it_prazo_max                                                         prazo,

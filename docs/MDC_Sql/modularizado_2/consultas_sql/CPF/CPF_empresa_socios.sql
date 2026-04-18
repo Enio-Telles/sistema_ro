@@ -1,7 +1,7 @@
 ﻿/*
     Analise da Consulta: CPF_empresa_socios.sql
     Objetivo: Listar socios atuais e antigos de uma empresa.
-    
+
     Tabelas Utilizadas:
     - bi.dm_pessoa: Cadastro para obter a IE da empresa.
     - sitafe.sitafe_historico_socio (shs): Historico de participacao societaria.
@@ -15,7 +15,7 @@
     5. Gera link para Portal da Transparencia para consulta do CPF.
 */
 
-with s_auto as 
+with s_auto as
             (
             select
                 bi.dm_pessoa.co_cnpj_cpf,
@@ -24,7 +24,7 @@ with s_auto as
                 bi.dm_pessoa
             where
                 bi.dm_pessoa.co_cnpj_cpf = :CO_CNPJ_CPF
-            ), 
+            ),
 
             hist_socio as (
             select
@@ -34,7 +34,7 @@ with s_auto as
                 max(shs.it_da_fim_part_societaria)          da_saida
             from
                 s_auto
-            left join sitafe.sitafe_historico_socio shs 
+            left join sitafe.sitafe_historico_socio shs
                    on shs.it_nu_inscricao_estadual = s_auto.ie
             group by
                 shs.gr_identificacao,
@@ -47,14 +47,14 @@ with s_auto as
                 shs.it_nu_inscricao_estadual
             from
                 s_auto
-                left join sitafe.sitafe_historico_socio shs 
+                left join sitafe.sitafe_historico_socio shs
                        on shs.it_nu_inscricao_estadual = s_auto.ie
                       and shs.it_in_ultima_fac = '9'
                       and (shs.it_da_fim_part_societaria = '        ' or shs.it_da_fim_part_societaria > to_char(sysdate, 'yyyymmdd'))
             group by
                 shs.gr_identificacao,
                 shs.it_nu_inscricao_estadual
-            ), 
+            ),
 
             tabela as (
             select
@@ -97,5 +97,5 @@ with s_auto as
             order by
                 1,
                 4 desc,
-                5 desc, 
+                5 desc,
                 3 asc

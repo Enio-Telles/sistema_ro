@@ -3,7 +3,6 @@ from __future__ import annotations
 from backend.app.config import settings
 from pipeline.fisconforme.cache import fisconforme_cache_path
 from pipeline.fisconforme.contracts_v2 import get_dataset_name_v2
-from pipeline.fisconforme.query_service_v2 import limpar_cnpj_fisconforme
 
 
 def get_fisconforme_cache_stats_v2() -> dict:

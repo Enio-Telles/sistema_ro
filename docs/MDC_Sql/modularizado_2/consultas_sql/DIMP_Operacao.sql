@@ -23,13 +23,13 @@ SELECT
     mp.id_reg1115
 FROM
     bi.mpg_f_detalhe_operacao mp
-    INNER JOIN dimp.reg0000s d 
+    INNER JOIN dimp.reg0000s d
         ON mp.id_reg0000 = d.id
         AND mp.cnpj_declarante = d.cnpj
-    LEFT JOIN dimp.reg1115S h 
+    LEFT JOIN dimp.reg1115S h
         ON h.id = mp.id_reg1115
 WHERE
-    mp.cnpj_cpf = REGEXP_REPLACE(:cpf, '\D+', '') 
+    mp.cnpj_cpf = REGEXP_REPLACE(:cpf, '\D+', '')
     AND mp.dt_op BETWEEN :data_inicial AND :data_final
     AND mp.flag_comex = 0
     AND mp.id_origem_informacao = 'DIMP'
