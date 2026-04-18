@@ -9,6 +9,7 @@ from backend.app.conversao_quality_router import router as conversao_quality_rou
 from backend.app.decommission_plan_router import router as decommission_plan_router
 from backend.app.deprecation_surface_router import router as deprecation_surface_router
 from backend.app.estoque_quality_router import router as estoque_quality_router
+from backend.app.estoque_table_router import router as estoque_table_router
 from backend.app.fisconforme_dsf_v2_router import router as fisconforme_dsf_v2_router
 from backend.app.fisconforme_notification_v3_router import router as fisconforme_notification_v3_router
 from backend.app.fisconforme_output_v2_router import router as fisconforme_output_v2_router
@@ -77,6 +78,7 @@ def include_gold_runtime_routes(
     app.include_router(conversao.router, prefix=f"{prefix}/conversao", tags=["conversao"])
     app.include_router(conversao_quality_router, prefix=f"{prefix}/conversao", tags=["conversao_quality"])
     app.include_router(estoque.router, prefix=f"{prefix}/estoque", tags=["estoque"])
+    app.include_router(estoque_table_router, prefix=f"{prefix}/estoque", tags=["estoque_tables"])
     app.include_router(estoque_quality_router, prefix=f"{prefix}/estoque", tags=["estoque_quality"])
     app.include_router(gold_consistency_router, prefix=f"{prefix}/gold", tags=["gold_consistency"])
     app.include_router(fisconforme.router, prefix=f"{prefix}/fisconforme", tags=[fisconforme_legacy_tag])
