@@ -10,6 +10,7 @@ class MercadoriaCanonica(TypedDict, total=False):
     mercadoria_id: str
     apresentacao_id: str
     id_agrupado: str
+    id_agrupado_final: str
     codigo_fonte: str
     id_linha_origem: str
     descr_padrao: str
@@ -20,6 +21,10 @@ class MercadoriaCanonica(TypedDict, total=False):
     ncm_padrao: str
     cest_padrao: str
     gtin_padrao: str
+    origem_agrupamento: str
+    regra_agrupamento: str
+    versao_agrupamento: str
+    tem_override_manual: bool
     match_rule: MatchRule
     match_confidence: float
     match_version: str

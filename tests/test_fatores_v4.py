@@ -28,3 +28,10 @@ def test_calcular_fatores_priorizados_v4_uses_diagnosis_to_keep_factor_one() -> 
     assert row['fator'] == 1.0
     assert row['tipo_fator'] == 'diagnostico'
     assert row['fonte_fator'] == 'diagnostico_conversao_unidade_base'
+    assert row['fator_heuristico'] == 1.0
+    assert row['fator_final'] == 1.0
+    assert row['unid_ref_heuristica'] == 'UN'
+    assert row['unid_ref_final'] == 'UN'
+    assert row['override_aplicado'] is False
+    assert row['override_resolution_key'] == 'nenhum'
+    assert row['caminho_decisao_final'] == 'heuristico'
