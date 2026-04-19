@@ -1,5 +1,17 @@
 # Plano de Correção — Agregação, Conversão e Estoque
 
+> **Status de implementação** (última atualização 2026-04-18)
+>
+> | Correção | Status | Arquivo |
+> |--|--|--|
+> | C1 — Normalização NFKD (remoção de acentos) | ✅ Implementado | `pipeline/mercadorias/aggregation_v2.py` |
+> | C2 — Colunas de proveniência na agregação | ✅ Implementado | `pipeline/mercadorias/aggregation_v2.py` |
+> | C3 — Override granular por `id_agrupado+unid` | ✅ Implementado | `pipeline/conversao/overrides.py` |
+> | C4 — Snapshot heurístico antes do override | ✅ Implementado | `pipeline/conversao/fatores_v4.py` |
+> | C5 — Join de fator por unidade em `mov_estoque` | ✅ Implementado | `pipeline/estoque/mov_estoque_v2.py` |
+> | C6 — Metadata operacional na persistência gold | ✅ Implementado | `pipeline/persist_gold_v2.py` |
+> | C7 — Documentação alinhada ao código real | ✅ Implementado | `docs/` |
+
 ## Objetivo
 
 Consolidar um plano técnico executável para corrigir divergências entre documentação, implementação real, contratos de Parquet, API e testes nos três eixos centrais do domínio fiscal orientado a mercadorias:
@@ -283,16 +295,20 @@ Garantir que `mov_estoque` use o fator correto na mesma granularidade da unidade
 
 ### Arquivos alvo
 
-- `pipeline/estoque/mov_estoque_v2.py`
-- `pipeline/estoque/mov_estoque_v3.py`
+> **Nota (C7 — 2026-04-18):** `run_gold_v20.py` usa `build_mov_estoque_v3`, não `v2`.
+> Os patches abaixo foram aplicados em `mov_estoque_v2.py` (backfill de compatibilidade)
+> e a trilha ativa continua em `mov_estoque_v3.py`.
+
+- `pipeline/estoque/mov_estoque_v2.py` — backfill de compatibilidade
+- `pipeline/estoque/mov_estoque_v3.py` — **arquivo ativo na trilha gold_v20**
 - `pipeline/estoque/resumo.py`
 - `pipeline/run_gold_v20.py`
 
 ### Ações
 
-#### 4.1. Resolver fator por chave correta
+#### 4.1. Resolver fator por chave correta ✅
 
-Em `pipeline/estoque/mov_estoque_v2.py`:
+Em `pipeline/estoque/mov_estoque_v2.py` (e, quando aplicável, `v3`):
 
 - substituir joins baseados em `unique(subset=["id_agrupado"])`
 - usar chave mínima correta, preferencialmente:
@@ -500,15 +516,19 @@ Implementar:
 
 ### `pipeline/estoque/mov_estoque_v2.py`
 
-Implementar:
+> **Nota (C7):** A trilha gold ativa (`run_gold_v20.py`) usa `build_mov_estoque_v3`.
+> Os patches abaixo foram aplicados em `v2` para manter backfill de compatibilidade.
+> Para a trilha oficial, verificar e espelhar as mesmas correções em `v3`.
 
-- join de fatores por granularidade correta
-- `factor_resolution_mode`
-- log de fallback
+Implementado:
+
+- ✅ join de fatores por granularidade `id_agrupado + unid` com fallback explícito
+- ✅ `factor_resolution_mode` no output
+- ⬜ log de fallback persistido em Parquet (previsto, não implementado)
 
 ### `pipeline/estoque/mov_estoque_v3.py`
 
-Implementar:
+Arquivo ativo na trilha `gold_v20`. Verificar espelhamento das correções de C5:
 
 - checagens de enriquecimento fiscal sem quebrar a granularidade do fator
 

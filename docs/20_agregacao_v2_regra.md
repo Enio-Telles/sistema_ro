@@ -7,12 +7,14 @@ A agregação automática deve ocorrer **estritamente por igualdade de descriç�
 ### Descrição normalizada
 A normalização usada nesta versão considera:
 - conversão para maiúsculas;
+- remoção de acentos;
 - remoção de espaços em branco antes e depois;
 - compressão de espaços internos repetidos.
 
 Exemplo:
 - `" Arroz Tipo 1 "` -> `"ARROZ TIPO 1"`
 - `"arroz   tipo 1"` -> `"ARROZ TIPO 1"`
+- `"Óleo  de soja"` -> `"OLEO DE SOJA"`
 
 ## Identificação do produto
 
@@ -39,6 +41,13 @@ A agregação v2 gera:
 - `map_produto_agrupado`
 - `produtos_agrupados`
 - `produtos_final`
+
+Além do `id_agrupado` operacional, as saídas agora preservam rastreabilidade com:
+- `id_agrupado_final`
+- `id_agrupado_auto`
+- `origem_agrupamento`
+- `regra_agrupamento`
+- `versao_agrupamento`
 
 ## Observação importante
 

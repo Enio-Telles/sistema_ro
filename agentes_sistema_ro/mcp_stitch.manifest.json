@@ -1,0 +1,27 @@
+{
+  "name": "stitch",
+  "title": "Stitch (Google)",
+  "description": "MCP manifest for Stitch (Google). Use the official MCP URL and prefer API Key or OAuth via gcloud.",
+  "base_url": "https://stitch.googleapis.com/mcp",
+  "auth": {
+    "methods": ["api_key", "oauth2"],
+    "api_key": {
+      "env": "STITCH_API_KEY",
+      "header": "X-Goog-Api-Key",
+      "note": "Persistent API keys are created in Stitch Settings. Use when your tool accepts a key in headers or env."
+    },
+    "oauth2": {
+      "token_env": "STITCH_ACCESS_TOKEN",
+      "note": "Obtain token via `gcloud auth application-default print-access-token`. Tokens are short-lived (~1 hour)."
+    }
+  },
+  "endpoints": [
+    {
+      "name": "mcp_root",
+      "path": "/",
+      "method": "POST",
+      "description": "MCP root endpoint (POST). Clients should POST MCP requests here."
+    }
+  ],
+  "notes": "Preferred MCP URL: https://stitch.googleapis.com/mcp. Use `X-Goog-Api-Key` for API keys or set `STITCH_ACCESS_TOKEN` for bearer tokens. Do not commit credentials."
+}

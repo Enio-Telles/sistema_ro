@@ -20,9 +20,12 @@ def get_manual_map_status(cnpj: str) -> dict:
             "schema_validation": {
                 "ok": False,
                 "required_columns": ["codigo_fonte", "id_agrupado_manual"],
-                "optional_columns": ["motivo", "usuario", "observacao", "data_regra"],
+                "recommended_columns": ["regra_id", "usuario", "motivo", "created_at", "updated_at", "ativo", "observacao"],
+                "optional_columns": ["data_regra", "regra_id", "usuario", "motivo", "created_at", "updated_at", "ativo", "observacao"],
                 "missing_columns": ["codigo_fonte", "id_agrupado_manual"],
+                "missing_recommended_columns": ["regra_id", "usuario", "motivo", "created_at", "updated_at", "ativo", "observacao"],
                 "duplicate_codigo_fonte": 0,
+                "duplicate_active_regra_id": 0,
                 "null_codigo_fonte": 0,
                 "null_id_agrupado_manual": 0,
             },

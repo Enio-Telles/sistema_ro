@@ -10,11 +10,14 @@ Se for preciso entender o projeto rapidamente, siga esta ordem:
    Visao geral do projeto, superficies oficiais e foco atual.
 2. [24_plano_estabilidade_funcional.md](/C:/sistema_ro/docs/24_plano_estabilidade_funcional.md)
    Plano principal de consolidacao tecnica.
-3. [13_status_revisado_implementacao.md](/C:/sistema_ro/docs/13_status_revisado_implementacao.md)
+3. [33_plano_correcao_agregacao_conversao_estoque.md](/C:/sistema_ro/docs/33_plano_correcao_agregacao_conversao_estoque.md)
+   **Plano de correcao ativo** — agrupamento, conversao, estoque e persistencia.
+   Inclui status de implementacao das correcoes C1-C7.
+4. [13_status_revisado_implementacao.md](/C:/sistema_ro/docs/13_status_revisado_implementacao.md)
    Estado atual por bloco e proxima prioridade.
-4. [30_superficies_em_uso_agora.md](/C:/sistema_ro/docs/30_superficies_em_uso_agora.md)
+5. [30_superficies_em_uso_agora.md](/C:/sistema_ro/docs/30_superficies_em_uso_agora.md)
    Mapa das superficies e entrypoints hoje em uso.
-5. [32_plano_integrado_docs_estoques_referencias.md](/C:/sistema_ro/docs/32_plano_integrado_docs_estoques_referencias.md)
+6. [32_plano_integrado_docs_estoques_referencias.md](/C:/sistema_ro/docs/32_plano_integrado_docs_estoques_referencias.md)
    Consolidacao do eixo estoque, referencias e backlog tematico.
 
 ## Guias por assunto
@@ -31,6 +34,10 @@ Se for preciso entender o projeto rapidamente, siga esta ordem:
   [22_agregacao_review_api.md](/C:/sistema_ro/docs/22_agregacao_review_api.md),
   [23_arquitetura_parquets_mdc_agregacao.md](/C:/sistema_ro/docs/23_arquitetura_parquets_mdc_agregacao.md),
   [arquitetura_camadas_canonicas.md](/C:/sistema_ro/docs/arquitetura_camadas_canonicas.md)
+- **Plano de correcao ativo** (agrupamento, conversao, estoque, persistencia):
+  [33_plano_correcao_agregacao_conversao_estoque.md](/C:/sistema_ro/docs/33_plano_correcao_agregacao_conversao_estoque.md)
+- **Manifesto de dados** (datasets gold, silver, regras estruturantes):
+  [00_manifesto_dados.md](/C:/sistema_ro/docs/00_manifesto_dados.md)
 - Estoque:
   [15_estoque_quality_api.md](/C:/sistema_ro/docs/15_estoque_quality_api.md),
   [estoques/mov_estoque.md](/C:/sistema_ro/docs/estoques/mov_estoque.md),

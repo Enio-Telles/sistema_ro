@@ -28,6 +28,7 @@ This PR adds repository-level linting and pre-commit enforcement to improve code
 - [ ] Validate FastAPI Path change in `backend/app/routers_v5/pipeline.py`
 - [ ] Approve that frontend eslint hook is now `language: node` in `.pre-commit-config.yaml`
 - [ ] Merge after at least one approval and CI green
+ - [ ] Verificar ausência de chaves/segredos no diff; incluir `.env.example` quando necessário.
 
 ## How to validate locally
 

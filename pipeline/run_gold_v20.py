@@ -5,7 +5,7 @@ import polars as pl
 from pipeline.conversao.anomalias import build_conversion_anomalies
 from pipeline.conversao.fatores_v4 import calcular_fatores_priorizados_v4
 from pipeline.conversao.item_unidades_v3 import build_item_unidades_v3
-from pipeline.conversao.overrides import apply_manual_overrides
+from pipeline.conversao.overrides import apply_manual_overrides, build_override_log
 from pipeline.estoque.derivados_fiscais_v4 import build_aba_anual_v4, build_aba_mensal_v4, build_aba_periodos_v4
 from pipeline.estoque.mov_estoque_v3 import build_mov_estoque_v3
 from pipeline.estoque.resumo import build_estoque_alertas, build_estoque_resumo
@@ -53,12 +53,13 @@ def run_gold_v20(
         produtos_final_df=produtos_final_df,
     )
     if mercadorias is None:
-        mercadorias = run_mercadoria_v2(itens_df, base_info_df=base_info_df, mapa_manual_df=mapa_manual_df)
+        mercadorias = run_mercadoria_v2(itens_df, base_info_df=base_info_df, mapa_manual_df=mapa_manual_df, versao_agrupamento="gold_v20")
 
     produtos_final = mercadorias["produtos_final"]
     item_unidades = build_item_unidades_v3(itens_df, produtos_final, diagnostico_df=diagnostico_conversao_df)
     fatores = calcular_fatores_priorizados_v4(item_unidades, itens_df)
     fatores = apply_manual_overrides(fatores, overrides_df)
+    log_conversao_overrides = build_override_log(fatores)
     log_conversao_anomalias = build_conversion_anomalies(fatores)
     mov_estoque = build_mov_estoque_v3(c170_df, nfe_df, nfce_df, bloco_h_df, fatores, item_unidades)
     aba_mensal = build_aba_mensal_v4(mov_estoque, vigencia_df=sefin_vigencia_df)
@@ -70,6 +71,7 @@ def run_gold_v20(
         **mercadorias,
         "item_unidades": item_unidades,
         "fatores_conversao": fatores,
+        "log_conversao_overrides": log_conversao_overrides,
         "log_conversao_anomalias": log_conversao_anomalias,
         "mov_estoque": mov_estoque,
         "aba_mensal": aba_mensal,

@@ -4,6 +4,72 @@ import polars as pl
 
 from pipeline.conversao.structural_factors import infer_structural_factors
 
+# Colunas operacionais cujos valores heurísticos devem ser preservados antes
+# de qualquer override manual.  O sufixo ``_heuristico`` identifica o valor
+# calculado pelo pipeline sem intervenção humana.
+_HEURISTIC_COLS: list[tuple[str, str]] = [
+    ("unid_ref",        "unid_ref_heuristica"),
+    ("fator",           "fator_heuristico"),
+    ("tipo_fator",      "tipo_fator_heuristico"),
+    ("fonte_fator",     "fonte_fator_heuristico"),
+    ("confianca_fator", "confianca_fator_heuristica"),
+]
+
+_FINAL_COLS: list[tuple[str, str]] = [
+    ("unid_ref",        "unid_ref_final"),
+    ("fator",           "fator_final"),
+    ("tipo_fator",      "tipo_fator_final"),
+    ("fonte_fator",     "fonte_fator_final"),
+    ("confianca_fator", "confianca_fator_final"),
+]
+
+
+def _snapshot_heuristico(df: pl.DataFrame) -> pl.DataFrame:
+    """Adiciona snapshot dos valores heurísticos e inicializa override_aplicado.
+
+    Deve ser chamada ao final de ``calcular_fatores_priorizados_v4``, antes
+    de retornar.  Garante que ``apply_manual_overrides`` possa sobrescrever
+    as colunas operacionais sem apagar a trilha de auditoria heurística.
+
+    Colunas adicionadas
+    -------------------
+    ``unid_ref_heuristica``
+        Unidade de referência calculada pelo pipeline (sem override).
+    ``fator_heuristico``
+        Fator de conversão calculado pelo pipeline (sem override).
+    ``tipo_fator_heuristico``
+        Tipo do fator heurístico (``"diagnostico"``, ``"preco"``,
+        ``"estrutural"``, …).
+    ``fonte_fator_heuristico``
+        Fonte do fator heurístico.
+    ``confianca_fator_heuristica``
+        Confiança atribuída pelo pipeline ao fator heurístico.
+    ``override_aplicado``
+        Inicializado como ``False``; será sobrescrito por
+        ``apply_manual_overrides`` quando um override for aplicado.
+    """
+    exprs = [
+        pl.col(src).alias(dst)
+        for src, dst in _HEURISTIC_COLS
+        if src in df.columns and dst not in df.columns
+    ]
+    exprs.extend(
+        [
+            pl.col(src).alias(dst)
+            for src, dst in _FINAL_COLS
+            if src in df.columns and dst not in df.columns
+        ]
+    )
+    if "override_aplicado" not in df.columns:
+        exprs.append(pl.lit(False).alias("override_aplicado"))
+    if "override_resolution_key" not in df.columns:
+        exprs.append(pl.lit("nenhum").alias("override_resolution_key"))
+    if "caminho_decisao_final" not in df.columns:
+        exprs.append(pl.lit("heuristico").alias("caminho_decisao_final"))
+    if not exprs:
+        return df
+    return df.with_columns(exprs)
+
 
 def _choose_reference_units(item_unidades_df: pl.DataFrame) -> pl.DataFrame:
     auto_rank = (
@@ -36,6 +102,21 @@ def _choose_reference_units(item_unidades_df: pl.DataFrame) -> pl.DataFrame:
 
 
 def calcular_fatores_priorizados_v4(item_unidades_df: pl.DataFrame, itens_df: pl.DataFrame) -> pl.DataFrame:
+    """Calcula fatores de conversão priorizados com snapshot heurístico auditável.
+
+    O resultado desta função contém os valores heurísticos calculados pelo
+    pipeline.  Ao chamar ``apply_manual_overrides`` em seguida, as colunas
+    operacionais (``unid_ref``, ``fator``, …) podem ser substituídas pelo
+    valor manual sem perder a trilha heurística, que fica preservada nas
+    colunas ``*_heuristico``.
+
+    Fluxo esperado (``run_gold_v20.py``)::
+
+        fatores = calcular_fatores_priorizados_v4(item_unidades, itens_df)
+        # → fatores já tem unid_ref_heuristica, fator_heuristico, …
+        fatores = apply_manual_overrides(fatores, overrides_df)
+        # → override_aplicado=True onde manual foi aplicado; *_heuristico intactos
+    """
     if item_unidades_df.is_empty():
         return item_unidades_df
 
@@ -79,7 +160,8 @@ def calcular_fatores_priorizados_v4(item_unidades_df: pl.DataFrame, itens_df: pl
 
     estrutural_df = infer_structural_factors(itens_df)
     if estrutural_df.is_empty():
-        return result
+        # Snapshot heurístico antes de retornar (sem fator estrutural)
+        return _snapshot_heuristico(result)
 
     joined = result.join(
         estrutural_df.select([
@@ -96,7 +178,7 @@ def calcular_fatores_priorizados_v4(item_unidades_df: pl.DataFrame, itens_df: pl
         how="left",
     )
 
-    return joined.with_columns(
+    final = joined.with_columns(
         pl.when(pl.col("tipo_fator") == "diagnostico").then(pl.col("fator"))
         .when(pl.col("fator_estrutural").is_not_null()).then(pl.col("fator_estrutural"))
         .otherwise(pl.col("fator"))
@@ -114,3 +196,6 @@ def calcular_fatores_priorizados_v4(item_unidades_df: pl.DataFrame, itens_df: pl
         .otherwise(pl.col("fonte_fator"))
         .alias("fonte_fator"),
     ).drop([c for c in ["fator_estrutural", "tipo_fator_estrutural", "confianca_estrutural", "fonte_estrutural"] if c in joined.columns])
+
+    # Snapshot heurístico antes de retornar (com fator estrutural incorporado)
+    return _snapshot_heuristico(final)

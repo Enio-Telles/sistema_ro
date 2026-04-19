@@ -16,6 +16,19 @@ def _load_sefin_vigencia_reference() -> pl.DataFrame:
         return pl.DataFrame()
 
 
+def _detect_manual_assets_used(
+    *,
+    overrides_df: pl.DataFrame | None,
+    mapa_manual_df: pl.DataFrame | None,
+) -> list[str]:
+    manual_assets: list[str] = []
+    if overrides_df is not None and not overrides_df.is_empty():
+        manual_assets.append("overrides_conversao")
+    if mapa_manual_df is not None and not mapa_manual_df.is_empty():
+        manual_assets.append("mapa_manual_agregacao")
+    return manual_assets
+
+
 def run_and_persist_gold_v20(
     cnpj: str,
     *,
@@ -35,6 +48,10 @@ def run_and_persist_gold_v20(
     sefin_vigencia_df: pl.DataFrame | None = None,
 ) -> dict:
     vigencia_df = sefin_vigencia_df if sefin_vigencia_df is not None else _load_sefin_vigencia_reference()
+    manual_assets_used = _detect_manual_assets_used(
+        overrides_df=overrides_df,
+        mapa_manual_df=mapa_manual_df,
+    )
     outputs = run_gold_v20(
         itens_df,
         c170_df=c170_df,
@@ -51,7 +68,13 @@ def run_and_persist_gold_v20(
         diagnostico_conversao_df=diagnostico_conversao_df,
         sefin_vigencia_df=vigencia_df,
     )
-    saved = persist_gold_outputs_v2(cnpj, outputs)
+    saved = persist_gold_outputs_v2(
+        cnpj,
+        outputs,
+        pipeline_version="gold_v20",
+        upstream_datasets=["mdc_base", "silver", "references"],
+        manual_assets_used=manual_assets_used,
+    )
     conversion_quality = summarize_conversion_quality(
         item_unidades_df=outputs.get("item_unidades"),
         fatores_df=outputs.get("fatores_conversao"),

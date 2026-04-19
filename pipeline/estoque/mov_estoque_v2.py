@@ -32,33 +32,107 @@ def build_mov_estoque_v2(
 
     mov = pl.concat(frames, how="diagonal_relaxed")
     if "id_agrupado" in mov.columns and "id_agrupado" in fatores_df.columns:
-        factor_select = [c for c in ["id_agrupado", "mercadoria_id", "apresentacao_id", "unid_ref", "fator", "tipo_fator", "confianca_fator", "fonte_fator"] if c in fatores_df.columns]
-        mov = mov.join(fatores_df.select(factor_select).unique(subset=["id_agrupado"]), on="id_agrupado", how="left")
+        payload_cols = [c for c in ["mercadoria_id", "apresentacao_id", "unid_ref", "fator", "tipo_fator", "confianca_fator", "fonte_fator"] if c in fatores_df.columns]
+
+        can_join_por_unid = "unid" in mov.columns and "unid" in fatores_df.columns
+
+        if can_join_por_unid:
+            # Passo 1 — join específico por id_agrupado + unid
+            fat_spec = (
+                fatores_df
+                .select(["id_agrupado", "unid"] + payload_cols)
+                .unique(subset=["id_agrupado", "unid"])
+                .rename({c: f"{c}__s" for c in payload_cols})
+            )
+            mov = mov.join(fat_spec, on=["id_agrupado", "unid"], how="left")
+
+            # Passo 2 — fallback por id_agrupado para linhas sem match específico
+            explicit_general = fatores_df.filter(
+                pl.col("unid").cast(pl.Utf8, strict=False).fill_null("").str.strip_chars() == ""
+            )
+            implicit_general_ids = (
+                fatores_df
+                .filter(pl.col("unid").cast(pl.Utf8, strict=False).fill_null("").str.strip_chars() != "")
+                .group_by("id_agrupado")
+                .agg(pl.col("unid").n_unique().alias("unique_unid_count"))
+                .filter(pl.col("unique_unid_count") == 1)
+                .select("id_agrupado")
+            )
+            implicit_general = fatores_df.join(implicit_general_ids, on="id_agrupado", how="inner")
+            fat_gen = (
+                pl.concat(
+                    [
+                        explicit_general.select(["id_agrupado"] + payload_cols),
+                        implicit_general.select(["id_agrupado"] + payload_cols),
+                    ],
+                    how="diagonal_relaxed",
+                )
+                .unique(subset=["id_agrupado"], keep="first")
+                .rename({c: f"{c}__g" for c in payload_cols})
+            ) if (not explicit_general.is_empty() or not implicit_general.is_empty()) else pl.DataFrame()
+            if not fat_gen.is_empty():
+                mov = mov.join(fat_gen, on="id_agrupado", how="left")
+            else:
+                mov = mov.with_columns([
+                    pl.lit(None).alias(f"{c}__g")
+                    for c in payload_cols
+                ])
+
+            # Mesclar: específico > geral; registrar chave usada
+            coalesce_exprs = [
+                pl.when(pl.col(f"{c}__s").is_not_null())
+                .then(pl.col(f"{c}__s"))
+                .otherwise(pl.col(f"{c}__g"))
+                .alias(c)
+                for c in payload_cols
+            ]
+            resolution_expr = (
+                pl.when(pl.col("fator__s").is_not_null())
+                .then(pl.lit("id_agrupado+unid"))
+                .when(pl.col("fator__g").is_not_null())
+                .then(pl.lit("id_agrupado"))
+                .otherwise(pl.lit("fallback_default"))
+                .alias("factor_resolution_mode")
+            ) if "fator" in payload_cols else pl.lit("id_agrupado+unid").alias("factor_resolution_mode")
+
+            mov = mov.with_columns(coalesce_exprs + [resolution_expr])
+            tmp = [f"{c}__s" for c in payload_cols] + [f"{c}__g" for c in payload_cols]
+            mov = mov.drop([c for c in tmp if c in mov.columns])
+
+        else:
+            # Legado: join por id_agrupado apenas (sem coluna unid disponível)
+            mov = mov.join(
+                fatores_df.select(["id_agrupado"] + payload_cols).unique(subset=["id_agrupado"]),
+                on="id_agrupado",
+                how="left",
+            ).with_columns(pl.lit("id_agrupado").alias("factor_resolution_mode"))
+
+    fator_expr = pl.col("fator").fill_null(1.0)
 
     mov = mov.with_columns(
-        pl.col("fator").fill_null(1.0).alias("fator"),
+        fator_expr.alias("fator"),
         pl.when(pl.col("tipo_operacao") == "3 - ESTOQUE FINAL")
         .then(pl.lit(0.0))
-        .otherwise(pl.col("qtd").abs() * pl.col("fator").abs())
+        .otherwise(pl.col("qtd").abs() * fator_expr.abs())
         .alias("q_conv"),
         pl.when((pl.col("qtd").abs() > 0) & (pl.col("tipo_operacao") != "3 - ESTOQUE FINAL"))
-        .then(pl.col("vl_item") / (pl.col("qtd").abs() * pl.col("fator").abs()))
+        .then(pl.col("vl_item") / (pl.col("qtd").abs() * fator_expr.abs()))
         .otherwise(None)
         .alias("preco_unit"),
         pl.when(pl.col("tipo_operacao") == "2 - SAIDAS")
-        .then(-pl.col("qtd").abs() * pl.col("fator").abs())
+        .then(-pl.col("qtd").abs() * fator_expr.abs())
         .otherwise(
             pl.when(pl.col("tipo_operacao") == "3 - ESTOQUE FINAL")
             .then(pl.lit(0.0))
-            .otherwise(pl.col("qtd").abs() * pl.col("fator").abs())
+            .otherwise(pl.col("qtd").abs() * fator_expr.abs())
         )
         .alias("__q_conv_sinal__"),
         pl.when(pl.col("tipo_operacao") == "3 - ESTOQUE FINAL")
-        .then(pl.col("qtd").abs() * pl.col("fator").abs())
+        .then(pl.col("qtd").abs() * fator_expr.abs())
         .otherwise(None)
         .alias("__qtd_decl_final_audit__"),
         pl.when(pl.col("tipo_operacao") == "3 - ESTOQUE FINAL")
-        .then(pl.col("qtd").abs() * pl.col("fator").abs())
+        .then(pl.col("qtd").abs() * fator_expr.abs())
         .otherwise(None)
         .alias("estoque_final_declarado"),
     )

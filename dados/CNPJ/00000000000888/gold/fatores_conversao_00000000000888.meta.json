@@ -1,0 +1,19 @@
+{
+  "dataset_id": "fatores_conversao_gold",
+  "layer": "gold",
+  "schema_version": "v2.1",
+  "pipeline_version": "gold_v20",
+  "row_count": 1,
+  "cnpj": "00000000000888",
+  "upstream_datasets": [
+    "mdc_base",
+    "silver",
+    "references"
+  ],
+  "manual_assets_used": [
+    "overrides_conversao"
+  ],
+  "run_id": "RUN-1",
+  "input_hash": "HASH-1",
+  "data_processamento": "2026-04-18T00:00:00+00:00"
+}
