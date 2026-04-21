@@ -60,7 +60,6 @@ def main():
         "/v1/datasets/preview",
     ]
 
-    results = []
     for path in candidates:
         url = base + path
         print("\n---\nChecking:", url)
