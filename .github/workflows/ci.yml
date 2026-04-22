@@ -38,10 +38,27 @@ jobs:
           spec = importlib.util.find_spec('sistema_ro')
           print('find_spec(sistema_ro):', spec)
           try:
-              import sistema_ro
-              print('sistema_ro __file__:', getattr(sistema_ro, '__file__', None))
-          except Exception:
+            import sistema_ro
+            print('sistema_ro __file__:', getattr(sistema_ro, '__file__', None))
+            # show available paths and files under first search location
+            locs = list(spec.submodule_search_locations or [])
+            if locs:
+              import os
+              p = locs[0]
+              print('Listing', p)
+              try:
+                print('\n'.join(os.listdir(p)))
+              except Exception as _:
+                print('Could not list', p, _)
+            # try importing the enums submodule explicitly
+            try:
+              import importlib
+              m = importlib.import_module('sistema_ro.enums')
+              print('Imported enums ->', getattr(m, '__file__', None))
+            except Exception:
               traceback.print_exc()
+          except Exception:
+            traceback.print_exc()
           PY
 
       - name: Run Python tests
