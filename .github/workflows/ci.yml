@@ -45,6 +45,8 @@ jobs:
           PY
 
       - name: Run Python tests
+        env:
+          PYTHONPATH: ${{ github.workspace }}/sistema_ro
         run: python -m pytest -q
 
   frontend-tests:
