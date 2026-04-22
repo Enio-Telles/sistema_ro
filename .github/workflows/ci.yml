@@ -87,9 +87,9 @@ jobs:
           PY
 
       - name: Run Python tests
-        env:
-          PYTHONPATH: ${{ github.workspace }}
-        run: python -m pytest -q
+        run: |
+          cd /tmp
+          python -m pytest ${{ github.workspace }}/tests -q
 
   frontend-tests:
     name: Frontend tests (Vitest)
