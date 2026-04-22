@@ -62,7 +62,7 @@ jobs:
             traceback.print_exc()
           PY
 
-        - name: Show installed package files
+      - name: Show installed package files
         run: |
           echo "=== pip show sistema-ro ==="
           python -m pip show -f sistema-ro || true
