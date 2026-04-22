@@ -20,7 +20,7 @@ include-package-data = true
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["sistema_ro*"]
+include = ["sistema_ro"]
 exclude = ["frontend", "docs", "tests", "node_modules", ".venv"]
 
 [tool.pytest.ini_options]
