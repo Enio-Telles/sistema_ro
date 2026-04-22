@@ -31,8 +31,10 @@ jobs:
       - name: Debug installed package
         run: |
           python - <<'PY'
-          import importlib.util, sys, traceback
+          import importlib.util, sys, traceback, os
           print('Python executable:', sys.executable)
+          print('cwd:', os.getcwd())
+          print('PYTHONPATH:', os.environ.get('PYTHONPATH'))
           print('sys.path:')
           for p in sys.path:
               print(' -', p)
@@ -41,23 +43,27 @@ jobs:
           try:
             import sistema_ro
             print('sistema_ro __file__:', getattr(sistema_ro, '__file__', None))
-            # show available paths and files under first search location
+            print('sistema_ro __path__:', list(getattr(sistema_ro, '__path__', [])))
             locs = list(spec.submodule_search_locations or [])
             if locs:
-              import os
               p = locs[0]
               print('Listing', p)
+              print('exists __init__.py:', os.path.exists(os.path.join(p, '__init__.py')))
+              print('exists enums.py:', os.path.exists(os.path.join(p, 'enums.py')))
               try:
-                print('\n'.join(os.listdir(p)))
+                print('files:', '\n'.join(sorted(os.listdir(p))))
               except Exception as _:
                 print('Could not list', p, _)
-            # try importing the enums submodule explicitly
             try:
               import importlib
               m = importlib.import_module('sistema_ro.enums')
               print('Imported enums ->', getattr(m, '__file__', None))
             except Exception:
               traceback.print_exc()
+            print('site-packages entries:')
+            for p in sys.path:
+              if 'site-packages' in str(p):
+                print(p)
           except Exception:
             traceback.print_exc()
           PY
