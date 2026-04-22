@@ -27,6 +27,23 @@ jobs:
           python -m pip install -e .
           python -m pip install pytest httpx
 
+      - name: Debug installed package
+        run: |
+          python - <<'PY'
+          import importlib.util, sys, traceback
+          print('Python executable:', sys.executable)
+          print('sys.path:')
+          for p in sys.path:
+              print(' -', p)
+          spec = importlib.util.find_spec('sistema_ro')
+          print('find_spec(sistema_ro):', spec)
+          try:
+              import sistema_ro
+              print('sistema_ro __file__:', getattr(sistema_ro, '__file__', None))
+          except Exception:
+              traceback.print_exc()
+          PY
+
       - name: Run Python tests
         run: python -m pytest -q
 
