@@ -1,0 +1,58 @@
+name: Auto-merge PRs on CI success
+
+on:
+  workflow_run:
+    workflows:
+      - CI
+    types:
+      - completed
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-merge:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Auto-merge PRs for successful CI runs
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const run = context.payload.workflow_run;
+            const sha = run.head_sha;
+            const { owner, repo } = context.repo;
+
+            console.log(`CI run succeeded for commit ${sha}, searching associated PRs...`);
+
+            const pulls = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+              owner, repo, commit_sha: sha
+            });
+
+            if (!pulls || pulls.data.length === 0) {
+              console.log(`No open PRs associated with commit ${sha}`);
+              return;
+            }
+
+            for (const pr of pulls.data) {
+              if (pr.state !== 'open') continue;
+              console.log(`Found PR #${pr.number}: ${pr.html_url}`);
+
+              // Refresh PR details to read mergeable flag
+              const prInfo = await github.rest.pulls.get({ owner, repo, pull_number: pr.number });
+
+              if (!prInfo.data.mergeable) {
+                console.log(`PR #${pr.number} is not mergeable (mergeable=${prInfo.data.mergeable}). Skipping.`);
+                continue;
+              }
+
+              try {
+                await github.rest.pulls.merge({ owner, repo, pull_number: pr.number, merge_method: 'merge' });
+                console.log(`Merged PR #${pr.number}`);
+              } catch (err) {
+                console.log(`Auto-merge failed for PR #${pr.number}: ${err.message}`);
+                // Notify in PR comments
+                await github.rest.issues.createComment({ owner, repo, issue_number: pr.number, body: `Auto-merge attempted after CI success but failed: ${err.message}` });
+              }
+            }
