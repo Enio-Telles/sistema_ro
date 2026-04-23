@@ -1,5 +1,4 @@
 import polars as pl
-import pytest
 
 from pipeline.estoque.mov_estoque_v3 import build_mov_estoque_v3
 

@@ -4,3 +4,4 @@ pydantic>=2.8
 polars>=1.8
 python-dotenv>=1.0
 pytest
+httpx
