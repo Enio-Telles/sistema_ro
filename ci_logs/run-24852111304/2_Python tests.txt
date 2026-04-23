@@ -1,0 +1,723 @@
+﻿2026-04-23T18:32:16.8494888Z Current runner version: '2.333.1'
+2026-04-23T18:32:16.8519951Z ##[group]Runner Image Provisioner
+2026-04-23T18:32:16.8521051Z Hosted Compute Agent
+2026-04-23T18:32:16.8521810Z Version: 20260213.493
+2026-04-23T18:32:16.8522390Z Commit: 5c115507f6dd24b8de37d8bbe0bb4509d0cc0fa3
+2026-04-23T18:32:16.8523118Z Build Date: 2026-02-13T00:28:41Z
+2026-04-23T18:32:16.8523804Z Worker ID: {55e56197-2847-4fcd-9b77-aa2746edc3ca}
+2026-04-23T18:32:16.8524447Z Azure Region: eastus
+2026-04-23T18:32:16.8524983Z ##[endgroup]
+2026-04-23T18:32:16.8526439Z ##[group]Operating System
+2026-04-23T18:32:16.8527147Z Ubuntu
+2026-04-23T18:32:16.8527561Z 24.04.4
+2026-04-23T18:32:16.8527990Z LTS
+2026-04-23T18:32:16.8528463Z ##[endgroup]
+2026-04-23T18:32:16.8528950Z ##[group]Runner Image
+2026-04-23T18:32:16.8529494Z Image: ubuntu-24.04
+2026-04-23T18:32:16.8530009Z Version: 20260413.86.1
+2026-04-23T18:32:16.8531411Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260413.86/images/ubuntu/Ubuntu2404-Readme.md
+2026-04-23T18:32:16.8532902Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260413.86
+2026-04-23T18:32:16.8533747Z ##[endgroup]
+2026-04-23T18:32:16.8534960Z ##[group]GITHUB_TOKEN Permissions
+2026-04-23T18:32:16.8537158Z Contents: read
+2026-04-23T18:32:16.8537687Z Metadata: read
+2026-04-23T18:32:16.8538239Z Packages: read
+2026-04-23T18:32:16.8538729Z ##[endgroup]
+2026-04-23T18:32:16.8541474Z Secret source: Actions
+2026-04-23T18:32:16.8542611Z Prepare workflow directory
+2026-04-23T18:32:16.8871308Z Prepare all required actions
+2026-04-23T18:32:16.8908936Z Getting action download info
+2026-04-23T18:32:17.2290166Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2026-04-23T18:32:17.3533009Z Download action repository 'actions/setup-python@v4' (SHA:7f4fc3e22c37d6ff65e88745f38bd3157c663f7c)
+2026-04-23T18:32:17.6491067Z Complete job name: Python tests
+2026-04-23T18:32:17.7179578Z ##[group]Run actions/checkout@v4
+2026-04-23T18:32:17.7180376Z with:
+2026-04-23T18:32:17.7181049Z   repository: Enio-Telles/sistema_ro
+2026-04-23T18:32:17.7181707Z   token: ***
+2026-04-23T18:32:17.7182063Z   ssh-strict: true
+2026-04-23T18:32:17.7182437Z   ssh-user: git
+2026-04-23T18:32:17.7182813Z   persist-credentials: true
+2026-04-23T18:32:17.7183235Z   clean: true
+2026-04-23T18:32:17.7183621Z   sparse-checkout-cone-mode: true
+2026-04-23T18:32:17.7184080Z   fetch-depth: 1
+2026-04-23T18:32:17.7184450Z   fetch-tags: false
+2026-04-23T18:32:17.7184841Z   show-progress: true
+2026-04-23T18:32:17.7185225Z   lfs: false
+2026-04-23T18:32:17.7185579Z   submodules: false
+2026-04-23T18:32:17.7185960Z   set-safe-directory: true
+2026-04-23T18:32:17.7186649Z ##[endgroup]
+2026-04-23T18:32:17.8276764Z Syncing repository: Enio-Telles/sistema_ro
+2026-04-23T18:32:17.8278462Z ##[group]Getting Git version info
+2026-04-23T18:32:17.8279148Z Working directory is '/home/runner/work/sistema_ro/sistema_ro'
+2026-04-23T18:32:17.8280126Z [command]/usr/bin/git version
+2026-04-23T18:32:17.8301239Z git version 2.53.0
+2026-04-23T18:32:17.8327402Z ##[endgroup]
+2026-04-23T18:32:17.8350866Z Temporarily overriding HOME='/home/runner/work/_temp/472a8a60-808b-4f03-9b8e-53e438d402e7' before making global git config changes
+2026-04-23T18:32:17.8353575Z Adding repository directory to the temporary git global config as a safe directory
+2026-04-23T18:32:17.8356102Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/sistema_ro/sistema_ro
+2026-04-23T18:32:17.8390209Z Deleting the contents of '/home/runner/work/sistema_ro/sistema_ro'
+2026-04-23T18:32:17.8393880Z ##[group]Initializing the repository
+2026-04-23T18:32:17.8398060Z [command]/usr/bin/git init /home/runner/work/sistema_ro/sistema_ro
+2026-04-23T18:32:17.8500056Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-04-23T18:32:17.8502182Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-04-23T18:32:17.8504146Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-04-23T18:32:17.8506227Z hint: call:
+2026-04-23T18:32:17.8507053Z hint:
+2026-04-23T18:32:17.8507978Z hint: 	git config --global init.defaultBranch <name>
+2026-04-23T18:32:17.8509329Z hint:
+2026-04-23T18:32:17.8510964Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-04-23T18:32:17.8512929Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-04-23T18:32:17.8514592Z hint:
+2026-04-23T18:32:17.8515566Z hint: 	git branch -m <name>
+2026-04-23T18:32:17.8516651Z hint:
+2026-04-23T18:32:17.8518285Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-04-23T18:32:17.8520395Z Initialized empty Git repository in /home/runner/work/sistema_ro/sistema_ro/.git/
+2026-04-23T18:32:17.8523996Z [command]/usr/bin/git remote add origin https://github.com/Enio-Telles/sistema_ro
+2026-04-23T18:32:17.8546011Z ##[endgroup]
+2026-04-23T18:32:17.8547560Z ##[group]Disabling automatic garbage collection
+2026-04-23T18:32:17.8549119Z [command]/usr/bin/git config --local gc.auto 0
+2026-04-23T18:32:17.8579590Z ##[endgroup]
+2026-04-23T18:32:17.8581122Z ##[group]Setting up auth
+2026-04-23T18:32:17.8587562Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-04-23T18:32:17.8619406Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-04-23T18:32:17.8928784Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-04-23T18:32:17.8963431Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-04-23T18:32:17.9181017Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-04-23T18:32:17.9224639Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-04-23T18:32:17.9444670Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-04-23T18:32:17.9479811Z ##[endgroup]
+2026-04-23T18:32:17.9481511Z ##[group]Fetching the repository
+2026-04-23T18:32:17.9491254Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +9178b3cf9316b43e4229894ce190b78b97b8a9f8:refs/remotes/origin/feature/ci-check-fix-frontend-optional
+2026-04-23T18:32:18.4864517Z From https://github.com/Enio-Telles/sistema_ro
+2026-04-23T18:32:18.4866924Z  * [new ref]         9178b3cf9316b43e4229894ce190b78b97b8a9f8 -> origin/feature/ci-check-fix-frontend-optional
+2026-04-23T18:32:18.4903539Z ##[endgroup]
+2026-04-23T18:32:18.4911294Z ##[group]Determining the checkout info
+2026-04-23T18:32:18.4912876Z ##[endgroup]
+2026-04-23T18:32:18.4913753Z [command]/usr/bin/git sparse-checkout disable
+2026-04-23T18:32:18.4941741Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-04-23T18:32:18.4971479Z ##[group]Checking out the ref
+2026-04-23T18:32:18.4975321Z [command]/usr/bin/git checkout --progress --force -B feature/ci-check-fix-frontend-optional refs/remotes/origin/feature/ci-check-fix-frontend-optional
+2026-04-23T18:32:18.6586738Z Switched to a new branch 'feature/ci-check-fix-frontend-optional'
+2026-04-23T18:32:18.6588500Z branch 'feature/ci-check-fix-frontend-optional' set up to track 'origin/feature/ci-check-fix-frontend-optional'.
+2026-04-23T18:32:18.6604279Z ##[endgroup]
+2026-04-23T18:32:18.6642559Z [command]/usr/bin/git log -1 --format=%H
+2026-04-23T18:32:18.6664720Z 9178b3cf9316b43e4229894ce190b78b97b8a9f8
+2026-04-23T18:32:18.6980908Z ##[group]Run actions/setup-python@v4
+2026-04-23T18:32:18.6982086Z with:
+2026-04-23T18:32:18.6982867Z   python-version: 3.11
+2026-04-23T18:32:18.6983774Z   cache: pip
+2026-04-23T18:32:18.6984590Z   check-latest: false
+2026-04-23T18:32:18.6985780Z   token: ***
+2026-04-23T18:32:18.6986885Z   update-environment: true
+2026-04-23T18:32:18.6987939Z   allow-prereleases: false
+2026-04-23T18:32:18.6988894Z ##[endgroup]
+2026-04-23T18:32:18.8678944Z ##[group]Installed versions
+2026-04-23T18:32:18.8812692Z Successfully set up CPython (3.11.15)
+2026-04-23T18:32:18.8814529Z ##[endgroup]
+2026-04-23T18:32:19.2664311Z [command]/opt/hostedtoolcache/Python/3.11.15/x64/bin/pip cache dir
+2026-04-23T18:32:19.6063078Z /home/runner/.cache/pip
+2026-04-23T18:32:19.7033527Z Cache hit for: setup-python-Linux-24.04-Ubuntu-python-3.11.15-pip-c5ba5bd45b4d863d48fea69fbceaa0ada5394a7009745e7cbbec5c9648cfdeb0
+2026-04-23T18:32:20.1819225Z Received 55312328 of 55312328 (100.0%), 128.3 MBs/sec
+2026-04-23T18:32:20.1820348Z Cache Size: ~53 MB (55312328 B)
+2026-04-23T18:32:20.1895857Z [command]/usr/bin/tar -xf /home/runner/work/_temp/ab641b2d-89bb-4e4b-9c25-c4314d935ca6/cache.tzst -P -C /home/runner/work/sistema_ro/sistema_ro --use-compress-program unzstd
+2026-04-23T18:32:20.2718160Z Cache restored successfully
+2026-04-23T18:32:20.2752565Z Cache restored from key: setup-python-Linux-24.04-Ubuntu-python-3.11.15-pip-db883f150f736b8b32f9264898d8293445eb5dc57721f3f6936cd98e49d7812f
+2026-04-23T18:32:20.2917244Z ##[group]Run python -m pip install --upgrade pip
+2026-04-23T18:32:20.2917756Z [36;1mpython -m pip install --upgrade pip[0m
+2026-04-23T18:32:20.2945754Z shell: /usr/bin/bash -e {0}
+2026-04-23T18:32:20.2946013Z env:
+2026-04-23T18:32:20.2946277Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-04-23T18:32:20.2946703Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-04-23T18:32:20.2947109Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-04-23T18:32:20.2947495Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-04-23T18:32:20.2947891Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-04-23T18:32:20.2948256Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-04-23T18:32:20.2948552Z ##[endgroup]
+2026-04-23T18:32:20.7856960Z Requirement already satisfied: pip in /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages (26.0.1)
+2026-04-23T18:32:21.0002341Z ##[group]Run python -m pip install --upgrade pip
+2026-04-23T18:32:21.0002762Z [36;1mpython -m pip install --upgrade pip[0m
+2026-04-23T18:32:21.0003129Z [36;1mpython -m pip install -r requirements-ci.txt[0m
+2026-04-23T18:32:21.0003469Z [36;1mecho "PYTHONPATH=$(pwd)" >> $GITHUB_ENV[0m
+2026-04-23T18:32:21.0025544Z shell: /usr/bin/bash -e {0}
+2026-04-23T18:32:21.0025780Z env:
+2026-04-23T18:32:21.0026031Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-04-23T18:32:21.0026447Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-04-23T18:32:21.0026867Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-04-23T18:32:21.0027236Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-04-23T18:32:21.0027617Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-04-23T18:32:21.0027996Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-04-23T18:32:21.0028312Z ##[endgroup]
+2026-04-23T18:32:21.2910543Z Requirement already satisfied: pip in /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages (26.0.1)
+2026-04-23T18:32:21.8347070Z Collecting fastapi>=0.115 (from -r requirements-ci.txt (line 1))
+2026-04-23T18:32:21.8929648Z   Downloading fastapi-0.136.1-py3-none-any.whl.metadata (28 kB)
+2026-04-23T18:32:21.9275148Z Collecting uvicorn>=0.30 (from -r requirements-ci.txt (line 2))
+2026-04-23T18:32:21.9321462Z   Downloading uvicorn-0.46.0-py3-none-any.whl.metadata (6.7 kB)
+2026-04-23T18:32:22.0603521Z Collecting pydantic>=2.8 (from -r requirements-ci.txt (line 3))
+2026-04-23T18:32:22.0653795Z   Downloading pydantic-2.13.3-py3-none-any.whl.metadata (108 kB)
+2026-04-23T18:32:22.2453216Z Collecting polars>=1.8 (from -r requirements-ci.txt (line 4))
+2026-04-23T18:32:22.2503856Z   Downloading polars-1.40.1-py3-none-any.whl.metadata (10 kB)
+2026-04-23T18:32:22.7961032Z Collecting python-dotenv>=1.0 (from -r requirements-ci.txt (line 5))
+2026-04-23T18:32:22.7975316Z   Using cached python_dotenv-1.2.2-py3-none-any.whl.metadata (27 kB)
+2026-04-23T18:32:22.8645367Z Collecting pytest (from -r requirements-ci.txt (line 6))
+2026-04-23T18:32:22.8659422Z   Using cached pytest-9.0.3-py3-none-any.whl.metadata (7.6 kB)
+2026-04-23T18:32:22.9136915Z Collecting starlette>=0.46.0 (from fastapi>=0.115->-r requirements-ci.txt (line 1))
+2026-04-23T18:32:22.9153476Z   Using cached starlette-1.0.0-py3-none-any.whl.metadata (6.3 kB)
+2026-04-23T18:32:22.9574073Z Collecting typing-extensions>=4.8.0 (from fastapi>=0.115->-r requirements-ci.txt (line 1))
+2026-04-23T18:32:22.9590689Z   Using cached typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+2026-04-23T18:32:23.0184285Z Collecting typing-inspection>=0.4.2 (from fastapi>=0.115->-r requirements-ci.txt (line 1))
+2026-04-23T18:32:23.0202911Z   Using cached typing_inspection-0.4.2-py3-none-any.whl.metadata (2.6 kB)
+2026-04-23T18:32:23.0435964Z Collecting annotated-doc>=0.0.2 (from fastapi>=0.115->-r requirements-ci.txt (line 1))
+2026-04-23T18:32:23.0454837Z   Using cached annotated_doc-0.0.4-py3-none-any.whl.metadata (6.6 kB)
+2026-04-23T18:32:23.1595705Z Collecting click>=7.0 (from uvicorn>=0.30->-r requirements-ci.txt (line 2))
+2026-04-23T18:32:23.1637751Z   Downloading click-8.3.3-py3-none-any.whl.metadata (2.6 kB)
+2026-04-23T18:32:23.6562628Z Collecting h11>=0.8 (from uvicorn>=0.30->-r requirements-ci.txt (line 2))
+2026-04-23T18:32:23.6575764Z   Using cached h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+2026-04-23T18:32:23.6653958Z Collecting annotated-types>=0.6.0 (from pydantic>=2.8->-r requirements-ci.txt (line 3))
+2026-04-23T18:32:23.6666932Z   Using cached annotated_types-0.7.0-py3-none-any.whl.metadata (15 kB)
+2026-04-23T18:32:24.2969598Z Collecting pydantic-core==2.46.3 (from pydantic>=2.8->-r requirements-ci.txt (line 3))
+2026-04-23T18:32:24.3026230Z   Downloading pydantic_core-2.46.3-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.6 kB)
+2026-04-23T18:32:24.3245204Z Collecting polars-runtime-32==1.40.1 (from polars>=1.8->-r requirements-ci.txt (line 4))
+2026-04-23T18:32:24.3303579Z   Downloading polars_runtime_32-1.40.1-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (1.5 kB)
+2026-04-23T18:32:24.3415067Z Collecting iniconfig>=1.0.1 (from pytest->-r requirements-ci.txt (line 6))
+2026-04-23T18:32:24.3428477Z   Using cached iniconfig-2.3.0-py3-none-any.whl.metadata (2.5 kB)
+2026-04-23T18:32:24.3541113Z Collecting packaging>=22 (from pytest->-r requirements-ci.txt (line 6))
+2026-04-23T18:32:24.3554762Z   Using cached packaging-26.1-py3-none-any.whl.metadata (3.5 kB)
+2026-04-23T18:32:24.3658488Z Collecting pluggy<2,>=1.5 (from pytest->-r requirements-ci.txt (line 6))
+2026-04-23T18:32:24.3671566Z   Using cached pluggy-1.6.0-py3-none-any.whl.metadata (4.8 kB)
+2026-04-23T18:32:24.3815103Z Collecting pygments>=2.7.2 (from pytest->-r requirements-ci.txt (line 6))
+2026-04-23T18:32:24.3828361Z   Using cached pygments-2.20.0-py3-none-any.whl.metadata (2.5 kB)
+2026-04-23T18:32:24.3988792Z Collecting anyio<5,>=3.6.2 (from starlette>=0.46.0->fastapi>=0.115->-r requirements-ci.txt (line 1))
+2026-04-23T18:32:24.4002185Z   Using cached anyio-4.13.0-py3-none-any.whl.metadata (4.5 kB)
+2026-04-23T18:32:24.4123292Z Collecting idna>=2.8 (from anyio<5,>=3.6.2->starlette>=0.46.0->fastapi>=0.115->-r requirements-ci.txt (line 1))
+2026-04-23T18:32:24.4175247Z   Downloading idna-3.13-py3-none-any.whl.metadata (8.0 kB)
+2026-04-23T18:32:24.4289170Z Downloading fastapi-0.136.1-py3-none-any.whl (117 kB)
+2026-04-23T18:32:24.4376250Z Downloading uvicorn-0.46.0-py3-none-any.whl (70 kB)
+2026-04-23T18:32:24.4438345Z Downloading pydantic-2.13.3-py3-none-any.whl (471 kB)
+2026-04-23T18:32:24.4593193Z Downloading pydantic_core-2.46.3-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.1 MB)
+2026-04-23T18:32:24.4900846Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 70.5 MB/s  0:00:00
+2026-04-23T18:32:24.4941326Z Downloading polars-1.40.1-py3-none-any.whl (828 kB)
+2026-04-23T18:32:24.5088553Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 828.7/828.7 kB 75.7 MB/s  0:00:00
+2026-04-23T18:32:24.5141393Z Downloading polars_runtime_32-1.40.1-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (56.3 MB)
+2026-04-23T18:32:24.8216836Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 56.3/56.3 MB 184.6 MB/s  0:00:00
+2026-04-23T18:32:24.8232463Z Using cached python_dotenv-1.2.2-py3-none-any.whl (22 kB)
+2026-04-23T18:32:24.8245904Z Using cached pytest-9.0.3-py3-none-any.whl (375 kB)
+2026-04-23T18:32:24.8260282Z Using cached pluggy-1.6.0-py3-none-any.whl (20 kB)
+2026-04-23T18:32:24.8273863Z Using cached annotated_doc-0.0.4-py3-none-any.whl (5.3 kB)
+2026-04-23T18:32:24.8286816Z Using cached annotated_types-0.7.0-py3-none-any.whl (13 kB)
+2026-04-23T18:32:24.8328792Z Downloading click-8.3.3-py3-none-any.whl (110 kB)
+2026-04-23T18:32:24.8370578Z Using cached h11-0.16.0-py3-none-any.whl (37 kB)
+2026-04-23T18:32:24.8384047Z Using cached iniconfig-2.3.0-py3-none-any.whl (7.5 kB)
+2026-04-23T18:32:24.8397178Z Using cached packaging-26.1-py3-none-any.whl (95 kB)
+2026-04-23T18:32:24.8410706Z Using cached pygments-2.20.0-py3-none-any.whl (1.2 MB)
+2026-04-23T18:32:24.8427807Z Using cached starlette-1.0.0-py3-none-any.whl (72 kB)
+2026-04-23T18:32:24.8441150Z Using cached anyio-4.13.0-py3-none-any.whl (114 kB)
+2026-04-23T18:32:24.8492596Z Downloading idna-3.13-py3-none-any.whl (68 kB)
+2026-04-23T18:32:24.8527822Z Using cached typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+2026-04-23T18:32:24.8540842Z Using cached typing_inspection-0.4.2-py3-none-any.whl (14 kB)
+2026-04-23T18:32:24.9493750Z Installing collected packages: typing-extensions, python-dotenv, pygments, polars-runtime-32, pluggy, packaging, iniconfig, idna, h11, click, annotated-types, annotated-doc, uvicorn, typing-inspection, pytest, pydantic-core, polars, anyio, starlette, pydantic, fastapi
+2026-04-23T18:32:27.6460094Z 
+2026-04-23T18:32:27.6477538Z Successfully installed annotated-doc-0.0.4 annotated-types-0.7.0 anyio-4.13.0 click-8.3.3 fastapi-0.136.1 h11-0.16.0 idna-3.13 iniconfig-2.3.0 packaging-26.1 pluggy-1.6.0 polars-1.40.1 polars-runtime-32-1.40.1 pydantic-2.13.3 pydantic-core-2.46.3 pygments-2.20.0 pytest-9.0.3 python-dotenv-1.2.2 starlette-1.0.0 typing-extensions-4.15.0 typing-inspection-0.4.2 uvicorn-0.46.0
+2026-04-23T18:32:27.8195816Z ##[group]Run python -m pytest -q
+2026-04-23T18:32:27.8196106Z [36;1mpython -m pytest -q[0m
+2026-04-23T18:32:27.8217309Z shell: /usr/bin/bash -e {0}
+2026-04-23T18:32:27.8217539Z env:
+2026-04-23T18:32:27.8217781Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-04-23T18:32:27.8218209Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-04-23T18:32:27.8218629Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-04-23T18:32:27.8218988Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-04-23T18:32:27.8219347Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-04-23T18:32:27.8219733Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-04-23T18:32:27.8220097Z   PYTHONPATH: /home/runner/work/sistema_ro/sistema_ro
+2026-04-23T18:32:27.8220370Z ##[endgroup]
+2026-04-23T18:32:30.0590323Z 
+2026-04-23T18:32:30.0591138Z ==================================== ERRORS ====================================
+2026-04-23T18:32:30.0591857Z _______________________ ERROR collecting tests/canonico ________________________
+2026-04-23T18:32:30.0592752Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/importlib/__init__.py:126: in import_module
+2026-04-23T18:32:30.0593593Z     return _bootstrap._gcd_import(name[level:], package, level)
+2026-04-23T18:32:30.0594143Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-04-23T18:32:30.0594609Z <frozen importlib._bootstrap>:1204: in _gcd_import
+2026-04-23T18:32:30.0595122Z     ???
+2026-04-23T18:32:30.0595507Z <frozen importlib._bootstrap>:1176: in _find_and_load
+2026-04-23T18:32:30.0596012Z     ???
+2026-04-23T18:32:30.0596889Z <frozen importlib._bootstrap>:1147: in _find_and_load_unlocked
+2026-04-23T18:32:30.0597514Z     ???
+2026-04-23T18:32:30.0597918Z <frozen importlib._bootstrap>:690: in _load_unlocked
+2026-04-23T18:32:30.0598422Z     ???
+2026-04-23T18:32:30.0599220Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/_pytest/assertion/rewrite.py:197: in exec_module
+2026-04-23T18:32:30.0600251Z     exec(co, module.__dict__)
+2026-04-23T18:32:30.0601105Z tests/canonico/conftest.py:10: in <module>
+2026-04-23T18:32:30.0601650Z     from sistema_ro.enums import TipoOperacao
+2026-04-23T18:32:30.0602259Z E   ModuleNotFoundError: No module named 'sistema_ro.enums'
+2026-04-23T18:32:30.0603056Z _____________ ERROR collecting tests/test_estoque_table_service.py _____________
+2026-04-23T18:32:30.0603804Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:38: in <module>
+2026-04-23T18:32:30.0604280Z     import httpx
+2026-04-23T18:32:30.0604512Z E   ModuleNotFoundError: No module named 'httpx'
+2026-04-23T18:32:30.0604724Z 
+2026-04-23T18:32:30.0604897Z During handling of the above exception, another exception occurred:
+2026-04-23T18:32:30.0605285Z tests/test_estoque_table_service.py:4: in <module>
+2026-04-23T18:32:30.0605589Z     from fastapi.testclient import TestClient
+2026-04-23T18:32:30.0606082Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/fastapi/testclient.py:1: in <module>
+2026-04-23T18:32:30.0606663Z     from starlette.testclient import TestClient as TestClient  # noqa
+2026-04-23T18:32:30.0607028Z     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-04-23T18:32:30.0607513Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:40: in <module>
+2026-04-23T18:32:30.0607982Z     raise RuntimeError(
+2026-04-23T18:32:30.0608365Z E   RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.0608789Z E   You can install this with:
+2026-04-23T18:32:30.0609017Z E       $ pip install httpx
+2026-04-23T18:32:30.0609328Z ____________________ ERROR collecting tests/test_health.py _____________________
+2026-04-23T18:32:30.0609884Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:38: in <module>
+2026-04-23T18:32:30.0610340Z     import httpx
+2026-04-23T18:32:30.0611074Z E   ModuleNotFoundError: No module named 'httpx'
+2026-04-23T18:32:30.0611322Z 
+2026-04-23T18:32:30.0611511Z During handling of the above exception, another exception occurred:
+2026-04-23T18:32:30.0611874Z tests/test_health.py:2: in <module>
+2026-04-23T18:32:30.0612206Z     from fastapi.testclient import TestClient
+2026-04-23T18:32:30.0613062Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/fastapi/testclient.py:1: in <module>
+2026-04-23T18:32:30.0614057Z     from starlette.testclient import TestClient as TestClient  # noqa
+2026-04-23T18:32:30.0614666Z     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-04-23T18:32:30.0615513Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:40: in <module>
+2026-04-23T18:32:30.0616286Z     raise RuntimeError(
+2026-04-23T18:32:30.0616665Z E   RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.0617103Z E   You can install this with:
+2026-04-23T18:32:30.0617332Z E       $ pip install httpx
+2026-04-23T18:32:30.0617658Z __________ ERROR collecting tests/test_official_runtime_flow_smoke.py __________
+2026-04-23T18:32:30.0618233Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:38: in <module>
+2026-04-23T18:32:30.0618693Z     import httpx
+2026-04-23T18:32:30.0618911Z E   ModuleNotFoundError: No module named 'httpx'
+2026-04-23T18:32:30.0619103Z 
+2026-04-23T18:32:30.0619271Z During handling of the above exception, another exception occurred:
+2026-04-23T18:32:30.0619658Z tests/test_official_runtime_flow_smoke.py:1: in <module>
+2026-04-23T18:32:30.0619977Z     from fastapi.testclient import TestClient
+2026-04-23T18:32:30.0620846Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/fastapi/testclient.py:1: in <module>
+2026-04-23T18:32:30.0621503Z     from starlette.testclient import TestClient as TestClient  # noqa
+2026-04-23T18:32:30.0621864Z     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-04-23T18:32:30.0622331Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:40: in <module>
+2026-04-23T18:32:30.0622789Z     raise RuntimeError(
+2026-04-23T18:32:30.0623161Z E   RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.0623583Z E   You can install this with:
+2026-04-23T18:32:30.0623798Z E       $ pip install httpx
+2026-04-23T18:32:30.0624105Z ___________ ERROR collecting tests/test_official_runtime_surfaces.py ___________
+2026-04-23T18:32:30.0624676Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:38: in <module>
+2026-04-23T18:32:30.0625161Z     import httpx
+2026-04-23T18:32:30.0625454Z E   ModuleNotFoundError: No module named 'httpx'
+2026-04-23T18:32:30.0625644Z 
+2026-04-23T18:32:30.0625810Z During handling of the above exception, another exception occurred:
+2026-04-23T18:32:30.0626190Z tests/test_official_runtime_surfaces.py:1: in <module>
+2026-04-23T18:32:30.0626508Z     from fastapi.testclient import TestClient
+2026-04-23T18:32:30.0626978Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/fastapi/testclient.py:1: in <module>
+2026-04-23T18:32:30.0627517Z     from starlette.testclient import TestClient as TestClient  # noqa
+2026-04-23T18:32:30.0627867Z     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-04-23T18:32:30.0628329Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:40: in <module>
+2026-04-23T18:32:30.0628782Z     raise RuntimeError(
+2026-04-23T18:32:30.0629153Z E   RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.0629582Z E   You can install this with:
+2026-04-23T18:32:30.0629815Z E       $ pip install httpx
+2026-04-23T18:32:30.0630130Z __________________ ERROR collecting tests/test_runtime_app.py __________________
+2026-04-23T18:32:30.0631108Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:38: in <module>
+2026-04-23T18:32:30.0632054Z     import httpx
+2026-04-23T18:32:30.0632449Z E   ModuleNotFoundError: No module named 'httpx'
+2026-04-23T18:32:30.0632806Z 
+2026-04-23T18:32:30.0633110Z During handling of the above exception, another exception occurred:
+2026-04-23T18:32:30.0633733Z tests/test_runtime_app.py:1: in <module>
+2026-04-23T18:32:30.0634019Z     from fastapi.testclient import TestClient
+2026-04-23T18:32:30.0634485Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/fastapi/testclient.py:1: in <module>
+2026-04-23T18:32:30.0635038Z     from starlette.testclient import TestClient as TestClient  # noqa
+2026-04-23T18:32:30.0635406Z     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-04-23T18:32:30.0635870Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:40: in <module>
+2026-04-23T18:32:30.0636339Z     raise RuntimeError(
+2026-04-23T18:32:30.0636719Z E   RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.0637143Z E   You can install this with:
+2026-04-23T18:32:30.0637357Z E       $ pip install httpx
+2026-04-23T18:32:30.0637663Z _________________ ERROR collecting tests/test_runtime_exec.py __________________
+2026-04-23T18:32:30.0638215Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:38: in <module>
+2026-04-23T18:32:30.0638665Z     import httpx
+2026-04-23T18:32:30.0638881Z E   ModuleNotFoundError: No module named 'httpx'
+2026-04-23T18:32:30.0639079Z 
+2026-04-23T18:32:30.0639247Z During handling of the above exception, another exception occurred:
+2026-04-23T18:32:30.0639781Z tests/test_runtime_exec.py:1: in <module>
+2026-04-23T18:32:30.0640055Z     from fastapi.testclient import TestClient
+2026-04-23T18:32:30.0640517Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/fastapi/testclient.py:1: in <module>
+2026-04-23T18:32:30.0641372Z     from starlette.testclient import TestClient as TestClient  # noqa
+2026-04-23T18:32:30.0641725Z     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-04-23T18:32:30.0642198Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:40: in <module>
+2026-04-23T18:32:30.0642660Z     raise RuntimeError(
+2026-04-23T18:32:30.0643034Z E   RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.0643453Z E   You can install this with:
+2026-04-23T18:32:30.0643674Z E       $ pip install httpx
+2026-04-23T18:32:30.0643984Z ________________ ERROR collecting tests/test_runtime_exec_v2.py ________________
+2026-04-23T18:32:30.0644540Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:38: in <module>
+2026-04-23T18:32:30.0644991Z     import httpx
+2026-04-23T18:32:30.0645203Z E   ModuleNotFoundError: No module named 'httpx'
+2026-04-23T18:32:30.0645391Z 
+2026-04-23T18:32:30.0645564Z During handling of the above exception, another exception occurred:
+2026-04-23T18:32:30.0645911Z tests/test_runtime_exec_v2.py:1: in <module>
+2026-04-23T18:32:30.0646189Z     from fastapi.testclient import TestClient
+2026-04-23T18:32:30.0646657Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/fastapi/testclient.py:1: in <module>
+2026-04-23T18:32:30.0647188Z     from starlette.testclient import TestClient as TestClient  # noqa
+2026-04-23T18:32:30.0647538Z     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-04-23T18:32:30.0647996Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:40: in <module>
+2026-04-23T18:32:30.0648458Z     raise RuntimeError(
+2026-04-23T18:32:30.0648819Z E   RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.0649240Z E   You can install this with:
+2026-04-23T18:32:30.0649458Z E       $ pip install httpx
+2026-04-23T18:32:30.0649896Z ________________ ERROR collecting tests/test_runtime_exec_v3.py ________________
+2026-04-23T18:32:30.0650463Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:38: in <module>
+2026-04-23T18:32:30.0651161Z     import httpx
+2026-04-23T18:32:30.0651384Z E   ModuleNotFoundError: No module named 'httpx'
+2026-04-23T18:32:30.0651577Z 
+2026-04-23T18:32:30.0651741Z During handling of the above exception, another exception occurred:
+2026-04-23T18:32:30.0652088Z tests/test_runtime_exec_v3.py:1: in <module>
+2026-04-23T18:32:30.0652363Z     from fastapi.testclient import TestClient
+2026-04-23T18:32:30.0652819Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/fastapi/testclient.py:1: in <module>
+2026-04-23T18:32:30.0653364Z     from starlette.testclient import TestClient as TestClient  # noqa
+2026-04-23T18:32:30.0653708Z     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-04-23T18:32:30.0654225Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:40: in <module>
+2026-04-23T18:32:30.0654673Z     raise RuntimeError(
+2026-04-23T18:32:30.0655039Z E   RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.0655454Z E   You can install this with:
+2026-04-23T18:32:30.0655667Z E       $ pip install httpx
+2026-04-23T18:32:30.0655962Z ________________ ERROR collecting tests/test_runtime_exec_v4.py ________________
+2026-04-23T18:32:30.0656516Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:38: in <module>
+2026-04-23T18:32:30.0656964Z     import httpx
+2026-04-23T18:32:30.0657167Z E   ModuleNotFoundError: No module named 'httpx'
+2026-04-23T18:32:30.0657498Z 
+2026-04-23T18:32:30.0657659Z During handling of the above exception, another exception occurred:
+2026-04-23T18:32:30.0658005Z tests/test_runtime_exec_v4.py:1: in <module>
+2026-04-23T18:32:30.0658279Z     from fastapi.testclient import TestClient
+2026-04-23T18:32:30.0658731Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/fastapi/testclient.py:1: in <module>
+2026-04-23T18:32:30.0659267Z     from starlette.testclient import TestClient as TestClient  # noqa
+2026-04-23T18:32:30.0659611Z     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-04-23T18:32:30.0660061Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:40: in <module>
+2026-04-23T18:32:30.0660515Z     raise RuntimeError(
+2026-04-23T18:32:30.0661173Z E   RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.0661595Z E   You can install this with:
+2026-04-23T18:32:30.0661803Z E       $ pip install httpx
+2026-04-23T18:32:30.0662112Z ________________ ERROR collecting tests/test_runtime_exec_v5.py ________________
+2026-04-23T18:32:30.0662669Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:38: in <module>
+2026-04-23T18:32:30.0663111Z     import httpx
+2026-04-23T18:32:30.0663329Z E   ModuleNotFoundError: No module named 'httpx'
+2026-04-23T18:32:30.0663517Z 
+2026-04-23T18:32:30.0663684Z During handling of the above exception, another exception occurred:
+2026-04-23T18:32:30.0664028Z tests/test_runtime_exec_v5.py:1: in <module>
+2026-04-23T18:32:30.0664295Z     from fastapi.testclient import TestClient
+2026-04-23T18:32:30.0664748Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/fastapi/testclient.py:1: in <module>
+2026-04-23T18:32:30.0665285Z     from starlette.testclient import TestClient as TestClient  # noqa
+2026-04-23T18:32:30.0665625Z     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-04-23T18:32:30.0666090Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:40: in <module>
+2026-04-23T18:32:30.0666556Z     raise RuntimeError(
+2026-04-23T18:32:30.0666919Z E   RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.0667331Z E   You can install this with:
+2026-04-23T18:32:30.0667689Z E       $ pip install httpx
+2026-04-23T18:32:30.0668012Z ____________ ERROR collecting tests/test_runtime_gold_current_v2.py ____________
+2026-04-23T18:32:30.0668572Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:38: in <module>
+2026-04-23T18:32:30.0669015Z     import httpx
+2026-04-23T18:32:30.0669218Z E   ModuleNotFoundError: No module named 'httpx'
+2026-04-23T18:32:30.0669413Z 
+2026-04-23T18:32:30.0669571Z During handling of the above exception, another exception occurred:
+2026-04-23T18:32:30.0669937Z tests/test_runtime_gold_current_v2.py:1: in <module>
+2026-04-23T18:32:30.0670237Z     from fastapi.testclient import TestClient
+2026-04-23T18:32:30.0670999Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/fastapi/testclient.py:1: in <module>
+2026-04-23T18:32:30.0671546Z     from starlette.testclient import TestClient as TestClient  # noqa
+2026-04-23T18:32:30.0671901Z     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-04-23T18:32:30.0672353Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:40: in <module>
+2026-04-23T18:32:30.0672808Z     raise RuntimeError(
+2026-04-23T18:32:30.0673168Z E   RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.0673580Z E   You can install this with:
+2026-04-23T18:32:30.0673786Z E       $ pip install httpx
+2026-04-23T18:32:30.0674095Z ____________ ERROR collecting tests/test_runtime_gold_current_v5.py ____________
+2026-04-23T18:32:30.0674650Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:38: in <module>
+2026-04-23T18:32:30.0675219Z     import httpx
+2026-04-23T18:32:30.0675425Z E   ModuleNotFoundError: No module named 'httpx'
+2026-04-23T18:32:30.0675631Z 
+2026-04-23T18:32:30.0675793Z During handling of the above exception, another exception occurred:
+2026-04-23T18:32:30.0676162Z tests/test_runtime_gold_current_v5.py:1: in <module>
+2026-04-23T18:32:30.0676466Z     from fastapi.testclient import TestClient
+2026-04-23T18:32:30.0676917Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/fastapi/testclient.py:1: in <module>
+2026-04-23T18:32:30.0677453Z     from starlette.testclient import TestClient as TestClient  # noqa
+2026-04-23T18:32:30.0677797Z     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-04-23T18:32:30.0678266Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:40: in <module>
+2026-04-23T18:32:30.0678720Z     raise RuntimeError(
+2026-04-23T18:32:30.0679072Z E   RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.0679495Z E   You can install this with:
+2026-04-23T18:32:30.0679708Z E       $ pip install httpx
+2026-04-23T18:32:30.0680012Z _______________ ERROR collecting tests/test_runtime_gold_v20.py ________________
+2026-04-23T18:32:30.0680560Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:38: in <module>
+2026-04-23T18:32:30.0681142Z     import httpx
+2026-04-23T18:32:30.0681353Z E   ModuleNotFoundError: No module named 'httpx'
+2026-04-23T18:32:30.0681540Z 
+2026-04-23T18:32:30.0681699Z During handling of the above exception, another exception occurred:
+2026-04-23T18:32:30.0682042Z tests/test_runtime_gold_v20.py:1: in <module>
+2026-04-23T18:32:30.0682315Z     from fastapi.testclient import TestClient
+2026-04-23T18:32:30.0682770Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/fastapi/testclient.py:1: in <module>
+2026-04-23T18:32:30.0683294Z     from starlette.testclient import TestClient as TestClient  # noqa
+2026-04-23T18:32:30.0683640Z     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-04-23T18:32:30.0684129Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:40: in <module>
+2026-04-23T18:32:30.0684573Z     raise RuntimeError(
+2026-04-23T18:32:30.0685049Z E   RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.0685471Z E   You can install this with:
+2026-04-23T18:32:30.0685682Z E       $ pip install httpx
+2026-04-23T18:32:30.0685986Z __________ ERROR collecting tests/test_runtime_gold_v24_transition.py __________
+2026-04-23T18:32:30.0686551Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:38: in <module>
+2026-04-23T18:32:30.0687001Z     import httpx
+2026-04-23T18:32:30.0687202Z E   ModuleNotFoundError: No module named 'httpx'
+2026-04-23T18:32:30.0687399Z 
+2026-04-23T18:32:30.0687559Z During handling of the above exception, another exception occurred:
+2026-04-23T18:32:30.0687943Z tests/test_runtime_gold_v24_transition.py:1: in <module>
+2026-04-23T18:32:30.0688260Z     from fastapi.testclient import TestClient
+2026-04-23T18:32:30.0688718Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/fastapi/testclient.py:1: in <module>
+2026-04-23T18:32:30.0689269Z     from starlette.testclient import TestClient as TestClient  # noqa
+2026-04-23T18:32:30.0689618Z     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-04-23T18:32:30.0690073Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:40: in <module>
+2026-04-23T18:32:30.0690530Z     raise RuntimeError(
+2026-04-23T18:32:30.0691067Z E   RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.0691489Z E   You can install this with:
+2026-04-23T18:32:30.0691700Z E       $ pip install httpx
+2026-04-23T18:32:30.0692008Z _______________ ERROR collecting tests/test_runtime_gold_v25.py ________________
+2026-04-23T18:32:30.0692690Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:38: in <module>
+2026-04-23T18:32:30.0693133Z     import httpx
+2026-04-23T18:32:30.0693347Z E   ModuleNotFoundError: No module named 'httpx'
+2026-04-23T18:32:30.0693546Z 
+2026-04-23T18:32:30.0693717Z During handling of the above exception, another exception occurred:
+2026-04-23T18:32:30.0694067Z tests/test_runtime_gold_v25.py:1: in <module>
+2026-04-23T18:32:30.0694342Z     from fastapi.testclient import TestClient
+2026-04-23T18:32:30.0694799Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/fastapi/testclient.py:1: in <module>
+2026-04-23T18:32:30.0695338Z     from starlette.testclient import TestClient as TestClient  # noqa
+2026-04-23T18:32:30.0695676Z     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-04-23T18:32:30.0696134Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:40: in <module>
+2026-04-23T18:32:30.0696591Z     raise RuntimeError(
+2026-04-23T18:32:30.0696960Z E   RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.0697371Z E   You can install this with:
+2026-04-23T18:32:30.0697589Z E       $ pip install httpx
+2026-04-23T18:32:30.0697902Z ___________ ERROR collecting tests/test_runtime_gold_v25_overview.py ___________
+2026-04-23T18:32:30.0698457Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:38: in <module>
+2026-04-23T18:32:30.0698904Z     import httpx
+2026-04-23T18:32:30.0699113Z E   ModuleNotFoundError: No module named 'httpx'
+2026-04-23T18:32:30.0699299Z 
+2026-04-23T18:32:30.0699467Z During handling of the above exception, another exception occurred:
+2026-04-23T18:32:30.0699832Z tests/test_runtime_gold_v25_overview.py:1: in <module>
+2026-04-23T18:32:30.0700134Z     from fastapi.testclient import TestClient
+2026-04-23T18:32:30.0700721Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/fastapi/testclient.py:1: in <module>
+2026-04-23T18:32:30.0701268Z     from starlette.testclient import TestClient as TestClient  # noqa
+2026-04-23T18:32:30.0701602Z     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-04-23T18:32:30.0702346Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:40: in <module>
+2026-04-23T18:32:30.0703168Z     raise RuntimeError(
+2026-04-23T18:32:30.0703822Z E   RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.0704578Z E   You can install this with:
+2026-04-23T18:32:30.0704828Z E       $ pip install httpx
+2026-04-23T18:32:30.0705135Z _________________ ERROR collecting tests/test_runtime_main.py __________________
+2026-04-23T18:32:30.0705704Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:38: in <module>
+2026-04-23T18:32:30.0706164Z     import httpx
+2026-04-23T18:32:30.0706381Z E   ModuleNotFoundError: No module named 'httpx'
+2026-04-23T18:32:30.0706583Z 
+2026-04-23T18:32:30.0706749Z During handling of the above exception, another exception occurred:
+2026-04-23T18:32:30.0707103Z tests/test_runtime_main.py:1: in <module>
+2026-04-23T18:32:30.0707377Z     from fastapi.testclient import TestClient
+2026-04-23T18:32:30.0707841Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/fastapi/testclient.py:1: in <module>
+2026-04-23T18:32:30.0708380Z     from starlette.testclient import TestClient as TestClient  # noqa
+2026-04-23T18:32:30.0708738Z     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-04-23T18:32:30.0709231Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:40: in <module>
+2026-04-23T18:32:30.0709691Z     raise RuntimeError(
+2026-04-23T18:32:30.0710065Z E   RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.0710490Z E   You can install this with:
+2026-04-23T18:32:30.0711032Z E       $ pip install httpx
+2026-04-23T18:32:30.0711914Z ________________ ERROR collecting tests/test_runtime_main_v2.py ________________
+2026-04-23T18:32:30.0712504Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:38: in <module>
+2026-04-23T18:32:30.0712988Z     import httpx
+2026-04-23T18:32:30.0713215Z E   ModuleNotFoundError: No module named 'httpx'
+2026-04-23T18:32:30.0713421Z 
+2026-04-23T18:32:30.0713594Z During handling of the above exception, another exception occurred:
+2026-04-23T18:32:30.0713954Z tests/test_runtime_main_v2.py:1: in <module>
+2026-04-23T18:32:30.0714239Z     from fastapi.testclient import TestClient
+2026-04-23T18:32:30.0714705Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/fastapi/testclient.py:1: in <module>
+2026-04-23T18:32:30.0715283Z     from starlette.testclient import TestClient as TestClient  # noqa
+2026-04-23T18:32:30.0715638Z     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-04-23T18:32:30.0716101Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:40: in <module>
+2026-04-23T18:32:30.0716567Z     raise RuntimeError(
+2026-04-23T18:32:30.0716942Z E   RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.0717363Z E   You can install this with:
+2026-04-23T18:32:30.0717581Z E       $ pip install httpx
+2026-04-23T18:32:30.0717890Z ________________ ERROR collecting tests/test_runtime_main_v3.py ________________
+2026-04-23T18:32:30.0718447Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:38: in <module>
+2026-04-23T18:32:30.0718890Z     import httpx
+2026-04-23T18:32:30.0719107Z E   ModuleNotFoundError: No module named 'httpx'
+2026-04-23T18:32:30.0719300Z 
+2026-04-23T18:32:30.0719468Z During handling of the above exception, another exception occurred:
+2026-04-23T18:32:30.0719814Z tests/test_runtime_main_v3.py:1: in <module>
+2026-04-23T18:32:30.0720084Z     from fastapi.testclient import TestClient
+2026-04-23T18:32:30.0720545Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/fastapi/testclient.py:1: in <module>
+2026-04-23T18:32:30.0721263Z     from starlette.testclient import TestClient as TestClient  # noqa
+2026-04-23T18:32:30.0721604Z     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-04-23T18:32:30.0722225Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:40: in <module>
+2026-04-23T18:32:30.0722687Z     raise RuntimeError(
+2026-04-23T18:32:30.0723055Z E   RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.0723466Z E   You can install this with:
+2026-04-23T18:32:30.0723682Z E       $ pip install httpx
+2026-04-23T18:32:30.0723987Z ________________ ERROR collecting tests/test_runtime_quality.py ________________
+2026-04-23T18:32:30.0724534Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:38: in <module>
+2026-04-23T18:32:30.0724986Z     import httpx
+2026-04-23T18:32:30.0725195Z E   ModuleNotFoundError: No module named 'httpx'
+2026-04-23T18:32:30.0725383Z 
+2026-04-23T18:32:30.0725555Z During handling of the above exception, another exception occurred:
+2026-04-23T18:32:30.0725898Z tests/test_runtime_quality.py:1: in <module>
+2026-04-23T18:32:30.0726182Z     from fastapi.testclient import TestClient
+2026-04-23T18:32:30.0726637Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/fastapi/testclient.py:1: in <module>
+2026-04-23T18:32:30.0727166Z     from starlette.testclient import TestClient as TestClient  # noqa
+2026-04-23T18:32:30.0727509Z     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-04-23T18:32:30.0727966Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:40: in <module>
+2026-04-23T18:32:30.0728417Z     raise RuntimeError(
+2026-04-23T18:32:30.0728771Z E   RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.0729306Z E   You can install this with:
+2026-04-23T18:32:30.0729517Z E       $ pip install httpx
+2026-04-23T18:32:30.0729812Z ________________ ERROR collecting tests/test_runtime_silver.py _________________
+2026-04-23T18:32:30.0730392Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:38: in <module>
+2026-04-23T18:32:30.0731005Z     import httpx
+2026-04-23T18:32:30.0731218Z E   ModuleNotFoundError: No module named 'httpx'
+2026-04-23T18:32:30.0731409Z 
+2026-04-23T18:32:30.0731573Z During handling of the above exception, another exception occurred:
+2026-04-23T18:32:30.0731920Z tests/test_runtime_silver.py:1: in <module>
+2026-04-23T18:32:30.0732197Z     from fastapi.testclient import TestClient
+2026-04-23T18:32:30.0732651Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/fastapi/testclient.py:1: in <module>
+2026-04-23T18:32:30.0733191Z     from starlette.testclient import TestClient as TestClient  # noqa
+2026-04-23T18:32:30.0733539Z     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-04-23T18:32:30.0734001Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:40: in <module>
+2026-04-23T18:32:30.0734449Z     raise RuntimeError(
+2026-04-23T18:32:30.0734821Z E   RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.0735246Z E   You can install this with:
+2026-04-23T18:32:30.0735455Z E       $ pip install httpx
+2026-04-23T18:32:30.0735760Z _______________ ERROR collecting tests/test_runtime_silver_v2.py _______________
+2026-04-23T18:32:30.0736318Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:38: in <module>
+2026-04-23T18:32:30.0736764Z     import httpx
+2026-04-23T18:32:30.0736971Z E   ModuleNotFoundError: No module named 'httpx'
+2026-04-23T18:32:30.0737166Z 
+2026-04-23T18:32:30.0737328Z During handling of the above exception, another exception occurred:
+2026-04-23T18:32:30.0737685Z tests/test_runtime_silver_v2.py:1: in <module>
+2026-04-23T18:32:30.0737961Z     from fastapi.testclient import TestClient
+2026-04-23T18:32:30.0738418Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/fastapi/testclient.py:1: in <module>
+2026-04-23T18:32:30.0739122Z     from starlette.testclient import TestClient as TestClient  # noqa
+2026-04-23T18:32:30.0739471Z     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-04-23T18:32:30.0739920Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:40: in <module>
+2026-04-23T18:32:30.0740372Z     raise RuntimeError(
+2026-04-23T18:32:30.0740857Z E   RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.0741267Z E   You can install this with:
+2026-04-23T18:32:30.0741478Z E       $ pip install httpx
+2026-04-23T18:32:30.0741784Z _____________ ERROR collecting tests/test_runtime_v2_agregacao.py ______________
+2026-04-23T18:32:30.0742340Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:38: in <module>
+2026-04-23T18:32:30.0742788Z     import httpx
+2026-04-23T18:32:30.0742996Z E   ModuleNotFoundError: No module named 'httpx'
+2026-04-23T18:32:30.0743184Z 
+2026-04-23T18:32:30.0743357Z During handling of the above exception, another exception occurred:
+2026-04-23T18:32:30.0743710Z tests/test_runtime_v2_agregacao.py:1: in <module>
+2026-04-23T18:32:30.0744001Z     from fastapi.testclient import TestClient
+2026-04-23T18:32:30.0744456Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/fastapi/testclient.py:1: in <module>
+2026-04-23T18:32:30.0744995Z     from starlette.testclient import TestClient as TestClient  # noqa
+2026-04-23T18:32:30.0745333Z     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-04-23T18:32:30.0745793Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:40: in <module>
+2026-04-23T18:32:30.0746247Z     raise RuntimeError(
+2026-04-23T18:32:30.0746722Z E   RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.0747135Z E   You can install this with:
+2026-04-23T18:32:30.0747347Z E       $ pip install httpx
+2026-04-23T18:32:30.0747664Z __________ ERROR collecting tests/test_runtime_v2_other_endpoints.py ___________
+2026-04-23T18:32:30.0748221Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:38: in <module>
+2026-04-23T18:32:30.0748669Z     import httpx
+2026-04-23T18:32:30.0748879Z E   ModuleNotFoundError: No module named 'httpx'
+2026-04-23T18:32:30.0749074Z 
+2026-04-23T18:32:30.0749238Z During handling of the above exception, another exception occurred:
+2026-04-23T18:32:30.0749609Z tests/test_runtime_v2_other_endpoints.py:1: in <module>
+2026-04-23T18:32:30.0749921Z     from fastapi.testclient import TestClient
+2026-04-23T18:32:30.0750377Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/fastapi/testclient.py:1: in <module>
+2026-04-23T18:32:30.0751035Z     from starlette.testclient import TestClient as TestClient  # noqa
+2026-04-23T18:32:30.0751380Z     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-04-23T18:32:30.0751850Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/starlette/testclient.py:40: in <module>
+2026-04-23T18:32:30.0752326Z     raise RuntimeError(
+2026-04-23T18:32:30.0752682Z E   RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.0753100Z E   You can install this with:
+2026-04-23T18:32:30.0753314Z E       $ pip install httpx
+2026-04-23T18:32:30.0753572Z =========================== short test summary info ============================
+2026-04-23T18:32:30.0754017Z ERROR tests/canonico - ModuleNotFoundError: No module named 'sistema_ro.enums'
+2026-04-23T18:32:30.0754718Z ERROR tests/test_estoque_table_service.py - RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.0755291Z You can install this with:
+2026-04-23T18:32:30.0755497Z     $ pip install httpx
+2026-04-23T18:32:30.0755958Z ERROR tests/test_health.py - RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.0756465Z You can install this with:
+2026-04-23T18:32:30.0756788Z     $ pip install httpx
+2026-04-23T18:32:30.0757317Z ERROR tests/test_official_runtime_flow_smoke.py - RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.0757889Z You can install this with:
+2026-04-23T18:32:30.0758083Z     $ pip install httpx
+2026-04-23T18:32:30.0758590Z ERROR tests/test_official_runtime_surfaces.py - RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.0759150Z You can install this with:
+2026-04-23T18:32:30.0759349Z     $ pip install httpx
+2026-04-23T18:32:30.0759805Z ERROR tests/test_runtime_app.py - RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.0760326Z You can install this with:
+2026-04-23T18:32:30.0760523Z     $ pip install httpx
+2026-04-23T18:32:30.0761123Z ERROR tests/test_runtime_exec.py - RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.0761658Z You can install this with:
+2026-04-23T18:32:30.1734607Z     $ pip install httpx
+2026-04-23T18:32:30.1735875Z ERROR tests/test_runtime_exec_v2.py - RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.1737103Z You can install this with:
+2026-04-23T18:32:30.1737571Z     $ pip install httpx
+2026-04-23T18:32:30.1738692Z ERROR tests/test_runtime_exec_v3.py - RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.1739950Z You can install this with:
+2026-04-23T18:32:30.1740402Z     $ pip install httpx
+2026-04-23T18:32:30.1741854Z ERROR tests/test_runtime_exec_v4.py - RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.1743520Z You can install this with:
+2026-04-23T18:32:30.1743967Z     $ pip install httpx
+2026-04-23T18:32:30.1745019Z ERROR tests/test_runtime_exec_v5.py - RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.1745974Z You can install this with:
+2026-04-23T18:32:30.1746333Z     $ pip install httpx
+2026-04-23T18:32:30.1747019Z ERROR tests/test_runtime_gold_current_v2.py - RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.1747604Z You can install this with:
+2026-04-23T18:32:30.1747818Z     $ pip install httpx
+2026-04-23T18:32:30.1748334Z ERROR tests/test_runtime_gold_current_v5.py - RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.1748905Z You can install this with:
+2026-04-23T18:32:30.1749110Z     $ pip install httpx
+2026-04-23T18:32:30.1749611Z ERROR tests/test_runtime_gold_v20.py - RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.1750151Z You can install this with:
+2026-04-23T18:32:30.1750355Z     $ pip install httpx
+2026-04-23T18:32:30.1751185Z ERROR tests/test_runtime_gold_v24_transition.py - RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.1751804Z You can install this with:
+2026-04-23T18:32:30.1752014Z     $ pip install httpx
+2026-04-23T18:32:30.1752507Z ERROR tests/test_runtime_gold_v25.py - RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.1753049Z You can install this with:
+2026-04-23T18:32:30.1753252Z     $ pip install httpx
+2026-04-23T18:32:30.1753782Z ERROR tests/test_runtime_gold_v25_overview.py - RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.1754359Z You can install this with:
+2026-04-23T18:32:30.1754563Z     $ pip install httpx
+2026-04-23T18:32:30.1755044Z ERROR tests/test_runtime_main.py - RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.1755568Z You can install this with:
+2026-04-23T18:32:30.1755773Z     $ pip install httpx
+2026-04-23T18:32:30.1756436Z ERROR tests/test_runtime_main_v2.py - RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.1756966Z You can install this with:
+2026-04-23T18:32:30.1757164Z     $ pip install httpx
+2026-04-23T18:32:30.1757622Z ERROR tests/test_runtime_main_v3.py - RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.1758133Z You can install this with:
+2026-04-23T18:32:30.1758329Z     $ pip install httpx
+2026-04-23T18:32:30.1758796Z ERROR tests/test_runtime_quality.py - RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.1759317Z You can install this with:
+2026-04-23T18:32:30.1759520Z     $ pip install httpx
+2026-04-23T18:32:30.1759989Z ERROR tests/test_runtime_silver.py - RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.1760504Z You can install this with:
+2026-04-23T18:32:30.1760973Z     $ pip install httpx
+2026-04-23T18:32:30.1761455Z ERROR tests/test_runtime_silver_v2.py - RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.1761985Z You can install this with:
+2026-04-23T18:32:30.1762177Z     $ pip install httpx
+2026-04-23T18:32:30.1762666Z ERROR tests/test_runtime_v2_agregacao.py - RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.1763208Z You can install this with:
+2026-04-23T18:32:30.1763416Z     $ pip install httpx
+2026-04-23T18:32:30.1764021Z ERROR tests/test_runtime_v2_other_endpoints.py - RuntimeError: The starlette.testclient module requires the httpx package to be installed.
+2026-04-23T18:32:30.1764735Z You can install this with:
+2026-04-23T18:32:30.1764944Z     $ pip install httpx
+2026-04-23T18:32:30.1765232Z !!!!!!!!!!!!!!!!!!! Interrupted: 25 errors during collection !!!!!!!!!!!!!!!!!!!
+2026-04-23T18:32:30.1765558Z 25 errors in 1.31s
+2026-04-23T18:32:30.2892114Z ##[error]Process completed with exit code 2.
+2026-04-23T18:32:30.3027208Z Post job cleanup.
+2026-04-23T18:32:30.3986283Z [command]/usr/bin/git version
+2026-04-23T18:32:30.4027652Z git version 2.53.0
+2026-04-23T18:32:30.4071789Z Temporarily overriding HOME='/home/runner/work/_temp/a36b080f-5bb9-4c46-9b1d-9d0c78d388f6' before making global git config changes
+2026-04-23T18:32:30.4073199Z Adding repository directory to the temporary git global config as a safe directory
+2026-04-23T18:32:30.4077473Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/sistema_ro/sistema_ro
+2026-04-23T18:32:30.4116852Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-04-23T18:32:30.4150775Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-04-23T18:32:30.4402420Z fatal: No url found for submodule path '.claude/worktrees/goofy-thompson' in .gitmodules
+2026-04-23T18:32:30.4449694Z ##[warning]The process '/usr/bin/git' failed with exit code 128
+2026-04-23T18:32:30.4525821Z Cleaning up orphan processes
+2026-04-23T18:32:30.4849420Z ##[warning]Node.js 20 actions are deprecated. The following actions are running on Node.js 20 and may not work as expected: actions/checkout@v4, actions/setup-python@v4. Actions will be forced to run with Node.js 24 by default starting June 2nd, 2026. Node.js 20 will be removed from the runner on September 16th, 2026. Please check if updated versions of these actions are available that support Node.js 24. To opt into Node.js 24 now, set the FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true environment variable on the runner or in your workflow file. Once Node.js 24 becomes the default, you can temporarily opt out by setting ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

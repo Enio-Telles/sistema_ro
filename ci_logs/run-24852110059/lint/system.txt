@@ -1,0 +1,8 @@
+2026-04-23T18:32:13.6420000Z Requested labels: ubuntu-latest
+2026-04-23T18:32:13.6420000Z Job defined at: Enio-Telles/sistema_ro/.github/workflows/ci.yml@refs/heads/feature/ci-check-fix-ci-install-package
+2026-04-23T18:32:13.6420000Z Waiting for a runner to pick up this job...
+2026-04-23T18:32:13.6400000Z Evaluating lint.if
+2026-04-23T18:32:13.6400000Z Evaluating: success()
+2026-04-23T18:32:13.6400000Z Result: true
+2026-04-23T18:32:13.6510000Z Job is about to start running on the hosted runner: GitHub Actions 1000001172
+2026-04-23T18:32:13.6510000Z Job is waiting for a hosted runner to come online.
