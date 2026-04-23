@@ -1,0 +1,788 @@
+﻿Frontend tests (Vitest)	Set up job	´╗┐2026-04-23T19:50:18.0678844Z Current runner version: '2.333.1'
+Frontend tests (Vitest)	Set up job	2026-04-23T19:50:18.0704467Z ##[group]Runner Image Provisioner
+Frontend tests (Vitest)	Set up job	2026-04-23T19:50:18.0705689Z Hosted Compute Agent
+Frontend tests (Vitest)	Set up job	2026-04-23T19:50:18.0706272Z Version: 20260213.493
+Frontend tests (Vitest)	Set up job	2026-04-23T19:50:18.0706871Z Commit: 5c115507f6dd24b8de37d8bbe0bb4509d0cc0fa3
+Frontend tests (Vitest)	Set up job	2026-04-23T19:50:18.0707631Z Build Date: 2026-02-13T00:28:41Z
+Frontend tests (Vitest)	Set up job	2026-04-23T19:50:18.0708241Z Worker ID: {3a57c024-cbc7-40bc-8eb8-3389dd5b36f7}
+Frontend tests (Vitest)	Set up job	2026-04-23T19:50:18.0708894Z Azure Region: westus3
+Frontend tests (Vitest)	Set up job	2026-04-23T19:50:18.0709460Z ##[endgroup]
+Frontend tests (Vitest)	Set up job	2026-04-23T19:50:18.0710894Z ##[group]Operating System
+Frontend tests (Vitest)	Set up job	2026-04-23T19:50:18.0711450Z Ubuntu
+Frontend tests (Vitest)	Set up job	2026-04-23T19:50:18.0711986Z 24.04.4
+Frontend tests (Vitest)	Set up job	2026-04-23T19:50:18.0712401Z LTS
+Frontend tests (Vitest)	Set up job	2026-04-23T19:50:18.0712854Z ##[endgroup]
+Frontend tests (Vitest)	Set up job	2026-04-23T19:50:18.0713389Z ##[group]Runner Image
+Frontend tests (Vitest)	Set up job	2026-04-23T19:50:18.0713940Z Image: ubuntu-24.04
+Frontend tests (Vitest)	Set up job	2026-04-23T19:50:18.0714442Z Version: 20260413.86.1
+Frontend tests (Vitest)	Set up job	2026-04-23T19:50:18.0715675Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260413.86/images/ubuntu/Ubuntu2404-Readme.md
+Frontend tests (Vitest)	Set up job	2026-04-23T19:50:18.0717267Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260413.86
+Frontend tests (Vitest)	Set up job	2026-04-23T19:50:18.0718212Z ##[endgroup]
+Frontend tests (Vitest)	Set up job	2026-04-23T19:50:18.0719280Z ##[group]GITHUB_TOKEN Permissions
+Frontend tests (Vitest)	Set up job	2026-04-23T19:50:18.0721320Z Contents: read
+Frontend tests (Vitest)	Set up job	2026-04-23T19:50:18.0721868Z Metadata: read
+Frontend tests (Vitest)	Set up job	2026-04-23T19:50:18.0722373Z Packages: read
+Frontend tests (Vitest)	Set up job	2026-04-23T19:50:18.0722816Z ##[endgroup]
+Frontend tests (Vitest)	Set up job	2026-04-23T19:50:18.0725552Z Secret source: Actions
+Frontend tests (Vitest)	Set up job	2026-04-23T19:50:18.0726236Z Prepare workflow directory
+Frontend tests (Vitest)	Set up job	2026-04-23T19:50:18.1062357Z Prepare all required actions
+Frontend tests (Vitest)	Set up job	2026-04-23T19:50:18.1101879Z Getting action download info
+Frontend tests (Vitest)	Set up job	2026-04-23T19:50:18.5538254Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+Frontend tests (Vitest)	Set up job	2026-04-23T19:50:18.6936616Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+Frontend tests (Vitest)	Set up job	2026-04-23T19:50:18.9683677Z Complete job name: Frontend tests (Vitest)
+Frontend tests (Vitest)	Run actions/checkout@v4	´╗┐2026-04-23T19:50:19.0400092Z ##[group]Run actions/checkout@v4
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.0401350Z with:
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.0401858Z   repository: Enio-Telles/sistema_ro
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.0402533Z   token: ***
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.0402923Z   ssh-strict: true
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.0403321Z   ssh-user: git
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.0403901Z   persist-credentials: true
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.0404927Z   clean: true
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.0405679Z   sparse-checkout-cone-mode: true
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.0406521Z   fetch-depth: 1
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.0407232Z   fetch-tags: false
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.0407970Z   show-progress: true
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.0408690Z   lfs: false
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.0409333Z   submodules: false
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.0410069Z   set-safe-directory: true
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.0411204Z ##[endgroup]
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.1608940Z Syncing repository: Enio-Telles/sistema_ro
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.1610727Z ##[group]Getting Git version info
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.1611867Z Working directory is '/home/runner/work/sistema_ro/sistema_ro'
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.1613247Z [command]/usr/bin/git version
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.1711951Z git version 2.53.0
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.1752415Z ##[endgroup]
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.1773190Z Temporarily overriding HOME='/home/runner/work/_temp/080dfc0e-76aa-4ec7-96a9-ff873ab95089' before making global git config changes
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.1775282Z Adding repository directory to the temporary git global config as a safe directory
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.1782821Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/sistema_ro/sistema_ro
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.1824837Z Deleting the contents of '/home/runner/work/sistema_ro/sistema_ro'
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.1828650Z ##[group]Initializing the repository
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.1835270Z [command]/usr/bin/git init /home/runner/work/sistema_ro/sistema_ro
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.1933453Z hint: Using 'master' as the name for the initial branch. This default branch name
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.1935836Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.1937949Z hint: to use in all of your new repositories, which will suppress this warning,
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.1940146Z hint: call:
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.1941239Z hint:
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.1942583Z hint: 	git config --global init.defaultBranch <name>
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.1943907Z hint:
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.1945354Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.1947422Z hint: 'development'. The just-created branch can be renamed via this command:
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.1949233Z hint:
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.1950275Z hint: 	git branch -m <name>
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.1951374Z hint:
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.1952628Z hint: Disable this message with "git config set advice.defaultBranchName false"
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.1955099Z Initialized empty Git repository in /home/runner/work/sistema_ro/sistema_ro/.git/
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.1957275Z [command]/usr/bin/git remote add origin https://github.com/Enio-Telles/sistema_ro
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.1980360Z ##[endgroup]
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.1981208Z ##[group]Disabling automatic garbage collection
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.1985875Z [command]/usr/bin/git config --local gc.auto 0
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.2013719Z ##[endgroup]
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.2015217Z ##[group]Setting up auth
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.2021667Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.2050896Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.2345005Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.2374401Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.2594749Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.2625433Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.2843378Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.2878430Z ##[endgroup]
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.2879469Z ##[group]Fetching the repository
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:19.2886703Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +006670f7675d421eac4d5f44d599059f91a3cfe4:refs/remotes/pull/46/merge
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:21.1390335Z From https://github.com/Enio-Telles/sistema_ro
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:21.1391558Z  * [new ref]         006670f7675d421eac4d5f44d599059f91a3cfe4 -> pull/46/merge
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:21.1418806Z ##[endgroup]
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:21.1419632Z ##[group]Determining the checkout info
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:21.1421154Z ##[endgroup]
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:21.1426249Z [command]/usr/bin/git sparse-checkout disable
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:21.1462241Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:21.1487725Z ##[group]Checking out the ref
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:21.1492348Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/46/merge
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:21.3086537Z Note: switching to 'refs/remotes/pull/46/merge'.
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:21.3087919Z 
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:21.3088845Z You are in 'detached HEAD' state. You can look around, make experimental
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:21.3091066Z changes and commit them, and you can discard any commits you make in this
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:21.3093205Z state without impacting any branches by switching back to a branch.
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:21.3094737Z 
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:21.3095659Z If you want to create a new branch to retain commits you create, you may
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:21.3097372Z do so (now or later) by using -c with the switch command. Example:
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:21.3098170Z 
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:21.3098504Z   git switch -c <new-branch-name>
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:21.3099049Z 
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:21.3099437Z Or undo this operation with:
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:21.3100362Z 
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:21.3100642Z   git switch -
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:21.3101099Z 
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:21.3102219Z Turn off this advice by setting config variable advice.detachedHead to false
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:21.3103530Z 
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:21.3104999Z HEAD is now at 006670f Merge 21584d3409fb4b882951ffacc683a9d6e6f4031f into 72eaf6533c6baaa3f57d6399aa44167fca71b11b
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:21.3108653Z ##[endgroup]
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:21.3140776Z [command]/usr/bin/git log -1 --format=%H
+Frontend tests (Vitest)	Run actions/checkout@v4	2026-04-23T19:50:21.3163414Z 006670f7675d421eac4d5f44d599059f91a3cfe4
+Frontend tests (Vitest)	Set up Node.js	´╗┐2026-04-23T19:50:21.3494471Z ##[group]Run actions/setup-node@v4
+Frontend tests (Vitest)	Set up Node.js	2026-04-23T19:50:21.3496090Z with:
+Frontend tests (Vitest)	Set up Node.js	2026-04-23T19:50:21.3496921Z   node-version: 18
+Frontend tests (Vitest)	Set up Node.js	2026-04-23T19:50:21.3497803Z   cache: npm
+Frontend tests (Vitest)	Set up Node.js	2026-04-23T19:50:21.3498841Z   cache-dependency-path: frontend/package-lock.json
+Frontend tests (Vitest)	Set up Node.js	2026-04-23T19:50:21.3500194Z   always-auth: false
+Frontend tests (Vitest)	Set up Node.js	2026-04-23T19:50:21.3501139Z   check-latest: false
+Frontend tests (Vitest)	Set up Node.js	2026-04-23T19:50:21.3502380Z   token: ***
+Frontend tests (Vitest)	Set up Node.js	2026-04-23T19:50:21.3503219Z ##[endgroup]
+Frontend tests (Vitest)	Set up Node.js	2026-04-23T19:50:21.5457901Z Attempting to download 18...
+Frontend tests (Vitest)	Set up Node.js	2026-04-23T19:50:22.5584025Z Acquiring 18.20.8 - x64 from https://github.com/actions/node-versions/releases/download/18.20.8-14110393767/node-18.20.8-linux-x64.tar.gz
+Frontend tests (Vitest)	Set up Node.js	2026-04-23T19:50:23.1925975Z Extracting ...
+Frontend tests (Vitest)	Set up Node.js	2026-04-23T19:50:23.2029803Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/dea96809-248b-424c-8592-8ea7df7780e8 -f /home/runner/work/_temp/518045d7-be24-4e14-b22d-14b1ccfa7aaf
+Frontend tests (Vitest)	Set up Node.js	2026-04-23T19:50:24.1381738Z Adding to the cache ...
+Frontend tests (Vitest)	Set up Node.js	2026-04-23T19:50:26.0022262Z ##[group]Environment details
+Frontend tests (Vitest)	Set up Node.js	2026-04-23T19:50:26.3389663Z node: v18.20.8
+Frontend tests (Vitest)	Set up Node.js	2026-04-23T19:50:26.3390188Z npm: 10.8.2
+Frontend tests (Vitest)	Set up Node.js	2026-04-23T19:50:26.3390728Z yarn: 1.22.22
+Frontend tests (Vitest)	Set up Node.js	2026-04-23T19:50:26.3391259Z ##[endgroup]
+Frontend tests (Vitest)	Set up Node.js	2026-04-23T19:50:26.3413632Z [command]/opt/hostedtoolcache/node/18.20.8/x64/bin/npm config get cache
+Frontend tests (Vitest)	Set up Node.js	2026-04-23T19:50:26.4547276Z /home/runner/.npm
+Frontend tests (Vitest)	Set up Node.js	2026-04-23T19:50:26.6811448Z npm cache is not found
+Frontend tests (Vitest)	Install frontend dependencies	´╗┐2026-04-23T19:50:26.7045494Z ##[group]Run npm ci --no-optional
+Frontend tests (Vitest)	Install frontend dependencies	2026-04-23T19:50:26.7045886Z [36;1mnpm ci --no-optional[0m
+Frontend tests (Vitest)	Install frontend dependencies	2026-04-23T19:50:26.7046245Z [36;1mnpm install rollup@^4 --no-optional --no-audit --no-fund[0m
+Frontend tests (Vitest)	Install frontend dependencies	2026-04-23T19:50:26.7073416Z shell: /usr/bin/bash -e {0}
+Frontend tests (Vitest)	Install frontend dependencies	2026-04-23T19:50:26.7073677Z ##[endgroup]
+Frontend tests (Vitest)	Install frontend dependencies	2026-04-23T19:50:26.8123301Z npm warn config optional Use `--omit=optional` to exclude optional dependencies, or
+Frontend tests (Vitest)	Install frontend dependencies	2026-04-23T19:50:26.8124882Z npm warn config `--include=optional` to include them.
+Frontend tests (Vitest)	Install frontend dependencies	2026-04-23T19:50:26.8125545Z npm warn config
+Frontend tests (Vitest)	Install frontend dependencies	2026-04-23T19:50:26.8126472Z npm warn config       Default value does install optional deps unless otherwise omitted.
+Frontend tests (Vitest)	Install frontend dependencies	2026-04-23T19:50:30.1208348Z npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+Frontend tests (Vitest)	Install frontend dependencies	2026-04-23T19:50:30.4248180Z npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+Frontend tests (Vitest)	Install frontend dependencies	2026-04-23T19:50:30.4981236Z npm warn deprecated glob@7.2.3: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+Frontend tests (Vitest)	Install frontend dependencies	2026-04-23T19:50:30.8627503Z npm warn deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
+Frontend tests (Vitest)	Install frontend dependencies	2026-04-23T19:50:30.9429479Z npm warn deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
+Frontend tests (Vitest)	Install frontend dependencies	2026-04-23T19:50:33.6841683Z npm warn deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+Frontend tests (Vitest)	Install frontend dependencies	2026-04-23T19:51:30.8906569Z 
+Frontend tests (Vitest)	Install frontend dependencies	2026-04-23T19:51:30.8910413Z added 418 packages, and audited 419 packages in 1m
+Frontend tests (Vitest)	Install frontend dependencies	2026-04-23T19:51:30.8910988Z 
+Frontend tests (Vitest)	Install frontend dependencies	2026-04-23T19:51:30.8911314Z 141 packages are looking for funding
+Frontend tests (Vitest)	Install frontend dependencies	2026-04-23T19:51:30.8911831Z   run `npm fund` for details
+Frontend tests (Vitest)	Install frontend dependencies	2026-04-23T19:51:31.0903772Z 
+Frontend tests (Vitest)	Install frontend dependencies	2026-04-23T19:51:31.0904849Z 11 vulnerabilities (5 moderate, 6 high)
+Frontend tests (Vitest)	Install frontend dependencies	2026-04-23T19:51:31.0905881Z 
+Frontend tests (Vitest)	Install frontend dependencies	2026-04-23T19:51:31.0906247Z To address issues that do not require attention, run:
+Frontend tests (Vitest)	Install frontend dependencies	2026-04-23T19:51:31.0906624Z   npm audit fix
+Frontend tests (Vitest)	Install frontend dependencies	2026-04-23T19:51:31.0906753Z 
+Frontend tests (Vitest)	Install frontend dependencies	2026-04-23T19:51:31.0907021Z To address all issues (including breaking changes), run:
+Frontend tests (Vitest)	Install frontend dependencies	2026-04-23T19:51:31.0907396Z   npm audit fix --force
+Frontend tests (Vitest)	Install frontend dependencies	2026-04-23T19:51:31.0907556Z 
+Frontend tests (Vitest)	Install frontend dependencies	2026-04-23T19:51:31.0907689Z Run `npm audit` for details.
+Frontend tests (Vitest)	Install frontend dependencies	2026-04-23T19:51:31.2231580Z npm warn config optional Use `--omit=optional` to exclude optional dependencies, or
+Frontend tests (Vitest)	Install frontend dependencies	2026-04-23T19:51:31.2232274Z npm warn config `--include=optional` to include them.
+Frontend tests (Vitest)	Install frontend dependencies	2026-04-23T19:51:31.2232630Z npm warn config
+Frontend tests (Vitest)	Install frontend dependencies	2026-04-23T19:51:31.2233145Z npm warn config       Default value does install optional deps unless otherwise omitted.
+Frontend tests (Vitest)	Install frontend dependencies	2026-04-23T19:51:33.0910529Z 
+Frontend tests (Vitest)	Install frontend dependencies	2026-04-23T19:51:33.0911150Z changed 1 package in 2s
+Frontend tests (Vitest)	Run frontend tests	´╗┐2026-04-23T19:51:33.1045338Z ##[group]Run npm test --silent
+Frontend tests (Vitest)	Run frontend tests	2026-04-23T19:51:33.1045658Z [36;1mnpm test --silent[0m
+Frontend tests (Vitest)	Run frontend tests	2026-04-23T19:51:33.1067478Z shell: /usr/bin/bash -e {0}
+Frontend tests (Vitest)	Run frontend tests	2026-04-23T19:51:33.1067706Z ##[endgroup]
+Frontend tests (Vitest)	Run frontend tests	2026-04-23T19:51:33.4723569Z 
+Frontend tests (Vitest)	Run frontend tests	2026-04-23T19:51:33.4725480Z [31mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[1m[7m Startup Error [27m[22mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[39m
+Frontend tests (Vitest)	Run frontend tests	2026-04-23T19:51:33.4749272Z Error: Cannot find module @rollup/rollup-linux-x64-gnu. npm has a bug related to optional dependencies (https://github.com/npm/cli/issues/4828). Please try `npm i` again after removing both package-lock.json and node_modules directory.
+Frontend tests (Vitest)	Run frontend tests	2026-04-23T19:51:33.4751529Z     at requireWithFriendlyError (/home/runner/work/sistema_ro/sistema_ro/frontend/node_modules/rollup/dist/native.js:115:9)
+Frontend tests (Vitest)	Run frontend tests	2026-04-23T19:51:33.4753021Z     at Object.<anonymous> (/home/runner/work/sistema_ro/sistema_ro/frontend/node_modules/rollup/dist/native.js:124:76)
+Frontend tests (Vitest)	Run frontend tests	2026-04-23T19:51:33.4754014Z     ... 3 lines matching cause stack trace ...
+Frontend tests (Vitest)	Run frontend tests	2026-04-23T19:51:33.4754822Z     at Module._load (node:internal/modules/cjs/loader:1019:12)
+Frontend tests (Vitest)	Run frontend tests	2026-04-23T19:51:33.4755748Z     at ModuleWrap.<anonymous> (node:internal/modules/esm/translators:203:29)
+Frontend tests (Vitest)	Run frontend tests	2026-04-23T19:51:33.4756580Z     at ModuleJob.run (node:internal/modules/esm/module_job:195:25)
+Frontend tests (Vitest)	Run frontend tests	2026-04-23T19:51:33.4757350Z     at async ModuleLoader.import (node:internal/modules/esm/loader:337:24)
+Frontend tests (Vitest)	Run frontend tests	2026-04-23T19:51:33.4758451Z     at async start (file:///home/runner/work/sistema_ro/sistema_ro/frontend/node_modules/vitest/dist/chunks/cac.CB_9Zo9Q.js:1505:29) {
+Frontend tests (Vitest)	Run frontend tests	2026-04-23T19:51:33.4759173Z   [cause]: Error: Cannot find module '@rollup/rollup-linux-x64-gnu'
+Frontend tests (Vitest)	Run frontend tests	2026-04-23T19:51:33.4759521Z   Require stack:
+Frontend tests (Vitest)	Run frontend tests	2026-04-23T19:51:33.4759916Z   - /home/runner/work/sistema_ro/sistema_ro/frontend/node_modules/rollup/dist/native.js
+Frontend tests (Vitest)	Run frontend tests	2026-04-23T19:51:33.4760488Z       at Module._resolveFilename (node:internal/modules/cjs/loader:1140:15)
+Frontend tests (Vitest)	Run frontend tests	2026-04-23T19:51:33.4760946Z       at Module._load (node:internal/modules/cjs/loader:981:27)
+Frontend tests (Vitest)	Run frontend tests	2026-04-23T19:51:33.4761362Z       at Module.require (node:internal/modules/cjs/loader:1231:19)
+Frontend tests (Vitest)	Run frontend tests	2026-04-23T19:51:33.4761760Z       at require (node:internal/modules/helpers:177:18)
+Frontend tests (Vitest)	Run frontend tests	2026-04-23T19:51:33.4762407Z       at requireWithFriendlyError (/home/runner/work/sistema_ro/sistema_ro/frontend/node_modules/rollup/dist/native.js:97:10)
+Frontend tests (Vitest)	Run frontend tests	2026-04-23T19:51:33.4763262Z       at Object.<anonymous> (/home/runner/work/sistema_ro/sistema_ro/frontend/node_modules/rollup/dist/native.js:124:76)
+Frontend tests (Vitest)	Run frontend tests	2026-04-23T19:51:33.4763875Z       at Module._compile (node:internal/modules/cjs/loader:1364:14)
+Frontend tests (Vitest)	Run frontend tests	2026-04-23T19:51:33.4764335Z       at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+Frontend tests (Vitest)	Run frontend tests	2026-04-23T19:51:33.4765214Z       at Module.load (node:internal/modules/cjs/loader:1203:32)
+Frontend tests (Vitest)	Run frontend tests	2026-04-23T19:51:33.4765662Z       at Module._load (node:internal/modules/cjs/loader:1019:12) {
+Frontend tests (Vitest)	Run frontend tests	2026-04-23T19:51:33.4765998Z     code: 'MODULE_NOT_FOUND',
+Frontend tests (Vitest)	Run frontend tests	2026-04-23T19:51:33.4766223Z     requireStack: [
+Frontend tests (Vitest)	Run frontend tests	2026-04-23T19:51:33.4766635Z       '/home/runner/work/sistema_ro/sistema_ro/frontend/node_modules/rollup/dist/native.js'
+Frontend tests (Vitest)	Run frontend tests	2026-04-23T19:51:33.4767040Z     ]
+Frontend tests (Vitest)	Run frontend tests	2026-04-23T19:51:33.4767195Z   }
+Frontend tests (Vitest)	Run frontend tests	2026-04-23T19:51:33.4767348Z }
+Frontend tests (Vitest)	Run frontend tests	2026-04-23T19:51:33.4767754Z 
+Frontend tests (Vitest)	Run frontend tests	2026-04-23T19:51:33.4767762Z 
+Frontend tests (Vitest)	Run frontend tests	2026-04-23T19:51:33.4767767Z 
+Frontend tests (Vitest)	Run frontend tests	2026-04-23T19:51:33.4871732Z ##[error]Process completed with exit code 1.
+Frontend tests (Vitest)	Post Run actions/checkout@v4	´╗┐2026-04-23T19:51:33.4983373Z Post job cleanup.
+Frontend tests (Vitest)	Post Run actions/checkout@v4	2026-04-23T19:51:33.5933012Z [command]/usr/bin/git version
+Frontend tests (Vitest)	Post Run actions/checkout@v4	2026-04-23T19:51:33.5969561Z git version 2.53.0
+Frontend tests (Vitest)	Post Run actions/checkout@v4	2026-04-23T19:51:33.6020511Z Temporarily overriding HOME='/home/runner/work/_temp/36ff2923-c816-42f4-89fd-e2f27bcf3c29' before making global git config changes
+Frontend tests (Vitest)	Post Run actions/checkout@v4	2026-04-23T19:51:33.6022135Z Adding repository directory to the temporary git global config as a safe directory
+Frontend tests (Vitest)	Post Run actions/checkout@v4	2026-04-23T19:51:33.6026880Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/sistema_ro/sistema_ro
+Frontend tests (Vitest)	Post Run actions/checkout@v4	2026-04-23T19:51:33.6063107Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Frontend tests (Vitest)	Post Run actions/checkout@v4	2026-04-23T19:51:33.6095881Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Frontend tests (Vitest)	Post Run actions/checkout@v4	2026-04-23T19:51:33.6306550Z fatal: No url found for submodule path '.claude/worktrees/goofy-thompson' in .gitmodules
+Frontend tests (Vitest)	Post Run actions/checkout@v4	2026-04-23T19:51:33.6349851Z ##[warning]The process '/usr/bin/git' failed with exit code 128
+Frontend tests (Vitest)	Complete job	´╗┐2026-04-23T19:51:33.6434807Z Cleaning up orphan processes
+Frontend tests (Vitest)	Complete job	2026-04-23T19:51:33.6702300Z ##[warning]Node.js 20 actions are deprecated. The following actions are running on Node.js 20 and may not work as expected: actions/checkout@v4, actions/setup-node@v4. Actions will be forced to run with Node.js 24 by default starting June 2nd, 2026. Node.js 20 will be removed from the runner on September 16th, 2026. Please check if updated versions of these actions are available that support Node.js 24. To opt into Node.js 24 now, set the FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true environment variable on the runner or in your workflow file. Once Node.js 24 becomes the default, you can temporarily opt out by setting ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+Python tests	Set up job	´╗┐2026-04-23T19:50:17.4011481Z Current runner version: '2.333.1'
+Python tests	Set up job	2026-04-23T19:50:17.4036579Z ##[group]Runner Image Provisioner
+Python tests	Set up job	2026-04-23T19:50:17.4037870Z Hosted Compute Agent
+Python tests	Set up job	2026-04-23T19:50:17.4038407Z Version: 20260213.493
+Python tests	Set up job	2026-04-23T19:50:17.4039004Z Commit: 5c115507f6dd24b8de37d8bbe0bb4509d0cc0fa3
+Python tests	Set up job	2026-04-23T19:50:17.4039637Z Build Date: 2026-02-13T00:28:41Z
+Python tests	Set up job	2026-04-23T19:50:17.4040629Z Worker ID: {c86a9f48-53ac-48e9-82c0-af492ff115e3}
+Python tests	Set up job	2026-04-23T19:50:17.4041276Z Azure Region: centralus
+Python tests	Set up job	2026-04-23T19:50:17.4041811Z ##[endgroup]
+Python tests	Set up job	2026-04-23T19:50:17.4043735Z ##[group]Operating System
+Python tests	Set up job	2026-04-23T19:50:17.4044353Z Ubuntu
+Python tests	Set up job	2026-04-23T19:50:17.4044842Z 24.04.4
+Python tests	Set up job	2026-04-23T19:50:17.4045387Z LTS
+Python tests	Set up job	2026-04-23T19:50:17.4045839Z ##[endgroup]
+Python tests	Set up job	2026-04-23T19:50:17.4046293Z ##[group]Runner Image
+Python tests	Set up job	2026-04-23T19:50:17.4046892Z Image: ubuntu-24.04
+Python tests	Set up job	2026-04-23T19:50:17.4047366Z Version: 20260413.86.1
+Python tests	Set up job	2026-04-23T19:50:17.4048340Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260413.86/images/ubuntu/Ubuntu2404-Readme.md
+Python tests	Set up job	2026-04-23T19:50:17.4050204Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260413.86
+Python tests	Set up job	2026-04-23T19:50:17.4051093Z ##[endgroup]
+Python tests	Set up job	2026-04-23T19:50:17.4052190Z ##[group]GITHUB_TOKEN Permissions
+Python tests	Set up job	2026-04-23T19:50:17.4054265Z Contents: read
+Python tests	Set up job	2026-04-23T19:50:17.4054932Z Metadata: read
+Python tests	Set up job	2026-04-23T19:50:17.4055431Z Packages: read
+Python tests	Set up job	2026-04-23T19:50:17.4055928Z ##[endgroup]
+Python tests	Set up job	2026-04-23T19:50:17.4057971Z Secret source: Actions
+Python tests	Set up job	2026-04-23T19:50:17.4058904Z Prepare workflow directory
+Python tests	Set up job	2026-04-23T19:50:17.4396450Z Prepare all required actions
+Python tests	Set up job	2026-04-23T19:50:17.4438751Z Getting action download info
+Python tests	Set up job	2026-04-23T19:50:17.8229356Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+Python tests	Set up job	2026-04-23T19:50:17.9638392Z Download action repository 'actions/setup-python@v4' (SHA:7f4fc3e22c37d6ff65e88745f38bd3157c663f7c)
+Python tests	Set up job	2026-04-23T19:50:18.2423262Z Complete job name: Python tests
+Python tests	Run actions/checkout@v4	´╗┐2026-04-23T19:50:18.3130805Z ##[group]Run actions/checkout@v4
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.3131887Z with:
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.3132336Z   repository: Enio-Telles/sistema_ro
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.3132981Z   token: ***
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.3133359Z   ssh-strict: true
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.3133751Z   ssh-user: git
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.3134198Z   persist-credentials: true
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.3134638Z   clean: true
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.3135059Z   sparse-checkout-cone-mode: true
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.3135520Z   fetch-depth: 1
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.3135898Z   fetch-tags: false
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.3136283Z   show-progress: true
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.3136672Z   lfs: false
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.3137085Z   submodules: false
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.3137475Z   set-safe-directory: true
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.3138145Z ##[endgroup]
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.4327210Z Syncing repository: Enio-Telles/sistema_ro
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.4330063Z ##[group]Getting Git version info
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.4331280Z Working directory is '/home/runner/work/sistema_ro/sistema_ro'
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.4332897Z [command]/usr/bin/git version
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.6840797Z git version 2.53.0
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.6868503Z ##[endgroup]
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.6882929Z Temporarily overriding HOME='/home/runner/work/_temp/714e576a-8a98-430a-8206-05530926c1c1' before making global git config changes
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.6884291Z Adding repository directory to the temporary git global config as a safe directory
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.6888369Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/sistema_ro/sistema_ro
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.7268592Z Deleting the contents of '/home/runner/work/sistema_ro/sistema_ro'
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.7273020Z ##[group]Initializing the repository
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.7278328Z [command]/usr/bin/git init /home/runner/work/sistema_ro/sistema_ro
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.9372049Z hint: Using 'master' as the name for the initial branch. This default branch name
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.9373869Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.9375066Z hint: to use in all of your new repositories, which will suppress this warning,
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.9376667Z hint: call:
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.9377054Z hint:
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.9377578Z hint: 	git config --global init.defaultBranch <name>
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.9378263Z hint:
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.9378957Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.9380825Z hint: 'development'. The just-created branch can be renamed via this command:
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.9381645Z hint:
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.9382037Z hint: 	git branch -m <name>
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.9382533Z hint:
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.9383196Z hint: Disable this message with "git config set advice.defaultBranchName false"
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.9384627Z Initialized empty Git repository in /home/runner/work/sistema_ro/sistema_ro/.git/
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.9388818Z [command]/usr/bin/git remote add origin https://github.com/Enio-Telles/sistema_ro
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.9425433Z ##[endgroup]
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.9426329Z ##[group]Disabling automatic garbage collection
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.9430077Z [command]/usr/bin/git config --local gc.auto 0
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.9458285Z ##[endgroup]
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.9459093Z ##[group]Setting up auth
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.9465666Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.9495156Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.9776461Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:18.9805169Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:19.0018311Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:19.0055939Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:19.0274687Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:19.0306852Z ##[endgroup]
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:19.0308037Z ##[group]Fetching the repository
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:19.0317200Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +006670f7675d421eac4d5f44d599059f91a3cfe4:refs/remotes/pull/46/merge
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:20.1815437Z From https://github.com/Enio-Telles/sistema_ro
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:20.1816907Z  * [new ref]         006670f7675d421eac4d5f44d599059f91a3cfe4 -> pull/46/merge
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:20.1844167Z ##[endgroup]
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:20.1844898Z ##[group]Determining the checkout info
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:20.1847143Z ##[endgroup]
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:20.1854135Z [command]/usr/bin/git sparse-checkout disable
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:20.1890411Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:20.1915139Z ##[group]Checking out the ref
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:20.1919481Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/46/merge
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:20.3516989Z Note: switching to 'refs/remotes/pull/46/merge'.
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:20.3517617Z 
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:20.3518017Z You are in 'detached HEAD' state. You can look around, make experimental
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:20.3518969Z changes and commit them, and you can discard any commits you make in this
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:20.3520153Z state without impacting any branches by switching back to a branch.
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:20.3520753Z 
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:20.3521205Z If you want to create a new branch to retain commits you create, you may
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:20.3522078Z do so (now or later) by using -c with the switch command. Example:
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:20.3522581Z 
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:20.3522797Z   git switch -c <new-branch-name>
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:20.3523148Z 
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:20.3523424Z Or undo this operation with:
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:20.3524152Z 
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:20.3524335Z   git switch -
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:20.3524643Z 
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:20.3525054Z Turn off this advice by setting config variable advice.detachedHead to false
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:20.3525641Z 
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:20.3526339Z HEAD is now at 006670f Merge 21584d3409fb4b882951ffacc683a9d6e6f4031f into 72eaf6533c6baaa3f57d6399aa44167fca71b11b
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:20.3536224Z ##[endgroup]
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:20.3573206Z [command]/usr/bin/git log -1 --format=%H
+Python tests	Run actions/checkout@v4	2026-04-23T19:50:20.3594585Z 006670f7675d421eac4d5f44d599059f91a3cfe4
+Python tests	Set up Python	´╗┐2026-04-23T19:50:20.3838270Z ##[group]Run actions/setup-python@v4
+Python tests	Set up Python	2026-04-23T19:50:20.3838679Z with:
+Python tests	Set up Python	2026-04-23T19:50:20.3838951Z   python-version: 3.11
+Python tests	Set up Python	2026-04-23T19:50:20.3839226Z   cache: pip
+Python tests	Set up Python	2026-04-23T19:50:20.3839478Z   check-latest: false
+Python tests	Set up Python	2026-04-23T19:50:20.3840286Z   token: ***
+Python tests	Set up Python	2026-04-23T19:50:20.3840575Z   update-environment: true
+Python tests	Set up Python	2026-04-23T19:50:20.3840919Z   allow-prereleases: false
+Python tests	Set up Python	2026-04-23T19:50:20.3841207Z ##[endgroup]
+Python tests	Set up Python	2026-04-23T19:50:20.5506947Z ##[group]Installed versions
+Python tests	Set up Python	2026-04-23T19:50:20.5615956Z Successfully set up CPython (3.11.15)
+Python tests	Set up Python	2026-04-23T19:50:20.5617149Z ##[endgroup]
+Python tests	Set up Python	2026-04-23T19:50:21.0011019Z [command]/opt/hostedtoolcache/Python/3.11.15/x64/bin/pip cache dir
+Python tests	Set up Python	2026-04-23T19:50:21.3381485Z /home/runner/.cache/pip
+Python tests	Set up Python	2026-04-23T19:50:21.5556994Z Cache hit for: setup-python-Linux-24.04-Ubuntu-python-3.11.15-pip-91c9da8bdfde01634a1adde1d3da2f244f6c93ef545654047b7e9b39922eb96f
+Python tests	Set up Python	2026-04-23T19:50:22.7398036Z Received 51118024 of 55312328 (92.4%), 48.7 MBs/sec
+Python tests	Set up Python	2026-04-23T19:50:22.7582244Z Received 55312328 of 55312328 (100.0%), 51.8 MBs/sec
+Python tests	Set up Python	2026-04-23T19:50:22.7583130Z Cache Size: ~53 MB (55312328 B)
+Python tests	Set up Python	2026-04-23T19:50:22.7626230Z [command]/usr/bin/tar -xf /home/runner/work/_temp/f84f8526-a3aa-4aae-bcbb-33124c3932a7/cache.tzst -P -C /home/runner/work/sistema_ro/sistema_ro --use-compress-program unzstd
+Python tests	Set up Python	2026-04-23T19:50:22.8470430Z Cache restored successfully
+Python tests	Set up Python	2026-04-23T19:50:22.8502011Z Cache restored from key: setup-python-Linux-24.04-Ubuntu-python-3.11.15-pip-db883f150f736b8b32f9264898d8293445eb5dc57721f3f6936cd98e49d7812f
+Python tests	Upgrade pip	´╗┐2026-04-23T19:50:22.8678281Z ##[group]Run python -m pip install --upgrade pip
+Python tests	Upgrade pip	2026-04-23T19:50:22.8678751Z [36;1mpython -m pip install --upgrade pip[0m
+Python tests	Upgrade pip	2026-04-23T19:50:22.8707587Z shell: /usr/bin/bash -e {0}
+Python tests	Upgrade pip	2026-04-23T19:50:22.8707838Z env:
+Python tests	Upgrade pip	2026-04-23T19:50:22.8708097Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+Python tests	Upgrade pip	2026-04-23T19:50:22.8708547Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+Python tests	Upgrade pip	2026-04-23T19:50:22.8775568Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+Python tests	Upgrade pip	2026-04-23T19:50:22.8776054Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+Python tests	Upgrade pip	2026-04-23T19:50:22.8776492Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+Python tests	Upgrade pip	2026-04-23T19:50:22.8776948Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+Python tests	Upgrade pip	2026-04-23T19:50:22.8777303Z ##[endgroup]
+Python tests	Upgrade pip	2026-04-23T19:50:23.3881122Z Requirement already satisfied: pip in /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages (26.0.1)
+Python tests	Install dependencies	´╗┐2026-04-23T19:50:23.6662660Z ##[group]Run python -m pip install --upgrade pip
+Python tests	Install dependencies	2026-04-23T19:50:23.6663063Z [36;1mpython -m pip install --upgrade pip[0m
+Python tests	Install dependencies	2026-04-23T19:50:23.6663491Z [36;1m# Ensure build tools are available before editable install (PEP 517 builds)[0m
+Python tests	Install dependencies	2026-04-23T19:50:23.6663973Z [36;1mpython -m pip install --upgrade setuptools wheel build[0m
+Python tests	Install dependencies	2026-04-23T19:50:23.6664351Z [36;1mpython -m pip install -r requirements-ci.txt[0m
+Python tests	Install dependencies	2026-04-23T19:50:23.6664741Z [36;1m# Install editable package so local imports (sistema_ro.*) work[0m
+Python tests	Install dependencies	2026-04-23T19:50:23.6665093Z [36;1mpython -m pip install -e .[0m
+Python tests	Install dependencies	2026-04-23T19:50:23.6665370Z [36;1mecho "PYTHONPATH=$(pwd)" >> $GITHUB_ENV[0m
+Python tests	Install dependencies	2026-04-23T19:50:23.6688212Z shell: /usr/bin/bash -e {0}
+Python tests	Install dependencies	2026-04-23T19:50:23.6688459Z env:
+Python tests	Install dependencies	2026-04-23T19:50:23.6688725Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+Python tests	Install dependencies	2026-04-23T19:50:23.6689182Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+Python tests	Install dependencies	2026-04-23T19:50:23.6690075Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+Python tests	Install dependencies	2026-04-23T19:50:23.6690487Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+Python tests	Install dependencies	2026-04-23T19:50:23.6690848Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+Python tests	Install dependencies	2026-04-23T19:50:23.6691208Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+Python tests	Install dependencies	2026-04-23T19:50:23.6691505Z ##[endgroup]
+Python tests	Install dependencies	2026-04-23T19:50:23.9525167Z Requirement already satisfied: pip in /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages (26.0.1)
+Python tests	Install dependencies	2026-04-23T19:50:24.4056008Z Requirement already satisfied: setuptools in /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages (79.0.1)
+Python tests	Install dependencies	2026-04-23T19:50:24.6634286Z Collecting setuptools
+Python tests	Install dependencies	2026-04-23T19:50:24.7440912Z   Downloading setuptools-82.0.1-py3-none-any.whl.metadata (6.5 kB)
+Python tests	Install dependencies	2026-04-23T19:50:24.7825631Z Collecting wheel
+Python tests	Install dependencies	2026-04-23T19:50:24.7966804Z   Downloading wheel-0.47.0-py3-none-any.whl.metadata (2.3 kB)
+Python tests	Install dependencies	2026-04-23T19:50:24.8241433Z Collecting build
+Python tests	Install dependencies	2026-04-23T19:50:24.8349900Z   Downloading build-1.4.4-py3-none-any.whl.metadata (5.8 kB)
+Python tests	Install dependencies	2026-04-23T19:50:24.8636970Z Collecting packaging>=24.0 (from wheel)
+Python tests	Install dependencies	2026-04-23T19:50:24.8652871Z   Using cached packaging-26.1-py3-none-any.whl.metadata (3.5 kB)
+Python tests	Install dependencies	2026-04-23T19:50:24.8855837Z Collecting pyproject_hooks (from build)
+Python tests	Install dependencies	2026-04-23T19:50:24.9007419Z   Downloading pyproject_hooks-1.2.0-py3-none-any.whl.metadata (1.3 kB)
+Python tests	Install dependencies	2026-04-23T19:50:24.9157688Z Downloading setuptools-82.0.1-py3-none-any.whl (1.0 MB)
+Python tests	Install dependencies	2026-04-23T19:50:24.9840079Z    ÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöü 1.0/1.0 MB 21.1 MB/s  0:00:00
+Python tests	Install dependencies	2026-04-23T19:50:24.9949857Z Downloading wheel-0.47.0-py3-none-any.whl (32 kB)
+Python tests	Install dependencies	2026-04-23T19:50:25.0094159Z Downloading build-1.4.4-py3-none-any.whl (25 kB)
+Python tests	Install dependencies	2026-04-23T19:50:25.0159959Z Using cached packaging-26.1-py3-none-any.whl (95 kB)
+Python tests	Install dependencies	2026-04-23T19:50:25.0274971Z Downloading pyproject_hooks-1.2.0-py3-none-any.whl (10 kB)
+Python tests	Install dependencies	2026-04-23T19:50:25.0496864Z Installing collected packages: setuptools, pyproject_hooks, packaging, wheel, build
+Python tests	Install dependencies	2026-04-23T19:50:25.0502000Z   Attempting uninstall: setuptools
+Python tests	Install dependencies	2026-04-23T19:50:25.0516680Z     Found existing installation: setuptools 79.0.1
+Python tests	Install dependencies	2026-04-23T19:50:25.2032309Z     Uninstalling setuptools-79.0.1:
+Python tests	Install dependencies	2026-04-23T19:50:25.2367637Z       Successfully uninstalled setuptools-79.0.1
+Python tests	Install dependencies	2026-04-23T19:50:25.9289663Z 
+Python tests	Install dependencies	2026-04-23T19:50:25.9298929Z Successfully installed build-1.4.4 packaging-26.1 pyproject_hooks-1.2.0 setuptools-82.0.1 wheel-0.47.0
+Python tests	Install dependencies	2026-04-23T19:50:26.4013088Z Collecting fastapi>=0.115 (from -r requirements-ci.txt (line 1))
+Python tests	Install dependencies	2026-04-23T19:50:26.4861156Z   Downloading fastapi-0.136.1-py3-none-any.whl.metadata (28 kB)
+Python tests	Install dependencies	2026-04-23T19:50:26.5383590Z Collecting uvicorn>=0.30 (from -r requirements-ci.txt (line 2))
+Python tests	Install dependencies	2026-04-23T19:50:26.5521729Z   Downloading uvicorn-0.46.0-py3-none-any.whl.metadata (6.7 kB)
+Python tests	Install dependencies	2026-04-23T19:50:26.7058766Z Collecting pydantic>=2.8 (from -r requirements-ci.txt (line 3))
+Python tests	Install dependencies	2026-04-23T19:50:26.7197425Z   Downloading pydantic-2.13.3-py3-none-any.whl.metadata (108 kB)
+Python tests	Install dependencies	2026-04-23T19:50:26.9062948Z Collecting polars>=1.8 (from -r requirements-ci.txt (line 4))
+Python tests	Install dependencies	2026-04-23T19:50:26.9202957Z   Downloading polars-1.40.1-py3-none-any.whl.metadata (10 kB)
+Python tests	Install dependencies	2026-04-23T19:50:26.9507221Z Collecting python-dotenv>=1.0 (from -r requirements-ci.txt (line 5))
+Python tests	Install dependencies	2026-04-23T19:50:26.9521120Z   Using cached python_dotenv-1.2.2-py3-none-any.whl.metadata (27 kB)
+Python tests	Install dependencies	2026-04-23T19:50:26.9933037Z Collecting pytest (from -r requirements-ci.txt (line 6))
+Python tests	Install dependencies	2026-04-23T19:50:26.9946714Z   Using cached pytest-9.0.3-py3-none-any.whl.metadata (7.6 kB)
+Python tests	Install dependencies	2026-04-23T19:50:27.0229150Z Collecting httpx (from -r requirements-ci.txt (line 7))
+Python tests	Install dependencies	2026-04-23T19:50:27.0243127Z   Using cached httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+Python tests	Install dependencies	2026-04-23T19:50:27.0562045Z Collecting starlette>=0.46.0 (from fastapi>=0.115->-r requirements-ci.txt (line 1))
+Python tests	Install dependencies	2026-04-23T19:50:27.0575528Z   Using cached starlette-1.0.0-py3-none-any.whl.metadata (6.3 kB)
+Python tests	Install dependencies	2026-04-23T19:50:27.0857832Z Collecting typing-extensions>=4.8.0 (from fastapi>=0.115->-r requirements-ci.txt (line 1))
+Python tests	Install dependencies	2026-04-23T19:50:27.0871772Z   Using cached typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+Python tests	Install dependencies	2026-04-23T19:50:27.1070062Z Collecting typing-inspection>=0.4.2 (from fastapi>=0.115->-r requirements-ci.txt (line 1))
+Python tests	Install dependencies	2026-04-23T19:50:27.1083946Z   Using cached typing_inspection-0.4.2-py3-none-any.whl.metadata (2.6 kB)
+Python tests	Install dependencies	2026-04-23T19:50:27.1274344Z Collecting annotated-doc>=0.0.2 (from fastapi>=0.115->-r requirements-ci.txt (line 1))
+Python tests	Install dependencies	2026-04-23T19:50:27.1287485Z   Using cached annotated_doc-0.0.4-py3-none-any.whl.metadata (6.6 kB)
+Python tests	Install dependencies	2026-04-23T19:50:27.1575905Z Collecting click>=7.0 (from uvicorn>=0.30->-r requirements-ci.txt (line 2))
+Python tests	Install dependencies	2026-04-23T19:50:27.1711513Z   Downloading click-8.3.3-py3-none-any.whl.metadata (2.6 kB)
+Python tests	Install dependencies	2026-04-23T19:50:27.1938773Z Collecting h11>=0.8 (from uvicorn>=0.30->-r requirements-ci.txt (line 2))
+Python tests	Install dependencies	2026-04-23T19:50:27.1953927Z   Using cached h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+Python tests	Install dependencies	2026-04-23T19:50:27.2157511Z Collecting annotated-types>=0.6.0 (from pydantic>=2.8->-r requirements-ci.txt (line 3))
+Python tests	Install dependencies	2026-04-23T19:50:27.2171681Z   Using cached annotated_types-0.7.0-py3-none-any.whl.metadata (15 kB)
+Python tests	Install dependencies	2026-04-23T19:50:27.9998506Z Collecting pydantic-core==2.46.3 (from pydantic>=2.8->-r requirements-ci.txt (line 3))
+Python tests	Install dependencies	2026-04-23T19:50:28.0144538Z   Downloading pydantic_core-2.46.3-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.6 kB)
+Python tests	Install dependencies	2026-04-23T19:50:28.0487927Z Collecting polars-runtime-32==1.40.1 (from polars>=1.8->-r requirements-ci.txt (line 4))
+Python tests	Install dependencies	2026-04-23T19:50:28.0630920Z   Downloading polars_runtime_32-1.40.1-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (1.5 kB)
+Python tests	Install dependencies	2026-04-23T19:50:28.0865979Z Collecting iniconfig>=1.0.1 (from pytest->-r requirements-ci.txt (line 6))
+Python tests	Install dependencies	2026-04-23T19:50:28.0879103Z   Using cached iniconfig-2.3.0-py3-none-any.whl.metadata (2.5 kB)
+Python tests	Install dependencies	2026-04-23T19:50:28.0894625Z Requirement already satisfied: packaging>=22 in /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages (from pytest->-r requirements-ci.txt (line 6)) (26.1)
+Python tests	Install dependencies	2026-04-23T19:50:28.1112566Z Collecting pluggy<2,>=1.5 (from pytest->-r requirements-ci.txt (line 6))
+Python tests	Install dependencies	2026-04-23T19:50:28.1126110Z   Using cached pluggy-1.6.0-py3-none-any.whl.metadata (4.8 kB)
+Python tests	Install dependencies	2026-04-23T19:50:28.1386744Z Collecting pygments>=2.7.2 (from pytest->-r requirements-ci.txt (line 6))
+Python tests	Install dependencies	2026-04-23T19:50:28.1400103Z   Using cached pygments-2.20.0-py3-none-any.whl.metadata (2.5 kB)
+Python tests	Install dependencies	2026-04-23T19:50:28.1669924Z Collecting anyio (from httpx->-r requirements-ci.txt (line 7))
+Python tests	Install dependencies	2026-04-23T19:50:28.1683600Z   Using cached anyio-4.13.0-py3-none-any.whl.metadata (4.5 kB)
+Python tests	Install dependencies	2026-04-23T19:50:28.2026886Z Collecting certifi (from httpx->-r requirements-ci.txt (line 7))
+Python tests	Install dependencies	2026-04-23T19:50:28.2171061Z   Downloading certifi-2026.4.22-py3-none-any.whl.metadata (2.5 kB)
+Python tests	Install dependencies	2026-04-23T19:50:28.2444354Z Collecting httpcore==1.* (from httpx->-r requirements-ci.txt (line 7))
+Python tests	Install dependencies	2026-04-23T19:50:28.2457484Z   Using cached httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+Python tests	Install dependencies	2026-04-23T19:50:28.2702831Z Collecting idna (from httpx->-r requirements-ci.txt (line 7))
+Python tests	Install dependencies	2026-04-23T19:50:28.2880363Z   Downloading idna-3.13-py3-none-any.whl.metadata (8.0 kB)
+Python tests	Install dependencies	2026-04-23T19:50:28.3157434Z Downloading fastapi-0.136.1-py3-none-any.whl (117 kB)
+Python tests	Install dependencies	2026-04-23T19:50:28.3352451Z Downloading uvicorn-0.46.0-py3-none-any.whl (70 kB)
+Python tests	Install dependencies	2026-04-23T19:50:28.3514373Z Downloading pydantic-2.13.3-py3-none-any.whl (471 kB)
+Python tests	Install dependencies	2026-04-23T19:50:28.3914270Z Downloading pydantic_core-2.46.3-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.1 MB)
+Python tests	Install dependencies	2026-04-23T19:50:28.4344547Z    ÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöü 2.1/2.1 MB 47.0 MB/s  0:00:00
+Python tests	Install dependencies	2026-04-23T19:50:28.4482277Z Downloading polars-1.40.1-py3-none-any.whl (828 kB)
+Python tests	Install dependencies	2026-04-23T19:50:28.4561319Z    ÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöü 828.7/828.7 kB 102.9 MB/s  0:00:00
+Python tests	Install dependencies	2026-04-23T19:50:28.4699182Z Downloading polars_runtime_32-1.40.1-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (56.3 MB)
+Python tests	Install dependencies	2026-04-23T19:50:28.7026917Z    ÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöü 56.3/56.3 MB 243.8 MB/s  0:00:00
+Python tests	Install dependencies	2026-04-23T19:50:28.7043743Z Using cached python_dotenv-1.2.2-py3-none-any.whl (22 kB)
+Python tests	Install dependencies	2026-04-23T19:50:28.7057785Z Using cached pytest-9.0.3-py3-none-any.whl (375 kB)
+Python tests	Install dependencies	2026-04-23T19:50:28.7072905Z Using cached pluggy-1.6.0-py3-none-any.whl (20 kB)
+Python tests	Install dependencies	2026-04-23T19:50:28.7086404Z Using cached httpx-0.28.1-py3-none-any.whl (73 kB)
+Python tests	Install dependencies	2026-04-23T19:50:28.7099710Z Using cached httpcore-1.0.9-py3-none-any.whl (78 kB)
+Python tests	Install dependencies	2026-04-23T19:50:28.7113474Z Using cached annotated_doc-0.0.4-py3-none-any.whl (5.3 kB)
+Python tests	Install dependencies	2026-04-23T19:50:28.7126641Z Using cached annotated_types-0.7.0-py3-none-any.whl (13 kB)
+Python tests	Install dependencies	2026-04-23T19:50:28.7263754Z Downloading click-8.3.3-py3-none-any.whl (110 kB)
+Python tests	Install dependencies	2026-04-23T19:50:28.7301796Z Using cached h11-0.16.0-py3-none-any.whl (37 kB)
+Python tests	Install dependencies	2026-04-23T19:50:28.7315408Z Using cached iniconfig-2.3.0-py3-none-any.whl (7.5 kB)
+Python tests	Install dependencies	2026-04-23T19:50:28.7328645Z Using cached pygments-2.20.0-py3-none-any.whl (1.2 MB)
+Python tests	Install dependencies	2026-04-23T19:50:28.7346739Z Using cached starlette-1.0.0-py3-none-any.whl (72 kB)
+Python tests	Install dependencies	2026-04-23T19:50:28.7360180Z Using cached anyio-4.13.0-py3-none-any.whl (114 kB)
+Python tests	Install dependencies	2026-04-23T19:50:28.7496898Z Downloading idna-3.13-py3-none-any.whl (68 kB)
+Python tests	Install dependencies	2026-04-23T19:50:28.7534478Z Using cached typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+Python tests	Install dependencies	2026-04-23T19:50:28.7547993Z Using cached typing_inspection-0.4.2-py3-none-any.whl (14 kB)
+Python tests	Install dependencies	2026-04-23T19:50:28.7683446Z Downloading certifi-2026.4.22-py3-none-any.whl (135 kB)
+Python tests	Install dependencies	2026-04-23T19:50:28.8733868Z Installing collected packages: typing-extensions, python-dotenv, pygments, polars-runtime-32, pluggy, iniconfig, idna, h11, click, certifi, annotated-types, annotated-doc, uvicorn, typing-inspection, pytest, pydantic-core, polars, httpcore, anyio, starlette, pydantic, httpx, fastapi
+Python tests	Install dependencies	2026-04-23T19:50:31.6846300Z 
+Python tests	Install dependencies	2026-04-23T19:50:31.6864622Z Successfully installed annotated-doc-0.0.4 annotated-types-0.7.0 anyio-4.13.0 certifi-2026.4.22 click-8.3.3 fastapi-0.136.1 h11-0.16.0 httpcore-1.0.9 httpx-0.28.1 idna-3.13 iniconfig-2.3.0 pluggy-1.6.0 polars-1.40.1 polars-runtime-32-1.40.1 pydantic-2.13.3 pydantic-core-2.46.3 pygments-2.20.0 pytest-9.0.3 python-dotenv-1.2.2 starlette-1.0.0 typing-extensions-4.15.0 typing-inspection-0.4.2 uvicorn-0.46.0
+Python tests	Install dependencies	2026-04-23T19:50:32.1308777Z Obtaining file:///home/runner/work/sistema_ro/sistema_ro
+Python tests	Install dependencies	2026-04-23T19:50:32.1325182Z   Installing build dependencies: started
+Python tests	Install dependencies	2026-04-23T19:50:32.8368190Z   Installing build dependencies: finished with status 'done'
+Python tests	Install dependencies	2026-04-23T19:50:32.8374184Z   Checking if build backend supports build_editable: started
+Python tests	Install dependencies	2026-04-23T19:50:33.1567624Z   Checking if build backend supports build_editable: finished with status 'done'
+Python tests	Install dependencies	2026-04-23T19:50:33.1575318Z   Getting requirements to build editable: started
+Python tests	Install dependencies	2026-04-23T19:50:33.4581176Z   Getting requirements to build editable: finished with status 'done'
+Python tests	Install dependencies	2026-04-23T19:50:33.4590282Z   Preparing editable metadata (pyproject.toml): started
+Python tests	Install dependencies	2026-04-23T19:50:33.6292793Z   Preparing editable metadata (pyproject.toml): finished with status 'done'
+Python tests	Install dependencies	2026-04-23T19:50:33.6324612Z Requirement already satisfied: fastapi>=0.115 in /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages (from sistema-ro==0.1.0) (0.136.1)
+Python tests	Install dependencies	2026-04-23T19:50:33.6328657Z Requirement already satisfied: uvicorn>=0.30 in /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages (from sistema-ro==0.1.0) (0.46.0)
+Python tests	Install dependencies	2026-04-23T19:50:33.6333021Z Requirement already satisfied: pydantic>=2.8 in /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages (from sistema-ro==0.1.0) (2.13.3)
+Python tests	Install dependencies	2026-04-23T19:50:33.6337687Z Requirement already satisfied: polars>=1.8 in /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages (from sistema-ro==0.1.0) (1.40.1)
+Python tests	Install dependencies	2026-04-23T19:50:33.6341876Z Requirement already satisfied: python-dotenv>=1.0 in /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages (from sistema-ro==0.1.0) (1.2.2)
+Python tests	Install dependencies	2026-04-23T19:50:33.6356787Z Requirement already satisfied: starlette>=0.46.0 in /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages (from fastapi>=0.115->sistema-ro==0.1.0) (1.0.0)
+Python tests	Install dependencies	2026-04-23T19:50:33.6362710Z Requirement already satisfied: typing-extensions>=4.8.0 in /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages (from fastapi>=0.115->sistema-ro==0.1.0) (4.15.0)
+Python tests	Install dependencies	2026-04-23T19:50:33.6367022Z Requirement already satisfied: typing-inspection>=0.4.2 in /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages (from fastapi>=0.115->sistema-ro==0.1.0) (0.4.2)
+Python tests	Install dependencies	2026-04-23T19:50:33.6370974Z Requirement already satisfied: annotated-doc>=0.0.2 in /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages (from fastapi>=0.115->sistema-ro==0.1.0) (0.0.4)
+Python tests	Install dependencies	2026-04-23T19:50:33.6406828Z Requirement already satisfied: polars-runtime-32==1.40.1 in /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages (from polars>=1.8->sistema-ro==0.1.0) (1.40.1)
+Python tests	Install dependencies	2026-04-23T19:50:33.6446519Z Requirement already satisfied: annotated-types>=0.6.0 in /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages (from pydantic>=2.8->sistema-ro==0.1.0) (0.7.0)
+Python tests	Install dependencies	2026-04-23T19:50:33.6451468Z Requirement already satisfied: pydantic-core==2.46.3 in /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages (from pydantic>=2.8->sistema-ro==0.1.0) (2.46.3)
+Python tests	Install dependencies	2026-04-23T19:50:33.6486573Z Requirement already satisfied: anyio<5,>=3.6.2 in /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages (from starlette>=0.46.0->fastapi>=0.115->sistema-ro==0.1.0) (4.13.0)
+Python tests	Install dependencies	2026-04-23T19:50:33.6502632Z Requirement already satisfied: idna>=2.8 in /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages (from anyio<5,>=3.6.2->starlette>=0.46.0->fastapi>=0.115->sistema-ro==0.1.0) (3.13)
+Python tests	Install dependencies	2026-04-23T19:50:33.6533676Z Requirement already satisfied: click>=7.0 in /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages (from uvicorn>=0.30->sistema-ro==0.1.0) (8.3.3)
+Python tests	Install dependencies	2026-04-23T19:50:33.6537756Z Requirement already satisfied: h11>=0.8 in /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages (from uvicorn>=0.30->sistema-ro==0.1.0) (0.16.0)
+Python tests	Install dependencies	2026-04-23T19:50:33.6564294Z Building wheels for collected packages: sistema-ro
+Python tests	Install dependencies	2026-04-23T19:50:33.6571939Z   Building editable for sistema-ro (pyproject.toml): started
+Python tests	Install dependencies	2026-04-23T19:50:33.8416897Z   Building editable for sistema-ro (pyproject.toml): finished with status 'done'
+Python tests	Install dependencies	2026-04-23T19:50:33.8424104Z   Created wheel for sistema-ro: filename=sistema_ro-0.1.0-0.editable-py3-none-any.whl size=1315 sha256=ccc17a6f2d4a2507b6de268ca97051745561da2b18435617a5f0f61acf2718bb
+Python tests	Install dependencies	2026-04-23T19:50:33.8425692Z   Stored in directory: /tmp/pip-ephem-wheel-cache-x4fzial_/wheels/aa/07/3a/8878f177cbecc6fe62057b7a83c03176e4344fbe52be045b74
+Python tests	Install dependencies	2026-04-23T19:50:33.8442750Z Successfully built sistema-ro
+Python tests	Install dependencies	2026-04-23T19:50:33.8620448Z Installing collected packages: sistema-ro
+Python tests	Install dependencies	2026-04-23T19:50:33.8686310Z Successfully installed sistema-ro-0.1.0
+Python tests	Run Python tests	´╗┐2026-04-23T19:50:33.9276181Z ##[group]Run python -m pytest -q
+Python tests	Run Python tests	2026-04-23T19:50:33.9276491Z [36;1mpython -m pytest -q[0m
+Python tests	Run Python tests	2026-04-23T19:50:33.9297893Z shell: /usr/bin/bash -e {0}
+Python tests	Run Python tests	2026-04-23T19:50:33.9298130Z env:
+Python tests	Run Python tests	2026-04-23T19:50:33.9298375Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+Python tests	Run Python tests	2026-04-23T19:50:33.9298811Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+Python tests	Run Python tests	2026-04-23T19:50:33.9299227Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+Python tests	Run Python tests	2026-04-23T19:50:33.9299603Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+Python tests	Run Python tests	2026-04-23T19:50:33.9300155Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+Python tests	Run Python tests	2026-04-23T19:50:33.9300526Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+Python tests	Run Python tests	2026-04-23T19:50:33.9300877Z   PYTHONPATH: /home/runner/work/sistema_ro/sistema_ro
+Python tests	Run Python tests	2026-04-23T19:50:33.9301148Z ##[endgroup]
+Python tests	Run Python tests	2026-04-23T19:50:36.9981115Z 
+Python tests	Run Python tests	2026-04-23T19:50:36.9981745Z ==================================== ERRORS ====================================
+Python tests	Run Python tests	2026-04-23T19:50:36.9982546Z _______________________ ERROR collecting tests/canonico ________________________
+Python tests	Run Python tests	2026-04-23T19:50:36.9983901Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/importlib/__init__.py:126: in import_module
+Python tests	Run Python tests	2026-04-23T19:50:36.9984716Z     return _bootstrap._gcd_import(name[level:], package, level)
+Python tests	Run Python tests	2026-04-23T19:50:36.9985233Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python tests	Run Python tests	2026-04-23T19:50:36.9985682Z <frozen importlib._bootstrap>:1204: in _gcd_import
+Python tests	Run Python tests	2026-04-23T19:50:36.9986089Z     ???
+Python tests	Run Python tests	2026-04-23T19:50:36.9986400Z <frozen importlib._bootstrap>:1176: in _find_and_load
+Python tests	Run Python tests	2026-04-23T19:50:36.9986805Z     ???
+Python tests	Run Python tests	2026-04-23T19:50:36.9987148Z <frozen importlib._bootstrap>:1147: in _find_and_load_unlocked
+Python tests	Run Python tests	2026-04-23T19:50:36.9987601Z     ???
+Python tests	Run Python tests	2026-04-23T19:50:36.9987895Z <frozen importlib._bootstrap>:690: in _load_unlocked
+Python tests	Run Python tests	2026-04-23T19:50:36.9988303Z     ???
+Python tests	Run Python tests	2026-04-23T19:50:36.9988967Z /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/_pytest/assertion/rewrite.py:197: in exec_module
+Python tests	Run Python tests	2026-04-23T19:50:36.9990174Z     exec(co, module.__dict__)
+Python tests	Run Python tests	2026-04-23T19:50:36.9990563Z tests/canonico/conftest.py:10: in <module>
+Python tests	Run Python tests	2026-04-23T19:50:36.9990988Z     from sistema_ro.enums import TipoOperacao
+Python tests	Run Python tests	2026-04-23T19:50:36.9991490Z E   ModuleNotFoundError: No module named 'sistema_ro.enums'
+Python tests	Run Python tests	2026-04-23T19:50:36.9992075Z =========================== short test summary info ============================
+Python tests	Run Python tests	2026-04-23T19:50:36.9992755Z ERROR tests/canonico - ModuleNotFoundError: No module named 'sistema_ro.enums'
+Python tests	Run Python tests	2026-04-23T19:50:36.9993440Z !!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+Python tests	Run Python tests	2026-04-23T19:50:36.9993923Z 1 error in 1.05s
+Python tests	Run Python tests	2026-04-23T19:50:37.1218093Z ##[error]Process completed with exit code 2.
+Python tests	Post Run actions/checkout@v4	´╗┐2026-04-23T19:50:37.1330099Z Post job cleanup.
+Python tests	Post Run actions/checkout@v4	2026-04-23T19:50:37.2272563Z [command]/usr/bin/git version
+Python tests	Post Run actions/checkout@v4	2026-04-23T19:50:37.2308507Z git version 2.53.0
+Python tests	Post Run actions/checkout@v4	2026-04-23T19:50:37.2360477Z Temporarily overriding HOME='/home/runner/work/_temp/3d1901d4-de87-458e-9f4f-5ad2ac50cf57' before making global git config changes
+Python tests	Post Run actions/checkout@v4	2026-04-23T19:50:37.2361871Z Adding repository directory to the temporary git global config as a safe directory
+Python tests	Post Run actions/checkout@v4	2026-04-23T19:50:37.2366921Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/sistema_ro/sistema_ro
+Python tests	Post Run actions/checkout@v4	2026-04-23T19:50:37.2402249Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Python tests	Post Run actions/checkout@v4	2026-04-23T19:50:37.2433954Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Python tests	Post Run actions/checkout@v4	2026-04-23T19:50:37.2645151Z fatal: No url found for submodule path '.claude/worktrees/goofy-thompson' in .gitmodules
+Python tests	Post Run actions/checkout@v4	2026-04-23T19:50:37.2690243Z ##[warning]The process '/usr/bin/git' failed with exit code 128
+Python tests	Complete job	´╗┐2026-04-23T19:50:37.2772545Z Cleaning up orphan processes
+Python tests	Complete job	2026-04-23T19:50:37.3053653Z ##[warning]Node.js 20 actions are deprecated. The following actions are running on Node.js 20 and may not work as expected: actions/checkout@v4, actions/setup-python@v4. Actions will be forced to run with Node.js 24 by default starting June 2nd, 2026. Node.js 20 will be removed from the runner on September 16th, 2026. Please check if updated versions of these actions are available that support Node.js 24. To opt into Node.js 24 now, set the FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true environment variable on the runner or in your workflow file. Once Node.js 24 becomes the default, you can temporarily opt out by setting ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+lint	Set up job	´╗┐2026-04-23T19:50:18.3036639Z Current runner version: '2.333.1'
+lint	Set up job	2026-04-23T19:50:18.3059128Z ##[group]Runner Image Provisioner
+lint	Set up job	2026-04-23T19:50:18.3059776Z Hosted Compute Agent
+lint	Set up job	2026-04-23T19:50:18.3060269Z Version: 20260213.493
+lint	Set up job	2026-04-23T19:50:18.3060721Z Commit: 5c115507f6dd24b8de37d8bbe0bb4509d0cc0fa3
+lint	Set up job	2026-04-23T19:50:18.3061560Z Build Date: 2026-02-13T00:28:41Z
+lint	Set up job	2026-04-23T19:50:18.3062080Z Worker ID: {99e1c57a-ab99-4046-a692-e5cf4a5b88fc}
+lint	Set up job	2026-04-23T19:50:18.3062641Z Azure Region: westus
+lint	Set up job	2026-04-23T19:50:18.3063040Z ##[endgroup]
+lint	Set up job	2026-04-23T19:50:18.3064408Z ##[group]Operating System
+lint	Set up job	2026-04-23T19:50:18.3064940Z Ubuntu
+lint	Set up job	2026-04-23T19:50:18.3065323Z 24.04.4
+lint	Set up job	2026-04-23T19:50:18.3065723Z LTS
+lint	Set up job	2026-04-23T19:50:18.3066077Z ##[endgroup]
+lint	Set up job	2026-04-23T19:50:18.3066487Z ##[group]Runner Image
+lint	Set up job	2026-04-23T19:50:18.3066875Z Image: ubuntu-24.04
+lint	Set up job	2026-04-23T19:50:18.3067337Z Version: 20260413.86.1
+lint	Set up job	2026-04-23T19:50:18.3068082Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260413.86/images/ubuntu/Ubuntu2404-Readme.md
+lint	Set up job	2026-04-23T19:50:18.3069398Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260413.86
+lint	Set up job	2026-04-23T19:50:18.3070100Z ##[endgroup]
+lint	Set up job	2026-04-23T19:50:18.3071164Z ##[group]GITHUB_TOKEN Permissions
+lint	Set up job	2026-04-23T19:50:18.3072887Z Contents: read
+lint	Set up job	2026-04-23T19:50:18.3073348Z Metadata: read
+lint	Set up job	2026-04-23T19:50:18.3073805Z Packages: read
+lint	Set up job	2026-04-23T19:50:18.3074212Z ##[endgroup]
+lint	Set up job	2026-04-23T19:50:18.3075781Z Secret source: Actions
+lint	Set up job	2026-04-23T19:50:18.3076401Z Prepare workflow directory
+lint	Set up job	2026-04-23T19:50:18.3330596Z Prepare all required actions
+lint	Set up job	2026-04-23T19:50:18.3361076Z Getting action download info
+lint	Set up job	2026-04-23T19:50:18.8105213Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+lint	Set up job	2026-04-23T19:50:18.9191998Z Download action repository 'actions/setup-python@v4' (SHA:7f4fc3e22c37d6ff65e88745f38bd3157c663f7c)
+lint	Set up job	2026-04-23T19:50:19.1585306Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+lint	Set up job	2026-04-23T19:50:19.4649103Z Complete job name: lint
+lint	Run actions/checkout@v4	´╗┐2026-04-23T19:50:19.5221623Z ##[group]Run actions/checkout@v4
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.5222407Z with:
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.5222734Z   repository: Enio-Telles/sistema_ro
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.5223341Z   token: ***
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.5223649Z   ssh-strict: true
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.5223974Z   ssh-user: git
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.5224298Z   persist-credentials: true
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.5224672Z   clean: true
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.5224992Z   sparse-checkout-cone-mode: true
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.5225421Z   fetch-depth: 1
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.5225731Z   fetch-tags: false
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.5226076Z   show-progress: true
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.5226414Z   lfs: false
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.5226705Z   submodules: false
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.5227045Z   set-safe-directory: true
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.5227545Z ##[endgroup]
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6086676Z Syncing repository: Enio-Telles/sistema_ro
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6088385Z ##[group]Getting Git version info
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6089136Z Working directory is '/home/runner/work/sistema_ro/sistema_ro'
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6090163Z [command]/usr/bin/git version
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6118675Z git version 2.53.0
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6137909Z ##[endgroup]
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6150579Z Temporarily overriding HOME='/home/runner/work/_temp/c18e56c6-9bb0-4066-9d32-66ef8a6c304c' before making global git config changes
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6152880Z Adding repository directory to the temporary git global config as a safe directory
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6156182Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/sistema_ro/sistema_ro
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6184528Z Deleting the contents of '/home/runner/work/sistema_ro/sistema_ro'
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6187125Z ##[group]Initializing the repository
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6190439Z [command]/usr/bin/git init /home/runner/work/sistema_ro/sistema_ro
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6265657Z hint: Using 'master' as the name for the initial branch. This default branch name
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6266996Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6268092Z hint: to use in all of your new repositories, which will suppress this warning,
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6268789Z hint: call:
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6269147Z hint:
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6269605Z hint: 	git config --global init.defaultBranch <name>
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6270319Z hint:
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6271177Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6272025Z hint: 'development'. The just-created branch can be renamed via this command:
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6272678Z hint:
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6272996Z hint: 	git branch -m <name>
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6273366Z hint:
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6273896Z hint: Disable this message with "git config set advice.defaultBranchName false"
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6274974Z Initialized empty Git repository in /home/runner/work/sistema_ro/sistema_ro/.git/
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6276652Z [command]/usr/bin/git remote add origin https://github.com/Enio-Telles/sistema_ro
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6434218Z ##[endgroup]
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6435162Z ##[group]Disabling automatic garbage collection
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6438525Z [command]/usr/bin/git config --local gc.auto 0
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6462705Z ##[endgroup]
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6463556Z ##[group]Setting up auth
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6468769Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6493019Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6723548Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6748350Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6926114Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.6959101Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.7139222Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.7166650Z ##[endgroup]
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.7172680Z ##[group]Fetching the repository
+lint	Run actions/checkout@v4	2026-04-23T19:50:19.7173976Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +006670f7675d421eac4d5f44d599059f91a3cfe4:refs/remotes/pull/46/merge
+lint	Run actions/checkout@v4	2026-04-23T19:50:21.1049177Z From https://github.com/Enio-Telles/sistema_ro
+lint	Run actions/checkout@v4	2026-04-23T19:50:21.1050423Z  * [new ref]         006670f7675d421eac4d5f44d599059f91a3cfe4 -> pull/46/merge
+lint	Run actions/checkout@v4	2026-04-23T19:50:21.1072909Z ##[endgroup]
+lint	Run actions/checkout@v4	2026-04-23T19:50:21.1073292Z ##[group]Determining the checkout info
+lint	Run actions/checkout@v4	2026-04-23T19:50:21.1075008Z ##[endgroup]
+lint	Run actions/checkout@v4	2026-04-23T19:50:21.1079462Z [command]/usr/bin/git sparse-checkout disable
+lint	Run actions/checkout@v4	2026-04-23T19:50:21.1108996Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+lint	Run actions/checkout@v4	2026-04-23T19:50:21.1129102Z ##[group]Checking out the ref
+lint	Run actions/checkout@v4	2026-04-23T19:50:21.1132081Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/46/merge
+lint	Run actions/checkout@v4	2026-04-23T19:50:21.2419740Z Note: switching to 'refs/remotes/pull/46/merge'.
+lint	Run actions/checkout@v4	2026-04-23T19:50:21.2420220Z 
+lint	Run actions/checkout@v4	2026-04-23T19:50:21.2420494Z You are in 'detached HEAD' state. You can look around, make experimental
+lint	Run actions/checkout@v4	2026-04-23T19:50:21.2421222Z changes and commit them, and you can discard any commits you make in this
+lint	Run actions/checkout@v4	2026-04-23T19:50:21.2421632Z state without impacting any branches by switching back to a branch.
+lint	Run actions/checkout@v4	2026-04-23T19:50:21.2421900Z 
+lint	Run actions/checkout@v4	2026-04-23T19:50:21.2422103Z If you want to create a new branch to retain commits you create, you may
+lint	Run actions/checkout@v4	2026-04-23T19:50:21.2422492Z do so (now or later) by using -c with the switch command. Example:
+lint	Run actions/checkout@v4	2026-04-23T19:50:21.2422697Z 
+lint	Run actions/checkout@v4	2026-04-23T19:50:21.2422800Z   git switch -c <new-branch-name>
+lint	Run actions/checkout@v4	2026-04-23T19:50:21.2423360Z 
+lint	Run actions/checkout@v4	2026-04-23T19:50:21.2423478Z Or undo this operation with:
+lint	Run actions/checkout@v4	2026-04-23T19:50:21.2423611Z 
+lint	Run actions/checkout@v4	2026-04-23T19:50:21.2423698Z   git switch -
+lint	Run actions/checkout@v4	2026-04-23T19:50:21.2423846Z 
+lint	Run actions/checkout@v4	2026-04-23T19:50:21.2424022Z Turn off this advice by setting config variable advice.detachedHead to false
+lint	Run actions/checkout@v4	2026-04-23T19:50:21.2424266Z 
+lint	Run actions/checkout@v4	2026-04-23T19:50:21.2424538Z HEAD is now at 006670f Merge 21584d3409fb4b882951ffacc683a9d6e6f4031f into 72eaf6533c6baaa3f57d6399aa44167fca71b11b
+lint	Run actions/checkout@v4	2026-04-23T19:50:21.2433029Z ##[endgroup]
+lint	Run actions/checkout@v4	2026-04-23T19:50:21.2465203Z [command]/usr/bin/git log -1 --format=%H
+lint	Run actions/checkout@v4	2026-04-23T19:50:21.2483557Z 006670f7675d421eac4d5f44d599059f91a3cfe4
+lint	Setup Python	´╗┐2026-04-23T19:50:21.2677893Z ##[group]Run actions/setup-python@v4
+lint	Setup Python	2026-04-23T19:50:21.2678171Z with:
+lint	Setup Python	2026-04-23T19:50:21.2678362Z   python-version: 3.11
+lint	Setup Python	2026-04-23T19:50:21.2678582Z   check-latest: false
+lint	Setup Python	2026-04-23T19:50:21.2678887Z   token: ***
+lint	Setup Python	2026-04-23T19:50:21.2679087Z   update-environment: true
+lint	Setup Python	2026-04-23T19:50:21.2679311Z   allow-prereleases: false
+lint	Setup Python	2026-04-23T19:50:21.2679557Z ##[endgroup]
+lint	Setup Python	2026-04-23T19:50:21.3971263Z ##[group]Installed versions
+lint	Setup Python	2026-04-23T19:50:21.4052994Z Successfully set up CPython (3.11.15)
+lint	Setup Python	2026-04-23T19:50:21.4053639Z ##[endgroup]
+lint	Install ruff	´╗┐2026-04-23T19:50:21.4209945Z ##[group]Run python -m pip install --upgrade pip
+lint	Install ruff	2026-04-23T19:50:21.4210352Z [36;1mpython -m pip install --upgrade pip[0m
+lint	Install ruff	2026-04-23T19:50:21.4210648Z [36;1mpython -m pip install ruff[0m
+lint	Install ruff	2026-04-23T19:50:21.6310406Z shell: /usr/bin/bash -e {0}
+lint	Install ruff	2026-04-23T19:50:21.6310673Z env:
+lint	Install ruff	2026-04-23T19:50:21.6311074Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+lint	Install ruff	2026-04-23T19:50:21.6311465Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+lint	Install ruff	2026-04-23T19:50:21.6311847Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+lint	Install ruff	2026-04-23T19:50:21.6312173Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+lint	Install ruff	2026-04-23T19:50:21.6312495Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+lint	Install ruff	2026-04-23T19:50:21.6312805Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+lint	Install ruff	2026-04-23T19:50:21.6313102Z ##[endgroup]
+lint	Install ruff	2026-04-23T19:50:23.2851956Z Requirement already satisfied: pip in /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages (26.0.1)
+lint	Install ruff	2026-04-23T19:50:24.9433966Z Collecting ruff
+lint	Install ruff	2026-04-23T19:50:24.9912729Z   Downloading ruff-0.15.11-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (26 kB)
+lint	Install ruff	2026-04-23T19:50:25.0041966Z Downloading ruff-0.15.11-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (11.3 MB)
+lint	Install ruff	2026-04-23T19:50:25.1667004Z    ÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöüÔöü 11.3/11.3 MB 75.4 MB/s  0:00:00
+lint	Install ruff	2026-04-23T19:50:25.1835687Z Installing collected packages: ruff
+lint	Install ruff	2026-04-23T19:50:25.2866655Z Successfully installed ruff-0.15.11
+lint	Run ruff	´╗┐2026-04-23T19:50:25.3562163Z ##[group]Run ruff check .
+lint	Run ruff	2026-04-23T19:50:25.3562406Z [36;1mruff check .[0m
+lint	Run ruff	2026-04-23T19:50:25.3580794Z shell: /usr/bin/bash -e {0}
+lint	Run ruff	2026-04-23T19:50:25.3581179Z env:
+lint	Run ruff	2026-04-23T19:50:25.3581402Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+lint	Run ruff	2026-04-23T19:50:25.3581741Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+lint	Run ruff	2026-04-23T19:50:25.3582054Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+lint	Run ruff	2026-04-23T19:50:25.3582327Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+lint	Run ruff	2026-04-23T19:50:25.3582601Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+lint	Run ruff	2026-04-23T19:50:25.3582875Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+lint	Run ruff	2026-04-23T19:50:25.3583105Z ##[endgroup]
+lint	Run ruff	2026-04-23T19:50:25.3818623Z F401 [*] `backend.app.runtime_main.app` imported but unused
+lint	Run ruff	2026-04-23T19:50:25.3819073Z  --> backend/app/main.py:1:38
+lint	Run ruff	2026-04-23T19:50:25.3819266Z   |
+lint	Run ruff	2026-04-23T19:50:25.3819517Z 1 | from backend.app.runtime_main import app
+lint	Run ruff	2026-04-23T19:50:25.3819955Z   |                                      ^^^
+lint	Run ruff	2026-04-23T19:50:25.3820233Z   |
+lint	Run ruff	2026-04-23T19:50:25.3820562Z help: Remove unused import: `backend.app.runtime_main.app`
+lint	Run ruff	2026-04-23T19:50:25.3820806Z 
+lint	Run ruff	2026-04-23T19:50:25.3821415Z F841 Local variable `results` is assigned to but never used
+lint	Run ruff	2026-04-23T19:50:25.3821868Z   --> scripts/discover_stitch_endpoints.py:63:5
+lint	Run ruff	2026-04-23T19:50:25.3822184Z    |
+lint	Run ruff	2026-04-23T19:50:25.3822381Z 61 |     ]
+lint	Run ruff	2026-04-23T19:50:25.3822570Z 62 |
+lint	Run ruff	2026-04-23T19:50:25.3822775Z 63 |     results = []
+lint	Run ruff	2026-04-23T19:50:25.3823003Z    |     ^^^^^^^
+lint	Run ruff	2026-04-23T19:50:25.3823248Z 64 |     for path in candidates:
+lint	Run ruff	2026-04-23T19:50:25.3823531Z 65 |         url = base + path
+lint	Run ruff	2026-04-23T19:50:25.3823783Z    |
+lint	Run ruff	2026-04-23T19:50:25.3824071Z help: Remove assignment to unused variable `results`
+lint	Run ruff	2026-04-23T19:50:25.3824360Z 
+lint	Run ruff	2026-04-23T19:50:25.3824479Z F401 [*] `pytest` imported but unused
+lint	Run ruff	2026-04-23T19:50:25.3825003Z  --> tests/test_mov_estoque_v3.py:2:8
+lint	Run ruff	2026-04-23T19:50:25.3825423Z   |
+lint	Run ruff	2026-04-23T19:50:25.3825655Z 1 | import polars as pl
+lint	Run ruff	2026-04-23T19:50:25.3825905Z 2 | import pytest
+lint	Run ruff	2026-04-23T19:50:25.3826126Z   |        ^^^^^^
+lint	Run ruff	2026-04-23T19:50:25.3826362Z 3 |
+lint	Run ruff	2026-04-23T19:50:25.3826682Z 4 | from pipeline.estoque.mov_estoque_v3 import build_mov_estoque_v3
+lint	Run ruff	2026-04-23T19:50:25.3826952Z   |
+lint	Run ruff	2026-04-23T19:50:25.3827099Z help: Remove unused import: `pytest`
+lint	Run ruff	2026-04-23T19:50:25.3827231Z 
+lint	Run ruff	2026-04-23T19:50:25.3827300Z Found 3 errors.
+lint	Run ruff	2026-04-23T19:50:25.3827592Z [*] 2 fixable with the `--fix` option (1 hidden fix can be enabled with the `--unsafe-fixes` option).
+lint	Run ruff	2026-04-23T19:50:25.3840228Z ##[error]Process completed with exit code 1.
+lint	Post Run actions/checkout@v4	´╗┐2026-04-23T19:50:25.3931996Z Post job cleanup.
+lint	Post Run actions/checkout@v4	2026-04-23T19:50:25.4665806Z [command]/usr/bin/git version
+lint	Post Run actions/checkout@v4	2026-04-23T19:50:25.4694502Z git version 2.53.0
+lint	Post Run actions/checkout@v4	2026-04-23T19:50:25.4731988Z Temporarily overriding HOME='/home/runner/work/_temp/430a03ec-e4d5-4918-a26f-8771c45726f5' before making global git config changes
+lint	Post Run actions/checkout@v4	2026-04-23T19:50:25.4732941Z Adding repository directory to the temporary git global config as a safe directory
+lint	Post Run actions/checkout@v4	2026-04-23T19:50:25.4736691Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/sistema_ro/sistema_ro
+lint	Post Run actions/checkout@v4	2026-04-23T19:50:25.4764240Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+lint	Post Run actions/checkout@v4	2026-04-23T19:50:25.4789648Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+lint	Post Run actions/checkout@v4	2026-04-23T19:50:25.4969037Z fatal: No url found for submodule path '.claude/worktrees/goofy-thompson' in .gitmodules
+lint	Post Run actions/checkout@v4	2026-04-23T19:50:25.5000556Z ##[warning]The process '/usr/bin/git' failed with exit code 128
+lint	Complete job	´╗┐2026-04-23T19:50:25.5071241Z Cleaning up orphan processes
+lint	Complete job	2026-04-23T19:50:25.5313677Z ##[warning]Node.js 20 actions are deprecated. The following actions are running on Node.js 20 and may not work as expected: actions/checkout@v4, actions/setup-python@v4. Actions will be forced to run with Node.js 24 by default starting June 2nd, 2026. Node.js 20 will be removed from the runner on September 16th, 2026. Please check if updated versions of these actions are available that support Node.js 24. To opt into Node.js 24 now, set the FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true environment variable on the runner or in your workflow file. Once Node.js 24 becomes the default, you can temporarily opt out by setting ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

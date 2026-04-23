@@ -1,0 +1,15 @@
+﻿2026-04-23T18:33:35.5244626Z ##[group]Run npm run lint
+2026-04-23T18:33:35.5244917Z [36;1mnpm run lint[0m
+2026-04-23T18:33:35.5269650Z shell: /usr/bin/bash -e {0}
+2026-04-23T18:33:35.5269874Z env:
+2026-04-23T18:33:35.5270113Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-04-23T18:33:35.5270706Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-04-23T18:33:35.5271118Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-04-23T18:33:35.5271526Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-04-23T18:33:35.5271975Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-04-23T18:33:35.5272341Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-04-23T18:33:35.5272675Z ##[endgroup]
+2026-04-23T18:33:35.6566016Z 
+2026-04-23T18:33:35.6567028Z > sistema-ro-frontend@0.1.0 lint
+2026-04-23T18:33:35.6567550Z > eslint "src/**/*.{ts,tsx,js,jsx}" --ext .ts,.tsx,.js,.jsx
+2026-04-23T18:33:35.6567981Z 

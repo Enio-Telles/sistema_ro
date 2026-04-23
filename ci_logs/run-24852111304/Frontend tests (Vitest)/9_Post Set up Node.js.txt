@@ -1,0 +1,5 @@
+﻿2026-04-23T18:33:30.3501565Z Post job cleanup.
+2026-04-23T18:33:30.5144074Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/sistema_ro/sistema_ro --files-from manifest.txt --use-compress-program zstdmt
+2026-04-23T18:33:32.0338575Z Sent 57802752 of 63717696 (90.7%), 55.1 MBs/sec
+2026-04-23T18:33:32.5029159Z Sent 63717696 of 63717696 (100.0%), 41.4 MBs/sec
+2026-04-23T18:33:32.6972307Z Cache saved with the key: node-cache-Linux-x64-npm-b1516f73552d8f528e6858176d3a0e8b033fb239b7ec4239b4d155b20fddb22b

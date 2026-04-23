@@ -1,0 +1,19 @@
+﻿2026-04-23T18:32:18.1715974Z ##[group]Run python -m pip install --upgrade pip
+2026-04-23T18:32:18.1717471Z [36;1mpython -m pip install --upgrade pip[0m
+2026-04-23T18:32:18.1718726Z [36;1mpython -m pip install ruff[0m
+2026-04-23T18:32:18.1756442Z shell: /usr/bin/bash -e {0}
+2026-04-23T18:32:18.1757430Z env:
+2026-04-23T18:32:18.1758430Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-04-23T18:32:18.1760184Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-04-23T18:32:18.1762228Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-04-23T18:32:18.1763831Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-04-23T18:32:18.1765418Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-04-23T18:32:18.1767038Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-04-23T18:32:18.1768372Z ##[endgroup]
+2026-04-23T18:32:18.7449394Z Requirement already satisfied: pip in /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages (26.0.1)
+2026-04-23T18:32:19.6163582Z Collecting ruff
+2026-04-23T18:32:19.6702068Z   Downloading ruff-0.15.11-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (26 kB)
+2026-04-23T18:32:19.6881839Z Downloading ruff-0.15.11-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (11.3 MB)
+2026-04-23T18:32:19.7536114Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 11.3/11.3 MB 223.6 MB/s  0:00:00
+2026-04-23T18:32:19.7746341Z Installing collected packages: ruff
+2026-04-23T18:32:19.9074047Z Successfully installed ruff-0.15.11

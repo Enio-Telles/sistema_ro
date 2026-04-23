@@ -1,0 +1,10 @@
+﻿2026-04-23T18:32:37.0819487Z Post job cleanup.
+2026-04-23T18:32:37.1763117Z [command]/usr/bin/git version
+2026-04-23T18:32:37.1801240Z git version 2.53.0
+2026-04-23T18:32:37.1847423Z Temporarily overriding HOME='/home/runner/work/_temp/5da1bb8e-f67d-48c1-9c4c-00f77bb4c352' before making global git config changes
+2026-04-23T18:32:37.1848824Z Adding repository directory to the temporary git global config as a safe directory
+2026-04-23T18:32:37.1862313Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/sistema_ro/sistema_ro
+2026-04-23T18:32:37.1898410Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-04-23T18:32:37.1930920Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-04-23T18:32:37.2141880Z fatal: No url found for submodule path '.claude/worktrees/goofy-thompson' in .gitmodules
+2026-04-23T18:32:37.2181417Z ##[warning]The process '/usr/bin/git' failed with exit code 128
