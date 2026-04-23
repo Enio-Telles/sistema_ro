@@ -13,6 +13,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set PYTHONPATH early
+        run: echo "PYTHONPATH=$(pwd)/.." >> $GITHUB_ENV
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -30,7 +33,7 @@ jobs:
           python -m pip install -r requirements-ci.txt
           # Install editable package so local imports (sistema_ro.*) work
           python -m pip install -e .
-          echo "PYTHONPATH=$(pwd)" >> $GITHUB_ENV
+          echo "PYTHONPATH=$(pwd)/.." >> $GITHUB_ENV
 
       - name: Run Python tests
         run: python -m pytest -q
