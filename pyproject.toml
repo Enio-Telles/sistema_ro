@@ -29,4 +29,4 @@ pythonpath = ["."]
 [tool.ruff]
 line-length = 88
 target-version = "py311"
-exclude = ["frontend/**", "dist/**", "node_modules/**", ".venv/**", "docs/**"]
+exclude = ["frontend/**", "docs/**", ".claude/**"]
