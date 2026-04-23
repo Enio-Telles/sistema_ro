@@ -15,3 +15,5 @@ coverage/
 *.docx
 *.pdf
 sistema_ro/
+.claude/
+\n# Downloaded CI logs\nci_logs/
