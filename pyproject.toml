@@ -19,8 +19,10 @@ build-backend = "setuptools.build_meta"
 include-package-data = true
 
 [tool.setuptools.packages.find]
-where = ["."]
-exclude = ["frontend", "docs", "tests", "node_modules", ".venv"]
+where = ["sistema_ro"]
+# Limit discovery to the actual package directory to avoid accidental
+# inclusion of multiple top-level folders in the repo root. This
+# prevents setuptools from refusing builds in a flat layout.
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
