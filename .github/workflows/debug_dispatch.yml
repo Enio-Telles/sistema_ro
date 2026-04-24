@@ -3,9 +3,12 @@ name: Debug Install (dispatch)
 on:
   workflow_dispatch:
     inputs:
-      ref:
+      git_ref:
         description: 'Git ref to run the workflow on (branch or commit)'
         required: false
+  push:
+    branches:
+      - main
 
 jobs:
   debug-install:
