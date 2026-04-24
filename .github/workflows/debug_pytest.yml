@@ -77,6 +77,41 @@ for p in sys.path:
     print(p)
 PY
 
+      - name: Save debug info to file
+        run: |
+          python - <<'PY'
+import sys, site, os, glob, inspect
+lines = []
+lines.append('=== sys.path ===')
+for p in sys.path:
+    lines.append(p)
+lines.append('\n=== site.getsitepackages ===')
+for p in site.getsitepackages():
+    lines.append(p)
+    try:
+        lines.append('listing:' + str(os.listdir(p)[:50]))
+    except Exception as e:
+        lines.append('ls error:' + str(e))
+lines.append('\n=== find dist/egg links ===')
+for p in site.getsitepackages():
+    for pattern in ('sistema_ro*.dist-info','sistema_ro*.egg-info','sistema_ro*.egg-link','sistema-ro*'):
+        for f in glob.glob(os.path.join(p,pattern)):
+            lines.append(f)
+try:
+    import sistema_ro
+    lines.append('\nimport sistema_ro succeeded')
+    lines.append('file:' + inspect.getfile(sistema_ro))
+except Exception as e:
+    lines.append('\nimport sistema_ro failed:' + str(e))
+open('debug_sysinfo.txt','w', encoding='utf-8').write('\n'.join(lines))
+PY
+
+      - name: Upload debug artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug_sysinfo
+          path: debug_sysinfo.txt
+
       - name: Run pytest (canonico only)
         run: |
           python -m pytest tests/canonico -q
