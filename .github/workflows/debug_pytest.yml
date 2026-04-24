@@ -78,35 +78,45 @@ for p in sys.path:
 PY
 
       - name: Save debug info to file
+        continue-on-error: true
         run: |
           python - <<'PY'
-import sys, site, os, glob, inspect
-lines = []
-lines.append('=== sys.path ===')
-for p in sys.path:
-    lines.append(p)
-lines.append('\n=== site.getsitepackages ===')
-for p in site.getsitepackages():
-    lines.append(p)
+    import sys, site, os, glob, inspect, traceback
+    lines = []
     try:
-        lines.append('listing:' + str(os.listdir(p)[:50]))
-    except Exception as e:
-        lines.append('ls error:' + str(e))
-lines.append('\n=== find dist/egg links ===')
-for p in site.getsitepackages():
-    for pattern in ('sistema_ro*.dist-info','sistema_ro*.egg-info','sistema_ro*.egg-link','sistema-ro*'):
-        for f in glob.glob(os.path.join(p,pattern)):
+      lines.append('=== sys.path ===')
+      for p in sys.path:
+        lines.append(p)
+      lines.append('\n=== site.getsitepackages ===')
+      for p in site.getsitepackages():
+        lines.append(p)
+        try:
+          lines.append('listing:' + str(os.listdir(p)[:50]))
+        except Exception as e:
+          lines.append('ls error:' + str(e))
+      lines.append('\n=== find dist/egg links ===')
+      for p in site.getsitepackages():
+        for pattern in ('sistema_ro*.dist-info','sistema_ro*.egg-info','sistema_ro*.egg-link','sistema-ro*'):
+          for f in glob.glob(os.path.join(p,pattern)):
             lines.append(f)
-try:
-    import sistema_ro
-    lines.append('\nimport sistema_ro succeeded')
-    lines.append('file:' + inspect.getfile(sistema_ro))
-except Exception as e:
-    lines.append('\nimport sistema_ro failed:' + str(e))
-open('debug_sysinfo.txt','w', encoding='utf-8').write('\n'.join(lines))
-PY
+      try:
+        import sistema_ro
+        lines.append('\nimport sistema_ro succeeded')
+        lines.append('file:' + inspect.getfile(sistema_ro))
+      except Exception as e:
+        lines.append('\nimport sistema_ro failed:' + str(e))
+    except Exception:
+      lines.append('DEBUG SCRIPT FAILED:\n' + traceback.format_exc())
+    finally:
+      try:
+        open('debug_sysinfo.txt','w', encoding='utf-8').write('\n'.join(lines))
+      except Exception as e:
+        # best-effort write to stdout if file write fails
+        print('FAILED TO WRITE debug_sysinfo.txt:', e)
+    PY
 
       - name: Upload debug artifact
+        if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
           name: debug_sysinfo
