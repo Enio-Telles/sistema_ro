@@ -1,0 +1,58 @@
+name: Debug Simple Install
+
+on:
+  workflow_dispatch:
+    inputs:
+      git_ref:
+        description: 'Git ref to run the workflow on (branch or commit)'
+        required: false
+  push:
+    branches:
+      - main
+
+jobs:
+  debug-simple:
+    name: Debug Simple: install & python path
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set PYTHONPATH early
+        run: echo "PYTHONPATH=$(pwd)/.." >> $GITHUB_ENV
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install and show pip/sysinfo
+        run: |
+          python -m pip install --upgrade pip setuptools wheel build
+          python -m pip install -r requirements-ci.txt || true
+          python -m pip install -e . || true
+          echo "--- pip show ---"
+          python -m pip show sistema-ro || true
+          echo "--- sys.path ---"
+          python - <<'PY'
+import sys, site, inspect, os
+print('sys.path:')
+for p in sys.path:
+    print(' -', p)
+
+print('\nsite.getsitepackages():')
+for p in site.getsitepackages():
+    print(' -', p)
+    try:
+        print('   listing:', os.listdir(p)[:30])
+    except Exception as e:
+        print('   ls error', e)
+
+try:
+    import sistema_ro
+    print('\nimport sistema_ro succeeded')
+    print('file:', inspect.getfile(sistema_ro))
+    print('package dir:', os.path.dirname(inspect.getfile(sistema_ro)))
+    print('dir listing:', os.listdir(os.path.dirname(inspect.getfile(sistema_ro)))[:50])
+except Exception as e:
+    print('\nimport sistema_ro failed:', e)
+PY
