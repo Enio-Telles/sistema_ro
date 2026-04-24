@@ -1,0 +1,82 @@
+name: Debug Pytest Collection
+
+on:
+  workflow_dispatch:
+    inputs:
+      git_ref:
+        description: 'Git ref to run the workflow on (branch or commit)'
+        required: false
+  push:
+    branches:
+      - main
+
+jobs:
+  debug-collection:
+    name: Debug: pytest collection + sys.path
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set PYTHONPATH early
+        run: echo "PYTHONPATH=$(pwd)/.." >> $GITHUB_ENV
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Prepare and install package
+        run: |
+          python -m pip install --upgrade pip setuptools wheel build
+          python -m pip install -r requirements-ci.txt || true
+          python -m pip install -e . || true
+          echo "PYTHONPATH=$(pwd)/.." >> $GITHUB_ENV
+
+      - name: Debug: pip metadata and site packages
+        run: |
+          python -m pip show sistema-ro || true
+          python - <<'PY'
+import sys, site, os, glob
+print('--- sys.path (inspect) ---')
+for p in sys.path:
+    print(' -', p)
+
+print('\n--- site.getsitepackages() ---')
+for p in site.getsitepackages():
+    print(' -', p)
+    try:
+        print('   listing:', os.listdir(p)[:50])
+    except Exception as e:
+        print('   ls error', e)
+
+print('\n--- find dist/egg links ---')
+for p in site.getsitepackages():
+    for pattern in ('sistema_ro*.dist-info','sistema_ro*.egg-info','sistema_ro*.egg-link','sistema-ro*'):
+        for f in glob.glob(os.path.join(p,pattern)):
+            print(' -', f)
+
+try:
+    import sistema_ro
+    import inspect
+    print('\nimport sistema_ro succeeded')
+    print('file:', inspect.getfile(sistema_ro))
+    print('package dir:', os.path.dirname(inspect.getfile(sistema_ro)))
+    print('dir listing:', os.listdir(os.path.dirname(inspect.getfile(sistema_ro)))[:50])
+except Exception as e:
+    print('\nimport sistema_ro failed:', e)
+PY
+
+      - name: Debug: sys.path before pytest
+        run: |
+          python - <<'PY'
+import sys
+print('--- sys.path immediately before pytest ---')
+for p in sys.path:
+    print(p)
+PY
+
+      - name: Run pytest (canonico only)
+        run: |
+          python -m pytest tests/canonico -q
