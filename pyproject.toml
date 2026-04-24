@@ -19,10 +19,13 @@ build-backend = "setuptools.build_meta"
 include-package-data = true
 
 [tool.setuptools.packages.find]
-where = ["sistema_ro"]
-# Limit discovery to the actual package directory to avoid accidental
-# inclusion of multiple top-level folders in the repo root. This
-# prevents setuptools from refusing builds in a flat layout.
+where = ["."]
+include = ["sistema_ro*"]
+# Limit discovery to the repository root and include only the package
+# tree matching `sistema_ro*` to avoid accidental inclusion of unrelated
+# top-level folders while allowing setuptools to find the `sistema_ro`
+# package when building from a project layout where the package dir
+# lives at the repo root.
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
