@@ -1,0 +1,57 @@
+branch,has_remote,has_local,status,suggested_action,notes
+chore/add-linting-pre-commit,no,no,DELETED,none,Remote not found at deletion attempt; presumed removed earlier (2026-04-25)
+claude/review-pull-requests-rADwI,no,no,DELETED,none,Remote deleted (2026-04-25)
+docs/plano-correcao-gold-mercadorias-conversao-estoque,no,no,DELETED,none,Remote deleted (2026-04-25)
+feat/ci-tests-and-frontend-docs,no,no,DELETED,none,Remote and local deleted (2026-04-25)
+feat/fix-fisconforme-current-v5-e8bc635,no,no,DELETED,none,Remote deleted (2026-04-25)
+feat/prefer-current-v5,no,no,DELETED,none,Remote and local deleted (2026-04-25)
+fix/pipeline-path-pattern,no,no,DELETED,none,Remote and local deleted (2026-04-25)
+fix/pyproject-packages,no,no,DELETED,none,Remote and local deleted (2026-04-25)
+main,yes,yes,PROTECTED,none,Default branch — do not delete
+chore/ci-debug-install,yes,yes,NOT_MERGED,review,Active - review or open PR
+feat/ci/pip-install-noneditable,yes,yes,NOT_MERGED,review,Current branch — ensure PR or merge
+feat/conversion-quality-summary-on-pipeline-run-2,yes,no,NOT_MERGED,review,Remote-only
+feat/expose-operational-surface-index,yes,no,NOT_MERGED,review,Remote-only
+feat/official-runtime-surface-contracts,yes,no,NOT_MERGED,review,Remote-only
+feat/remove-gold18-19,yes,no,NOT_MERGED,review,Remote-only
+feature/ci-check-fix-ci-add-httpx,yes,yes,NOT_MERGED,review,Active
+feature/ci-check-fix-ci-install-package,yes,yes,NOT_MERGED,review,Active
+feature/ci-check-fix-frontend-optional,yes,yes,NOT_MERGED,review,Active
+feature/ci-debug-run,yes,yes,NOT_MERGED,review,Active
+feature/fix-ci-install-httpx,yes,yes,NOT_MERGED,review,Active
+feature/fix-frontend-lockfile,yes,yes,NOT_MERGED,review,Active
+feature/stitch-mcp,no,yes,LOCAL_ONLY,review_local,Local-only branch — decide to push or delete
+fix/ci-add-httpx,yes,yes,NOT_MERGED,review,Active
+fix/ci-deps-and-rollup,no,yes,LOCAL_ONLY,review_local,Local-only
+fix/ci-install-build-tools,yes,yes,NOT_MERGED,review,Active
+fix/ci-install-build-tools-clean,no,yes,LOCAL_ONLY,review_local,Local-only
+fix/ci-install-fixes,no,yes,LOCAL_ONLY,review_local,Local-only
+fix/ci-install-httpx,yes,yes,NOT_MERGED,review,Active
+fix/ci-install-package,yes,yes,NOT_MERGED,review,Active
+fix/ci-ruff-exclude-claude,no,yes,LOCAL_ONLY,review_local,Local-only
+fix/ci-set-pythonpath-early,no,yes,LOCAL_ONLY,review_local,Local-only
+fix/ci/add-debug-simple,no,yes,LOCAL_ONLY,review_local,Local-only
+fix/ci/debug-dispatch-trigger,no,yes,LOCAL_ONLY,review_local,Local-only
+fix/ci/robust-checkout,yes,yes,NOT_MERGED,review,Active
+fix/ci/setuptools-find,no,yes,LOCAL_ONLY,review_local,Local-only
+fix/frontend-lockfile,yes,yes,NOT_MERGED,review,Active
+fix/frontend-optional,yes,yes,NOT_MERGED,review,Active
+fix/pyproject-packages-2,yes,yes,NOT_MERGED,review,Active
+fix/python-packaging-find-packages,no,yes,LOCAL_ONLY,review_local,Local-only
+fix/remove-claude,no,yes,LOCAL_ONLY,review_local,Local-only
+integration/unify-runtime-v2,yes,yes,NOT_MERGED,review,Active
+pr-16,no,yes,LOCAL_ONLY,review_local,Local-only
+pr-18,no,yes,LOCAL_ONLY,review_local,Local-only
+revise/pr-20,no,yes,LOCAL_ONLY,review_local,Local-only
+update/agents-checklist-2026-04-16,no,yes,LOCAL_ONLY,review_local,Local-only
+chore/auto-merge-workflow,no,yes,LOCAL_ONLY,review_local,Local-only
+chore/trigger-debug-run,no,yes,LOCAL_ONLY,review_local,Local-only
+claude/intelligent-margulis-e83e4c,no,yes,LOCAL_ONLY,review_local,Local-only
+claude/musing-chandrasekhar-dc31d0,no,yes,LOCAL_ONLY,review_local,Local-only
+claude/musing-hodgkin,no,yes,LOCAL_ONLY,review_local,Local-only
+claude/nifty-jemison-9cdc04,no,yes,LOCAL_ONLY,review_local,Local-only
+claude/sleepy-jang-2b5ed2,no,yes,LOCAL_ONLY,review_local,Local-only
+feat/ci/add-debug-workflow,no,yes,LOCAL_ONLY,review_local,Local-only
+feat/ci/debug-artifact-fix,no,yes,LOCAL_ONLY,review_local,Local-only
+feat/ci/debug-pytest,no,yes,LOCAL_ONLY,review_local,Local-only
+feat/ci/debug-pytest-artifact,no,yes,LOCAL_ONLY,review_local,Local-only
