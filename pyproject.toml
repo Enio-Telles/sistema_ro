@@ -9,6 +9,7 @@ dependencies = [
   "pydantic>=2.8",
   "polars>=1.8",
   "python-dotenv>=1.0",
+  "httpx>=0.28",
 ]
 
 [build-system]
